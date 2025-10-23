@@ -4,23 +4,23 @@
       <h1 class="text-2xl font-bold mb-8">Toast 测试页面</h1>
       
       <!-- Simple buttons -->
-      <button @click="testSuccess" class="w-full p-3 bg-green-500 text-white rounded">
+      <button class="w-full p-3 bg-green-500 text-white rounded" @click="testSuccess">
         测试成功通知
       </button>
       
-      <button @click="testError" class="w-full p-3 bg-red-500 text-white rounded">
+      <button class="w-full p-3 bg-red-500 text-white rounded" @click="testError">
         测试错误通知
       </button>
       
-      <button @click="testWarning" class="w-full p-3 bg-yellow-500 text-white rounded">
+      <button class="w-full p-3 bg-yellow-500 text-white rounded" @click="testWarning">
         测试警告通知
       </button>
       
-      <button @click="testInfo" class="w-full p-3 bg-blue-500 text-white rounded">
+      <button class="w-full p-3 bg-blue-500 text-white rounded" @click="testInfo">
         测试信息通知
       </button>
       
-      <button @click="testDirect" class="w-full p-3 bg-purple-500 text-white rounded">
+      <button class="w-full p-3 bg-purple-500 text-white rounded" @click="testDirect">
         直接调用 Store
       </button>
       
@@ -34,7 +34,7 @@
       <!-- Manual toast creation -->
       <div class="mt-8 p-4 bg-blue-100 rounded">
         <h3 class="font-bold mb-2">手动创建 Toast:</h3>
-        <button @click="createManualToast" class="p-2 bg-gray-800 text-white rounded">
+        <button class="p-2 bg-gray-800 text-white rounded" @click="createManualToast">
           手动创建
         </button>
       </div>

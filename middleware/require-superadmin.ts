@@ -1,8 +1,6 @@
-import type { PermissionType } from '~/types'
-
 export default defineNuxtRouteMiddleware(async (to) => {
   // Run only on client
-  if (process.server) return
+  if (import.meta.server) return
 
   const auth = useAuthStore()
   
@@ -28,8 +26,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!auth.isSuperadmin) {
     const toast = useToast()
     toast.error('无权限访问：需要超级管理员权限')
-    if (process.client && window.history.length > 1) {
-      return navigateTo(-1)
+    if (import.meta.client && window.history.length > 1) {
+      window.history.back()
+      return
     }
     return navigateTo('/')
   }

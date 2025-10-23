@@ -24,12 +24,12 @@
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
           <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
-            <img src="/bandge.png" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg">
+            <img src="/badge.png" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg">
             <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
           </NuxtLink>
 
           <!-- Auth Area -->
-          <div class="relative flex items-center gap-2 overflow-visible z-50" ref="userMenuRef">
+          <div ref="userMenuRef" class="relative flex items-center gap-2 overflow-visible z-50">
             <!-- 未登录：登录/注册 -->
             <template v-if="!auth.isAuthenticated">
               <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">登录</NuxtLink>
@@ -103,7 +103,7 @@
 
       <!-- Footer -->
       <div class="shrink-0">
-        <hr class="border-t border-white/40 mb-4" />
+        <hr class="border-t border-white/40 mb-4" >
         <footer class="glass-card rounded-none py-6 text-center text-sm text-gray-600">
           <div class="space-y-2">
             <p>© 2024 郑州市第四高级中学表白墙</p>
@@ -173,7 +173,7 @@ const goAdmin = async () => {
 const initializeApp = async () => {
   try {
     await auth.initAuth()
-    if (process.client) {
+    if (import.meta.client) {
       try {
         const api = useApi()
         announcements.value = await api.listAnnouncements()
@@ -205,7 +205,7 @@ const loadUnreadCount = async () => {
 let unreadInterval: ReturnType<typeof setInterval> | null = null
 
 onMounted(() => {
-  if (process.client && auth.isAuthenticated) {
+  if (import.meta.client && auth.isAuthenticated) {
     loadUnreadCount()
     unreadInterval = setInterval(loadUnreadCount, 30000)
   }
@@ -229,7 +229,7 @@ watch(() => auth.isAuthenticated, (v) => {
 const route = useRoute()
 watch(() => route.path, () => {
   showUserMenu.value = false
-  if (process.client) setTimeout(loadUnreadCount, 500)
+  if (import.meta.client) setTimeout(loadUnreadCount, 500)
 })
 </script>
 

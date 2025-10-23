@@ -14,7 +14,7 @@
         </div>
 
         <!-- Registration Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="handleSubmit">
           <div>
             <label for="username" class="block text-sm font-medium text-gray-700 mb-2">用户名 *</label>
             <GlassInput
@@ -59,10 +59,10 @@
           <div class="flex items-start gap-3">
             <input
               id="acceptTerms"
-              type="checkbox"
               v-model="acceptTerms"
+              type="checkbox"
               class="mt-1 w-4 h-4 text-brand-600 bg-white/30 border border-white/20 rounded focus:ring-brand-500 focus:ring-2"
-            />
+            >
             <label for="acceptTerms" class="text-sm text-gray-600">
               我已阅读并同意
               <a href="#" class="text-brand-600 hover:text-brand-700">服务条款</a>
@@ -71,10 +71,10 @@
             </label>
           </div>
 
-          <!-- Geetest Captcha -->
+          <!-- GeeTest Captcha -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">安全验证</label>
-            <GeetestV4
+            <GeeTestV4
               ref="captchaRef"
               :captcha-id="registerCaptchaId"
               @verified="onCaptchaVerified"
@@ -92,8 +92,8 @@
             type="submit"
             variant="secondary"
             class="w-full"
-            @click="handleSubmit"
             :disabled="!isFormValid || !captchaOk || loading"
+            @click="handleSubmit"
           >
             {{ loading ? '注册中...' : '创建账户' }}
           </GlassButton>
@@ -130,8 +130,8 @@ import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import type { RegisterForm } from '~/types'
-import type GeetestV4Type from '~/components/security/GeetestV4.vue'
-import GeetestV4 from '~/components/security/GeetestV4.vue'
+import type GeeTestV4Type from '~/components/security/GeeTestV4.vue'
+import GeeTestV4 from '~/components/security/GeeTestV4.vue'
 
 // Form schema
 const registerSchema = z.object({
@@ -157,7 +157,7 @@ const loading = ref(false)
 const error = ref('')
 const captchaOk = ref(false)
 const captchaTokens = ref<any | null>(null)
-const captchaRef = ref<InstanceType<typeof GeetestV4Type> | null>(null)
+const captchaRef = ref<InstanceType<typeof GeeTestV4Type> | null>(null)
 
 // 获取注册专用验证码ID
 const config = useRuntimeConfig()

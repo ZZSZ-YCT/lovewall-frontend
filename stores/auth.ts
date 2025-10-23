@@ -48,7 +48,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async clearSession(options?: { toastMessage?: string; toastType?: 'success' | 'error' | 'warning' | 'info'; redirectTo?: string | null }) {
       // 停止心跳服务
-      if (process.client) {
+      if (import.meta.client) {
         const { stopHeartbeat } = useHeartbeat()
         stopHeartbeat()
       }
@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', {
       this.accessToken = null
       this.error = null
 
-      if (process.client) {
+      if (import.meta.client) {
         localStorage.removeItem('auth_token')
       }
 
@@ -75,7 +75,7 @@ export const useAuthStore = defineStore('auth', {
         show.call(toast, toastMessage)
       }
 
-      if (process.client) {
+      if (import.meta.client) {
         const target = options?.redirectTo === null
           ? null
           : options?.redirectTo ?? '/auth/login'
@@ -98,7 +98,7 @@ export const useAuthStore = defineStore('auth', {
         this.permissions = [] // Will be loaded by fetchProfile
         
         // Store token in localStorage for persistence
-        if (process.client) {
+        if (import.meta.client) {
           localStorage.setItem('auth_token', response.access_token)
         }
         
@@ -109,7 +109,7 @@ export const useAuthStore = defineStore('auth', {
         toast.success('注册成功!')
 
         // 启动心跳服务
-        if (process.client) {
+        if (import.meta.client) {
           const { startHeartbeat } = useHeartbeat()
           startHeartbeat()
         }
@@ -136,7 +136,7 @@ export const useAuthStore = defineStore('auth', {
         this.permissions = [] // Will be loaded by fetchProfile
         
         // Store token in localStorage for persistence
-        if (process.client) {
+        if (import.meta.client) {
           localStorage.setItem('auth_token', response.access_token)
           console.log('Auth store: Token stored in localStorage')
         }
@@ -155,7 +155,7 @@ export const useAuthStore = defineStore('auth', {
         toast.success(`欢迎回来, ${this.userDisplayName}!`)
 
         // 启动心跳服务
-        if (process.client) {
+        if (import.meta.client) {
           const { startHeartbeat } = useHeartbeat()
           startHeartbeat()
         }
@@ -215,7 +215,7 @@ export const useAuthStore = defineStore('auth', {
         this.accessToken = null
         
         // Clear localStorage
-        if (process.client) {
+        if (import.meta.client) {
           localStorage.removeItem('auth_token')
         }
         
@@ -224,7 +224,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async initAuth(): Promise<void> {
-      if (!process.client) {
+      if (!import.meta.client) {
         this.initialized = true
         return
       }
@@ -244,7 +244,7 @@ export const useAuthStore = defineStore('auth', {
           await this.fetchProfile()
           
           // 启动心跳服务 (会话恢复时)
-          if (process.client) {
+          if (import.meta.client) {
             const { startHeartbeat } = useHeartbeat()
             startHeartbeat()
           }
@@ -260,11 +260,6 @@ export const useAuthStore = defineStore('auth', {
       }
       this.initialized = true
     },
-
-    clearError(): void {
-      this.error = null
-    },
-
     setCurrentUser(user: User): void {
       this.currentUser = user
       // Update session cookies

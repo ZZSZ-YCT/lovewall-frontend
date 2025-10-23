@@ -265,6 +265,9 @@ import {
   MegaphoneIcon
 } from 'lucide-vue-next'
 import type { PostDto, CommentDto } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import PermissionGuard from "~/components/ui/PermissionGuard.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'admin'
@@ -299,7 +302,7 @@ const loadDashboardData = async () => {
   try {
     const api = useApi()
     
-    // Load platform metrics (if has permission)
+    // Load platform metrics (if it has permission)
     let gotMetrics = false
     if (auth.hasPerm('MANAGE_USERS') || auth.isSuperadmin) {
       try {
@@ -334,7 +337,7 @@ const loadDashboardData = async () => {
       console.warn('Failed to load posts:', error)
     }
 
-    // Load recent comments (if has permission)
+    // Load recent comments (if it has permission)
     if (auth.hasPerm('MANAGE_COMMENTS')) {
       try {
         const commentsData = await api.getAdminComments({ page: 1, page_size: 5 })
@@ -348,7 +351,7 @@ const loadDashboardData = async () => {
       }
     }
 
-    // Load users count (if has permission)
+    // Load users count (if it has permission)
     if ((auth.hasPerm('MANAGE_USERS') || auth.isSuperadmin) && !gotMetrics) {
       try {
         const usersData = await api.listUsers({ page: 1, page_size: 1 })
@@ -358,7 +361,7 @@ const loadDashboardData = async () => {
       }
     }
 
-    // Load tags count (if has permission)
+    // Load tags count (if it has permission)
     if (auth.hasPerm('MANAGE_TAGS')) {
       try {
         const tagsData = await api.listTags({ page: 1, page_size: 1 })

@@ -11,36 +11,36 @@
       <GlassCard class="p-8">
         <div class="grid grid-cols-2 gap-4">
           <button
-            @click="showSuccess"
             class="glass-button bg-green-50/20 border-green-200/50 text-green-800"
+            @click="showSuccess"
           >
             成功通知
           </button>
           
           <button
-            @click="showError"
             class="glass-button bg-red-50/20 border-red-200/50 text-red-800"
+            @click="showError"
           >
             错误通知
           </button>
           
           <button
-            @click="showWarning"
             class="glass-button bg-amber-50/20 border-amber-200/50 text-amber-800"
+            @click="showWarning"
           >
             警告通知
           </button>
           
           <button
-            @click="showInfo"
             class="glass-button bg-blue-50/20 border-blue-200/50 text-blue-800"
+            @click="showInfo"
           >
             信息通知
           </button>
           
           <button
-            @click="showMultiple"
             class="glass-button col-span-2"
+            @click="showMultiple"
           >
             显示多个通知（测试堆叠效果）
           </button>
@@ -51,6 +51,8 @@
 </template>
 
 <script setup lang="ts">
+import GlassCard from "~/components/ui/GlassCard.vue";
+
 const toast = useToast()
 
 const showSuccess = () => {

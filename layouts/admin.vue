@@ -8,8 +8,8 @@
         alt="Background"
         class="w-full h-full object-cover"
         :class="{ 'opacity-0': backgroundLoading, 'opacity-100': !backgroundLoading }"
-      />
-      <div class="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+      >
+      <div class="absolute inset-0 bg-white/20 backdrop-blur-sm"/>
     </div>
 
     <!-- Sidebar -->
@@ -76,7 +76,7 @@ const sidebarOpen = ref(false)
 
 // 桌面端默认打开侧边栏
 onMounted(() => {
-  if (process.client && window.innerWidth >= 1024) {
+  if (import.meta.client && window.innerWidth >= 1024) {
     sidebarOpen.value = true
   }
 })

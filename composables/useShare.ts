@@ -4,6 +4,8 @@
  * 支持 iOS/iPadOS、Android、Windows、macOS 等平台
  */
 
+import { useToast } from '#imports'
+
 export interface ShareData {
   title: string
   text: string
@@ -11,8 +13,6 @@ export interface ShareData {
   image?: string
   files?: File[]
 }
-
-import { useToast } from '#imports'
 
 export const useShare = () => {
   const toast = useToast()
@@ -374,7 +374,7 @@ export const useShare = () => {
       } else {
         try {
           const success = await nativeShare(data)
-          if (success === false) {
+          if (!success) {
             console.info('[Share Debug] Native share cancelled by user')
             return
           }
@@ -400,7 +400,7 @@ ${data.url}`
     }
 
     if (platformFallback.length > 0) {
-      const url = getPlatformShareUrl(data, platformFallback[0])
+      const url = getPlatformShareUrl(data, platformFallback[0]!)
       if (url) {
         window.open(url, '_blank', 'width=600,height=400')
         return

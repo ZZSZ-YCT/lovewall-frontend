@@ -54,7 +54,9 @@ export const useToastStore = defineStore('toast', {
       console.log('Removing toast:', id)
       const index = this.toasts.findIndex(t => t.id === id)
       if (index > -1) {
-        this.toasts[index].visible = false
+        if (this.toasts && this.toasts[index]) {
+          this.toasts[index].visible = false;
+        }
         // Remove from array after animation completes
         setTimeout(() => {
           const currentIndex = this.toasts.findIndex(t => t.id === id)

@@ -8,9 +8,9 @@
             <div class="min-w-0 flex-1">
               <!-- Single announcement -->
               <div v-if="announcements.length === 1" class="text-sm">
-                <span class="font-medium">{{ announcements[0].title }}</span>
-                <span v-if="announcements[0].content" class="ml-2">
-                  {{ announcements[0].content }}
+                <span class="font-medium">{{ announcements[0]?.title }}</span>
+                <span v-if="announcements[0]?.content" class="ml-2">
+                  {{ announcements[0]?.content }}
                 </span>
               </div>
 

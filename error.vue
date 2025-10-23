@@ -12,14 +12,14 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <GlassButton @click="handleError" class="flex-1">
+          <GlassButton class="flex-1" @click="handleError">
             {{ error.statusCode === 404 ? '返回首页' : '重试' }}
           </GlassButton>
           <GlassButton 
             v-if="error.statusCode !== 404"
-            @click="goHome" 
             variant="secondary" 
-            class="flex-1"
+            class="flex-1" 
+            @click="goHome"
           >
             返回首页
           </GlassButton>
@@ -31,6 +31,8 @@
 
 <script setup lang="ts">
 import { AlertTriangleIcon } from 'lucide-vue-next'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
 
 const props = defineProps<{
   error: {

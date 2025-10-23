@@ -31,8 +31,8 @@
 
       <!-- Close button -->
       <button
-        @click="$emit('close')"
         class="flex-shrink-0 p-1 rounded-full hover:bg-black/10 transition-colors"
+        @click="$emit('close')"
       >
         <XIcon class="w-4 h-4 opacity-70" />
       </button>

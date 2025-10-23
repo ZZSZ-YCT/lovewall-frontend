@@ -1,6 +1,6 @@
 <template>
   <div v-if="images?.length" class="space-y-3">
-    <div :class="gridWrapperClass" ref="galleryRef">
+    <div ref="galleryRef" :class="gridWrapperClass">
       <a
         v-for="(image, index) in images"
         :key="`${image}-${index}`"
@@ -16,7 +16,7 @@
           :alt="`${altPrefix} ${index + 1}`"
           :class="imageClass"
           loading="lazy"
-        />
+        >
       </a>
     </div>
   </div>
@@ -116,9 +116,6 @@ onMounted(() => {
     // 启用计数器和控制栏
     counter: true,
     arrowKeys: true,
-
-    // 历史记录和URL更新
-    history: false,
   })
 
   lightbox.init()

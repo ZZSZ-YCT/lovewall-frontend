@@ -56,18 +56,6 @@ defineOptions({ inheritAttrs: false })
   @apply bg-white/25 backdrop-blur-lg border border-white/20 shadow-glass rounded-2xl;
 }
 
-.glass-card.elevated {
-  @apply bg-white/30 shadow-glass-lg;
-}
-
-.glass-card.subtle {
-  @apply bg-white/15 border-white/10;
-}
-
-.glass-card.frosted {
-  @apply bg-white/35 backdrop-blur-2xl shadow-glass-xl;
-}
-
 .border-glass {
   @apply border-white/20;
 }
@@ -77,13 +65,6 @@ defineOptions({ inheritAttrs: false })
   .glass-card {
     @apply bg-white/15 border-white/10;
   }
-  
-  .glass-card.elevated {
-    @apply bg-white/20;
-  }
-  
-  .glass-card.frosted {
-    @apply bg-white/25;
-  }
+
 }
 </style>

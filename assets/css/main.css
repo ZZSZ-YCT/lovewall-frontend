@@ -54,15 +54,13 @@
   .glass-card {
     /* Enhanced liquid glass panels */
     @apply relative rounded-3xl p-6 border backdrop-blur-xl;
-    background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.18);
     box-shadow: 
       0 8px 32px 0 rgba(31, 38, 135, 0.15),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-    background-image:
-      radial-gradient(1200px 500px at -15% -10%, rgba(255,92,163,0.08), rgba(255,92,163,0) 45%),
-      radial-gradient(1000px 420px at 115% -10%, rgba(99,102,241,0.08), rgba(99,102,241,0) 50%),
-      radial-gradient(1400px 700px at 120% 120%, rgba(45,212,191,0.08), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.15) radial-gradient(1200px 500px at -15% -10%, rgba(255, 92, 163, 0.08), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(1000px 420px at 115% -10%, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(1400px 700px at 120% 120%, rgba(45, 212, 191, 0.08), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: overlay;
     pointer-events: auto;
     position: relative;
@@ -107,11 +105,9 @@
     @apply text-white shadow-lg border border-white/25 backdrop-blur-xl;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
     @apply transition-all duration-300 ease-in-out;
-    background: rgba(255, 255, 255, 0.12);
-    background-image:
-      radial-gradient(600px 260px at -10% -10%, rgba(255,92,163,0.35), rgba(255,92,163,0) 45%),
-      radial-gradient(520px 240px at 110% -10%, rgba(99,102,241,0.35), rgba(99,102,241,0) 50%),
-      radial-gradient(640px 300px at 120% 120%, rgba(45,212,191,0.35), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.12) radial-gradient(600px 260px at -10% -10%, rgba(255, 92, 163, 0.35), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(520px 240px at 110% -10%, rgba(99, 102, 241, 0.35), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(640px 300px at 120% 120%, rgba(45, 212, 191, 0.35), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
 
@@ -151,11 +147,9 @@
     @apply text-gray-900 shadow-lg border border-white/25 backdrop-blur-xl;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
     @apply transition-all duration-300 ease-in-out;
-    background: rgba(255,255,255,0.18);
-    background-image:
-      radial-gradient(550px 240px at -10% -10%, rgba(255,92,163,0.22), rgba(255,92,163,0) 45%),
-      radial-gradient(480px 220px at 110% -10%, rgba(99,102,241,0.22), rgba(99,102,241,0) 50%),
-      radial-gradient(600px 280px at 120% 120%, rgba(45,212,191,0.22), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.18) radial-gradient(550px 240px at -10% -10%, rgba(255, 92, 163, 0.22), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(480px 220px at 110% -10%, rgba(99, 102, 241, 0.22), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(600px 280px at 120% 120%, rgba(45, 212, 191, 0.22), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
 
@@ -181,11 +175,9 @@
     @apply relative inline-flex items-center justify-center gap-2 text-sm rounded-xl;
     @apply h-10 px-4 border border-white/25 shadow-lg backdrop-blur-xl;
     color: #1f2937; /* gray-800 text */
-    background: rgba(255,255,255,0.18);
-    background-image:
-      radial-gradient(500px 200px at -10% -10%, rgba(255,92,163,0.20), rgba(255,92,163,0) 45%),
-      radial-gradient(420px 180px at 110% -10%, rgba(99,102,241,0.20), rgba(99,102,241,0) 50%),
-      radial-gradient(520px 240px at 120% 120%, rgba(45,212,191,0.20), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.18) radial-gradient(500px 200px at -10% -10%, rgba(255, 92, 163, 0.20), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(420px 180px at 110% -10%, rgba(99, 102, 241, 0.20), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(520px 240px at 120% 120%, rgba(45, 212, 191, 0.20), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
 
@@ -220,11 +212,9 @@
 
   .navigation-section {
     @apply backdrop-blur-xl border-b border-white/20 shadow-sm;
-    background: rgba(255,255,255,0.28);
-    background-image:
-      radial-gradient(1000px 420px at -15% -10%, rgba(255,92,163,0.16), rgba(255,92,163,0) 45%),
-      radial-gradient(880px 360px at 115% -10%, rgba(99,102,241,0.16), rgba(99,102,241,0) 50%),
-      radial-gradient(1200px 620px at 120% 120%, rgba(45,212,191,0.16), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.28) radial-gradient(1000px 420px at -15% -10%, rgba(255, 92, 163, 0.16), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(880px 360px at 115% -10%, rgba(99, 102, 241, 0.16), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(1200px 620px at 120% 120%, rgba(45, 212, 191, 0.16), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
 
@@ -240,11 +230,9 @@
   
   .glass-bar {
     @apply rounded-2xl border border-white/20 shadow-lg backdrop-blur-xl;
-    background: rgba(255,255,255,0.28);
-    background-image:
-      radial-gradient(1000px 420px at -15% -10%, rgba(255,92,163,0.18), rgba(255,92,163,0) 45%),
-      radial-gradient(880px 360px at 115% -10%, rgba(99,102,241,0.18), rgba(99,102,241,0) 50%),
-      radial-gradient(1200px 620px at 120% 120%, rgba(45,212,191,0.18), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.28) radial-gradient(1000px 420px at -15% -10%, rgba(255, 92, 163, 0.18), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(880px 360px at 115% -10%, rgba(99, 102, 241, 0.18), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(1200px 620px at 120% 120%, rgba(45, 212, 191, 0.18), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
   
@@ -289,15 +277,13 @@
   .post-card {
     @apply relative border backdrop-blur-xl transform;
     @apply transition-all duration-300 ease-out;
-    background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.15);
     box-shadow: 
       0 8px 32px 0 rgba(31, 38, 135, 0.12),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-    background-image:
-      radial-gradient(800px 400px at -10% -20%, rgba(255,92,163,0.06), rgba(255,92,163,0) 45%),
-      radial-gradient(700px 300px at 110% -10%, rgba(99,102,241,0.06), rgba(99,102,241,0) 50%),
-      radial-gradient(900px 480px at 120% 120%, rgba(45,212,191,0.06), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.12) radial-gradient(800px 400px at -10% -20%, rgba(255, 92, 163, 0.06), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(700px 300px at 110% -10%, rgba(99, 102, 241, 0.06), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(900px 480px at 120% 120%, rgba(45, 212, 191, 0.06), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: overlay;
     isolation: isolate;
     overflow: hidden;
@@ -324,16 +310,14 @@
   .post-card-list {
     @apply relative border backdrop-blur-xl transform;
     @apply transition-all duration-300 ease-out;
-    background: rgba(255,255,255,0.10);
     border: 1px solid rgba(255,255,255,0.12);
     box-shadow: 
       0 4px 24px 0 rgba(31, 38, 135, 0.10),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
     min-height: auto;
-    background-image:
-      radial-gradient(800px 400px at -10% -20%, rgba(255,92,163,0.05), rgba(255,92,163,0) 45%),
-      radial-gradient(700px 300px at 110% -10%, rgba(99,102,241,0.05), rgba(99,102,241,0) 50%),
-      radial-gradient(900px 480px at 120% 120%, rgba(45,212,191,0.05), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.10) radial-gradient(800px 400px at -10% -20%, rgba(255, 92, 163, 0.05), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(700px 300px at 110% -10%, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(900px 480px at 120% 120%, rgba(45, 212, 191, 0.05), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: overlay;
     isolation: isolate;
     overflow: hidden;
@@ -444,11 +428,9 @@
   
   .glass-card {
     @apply border-white/10 backdrop-blur-xl;
-    background: rgba(0,0,0,0.25);
-    background-image:
-      radial-gradient(1200px 500px at -15% -10%, rgba(255,92,163,0.16), rgba(255,92,163,0) 45%),
-      radial-gradient(1000px 420px at 115% -10%, rgba(99,102,241,0.16), rgba(99,102,241,0) 50%),
-      radial-gradient(1400px 700px at 120% 120%, rgba(45,212,191,0.16), rgba(45,212,191,0) 55%);
+    background: rgba(0, 0, 0, 0.25) radial-gradient(1200px 500px at -15% -10%, rgba(255, 92, 163, 0.16), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(1000px 420px at 115% -10%, rgba(99, 102, 241, 0.16), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(1400px 700px at 120% 120%, rgba(45, 212, 191, 0.16), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
   
@@ -460,11 +442,9 @@
   .glass-button-secondary,
   .glass-button-outline {
     @apply border-white/10 text-white;
-    background: rgba(255,255,255,0.08);
-    background-image:
-      radial-gradient(600px 260px at -10% -10%, rgba(255,92,163,0.28), rgba(255,92,163,0) 45%),
-      radial-gradient(520px 240px at 110% -10%, rgba(99,102,241,0.28), rgba(99,102,241,0) 50%),
-      radial-gradient(640px 300px at 120% 120%, rgba(45,212,191,0.28), rgba(45,212,191,0) 55%);
+    background: rgba(255, 255, 255, 0.08) radial-gradient(600px 260px at -10% -10%, rgba(255, 92, 163, 0.28), rgba(255, 92, 163, 0) 45%),
+    radial-gradient(520px 240px at 110% -10%, rgba(99, 102, 241, 0.28), rgba(99, 102, 241, 0) 50%),
+    radial-gradient(640px 300px at 120% 120%, rgba(45, 212, 191, 0.28), rgba(45, 212, 191, 0) 55%);
     background-blend-mode: screen;
   }
 

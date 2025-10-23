@@ -35,7 +35,6 @@
           <!-- Layout Toggle (Hidden on mobile) -->
           <div v-if="!isMobile" class="flex items-center gap-1 p-1 bg-white/20 border border-white/20 backdrop-blur-sm rounded-lg shadow-sm">
             <button
-              @click="layoutMode = 'grid'"
               :class="[
                 'p-1.5 rounded text-xs transition-all',
                 effectiveLayout === 'grid' 
@@ -43,11 +42,11 @@
                   : 'text-gray-600 hover:text-brand-600'
               ]"
               title="网格布局"
+              @click="layoutMode = 'grid'"
             >
               <GridIcon class="w-4 h-4" />
             </button>
             <button
-              @click="layoutMode = 'list'"
               :class="[
                 'p-1.5 rounded text-xs transition-all',
                 effectiveLayout === 'list' 
@@ -55,16 +54,17 @@
                   : 'text-gray-600 hover:text-brand-600'
               ]"
               title="列表布局"
+              @click="layoutMode = 'list'"
             >
               <ListIcon class="w-4 h-4" />
             </button>
           </div>
           
           <GlassButton
-            @click="refreshPosts"
             :disabled="loading"
             variant="secondary"
             class="!px-3 !py-1.5 text-sm"
+            @click="refreshPosts"
           >
             <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
             刷新
@@ -103,8 +103,8 @@
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="grid"
-            @refresh="refreshPosts"
             class="animate-fade-in-up"
+            @refresh="refreshPosts"
           />
         </div>
         
@@ -122,8 +122,8 @@
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="list"
-            @refresh="refreshPosts"
             class="w-full animate-fade-in-up"
+            @refresh="refreshPosts"
           />
         </div>
       </div>
@@ -131,9 +131,9 @@
       <!-- Load More Button -->
       <div v-if="hasMore && !loading" class="text-center">
         <GlassButton
-          @click="loadMore"
           :disabled="loadingMore"
           variant="secondary"
+          @click="loadMore"
         >
           <LoadingSpinner v-if="loadingMore" size="sm" variant="white" />
           <span>{{ loadingMore ? '加载中...' : '加载更多' }}</span>
@@ -151,11 +151,10 @@ import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import PostCard from '~/components/PostCard.vue'
 
-// Stores and composables
+// Stores and composable
 const auth = useAuthStore()
 const home = useHomeStore()
-const config = useRuntimeConfig()
-const { deviceType, isMobile, isTablet, gridColumns } = useDevice()
+const {isMobile, isTablet} = useDevice()
 
 // State
 // 首页展示：置顶始终靠前
@@ -182,11 +181,8 @@ const posts = computed(() => {
 })
 const loading = computed(() => home.loading)
 const loadingMore = computed(() => home.loadingMore)
-const currentPage = computed(() => home.page)
+computed(() => home.page);
 const hasMore = computed(() => home.hasMore)
-
-const pageSize = config.public.pageSize as number
-
 // Layout mode - 保存到localStorage，移动端强制列表布局
 const layoutMode = ref<'grid' | 'list' | 'auto'>('auto')
 
@@ -231,14 +227,6 @@ watch(layoutMode, (newLayout) => {
 })
 
 // Load posts
-const loadPosts = async (page = 1, append = false) => {
-  if (append) {
-    await home.loadMore()
-  } else {
-    await home.initialLoad()
-  }
-}
-
 // 不再单独加载置顶/精选
 
 // Refresh all posts

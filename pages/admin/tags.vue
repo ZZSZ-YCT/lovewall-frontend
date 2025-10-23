@@ -13,8 +13,8 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.active"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="true">已启用</option>
@@ -33,19 +33,19 @@
           </GlassButton>
           
           <GlassButton
-            @click="openCodesListModal"
             class="toolbar-button"
             variant="secondary"
+            @click="openCodesListModal"
           >
             <TicketIcon class="w-4 h-4 mr-2" />
             兑换码列表
           </GlassButton>
           
           <GlassButton
-            @click="refresh"
             :loading="loading"
             variant="secondary"
             class="toolbar-button"
+            @click="refresh"
           >
             <RefreshCwIcon class="w-4 h-4 mr-2" />
             刷新
@@ -140,37 +140,37 @@
               <!-- Actions -->
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <GlassButton
-                  @click="openCodesModal(tag)"
                   variant="secondary"
                   class="!p-2"
                   title="生成兑换码"
+                  @click="openCodesModal(tag)"
                 >
                   <TicketIcon class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="editTag(tag)"
                   variant="secondary"
                   class="!p-2"
                   title="编辑标签"
+                  @click="editTag(tag)"
                 >
                   <EditIcon class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="toggleStatus(tag)"
                   variant="secondary"
                   class="!p-2"
                   :title="tag.is_active ? '停用标签' : '启用标签'"
+                  @click="toggleStatus(tag)"
                 >
                   <component :is="tag.is_active ? PauseIcon : PlayIcon" class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="confirmDelete(tag)"
                   variant="secondary"
                   class="!p-2 !text-red-600 hover:!bg-red-50"
                   title="删除标签"
+                  @click="confirmDelete(tag)"
                 >
                   <TrashIcon class="w-4 h-4" />
                 </GlassButton>
@@ -186,10 +186,10 @@
         >
           <div class="flex gap-2">
             <GlassButton
-              @click="prevPage"
               :disabled="tagsData.page <= 1"
               variant="secondary"
               class="px-4 py-2 text-sm"
+              @click="prevPage"
             >
               上一页
             </GlassButton>
@@ -199,10 +199,10 @@
             </div>
             
             <GlassButton
-              @click="nextPage"
               :disabled="tagsData.page * tagsData.page_size >= tagsData.total"
               variant="secondary"
               class="px-4 py-2 text-sm"
+              @click="nextPage"
             >
               下一页
             </GlassButton>
@@ -224,7 +224,7 @@
               </button>
             </div>
             <div class="px-6 pb-6 flex-1 overflow-y-auto">
-              <form id="tag-form" @submit.prevent="saveTag" class="space-y-4">
+              <form id="tag-form" class="space-y-4" @submit.prevent="saveTag">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">标识名 *</label>
                   <input
@@ -233,7 +233,7 @@
                     placeholder="英文标识名，如：vip"
                     required
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                  />
+                  >
                   <p class="text-xs text-gray-500 mt-1">用于程序识别，只能包含字母、数字和下划线</p>
                 </div>
 
@@ -245,7 +245,7 @@
                     placeholder="显示给用户的名称，如：VIP用户"
                     required
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                  />
+                  >
                 </div>
 
                 <div>
@@ -255,7 +255,7 @@
                     placeholder="标签的描述信息..."
                     rows="3"
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
-                  ></textarea>
+                  />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
@@ -263,16 +263,16 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">背景色</label>
                     <div class="flex items-center gap-2">
                       <input
-                        type="color"
                         v-model="tagForm.background_color"
+                        type="color"
                         class="w-10 h-10 rounded border border-gray-300"
-                      />
+                      >
                       <input
                         v-model="tagForm.background_color"
                         type="text"
                         placeholder="#FF5CA3"
                         class="flex-1 w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                      />
+                      >
                     </div>
                   </div>
 
@@ -280,16 +280,16 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">文字色</label>
                     <div class="flex items-center gap-2">
                       <input
-                        type="color"
                         v-model="tagForm.text_color"
+                        type="color"
                         class="w-10 h-10 rounded border border-gray-300"
-                      />
+                      >
                       <input
                         v-model="tagForm.text_color"
                         type="text"
                         placeholder="#FFFFFF"
                         class="flex-1 w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                      />
+                      >
                     </div>
                   </div>
                 </div>
@@ -306,10 +306,10 @@
                 <div>
                   <label class="flex items-center gap-2">
                     <input
-                      type="checkbox"
                       v-model="tagForm.is_active"
+                      type="checkbox"
                       class="rounded"
-                    />
+                    >
                     <span class="text-sm font-medium text-gray-700">启用标签</span>
                   </label>
                 </div>
@@ -318,7 +318,7 @@
             <div class="flex gap-3 justify-end px-6 pb-6">
               <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" @click="closeTagModal">取消</button>
               <button type="submit" form="tag-form" class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed" :disabled="saving">
-                <span v-if="saving" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+                <span v-if="saving" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"/>
                 <span>{{ tagModal.tag ? '保存' : '创建' }}</span>
               </button>
             </div>
@@ -349,7 +349,7 @@
                 />
               </div>
 
-              <form id="codes-form" @submit.prevent="generateCodes" class="space-y-4">
+              <form id="codes-form" class="space-y-4" @submit.prevent="generateCodes">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">生成数量 *</label>
                   <input
@@ -360,7 +360,7 @@
                     max="1000"
                     required
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                  />
+                  >
                   <p class="text-xs text-gray-500 mt-1">最多一次生成1000个</p>
                 </div>
 
@@ -371,14 +371,14 @@
                     type="datetime-local"
                     placeholder="留空表示永不过期"
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                  />
+                  >
                 </div>
               </form>
             </div>
             <div class="flex gap-3 justify-end px-6 pb-6">
               <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" @click="closeCodesModal">取消</button>
               <button type="submit" form="codes-form" class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed" :disabled="generating">
-                <span v-if="generating" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+                <span v-if="generating" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"/>
                 <span>生成兑换码</span>
               </button>
             </div>
@@ -405,9 +405,9 @@
                   已为标签"{{ generatedModal.tag?.title }}"生成 {{ generatedModal.codes?.length }} 个兑换码
                 </p>
                 <GlassButton
-                  @click="downloadCodes"
                   variant="secondary"
                   class="text-sm"
+                  @click="downloadCodes"
                 >
                   <DownloadIcon class="w-4 h-4 mr-1" />
                   下载
@@ -454,7 +454,7 @@
             <div class="flex gap-3 justify-end px-6 pb-6">
               <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" @click="closeDeleteModal">取消</button>
               <button type="button" class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed" :disabled="deleting" @click="deleteTag">
-                <span v-if="deleting" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+                <span v-if="deleting" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"/>
                 <span>确认删除</span>
               </button>
             </div>
@@ -482,7 +482,7 @@
                   type="text"
                   placeholder="搜索兑换码..."
                   class="flex-1 w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                />
+                >
 
                 <select
                   v-model="codesFilter.tag_id"
@@ -504,20 +504,20 @@
                 </select>
 
                 <GlassButton
-                  @click="loadCodes(1)"
                   :loading="loadingCodes"
                   variant="secondary"
                   class="toolbar-button"
+                  @click="loadCodes(1)"
                 >
                   搜索
                 </GlassButton>
 
                 <GlassButton
-                  @click="bulkDeleteSelected"
                   :disabled="!selectedIds.length"
                   variant="secondary"
                   class="toolbar-button !text-red-600 hover:!bg-red-50"
                   title="批量删除未使用的兑换码（仅删除未使用，已使用会跳过）"
+                  @click="bulkDeleteSelected"
                 >
                   批量删除
                 </GlassButton>
@@ -526,8 +526,8 @@
                   <span>每页显示:</span>
                   <select
                     v-model.number="codesPageSize"
-                    @change="changeCodesPageSize"
                     class="glass-input px-2 py-1 text-sm"
+                    @change="changeCodesPageSize"
                   >
                     <option :value="20">20</option>
                     <option :value="50">50</option>
@@ -573,7 +573,7 @@
                   <tbody class="divide-y divide-gray-200">
                     <tr v-for="code in codes" :key="code.id" class="hover:bg-gray-50">
                       <td class="px-4 py-3">
-                        <input type="checkbox" :value="code.id" v-model="selectedIds" :disabled="code.is_used">
+                        <input v-model="selectedIds" type="checkbox" :value="code.id" :disabled="code.is_used">
                       </td>
                       <td class="px-4 py-3">
                         <code class="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{{ code.code }}</code>
@@ -608,17 +608,17 @@
                       </td>
                       <td class="px-4 py-3">
                         <GlassButton
-                          @click="viewCodeDetails(code)"
                           class="!p-1 text-xs"
                           variant="secondary"
+                          @click="viewCodeDetails(code)"
                         >
                           查看详情
                         </GlassButton>
                         <GlassButton
                           v-if="!code.is_used"
-                          @click="confirmDeleteCode(code)"
                           class="!p-1 text-xs !text-red-600 hover:!bg-red-50"
                           variant="secondary"
+                          @click="confirmDeleteCode(code)"
                         >
                           删除
                         </GlassButton>
@@ -633,10 +633,10 @@
                 >
                   <div class="flex gap-2">
                     <GlassButton
-                      @click="prevCodesPage"
                       :disabled="codesData.page <= 1"
                       variant="secondary"
                       class="px-4 py-2 text-sm"
+                      @click="prevCodesPage"
                     >
                       上一页
                     </GlassButton>
@@ -646,10 +646,10 @@
                     </div>
 
                     <GlassButton
-                      @click="nextCodesPage"
                       :disabled="codesData.page * codesData.page_size >= codesData.total"
                       variant="secondary"
                       class="px-4 py-2 text-sm"
+                      @click="nextCodesPage"
                     >
                       下一页
                     </GlassButton>
@@ -771,20 +771,23 @@
 
 <script setup lang="ts">
 import {
+  CalendarIcon,
+  DownloadIcon,
+  EditIcon,
+  PauseIcon,
+  PlayIcon,
   PlusIcon,
   RefreshCwIcon,
   TagIcon,
-  EditIcon,
-  CalendarIcon,
-  PlayIcon,
-  PauseIcon,
-  TrashIcon,
   TicketIcon,
-  DownloadIcon,
+  TrashIcon,
   XIcon
 } from 'lucide-vue-next'
 import TagBadge from '~/components/ui/TagBadge.vue'
-import type { TagDto, RedemptionCodeDto, Pagination, User } from '~/types'
+import type {Pagination, RedemptionCodeDto, TagDto, User} from '~/types'
+import GlassButton from "~/components/ui/GlassButton.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
@@ -1203,12 +1206,11 @@ const loadCodes = async (page = 1) => {
     const desired = codesPageSize.value
     const serverMax = 100 // 后端单页上限（经验值）。超过则前端拼接多页
 
-    let total = 0
-    let pageItems: RedemptionCodeDto[] = []
+    let total: number
+    let pageItems: RedemptionCodeDto[]
 
     if (desired <= serverMax) {
       const data = await api.listCodes({ ...base, page, page_size: desired })
-      total = data.total
       pageItems = data.items
       codesData.value = { ...data, page_size: desired }
     } else {
@@ -1262,8 +1264,7 @@ const preloadUsersForCodes = async (list: RedemptionCodeDto[]) => {
   const api = useApi()
   await Promise.all(remain.map(async (id) => {
     try {
-      const u = await api.getUser(id)
-      userCache.value[id] = u
+      userCache.value[id] = await api.getUser(id)
     } catch {
       userCache.value[id] = null
     }

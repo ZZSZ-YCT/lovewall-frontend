@@ -1,5 +1,5 @@
 // Lightweight helpers to persist small, non-sensitive session-related data in cookies
-// Cookies used: lw_uid, lw_nick, lw_device_id
+// used: lw_uid, lw_nick, lw_device_id
 
 export const useSessionCookies = () => {
   const cookieOpts = {

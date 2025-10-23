@@ -16,10 +16,10 @@
           </span>
         </div>
         <div class="flex gap-2">
-          <GlassButton @click="activeLogType = 'submissions'" :variant="activeLogType === 'submissions' ? 'primary' : 'secondary'" class="toolbar-button">
+          <GlassButton :variant="activeLogType === 'submissions' ? 'primary' : 'secondary'" class="toolbar-button" @click="activeLogType = 'submissions'">
             <ScrollTextIcon class="w-4 h-4 mr-2" /> 提交日志
           </GlassButton>
-          <GlassButton @click="activeLogType = 'operations'" :variant="activeLogType === 'operations' ? 'primary' : 'secondary'" class="toolbar-button">
+          <GlassButton :variant="activeLogType === 'operations' ? 'primary' : 'secondary'" class="toolbar-button" @click="activeLogType = 'operations'">
             <DatabaseIcon class="w-4 h-4 mr-2" /> 操作日志
           </GlassButton>
         </div>
@@ -35,21 +35,21 @@
           <GlassInput v-if="activeLogType === 'submissions'" v-model="logFilters.user_id" placeholder="用户ID" class="text-sm lg:col-span-2" />
           <GlassInput v-if="activeLogType === 'operations'" v-model="logFilters.admin_id" placeholder="管理员ID" class="text-sm lg:col-span-2" />
           <div class="grid grid-cols-2 gap-3 lg:col-span-4">
-            <input v-model="logFilters.from" type="datetime-local" class="glass-input w-full text-sm" />
-            <input v-model="logFilters.to" type="datetime-local" class="glass-input w-full text-sm" />
+            <input v-model="logFilters.from" type="datetime-local" class="glass-input w-full text-sm" >
+            <input v-model="logFilters.to" type="datetime-local" class="glass-input w-full text-sm" >
           </div>
           <div class="flex flex-wrap gap-2 justify-end lg:col-span-4">
             <div class="flex items-center gap-2 text-sm text-gray-700 mr-auto lg:mr-0">
               <span>每页</span>
-              <select v-model.number="logsPageSize" @change="changeLogsPageSize" class="glass-input px-2 py-1 text-sm">
+              <select v-model.number="logsPageSize" class="glass-input px-2 py-1 text-sm" @change="changeLogsPageSize">
                 <option :value="20">20</option>
                 <option :value="50">50</option>
                 <option :value="100">100</option>
                 <option :value="500">500</option>
               </select>
             </div>
-            <GlassButton @click="clearLogFilters" variant="secondary" class="toolbar-button">清空</GlassButton>
-            <GlassButton @click="loadLogs(1)" :loading="loadingLogs" class="toolbar-button">查询</GlassButton>
+            <GlassButton variant="secondary" class="toolbar-button" @click="clearLogFilters">清空</GlassButton>
+            <GlassButton :loading="loadingLogs" class="toolbar-button" @click="loadLogs(1)">查询</GlassButton>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@
                   <span class="ml-1">{{ metadataPreview(log.parsedMetadata) }}</span>
                 </div>
               </div>
-              <GlassButton @click.stop="openLogDetails(log)" variant="secondary" class="!p-2" title="查看详情">
+              <GlassButton variant="secondary" class="!p-2" title="查看详情" @click.stop="openLogDetails(log)">
                 <ChevronDownIcon class="w-4 h-4" />
               </GlassButton>
             </div>
@@ -184,7 +184,7 @@
                 </div>
                 <div v-if="logDetails.log.ip" class="flex justify-between"><span class="text-gray-600">IP:</span><span class="font-mono text-xs">{{ logDetails.log.ip }}</span></div>
                 <div v-if="logDetails.log.parsedMetadata?.ai_decision">
-                  <div class="border-t border-gray-200 my-2"></div>
+                  <div class="border-t border-gray-200 my-2"/>
                   <div class="text-xs font-medium text-gray-700 mb-1">AI 审核信息</div>
                   <div class="flex justify-between">
                     <span class="text-gray-600">AI决策:</span>
@@ -237,10 +237,10 @@
       >
         <div class="flex gap-2 items-center">
           <GlassButton
-            @click="prevLogsPage"
             :disabled="logsData.page <= 1"
             variant="secondary"
             class="px-4 py-2 text-sm"
+            @click="prevLogsPage"
           >
             上一页
           </GlassButton>
@@ -250,10 +250,10 @@
           </div>
           
           <GlassButton
-            @click="nextLogsPage"
             :disabled="logsData.page * logsData.page_size >= logsData.total"
             variant="secondary"
             class="px-4 py-2 text-sm"
+            @click="nextLogsPage"
           >
             下一页
           </GlassButton>
@@ -264,13 +264,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ScrollTextIcon,
-  DatabaseIcon,
-  ChevronDownIcon
-} from 'lucide-vue-next'
+import {ChevronDownIcon, DatabaseIcon, ScrollTextIcon} from 'lucide-vue-next'
 import GlassModal from '~/components/ui/GlassModal.vue'
-import type { LogEntry, LogFilters, Pagination, User } from '~/types'
+import type {LogEntry, LogFilters, User} from '~/types'
+import {activeLogType, logsData} from "~/server/useSystemLogs.js";
+import GlassButton from "~/components/ui/GlassButton.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassInput from "~/components/ui/GlassInput.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-superadmin']
@@ -281,9 +282,7 @@ const auth = useAuthStore()
 const toast = useToast()
 
 // Logs state
-const activeLogType = ref<'submissions' | 'operations'>('submissions')
 const logs = ref<LogEntry[]>([])
-const logsData = ref<Pagination<LogEntry> | null>(null)
 const loadingLogs = ref(false)
 const logsPageSize = ref<number>(20)
 const logDetails = reactive<{ show: boolean; log: LogEntry | null }>({ show: false, log: null })
@@ -519,8 +518,7 @@ const preloadUserNames = async (items: LogEntry[]) => {
   const api = useApi()
   await Promise.all(missing.map(async (id) => {
     try {
-      const u = await api.getUser(id)
-      userMap.value[id] = u
+      userMap.value[id] = await api.getUser(id)
     } catch (error: any) {
       if (error?.response?.status === 404) {
         userMap.value[id] = null

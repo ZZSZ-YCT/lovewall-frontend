@@ -23,7 +23,7 @@ export interface ActiveTagDto {
 // Public user existence status
 export interface UserStatusDto {
   exists: boolean
-  isdeleted: boolean
+  is_deleted: boolean
   is_banned: boolean
   id?: string
   ban_reason?: string | null

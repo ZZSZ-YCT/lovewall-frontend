@@ -10,13 +10,13 @@ const BASE_ADMIN_PERMS: PermissionType[] = [
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (process.server) return
+  if (import.meta.server) return
 
   const auth = useAuthStore()
   const routePath = to.fullPath
 
   const log = (stage: string, extra: Record<string, unknown> = {}) => {
-    if (!process.dev) return
+    if (!import.meta.dev) return
     console.debug('[admin:mw]', {
       stage,
       route: routePath,
@@ -30,9 +30,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const goBack = (reason: string) => {
     const toast = useToast()
     toast.error('无权限访问')
-    if (process.client && window.history.length > 1) {
+    if (import.meta.client && window.history.length > 1) {
       log(reason, { action: 'navigate back', historyLength: window.history.length })
-      return navigateTo(-1)
+      window.history.back()
+      return
     }
     log(reason, { action: 'fallback home' })
     return navigateTo('/')
@@ -68,7 +69,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const metaPerms = to.meta.requiredPerms as PermissionType | PermissionType[] | undefined
   const requiredPerms: PermissionType[] = Array.isArray(metaPerms)
-    ? metaPerms.filter((perm): perm is PermissionType => typeof perm === 'string' && perm.length > 0)
+    ? metaPerms.filter((perm): perm is PermissionType => perm.length > 0)
     : metaPerms
       ? [metaPerms]
       : []
