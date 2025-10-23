@@ -10,13 +10,13 @@ const ADMIN_BASE_PERMS: PermissionType[] = [
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (process.server) return
+  if (import.meta.server) return
 
   const auth = useAuthStore()
   const routePath = to.fullPath
 
   const log = (stage: string, extra: Record<string, unknown> = {}) => {
-    if (!process.dev) return
+    if (!import.meta.dev) return
     console.debug('[require-perms]', {
       stage,
       route: routePath,
@@ -44,9 +44,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const goBack = (msg?: string) => {
     const toast = useToast()
     toast.error(msg || '无权限访问')
-    if (process.client && window.history.length > 1) {
+    if (import.meta.client && window.history.length > 1) {
       log('deny: navigate back', { historyLength: window.history.length })
-      return navigateTo(-1)
+      window.history.back()
+      return
     }
     log('deny: fallback home')
     return navigateTo('/')
@@ -71,19 +72,19 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const metaPerms = to.meta.requiredPerms as PermissionType | PermissionType[] | undefined
   const requiredPerms: PermissionType[] = Array.isArray(metaPerms)
-    ? metaPerms.filter((perm): perm is PermissionType => typeof perm === 'string' && perm.length > 0)
+    ? metaPerms.filter((perm): perm is PermissionType => perm.length > 0)
     : metaPerms
       ? [metaPerms]
       : []
 
   const metaAny = to.meta.anyPerms as PermissionType[] | undefined
   const anyPerms: PermissionType[] = Array.isArray(metaAny)
-    ? metaAny.filter((perm): perm is PermissionType => typeof perm === 'string' && perm.length > 0)
+    ? metaAny.filter((perm): perm is PermissionType => perm.length > 0)
     : []
 
   const metaAll = to.meta.allPerms as PermissionType[] | undefined
   const allPerms: PermissionType[] = Array.isArray(metaAll)
-    ? metaAll.filter((perm): perm is PermissionType => typeof perm === 'string' && perm.length > 0)
+    ? metaAll.filter((perm): perm is PermissionType => perm.length > 0)
     : []
 
   if (auth.isSuperadmin) {

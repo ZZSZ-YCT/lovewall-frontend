@@ -10,7 +10,7 @@
       <GlassCard class="p-8">
         <h1 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h1>
         <p class="text-gray-600 mb-4">{{ error }}</p>
-        <GlassButton @click="$router.back()" variant="secondary">
+        <GlassButton variant="secondary" @click="$router.back()">
           返回上页
         </GlassButton>
       </GlassCard>
@@ -24,19 +24,19 @@
           <!-- Avatar -->
           <div class="flex-shrink-0">
             <div class="relative w-32 h-32">
-              <template v-if="user.isadmin">
+              <template v-if="user.is_admin">
                 <div
                   class="absolute -inset-[5px] rounded-full border-[4px] border-sky-400/95 pointer-events-none"
-                ></div>
+                />
                 <div
                   class="absolute -inset-[10px] rounded-full bg-sky-300/40 blur-3xl pointer-events-none"
-                ></div>
+                />
               </template>
 
               <!-- 头像容器 -->
               <div
                 class="relative z-10 w-full h-full rounded-full overflow-hidden shadow-lg"
-                :class="user.isadmin ? 'border-0' : 'border-2 border-white/20'"
+                :class="user.is_admin ? 'border-0' : 'border-2 border-white/20'"
               >
                 <img
                   v-if="user.avatar_url"
@@ -181,9 +181,9 @@
           <!-- Load More Posts -->
           <div v-if="postsData && postsData.page * postsData.page_size < postsData.total" class="text-center pt-4">
             <GlassButton
-              @click="loadMorePosts"
               :loading="postsLoading"
               variant="secondary"
+              @click="loadMorePosts"
             >
               加载更多表白
             </GlassButton>
@@ -212,14 +212,14 @@ const userId = computed(() => route.params.id as string)
 // State
 const user = ref<User | null>(null)
 const activeTag = ref<ActiveTagDto | null>(null)
-const userStatus = ref<{ exists: boolean; isdeleted: boolean; is_banned: boolean; ban_reason?: string | null } | null>(null)
+const userStatus = ref<{ exists: boolean; is_deleted: boolean; is_banned: boolean; ban_reason?: string | null } | null>(null)
 const userPosts = ref<PostDto[]>([])
 const postsData = ref<Pagination<PostDto> | null>(null)
 const loading = ref(true)
 const postsLoading = ref(false)
 const error = ref<string | null>(null)
 
-// Composables
+// Composable
 const assetUrl = useAssetUrl()
 const toast = useToast()
 
@@ -230,7 +230,7 @@ const userDisplayName = computed(() => {
 })
 
 const isDeleted = computed(() => {
-  return !!(user.value?.isdeleted || userStatus.value?.isdeleted)
+  return !!(user.value?.is_admin || userStatus.value?.is_deleted)
 })
 
 // Methods
@@ -240,8 +240,8 @@ const loadUser = async () => {
     const status = await api.getUserStatus(userId.value)
     userStatus.value = {
       exists: status.exists,
-      isdeleted: !!status.isdeleted,
-      is_banned: !!status.is_banned,
+      is_deleted: status.is_admin,
+      is_banned: status.is_banned,
       ban_reason: status.ban_reason ?? null
     }
     if (!status.exists) {

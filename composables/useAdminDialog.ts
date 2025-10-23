@@ -55,7 +55,7 @@ export const useAdminDialog = () => {
    * 显示确认对话框
    */
   const confirm = (options: string | AdminDialogOptions): Promise<boolean> => {
-    if (!process.client) {
+    if (!import.meta.client) {
       return Promise.resolve(false)
     }
 
@@ -89,7 +89,7 @@ export const useAdminDialog = () => {
    * 显示带输入框的对话框
    */
   const prompt = (options: string | AdminDialogOptions, defaultValue?: string): Promise<string | null> => {
-    if (!process.client) {
+    if (!import.meta.client) {
       return Promise.resolve(null)
     }
 

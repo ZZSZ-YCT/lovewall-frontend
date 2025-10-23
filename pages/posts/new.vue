@@ -11,7 +11,7 @@
         </div>
 
         <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
         <!-- Card Type Selection -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-3">
@@ -27,11 +27,11 @@
               ]"
             >
               <input
-                type="radio"
                 v-model="form.card_type"
+                type="radio"
                 value="confession"
                 class="w-5 h-5 text-brand-600"
-              />
+              >
               <div>
                 <div class="font-medium text-gray-900">表白卡</div>
                 <div class="text-sm text-gray-500">表达你对TA的心意</div>
@@ -47,11 +47,11 @@
               ]"
             >
               <input
-                type="radio"
                 v-model="form.card_type"
+                type="radio"
                 value="communication"
                 class="w-5 h-5 text-brand-600"
-              />
+              >
               <div>
                 <div class="font-medium text-gray-900">交流卡</div>
                 <div class="text-sm text-gray-500">分享联系方式,寻找同好</div>
@@ -75,11 +75,11 @@
               ]"
             >
               <input
-                type="radio"
                 v-model="form.confessor_mode"
+                type="radio"
                 value="self"
                 class="w-5 h-5 text-brand-600"
-              />
+              >
               <div>
                 <div class="font-medium text-gray-900">使用我的昵称</div>
                 <div class="text-sm text-gray-500">
@@ -97,11 +97,11 @@
               ]"
             >
               <input
-                type="radio"
                 v-model="form.confessor_mode"
+                type="radio"
                 value="custom"
                 class="w-5 h-5 text-brand-600"
-              />
+              >
               <div>
                 <div class="font-medium text-gray-900">自定义昵称</div>
                 <div class="text-sm text-gray-500">匿名或使用其他名称</div>
@@ -184,11 +184,11 @@
                     :src="preview"
                     alt="预览图片"
                     class="w-full h-40 object-cover rounded-lg border border-white/20"
-                  />
+                  >
                   <button
                     type="button"
-                    @click="removeImage(index)"
                     class="absolute -top-2 -right-2 p-1 bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition"
+                    @click="removeImage(index)"
                   >
                     <XIcon class="w-4 h-4" />
                   </button>
@@ -197,8 +197,8 @@
               <div class="text-sm text-gray-600 text-center space-y-1">
                 <button
                   type="button"
-                  @click="fileInput?.click()"
                   class="text-brand-600 hover:text-brand-700 hover:underline font-medium"
+                  @click="fileInput?.click()"
                 >
                   继续添加图片
                 </button>
@@ -214,8 +214,8 @@
                   拖拽图片到此处，或
                   <button
                     type="button"
-                    @click="fileInput?.click()"
                     class="text-brand-600 hover:text-brand-700 hover:underline font-medium ml-1"
+                    @click="fileInput?.click()"
                   >
                     点击选择
                   </button>
@@ -234,7 +234,7 @@
               class="hidden"
               multiple
               @change="handleFileSelect"
-            />
+            >
           </div>
           
           <p v-if="errors.images" class="mt-1 text-sm text-red-500">
@@ -298,6 +298,8 @@ import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import GlassTextarea from '~/components/ui/GlassTextarea.vue'
 import type { PostForm } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
 // DOM refs
 const fileInput = ref<HTMLInputElement | null>(null)
 

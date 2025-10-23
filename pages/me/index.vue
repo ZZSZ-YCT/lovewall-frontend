@@ -18,9 +18,9 @@
         <div class="flex-shrink-0 relative">
           <!-- 管理员光圈效果 -->
           <div
-            v-if="auth.currentUser?.isadmin"
+            v-if="auth.currentUser?.is_admin"
             class="absolute -inset-1 rounded-full bg-blue-500/30 blur-[8px]"
-          ></div>
+          />
 
           <!-- 头像容器 -->
           <div class="relative w-24 h-24 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-2xl font-bold">
@@ -250,14 +250,13 @@
 </template>
 
 <script setup lang="ts">
-import { 
-  PlusIcon, 
-  FileTextIcon, 
-  MessageSquareIcon, 
-  TagIcon,
-  ShieldIcon 
-} from 'lucide-vue-next'
-import type { PostDto, CommentDto, UserTagDto, User } from '~/types'
+import {FileTextIcon, MessageSquareIcon, PlusIcon, ShieldIcon, TagIcon} from 'lucide-vue-next'
+import type {CommentDto, PostDto, User, UserTagDto} from '~/types'
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
+import UserPermissionDisplay from "~/components/ui/UserPermissionDisplay.vue";
+import TagBadge from "~/components/ui/TagBadge.vue";
 
 definePageMeta({
   middleware: 'auth'
@@ -286,8 +285,7 @@ const daysSinceJoined = computed(() => {
   const joinDate = new Date(auth.currentUser.created_at)
   const now = new Date()
   const diffTime = Math.abs(now.getTime() - joinDate.getTime())
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  return diffDays
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 })
 
 // Methods

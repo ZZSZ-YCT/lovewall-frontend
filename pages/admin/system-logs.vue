@@ -16,10 +16,10 @@
           </span>
         </div>
         <div class="flex gap-2">
-          <GlassButton @click="activeLogType = 'submissions'" :variant="activeLogType === 'submissions' ? 'primary' : 'secondary'" class="toolbar-button">
+          <GlassButton :variant="activeLogType === 'submissions' ? 'primary' : 'secondary'" class="toolbar-button" @click="activeLogType = 'submissions'">
             <ScrollTextIcon class="w-4 h-4 mr-2" /> 提交日志
           </GlassButton>
-          <GlassButton @click="activeLogType = 'operations'" :variant="activeLogType === 'operations' ? 'primary' : 'secondary'" class="toolbar-button">
+          <GlassButton :variant="activeLogType === 'operations' ? 'primary' : 'secondary'" class="toolbar-button" @click="activeLogType = 'operations'">
             <DatabaseIcon class="w-4 h-4 mr-2" /> 操作日志
           </GlassButton>
         </div>
@@ -29,3 +29,14 @@
     </GlassCard>
   </div>
 </template>
+
+<script setup>
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
+import {
+  ScrollTextIcon,
+  DatabaseIcon
+} from 'lucide-vue-next'
+
+import {activeLogType, logsData} from "~/server/useSystemLogs.js";
+</script>

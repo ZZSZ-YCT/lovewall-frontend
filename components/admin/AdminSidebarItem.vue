@@ -6,7 +6,8 @@
     exact-active-class="bg-brand-500/20 text-brand-700 shadow-glow"
   >
     <!-- 图标 -->
-    <div class="w-8 h-8 rounded-lg bg-gradient-to-br flex items-center justify-center group-hover:scale-110 transition-transform"
+    <div
+class="w-8 h-8 rounded-lg bg-gradient-to-br flex items-center justify-center group-hover:scale-110 transition-transform"
          :class="iconBgClass">
       <component :is="iconComponent" class="w-4 h-4 text-white" />
     </div>
@@ -20,7 +21,7 @@
     </div>
 
     <!-- 活跃指示器 -->
-    <div v-if="isActive" class="w-2 h-2 bg-brand-500 rounded-full"></div>
+    <div v-if="isActive" class="w-2 h-2 bg-brand-500 rounded-full"/>
   </NuxtLink>
 </template>
 

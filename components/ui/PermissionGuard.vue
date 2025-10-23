@@ -1,7 +1,7 @@
 <template>
   <!-- 权限包装器组件：只在有权限时显示内容 -->
   <template v-if="hasAccess">
-    <slot :permissions="userPermissions" :isSuperadmin="auth.isSuperadmin" />
+    <slot :permissions="userPermissions" :is-superadmin="auth.isSuperadmin" />
   </template>
   
   <!-- 无权限时的占位内容 -->
@@ -42,7 +42,7 @@ const permissions = usePermissions()
 const route = useRoute()
 
 const normalizePerms = (list: readonly PermissionType[]) =>
-  list.filter((perm): perm is PermissionType => typeof perm === 'string' && perm.length > 0)
+  list.filter((perm): perm is PermissionType => perm.length > 0)
 
 const requiredPerms = computed(() => normalizePerms(props.requiredPerms))
 const anyPerms = computed(() => normalizePerms(props.anyPerms))
@@ -51,7 +51,7 @@ const allPerms = computed(() => normalizePerms(props.allPerms))
 const userPermissions = computed(() => auth.permissions.slice())
 
 const debugGuard = (result: 'allow' | 'deny', reason: string, extra: Record<string, unknown> = {}) => {
-  if (!process.dev) return
+  if (!import.meta.dev) return
   console.debug('[PermissionGuard]', {
     route: route.fullPath,
     result,
@@ -107,7 +107,7 @@ const hasAccess = computed(() => {
   return true
 })
 
-if (process.dev && process.client) {
+if (import.meta.dev && import.meta.client) {
   watch(hasAccess, (value) => {
     debugGuard(value ? 'allow' : 'deny', 'reactive update')
   })

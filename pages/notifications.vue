@@ -31,8 +31,8 @@
         :class="n.is_read ? 'border-white/10' : 'border-brand-300/50'"
       >
         <div
+          :ref="el => registerNotificationCard(n, el as Element | null)"
           class="flex items-start gap-4"
-          :ref="el => registerNotificationCard(n, el)"
         >
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-1">
@@ -41,8 +41,8 @@
             </div>
 
             <div
+              :ref="el => registerNotificationContainer(n.id, el as HTMLElement | null)"
               class="text-gray-700 leading-relaxed space-y-2 notification-html"
-              :ref="el => registerNotificationContainer(n.id, el)"
               v-html="processedContent[n.id] || fallbackNotificationContent(n)"
             />
 
@@ -58,6 +58,7 @@
   </div>
 </template>
 
+<!--suppress JSUnusedGlobalSymbols -->
 <script setup lang="ts">
 import { nextTick } from 'vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
@@ -85,7 +86,7 @@ interface AutoReadObserver {
 const autoReadObservers = new Map<string, AutoReadObserver>()
 
 const cleanupObserver = (id: string) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   const entry = autoReadObservers.get(id)
   if (!entry) return
   entry.observer.disconnect()
@@ -93,7 +94,7 @@ const cleanupObserver = (id: string) => {
 }
 
 const cleanupObservers = () => {
-  if (!process.client) return
+  if (!import.meta.client) return
   autoReadObservers.forEach((entry) => {
     entry.observer.disconnect()
   })
@@ -101,7 +102,7 @@ const cleanupObservers = () => {
 }
 
 const registerNotificationCard = (notification: NotificationDto, el: Element | null) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   cleanupObserver(notification.id)
   if (!el || notification.is_read) return
 
@@ -137,7 +138,7 @@ const load = async (page = 1) => {
     const dompurify = nuxtApp.$dompurify
     const map: Record<string, string> = {}
     for (const notification of newItems) {
-      if (process.client && dompurify) {
+      if (import.meta.client && dompurify) {
         map[notification.id] = transformNotificationContent(notification, dompurify)
       } else {
         map[notification.id] = fallbackNotificationContent(notification)
@@ -146,7 +147,7 @@ const load = async (page = 1) => {
     processedContent.value = map
     items.value = newItems
     data.value = res
-    if (process.client) {
+    if (import.meta.client) {
       await nextTick()
       newItems.forEach(attachHandlers)
     }
@@ -179,16 +180,16 @@ const nuxtApp = useNuxtApp()
 const processedContent = ref<Record<string, string>>({})
 const notificationContainers = new Map<string, HTMLElement>()
 
-const DEFAULT_ACTION_LABELS: Record<string, string> = {
+/*const DEFAULT_ACTION_LABELS: Record<string, string> = {
   'view-post': '查看帖子',
   appeal: '去申诉',
   'request-review': '申请人工复核',
   'admin-accept': '接受',
   'admin-reject': '拒绝'
-}
+}*/
 
 const registerNotificationContainer = (id: string, el: HTMLElement | null) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   if (el) {
     notificationContainers.set(id, el)
     const notification = items.value.find(item => item.id === id)
@@ -215,7 +216,7 @@ const escapeHtml = (value: string) => {
 }
 
 const transformNotificationContent = (notification: NotificationDto, dompurify: any): string => {
-  if (!process.client) return fallbackNotificationContent(notification)
+  if (!import.meta.client) return fallbackNotificationContent(notification)
 
   const parser = new DOMParser()
   const doc = parser.parseFromString(notification.content || '', 'text/html')
@@ -273,7 +274,7 @@ const transformNotificationContent = (notification: NotificationDto, dompurify: 
 }
 
 const attachHandlers = (notification: NotificationDto) => {
-  if (!process.client) return
+  if (!import.meta.client) return
   const container = notificationContainers.get(notification.id)
   if (!container) return
 
@@ -295,7 +296,7 @@ const attachHandlers = (notification: NotificationDto) => {
     }
 
     if (action === 'ADMIN_APPROVE' || action === 'ADMIN_REJECT') {
-      if (!permissions.hasPostModerationPermission.value) {
+      if (!permissions.canManagePosts.value) {
         el.setAttribute('disabled', 'true')
         el.classList.add('opacity-60', 'cursor-not-allowed')
         return
@@ -350,7 +351,7 @@ const sanitizeUrl = (value?: string | null): string | undefined => {
 
 // 处理管理员审核操作
 const handleModerationAction = async (notification: NotificationDto, action: 'approve' | 'reject') => {
-  if (!permissions.hasPostModerationPermission.value) {
+  if (!permissions.canManagePosts.value) {
     toast.error('没有权限执行此操作')
     return
   }
@@ -377,7 +378,7 @@ const handleModerationAction = async (notification: NotificationDto, action: 'ap
     }
     
     // 刷新通知列表
-    refresh()
+    await refresh()
   } catch (e: any) {
     toast.error(e?.message || '操作失败')
   }

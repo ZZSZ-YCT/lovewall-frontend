@@ -13,8 +13,8 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.status"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="0">正常</option>
@@ -39,9 +39,9 @@
         <!-- Actions -->
         <div class="flex gap-3">
           <GlassButton
-            @click="refresh"
             :loading="loading"
             variant="secondary"
+            @click="refresh"
           >
             <RefreshCwIcon class="w-4 h-4 mr-2" />
             刷新
@@ -169,29 +169,29 @@
                 <div class="flex items-center gap-2">
                   <GlassButton
                     v-if="comment.status === 0"
-                    @click="hideComment(comment)"
                     variant="secondary"
                     class="!p-2 !text-yellow-600 hover:!bg-yellow-50"
                     title="隐藏评论"
+                    @click="hideComment(comment)"
                   >
                     <EyeOffIcon class="w-4 h-4" />
                   </GlassButton>
                   
                   <GlassButton
                     v-else
-                    @click="showComment(comment)"
                     variant="secondary"
                     class="!p-2 !text-green-600 hover:!bg-green-50"
                     title="恢复评论"
+                    @click="showComment(comment)"
                   >
                     <EyeIcon class="w-4 h-4" />
                   </GlassButton>
                   
                   <GlassButton
-                    @click="confirmDelete(comment)"
                     variant="secondary"
                     class="!p-2 !text-red-600 hover:!bg-red-50"
                     title="删除评论"
+                    @click="confirmDelete(comment)"
                   >
                     <TrashIcon class="w-4 h-4" />
                   </GlassButton>
@@ -215,18 +215,18 @@
         
         <div class="flex gap-2">
           <GlassButton
-            @click="prevPage"
             :disabled="commentsData.page <= 1"
             variant="secondary"
             class="px-3 py-1 text-sm"
+            @click="prevPage"
           >
             上一页
           </GlassButton>
           <GlassButton
-            @click="nextPage"
             :disabled="commentsData.page * commentsData.page_size >= commentsData.total"
             variant="secondary"
             class="px-3 py-1 text-sm"
+            @click="nextPage"
           >
             下一页
           </GlassButton>
@@ -238,14 +238,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  RefreshCwIcon,
-  MessageSquareIcon,
-  EyeIcon,
-  EyeOffIcon,
-  TrashIcon
-} from 'lucide-vue-next'
-import type { CommentDto, Pagination } from '~/types'
+import {EyeIcon, EyeOffIcon, MessageSquareIcon, RefreshCwIcon, TrashIcon} from 'lucide-vue-next'
+import type {CommentDto, Pagination} from '~/types'
+import GlassButton from "~/components/ui/GlassButton.vue";
+import TagBadge from "~/components/ui/TagBadge.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassInput from "~/components/ui/GlassInput.vue";
+
 const assetUrl = useAssetUrl()
 
 definePageMeta({
@@ -296,7 +296,7 @@ const loadComments = async (page = 1) => {
     const data = await api.getAdminComments(params)
 
     // Batch fetch user avatars
-    const userIds = [...new Set(data.items.map(comment => comment.user_id))] as string[]
+    const userIds = [...new Set(data.items.map((comment : CommentDto) => comment.user_id))] as string[]
     const uncachedIds = userIds.filter(id => !userAvatarCache.value.has(id))
 
     if (uncachedIds.length > 0) {
@@ -311,12 +311,10 @@ const loadComments = async (page = 1) => {
     }
 
     // Enrich comments with avatar URLs
-    const enrichedComments = data.items.map(comment => ({
+    comments.value = data.items.map((comment: CommentDto) => ({
       ...comment,
       user_avatar_url: userAvatarCache.value.get(comment.user_id) ?? null
     })) as CommentDto[]
-
-    comments.value = enrichedComments
     commentsData.value = data
   } catch (error: any) {
     toast.error('加载评论列表失败')

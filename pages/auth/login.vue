@@ -14,7 +14,7 @@
         </div>
 
         <!-- Login Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="handleSubmit">
           <div>
             <label for="username" class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
             <GlassInput
@@ -40,10 +40,10 @@
             />
           </div>
 
-          <!-- Geetest Captcha -->
+          <!-- GeeTest Captcha -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">安全验证</label>
-            <GeetestV4 ref="captchaRef" @verified="onCaptchaVerified" @error="onCaptchaError" />
+            <GeeTestV4 ref="captchaRef" @verified="onCaptchaVerified" @error="onCaptchaError" />
           </div>
 
           <!-- Error Message -->
@@ -93,8 +93,8 @@ import GlassButton from '~/components/ui/GlassButton.vue'
 import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import type { LoginForm } from '~/types'
-import type GeetestV4Type from '~/components/security/GeetestV4.vue'
-import GeetestV4 from '~/components/security/GeetestV4.vue'
+import type GeeTestV4Type from '~/components/security/GeeTestV4.vue'
+import GeeTestV4 from '~/components/security/GeeTestV4.vue'
 
 // Form schema
 const loginSchema = z.object({
@@ -113,7 +113,7 @@ const loading = ref(false)
 const error = ref('')
 const captchaOk = ref(false)
 const captchaTokens = ref<any | null>(null)
-const captchaRef = ref<InstanceType<typeof GeetestV4Type> | null>(null)
+const captchaRef = ref<InstanceType<typeof GeeTestV4Type> | null>(null)
 
 // Stores
 const auth = useAuthStore()
@@ -151,7 +151,7 @@ const handleSubmit = async () => {
   error.value = ''
   
   try {
-    // Verify Geetest first
+    // Verify GeeTest first
     if (!captchaOk.value || !captchaTokens.value) {
       throw new Error('请先完成安全验证')
     }

@@ -1,7 +1,8 @@
 <template>
   <nav class="fixed top-0 left-0 right-0 z-50 navigation-section">
     <div class="content-container">
-      <div :class="[
+      <div
+:class="[
         'flex items-center justify-between transition-all duration-300',
         isMobile ? 'h-14 px-3' : 'h-16 px-4'
       ]">
@@ -44,7 +45,8 @@
         </div>
 
         <!-- User Menu -->
-        <div :class="[
+        <div
+:class="[
           'flex items-center',
           isMobile ? 'gap-2' : 'gap-3'
         ]">
@@ -89,7 +91,7 @@
               </span>
             </NuxtLink>
 
-            <div class="relative" ref="userMenuRef">
+            <div ref="userMenuRef" class="relative">
               <button
                 :class="[
                   'flex items-center gap-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/20 transition-colors',
@@ -100,9 +102,9 @@
                 <div v-if="auth.currentUser?.avatar_url" class="relative">
                   <!-- 管理员光圈效果 -->
                   <div
-                    v-if="auth.currentUser?.isadmin"
+                    v-if="auth.currentUser?.is_admin"
                     class="absolute -inset-[2px] rounded-full bg-blue-500/30 blur-[4px]"
-                  ></div>
+                  />
 
                   <!-- 头像 -->
                   <img
@@ -277,7 +279,7 @@ const loadUnreadCount = async () => {
 let unreadInterval: ReturnType<typeof setInterval> | null = null
 
 onMounted(() => {
-  if (process.client && auth.isAuthenticated) {
+  if (import.meta.client && auth.isAuthenticated) {
     loadUnreadCount()
     unreadInterval = setInterval(loadUnreadCount, 30000) // 30秒刷新一次
   }

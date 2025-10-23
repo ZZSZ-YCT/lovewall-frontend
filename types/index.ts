@@ -19,7 +19,7 @@ export interface User {
   avatar_url?: string | null
   bio?: string | null
   is_superadmin: boolean
-  isadmin: boolean // 拥有任何管理员权限
+  is_admin: boolean // 拥有任何管理员权限
   status: number
   is_banned: boolean
   ban_reason?: string | null
@@ -30,7 +30,7 @@ export interface User {
   permissions?: string[] // 仅在用户列表接口返回
   created_at: string
   updated_at: string
-  isdeleted?: boolean
+  is_deleted?: boolean
 }
 
 export interface UserProfile {
@@ -81,7 +81,7 @@ export interface PostDto {
   created_at: string
   updated_at: string
   author_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color'>
-  author_isadmin?: boolean // 帖子作者是否是管理员
+  is_author_admin?: boolean // 帖子作者是否是管理员
   moderation_reason?: string | null
   // Optional stats fields when available from certain endpoints
   view_count?: number
@@ -109,7 +109,7 @@ export interface CommentDto {
   user_username: string
   user_display_name?: string | null
   user_avatar_url?: string | null
-  user_isadmin?: boolean // 评论作者是否是管理员
+  is_user_admin?: boolean // 评论作者是否是管理员
   content: string
   status: 0 | 1 // 0=normal, 1=hidden
   created_at: string

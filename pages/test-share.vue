@@ -74,9 +74,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <!-- 智能分享 -->
               <GlassButton
-                @click="testSmartShare"
                 :disabled="shareLoading"
                 class="flex items-center justify-center gap-2"
+                @click="testSmartShare"
               >
                 <ShareIcon class="w-4 h-4" />
                 智能分享
@@ -84,10 +84,10 @@
 
               <!-- 原生分享 -->
               <GlassButton
-                @click="testNativeShare"
                 :disabled="shareLoading || !capabilities.canShare"
                 variant="secondary"
                 class="flex items-center justify-center gap-2"
+                @click="testNativeShare"
               >
                 <SmartphoneIcon class="w-4 h-4" />
                 原生分享
@@ -95,10 +95,10 @@
 
               <!-- 复制链接 -->
               <GlassButton
-                @click="testCopyShare"
                 :disabled="shareLoading"
                 variant="outline"
                 class="flex items-center justify-center gap-2"
+                @click="testCopyShare"
               >
                 <CopyIcon class="w-4 h-4" />
                 复制链接
@@ -106,10 +106,10 @@
 
               <!-- 平台优化分享 -->
               <GlassButton
-                @click="testPlatformShare"
                 :disabled="shareLoading"
                 variant="secondary"
                 class="flex items-center justify-center gap-2"
+                @click="testPlatformShare"
               >
                 <SettingsIcon class="w-4 h-4" />
                 平台优化
@@ -117,10 +117,10 @@
 
               <!-- Twitter 分享 -->
               <GlassButton
-                @click="() => testPlatformSpecific('twitter')"
                 :disabled="shareLoading"
                 variant="outline"
                 class="flex items-center justify-center gap-2"
+                @click="() => testPlatformSpecific('twitter')"
               >
                 <TwitterIcon class="w-4 h-4" />
                 Twitter
@@ -128,10 +128,10 @@
 
               <!-- Facebook 分享 -->
               <GlassButton
-                @click="() => testPlatformSpecific('facebook')"
                 :disabled="shareLoading"
                 variant="outline"
                 class="flex items-center justify-center gap-2"
+                @click="() => testPlatformSpecific('facebook')"
               >
                 <FacebookIcon class="w-4 h-4" />
                 Facebook
@@ -151,7 +151,7 @@
                 <div 
                   class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
                   :class="result.success ? 'bg-green-500' : 'bg-red-500'"
-                ></div>
+                />
                 <div class="flex-1">
                   <div class="font-medium">{{ result.method }}</div>
                   <div class="text-gray-600 text-xs">{{ result.timestamp }}</div>
@@ -163,10 +163,10 @@
               </div>
             </div>
             <GlassButton
-              @click="clearResults"
               variant="outline"
               size="sm"
               class="mt-4"
+              @click="clearResults"
             >
               清空日志
             </GlassButton>
@@ -186,6 +186,10 @@ import {
   TwitterIcon, 
   FacebookIcon 
 } from 'lucide-vue-next'
+import GlassButton from "~/components/ui/GlassButton.vue";
+import GlassInput from "~/components/ui/GlassInput.vue";
+import GlassTextarea from "~/components/ui/GlassTextarea.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
 
 // 设置页面元信息
 definePageMeta({

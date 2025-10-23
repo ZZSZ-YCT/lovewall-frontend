@@ -10,7 +10,7 @@
       </div>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="space-y-6" novalidate>
+      <form class="space-y-6" novalidate @submit.prevent="handleSubmit">
         <!-- Current Password -->
         <div>
           <label for="oldPassword" class="block text-sm font-medium text-gray-700 mb-2">
@@ -111,6 +111,8 @@ import { ShieldIcon } from 'lucide-vue-next'
 import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import type { ChangePasswordForm } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
 
 definePageMeta({
   title: '修改密码 - 郑州四中表白墙',

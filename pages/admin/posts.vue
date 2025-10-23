@@ -13,8 +13,8 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.status"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="0">已发布</option>
@@ -23,8 +23,8 @@
           
           <select
             v-model="filters.featured"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部类型</option>
             <option value="true">精华</option>
@@ -33,8 +33,8 @@
           
           <select
             v-model="filters.pinned"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部</option>
             <option value="true">置顶</option>
@@ -45,9 +45,9 @@
         <!-- Actions -->
         <div class="flex gap-3">
           <GlassButton
-            @click="refresh"
             :loading="loading"
             variant="secondary"
+            @click="refresh"
           >
             <RefreshCwIcon class="w-4 h-4 mr-2" />
             刷新
@@ -199,8 +199,8 @@
                     <NuxtLink
                       :to="`/posts/${post.id}`"
                       class="p-2 text-gray-600 hover:text-brand-600 transition-colors"
-                      @click.stop
                       title="查看详情"
+                      @click.stop
                     >
                       <EyeIcon class="w-4 h-4" />
                     </NuxtLink>
@@ -213,60 +213,60 @@
                 <div class="flex flex-wrap gap-2 pt-3 border-t border-white/10">
                   <!-- Moderation: approve/reject -->
                   <GlassButton
-                    v-if="permissions.hasPostModerationPermission && post.is_pending_review"
-                    @click.stop="approvePost(post)"
+                    v-if="permissions.canManagePosts && post.is_pending_review"
                     :loading="actionLoading === post.id"
                     class="text-sm px-3 py-1 !text-green-600"
                     variant="secondary"
+                    @click.stop="approvePost(post)"
                   >
                     通过审核
                   </GlassButton>
                   <GlassButton
-                    v-if="permissions.hasPostModerationPermission && post.is_pending_review"
-                    @click.stop="openReject(post)"
+                    v-if="permissions.canManagePosts && post.is_pending_review"
                     :loading="actionLoading === post.id"
                     class="text-sm px-3 py-1 !text-red-600"
                     variant="secondary"
+                    @click.stop="openReject(post)"
                   >
                     拒绝并删除
                   </GlassButton>
 
                   <GlassButton
                     v-if="auth.isSuperadmin || auth.hasPerm('MANAGE_FEATURED')"
-                    @click.stop="togglePin(post)"
                     :loading="actionLoading === post.id"
                     variant="secondary"
                     class="text-sm px-3 py-1"
+                    @click.stop="togglePin(post)"
                   >
                     {{ post.is_pinned ? '取消置顶' : '置顶' }}
                   </GlassButton>
                   
                   <GlassButton
                     v-if="auth.isSuperadmin || auth.hasPerm('MANAGE_FEATURED')"
-                    @click.stop="toggleFeature(post)"
                     :loading="actionLoading === post.id"
                     variant="secondary"
                     class="text-sm px-3 py-1"
+                    @click.stop="toggleFeature(post)"
                   >
                     {{ post.is_featured ? '取消精华' : '精华' }}
                   </GlassButton>
                   
                   <GlassButton
                     v-if="(auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) && post.status === 0"
-                    @click.stop="hidePost(post)"
                     :loading="actionLoading === post.id"
                     variant="secondary"
                     class="text-sm px-3 py-1 !text-yellow-600"
+                    @click.stop="hidePost(post)"
                   >
                     隐藏
                   </GlassButton>
                   
                   <GlassButton
                     v-if="(auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) && post.status === 1 && !post.is_pending_review"
-                    @click.stop="restoreHiddenPost(post)"
                     :loading="actionLoading === post.id"
                     variant="secondary"
                     class="text-sm px-3 py-1 !text-green-600"
+                    @click.stop="restoreHiddenPost(post)"
                   >
                     恢复
                   </GlassButton>
@@ -281,10 +281,10 @@
                   
                   <GlassButton
                     v-if="auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')"
-                    @click.stop="confirmDelete(post)"
                     :loading="actionLoading === post.id"
                     variant="secondary"
                     class="text-sm px-3 py-1 !text-red-600"
+                    @click.stop="confirmDelete(post)"
                   >
                     删除
                   </GlassButton>
@@ -301,10 +301,10 @@
         >
           <div class="flex gap-2">
             <GlassButton
-              @click="prevPage"
               :disabled="postsData.page <= 1"
               variant="secondary"
               class="px-4 py-2 text-sm"
+              @click="prevPage"
             >
               上一页
             </GlassButton>
@@ -314,10 +314,10 @@
             </div>
             
             <GlassButton
-              @click="nextPage"
               :disabled="postsData.page * postsData.page_size >= postsData.total"
               variant="secondary"
               class="px-4 py-2 text-sm"
+              @click="nextPage"
             >
               下一页
             </GlassButton>
@@ -357,7 +357,7 @@
                 rows="3"
                 placeholder="这次操作的说明，将同步给相关用户"
                 class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
-              ></textarea>
+              />
             </div>
 
             <div class="flex gap-3 justify-end px-6 pb-6">
@@ -377,7 +377,7 @@
                 <span
                   v-if="actionLoading === actionReasonModal.post?.id"
                   class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
-                ></span>
+                />
                 <span>{{ actionReasonConfirmText }}</span>
               </button>
             </div>
@@ -417,7 +417,7 @@
                 rows="4"
                 placeholder="填写本次拒绝的原因..."
                 class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
-              ></textarea>
+              />
             </div>
 
             <div class="flex gap-3 justify-end px-6 pb-6">
@@ -437,7 +437,7 @@
                 <span
                   v-if="actionLoading === rejectModal.post?.id"
                   class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
-                ></span>
+                />
                 <span>确认拒绝</span>
               </button>
             </div>
@@ -457,6 +457,10 @@ import {
   XIcon
 } from 'lucide-vue-next'
 import type { PostDto, Pagination } from '~/types'
+import GlassButton from "~/components/ui/GlassButton.vue";
+import TagBadge from "~/components/ui/TagBadge.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],

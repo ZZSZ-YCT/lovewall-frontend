@@ -9,7 +9,8 @@
     @click="goDetail"
   >
     <!-- Header -->
-    <div :class="[
+    <div
+:class="[
       'flex items-center justify-between pb-3',
       deviceType === 'mobile' ? 'px-3 pt-3' : 'px-4 pt-4'
     ]">
@@ -23,13 +24,13 @@
           @click.stop="navigateToAuthor"
         >
           <!-- 管理员光圈效果 -->
-          <template v-if="post.author_isadmin">
+          <template v-if="post.is_author_admin">
             <div
               class="absolute -inset-[4px] rounded-full border-[4px] border-sky-400/95 pointer-events-none"
-            ></div>
+            />
             <div
               class="absolute -inset-[8px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-            ></div>
+            />
           </template>
 
           <!-- 头像容器 -->
@@ -38,7 +39,7 @@
             :src="authorAvatar"
             :alt="post.author_name"
             class="relative z-10 w-full h-full rounded-full object-cover"
-            :class="post.author_isadmin ? 'border-0' : 'border-2 border-white/20'"
+            :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
             @error="handleAuthorAvatarError"
           >
 
@@ -46,7 +47,7 @@
           <div
             v-else-if="authorHasAvatar === null"
             class="relative z-10 w-full h-full rounded-full bg-white/10"
-            :class="post.author_isadmin ? 'border-0' : 'border-2 border-white/20'"
+            :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
           />
 
           <!-- Default initials only when user has no avatar -->
@@ -55,7 +56,7 @@
             class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-medium"
             :class="[
               deviceType === 'mobile' ? 'text-xs' : 'text-sm',
-              post.author_isadmin ? 'border-0' : 'border-2 border-white/20'
+              post.is_author_admin ? 'border-0' : 'border-2 border-white/20'
             ]"
           >
             {{ post.author_name.slice(0, 2) }}
@@ -63,11 +64,13 @@
         </div>
         
         <div class="flex-1 min-w-0">
-          <div :class="[
+          <div
+:class="[
             'flex items-center gap-2',
             deviceType === 'mobile' ? 'mb-0.5' : 'mb-1'
           ]">
-            <h3 :class="[
+            <h3
+:class="[
               'font-semibold text-gray-900 cursor-pointer hover:text-brand-600 transition-colors truncate',
               deviceType === 'mobile' ? 'text-sm' : 'text-base'
             ]" @click.stop="navigateToAuthor">
@@ -126,10 +129,10 @@
       </div>
 
       <!-- Actions dropdown -->
-      <div v-if="showActions && canManage" class="relative flex-shrink-0" ref="dropdownRef" @click.stop>
+      <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
         <button
-          @click="showDropdown = !showDropdown"
           class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
+          @click="showDropdown = !showDropdown"
           >
             <MoreVerticalIcon class="w-4 h-4" />
           </button>
@@ -150,32 +153,32 @@
             <hr class="my-1 border-white/20">
             <button
               v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-              @click="handlePin(!post.is_pinned)"
               class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+              @click="handlePin(!post.is_pinned)"
             >
               {{ post.is_pinned ? '取消置顶' : '置顶' }}
             </button>
             
             <button
               v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-              @click="handleFeature(!post.is_featured)"
               class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+              @click="handleFeature(!post.is_featured)"
             >
               {{ post.is_featured ? '取消精华' : '设为精华' }}
             </button>
             
             <button
               v-if="auth.hasPerm('MANAGE_POSTS')"
-              @click="handleHide"
               class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
+              @click="handleHide"
             >
               {{ post.status === 0 ? '隐藏' : '恢复' }}
             </button>
             
             <button
               v-if="auth.hasPerm('MANAGE_POSTS')"
-              @click="handleDelete"
               class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
+              @click="handleDelete"
             >
               删除
             </button>
@@ -185,7 +188,8 @@
     </div>
 
     <!-- Content -->
-    <div :class="[
+    <div
+:class="[
       'pb-3',
       deviceType === 'mobile' ? 'px-3' : 'px-4'
     ]">
@@ -200,7 +204,8 @@
         >
           → {{ post.target_name }}
         </p>
-        <p :class="[
+        <p
+:class="[
           'text-gray-700 leading-relaxed',
           deviceType === 'mobile' ? 'text-xs' : 'text-sm',
           { 'line-clamp-3': !expanded && deviceType === 'mobile' },
@@ -211,8 +216,8 @@
         
         <button
           v-if="post.content.length > 150"
-          @click.stop="expanded = !expanded"
           class="mt-2 text-sm text-brand-600 hover:text-brand-700 transition-colors"
+          @click.stop="expanded = !expanded"
         >
           {{ expanded ? '收起' : '展开' }}
         </button>
@@ -235,7 +240,8 @@
     </div>
 
     <!-- Footer -->
-    <div :class="[
+    <div
+:class="[
       'flex items-center justify-between border-t border-white/10',
       deviceType === 'mobile' ? 'px-3 py-2' : 'px-4 py-3'
     ]">
@@ -249,7 +255,8 @@
         />
       </div>
       
-      <div :class="[
+      <div
+:class="[
         'text-gray-400',
         deviceType === 'mobile' ? 'text-xs' : 'text-sm'
       ]">
@@ -261,18 +268,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  PinIcon,
-  StarIcon,
-  MoreVerticalIcon
-} from 'lucide-vue-next'
-import { onClickOutside } from '@vueuse/core'
+import {MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
+import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
 import ImageGrid from '~/components/ui/ImageGrid.vue'
-import type { PostDto } from '~/types'
-import type { ActiveTagDto } from '~/types/extra'
+import type {PostDto} from '~/types'
+import type {ActiveTagDto} from '~/types/extra'
 
 interface Props {
   post: PostDto
@@ -338,8 +341,7 @@ const fetchAuthorInfo = async () => {
 
       // 获取用户活跃标签
       try {
-        const tagRes = await api.getUserActiveTag(props.post.author_id)
-        activeTag.value = tagRes
+        activeTag.value = await api.getUserActiveTag(props.post.author_id)
       } catch (error: any) {
         // 没有活跃标签是正常情况，不需要报错或显示错误
         activeTag.value = null
@@ -378,7 +380,7 @@ const isModerator = computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_POS
 
 // 分享数据
 const shareData = computed(() => {
-  const origin = process.client ? window.location.origin : 'https://your-domain.com'
+  const origin = import.meta.client ? window.location.origin : 'https://your-domain.com'
   const isConfession = props.post.card_type !== 'communication' && props.post.card_type !== 'social'
   const title = isConfession && props.post.target_name
     ? `${props.post.author_name} 对 ${props.post.target_name} 的表白`
@@ -485,7 +487,7 @@ const handleDelete = async () => {
 
 
 const promptModerationReason = async (action: string): Promise<string | null> => {
-  if (!process.client) return ''
+  if (!import.meta.client) return ''
 
   const input = await promptDialog({
     title: `${action}处理`,

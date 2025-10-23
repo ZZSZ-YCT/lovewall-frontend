@@ -6,7 +6,7 @@
         <div 
           class="w-3 h-3 rounded-full" 
           :class="levelIndicatorClass"
-        ></div>
+        />
         <span class="font-medium text-gray-800">{{ levelDisplayName }}</span>
       </div>
       
@@ -52,7 +52,8 @@
     </div>
 
     <!-- 无权限提示 -->
-    <div v-else-if="!auth.isSuperadmin && auth.permissions.length === 0" 
+    <div
+v-else-if="!auth.isSuperadmin && auth.permissions.length === 0" 
          class="p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div class="flex items-center gap-2 text-gray-600">
         <InfoIcon class="w-4 h-4" />
@@ -61,7 +62,8 @@
     </div>
 
     <!-- 超管说明 -->
-    <div v-if="auth.isSuperadmin" 
+    <div
+v-if="auth.isSuperadmin" 
          class="p-4 bg-red-50 rounded-lg border border-red-200">
       <div class="flex items-center gap-2 text-red-600">
         <ShieldCheckIcon class="w-4 h-4" />

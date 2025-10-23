@@ -20,7 +20,7 @@ export const useHomeStore = defineStore('home', {
     pinned: [],
     featured: [],
     page: 1,
-    pageSize: useRuntimeConfig().public.pageSize as number | undefined || 20,
+    pageSize: +useRuntimeConfig().public.pageSize || 20,
     hasMore: true,
     loading: false,
     loadingMore: false,
@@ -116,7 +116,7 @@ export const useHomeStore = defineStore('home', {
           created_at: p.created_at ?? new Date().toISOString(),
           updated_at: p.updated_at ?? p.created_at ?? new Date().toISOString(),
           author_tag: p.author_tag,
-          author_isadmin: p.author_isadmin,
+          is_author_admin: p.is_author_admin,
           moderation_reason: p.moderation_reason ?? null,
           view_count: p.view_count,
           comment_count: p.comment_count,
@@ -230,7 +230,7 @@ export const useHomeStore = defineStore('home', {
           created_at: (p as any).created_at ?? new Date().toISOString(),
           updated_at: (p as any).updated_at ?? (p as any).created_at ?? new Date().toISOString(),
           author_tag: p.author_tag,
-          author_isadmin: p.author_isadmin,
+          is_author_admin: p.is_author_admin,
         } as PostDto))
         const newPosts = canModerate
           ? items

@@ -1,7 +1,7 @@
 <template>
   <!-- 外观沿用输入框样式；容器可见且具备尺寸，方便 SDK 直接渲染 -->
   <div ref="wrapper">
-    <div :id="containerId"></div>
+    <div :id="containerId"/>
   </div>
   
 </template>
@@ -18,7 +18,7 @@ type Tokens = {
 
 declare global {
   interface Window {
-    initGeetest4?: (
+    initGeeTest4?: (
       opts: Record<string, any>,
       cb: (captchaObj: any) => void
     ) => void
@@ -50,7 +50,7 @@ const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
   s.src = src
   s.async = true
   s.onload = () => resolve()
-  s.onerror = () => reject(new Error('geetest script failed'))
+  s.onerror = () => reject(new Error('GeeTest script failed'))
   document.head.appendChild(s)
 })
 
@@ -69,14 +69,14 @@ const init = async () => {
   // 优先使用传入的captchaId,否则使用默认的geetestId
   const captchaId = props.captchaId || (config.public as any).geetestId as string | undefined
   if (!captchaId) {
-    emit('error', '未配置 Geetest 验证ID')
+    emit('error', '未配置 GeeTest 验证ID')
     return
   }
 
   await loadScript('https://static.geetest.com/v4/gt4.js')
 
-  if (!window.initGeetest4) {
-    emit('error', 'Geetest 初始化函数不可用')
+  if (!window.initGeeTest4) {
+    emit('error', 'GeeTest 初始化函数不可用')
     return
   }
 
@@ -84,8 +84,8 @@ const init = async () => {
   if (wrapper.value) await waitForSize(wrapper.value)
 
   const product = props.product || 'popup'
-  // 不设置 width，使用 Geetest 默认风格与自适应
-  window.initGeetest4({
+  // 不设置 width，使用 GeeTest 默认风格与自适应
+  window.initGeeTest4({
     captchaId,
     product,
     language: 'zh-CN',

@@ -13,14 +13,12 @@ import type {
   Pagination,
   LoginForm,
   RegisterForm,
-  PostForm,
   CommentForm,
   AnnouncementForm,
   TagForm,
   GenerateCodesForm,
   RedeemForm,
   RedeemResponse,
-  UpdateProfileForm,
   ChangePasswordForm,
   AdminChangePasswordForm,
   AdminUpdateUserForm,
@@ -74,11 +72,11 @@ export default defineNuxtPlugin(() => {
   }
   
   // Decide whether to send credentials based on same-origin
-  let withCreds = true
+  let withCredentials = true
   try {
     if (/^https?:\/\//i.test(baseURL) && typeof window !== 'undefined') {
       const u = new URL(baseURL)
-      withCreds = (u.origin === window.location.origin)
+      withCredentials = (u.origin === window.location.origin)
     }
   } catch {}
 
@@ -91,12 +89,11 @@ export default defineNuxtPlugin(() => {
   // Create axios instance
   const instance: AxiosInstance = axios.create({
     baseURL: normBase,
-    withCredentials: withCreds,
+    withCredentials: withCredentials,
     timeout: 30000,
   })
 
   // Request interceptor
-  let redirecting401 = false
   instance.interceptors.request.use((config) => {
     // Add auth token if available
     const authStore = useAuthStore()
@@ -173,7 +170,7 @@ export default defineNuxtPlugin(() => {
         return false
       }
 
-      const isDeletedFlag = resolveFlag(extras, 'isdeleted', 'isDeleted') || resolveFlag(responseData, 'isdeleted', 'isDeleted')
+      const isDeletedFlag = resolveFlag(extras, 'is_deleted', 'isDeleted') || resolveFlag(responseData, 'is_deleted', 'isDeleted')
       const isBannedFlag = resolveFlag(extras, 'banned', 'isBanned') || resolveFlag(responseData, 'banned', 'isBanned')
       const banReason = (extras?.ban_reason as string) || (responseData?.ban_reason as string) || message
 

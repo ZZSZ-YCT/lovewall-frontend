@@ -45,8 +45,8 @@ export const useOnlineStatus = () => {
   })
 
   // 自动检查在线状态（每5分钟）
-  const startAutoCheck = () => {
-    checkOnlineStatus() // 立即检查一次
+  const startAutoCheck = async () => {
+    await checkOnlineStatus() // 立即检查一次
     const interval = setInterval(checkOnlineStatus, 5 * 60 * 1000) // 5分钟
     
     // 清理定时器

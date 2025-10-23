@@ -11,7 +11,7 @@
       <div class="glass-card p-8">
         <h1 class="text-2xl font-bold text-red-600 mb-4">加载失败</h1>
         <p class="text-gray-600 mb-4">{{ error }}</p>
-        <GlassButton @click="refresh" variant="secondary">
+        <GlassButton variant="secondary" @click="refresh">
           重新加载
         </GlassButton>
       </div>
@@ -34,13 +34,13 @@
               @click="navigateToUser(post)"
             >
               <!-- 管理员光圈效果 -->
-              <template v-if="post.author_isadmin">
+              <template v-if="post.is_author_admin">
                 <div
                   class="absolute -inset-[4px] rounded-full border-[4px] border-sky-400/95 pointer-events-none"
-                ></div>
+                />
                 <div
                   class="absolute -inset-[10px] rounded-full bg-sky-300/40 blur-3xl pointer-events-none"
-                ></div>
+                />
               </template>
 
               <!-- 头像容器 -->
@@ -49,12 +49,12 @@
                 :src="authorAvatar"
                 :alt="post.author_name"
                 class="relative z-10 w-full h-full rounded-full object-cover"
-                :class="post.author_isadmin ? 'border-0' : 'border-2 border-white/20'"
+                :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
               >
               <div
                 v-else
                 class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-lg font-medium"
-                :class="post.author_isadmin ? 'border-0' : 'border-2 border-white/20'"
+                :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
               >
                 {{ post.author_name.slice(0, 2) }}
               </div>
@@ -73,13 +73,13 @@
                     @click="navigateToUser(post)"
                   >
                     <!-- 管理员光圈效果 -->
-                    <template v-if="post.author_isadmin">
+                    <template v-if="post.is_author_admin">
                       <div
                         class="absolute -inset-[3px] rounded-full border-[3px] border-sky-400/95 pointer-events-none"
-                      ></div>
+                      />
                       <div
                         class="absolute -inset-[7px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-                      ></div>
+                      />
                     </template>
 
                     <!-- 头像容器 -->
@@ -88,12 +88,12 @@
                       :src="authorAvatar"
                       :alt="post.author_name"
                       class="relative z-10 w-full h-full rounded-full object-cover"
-                      :class="post.author_isadmin ? 'border-0' : 'border border-white/20'"
+                      :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
                     >
                     <div
                       v-else
                       class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-xs font-medium"
-                      :class="post.author_isadmin ? 'border-0' : 'border border-white/20'"
+                      :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
                     >
                       {{ post.author_name.slice(0, 2) }}
                     </div>
@@ -199,20 +199,20 @@
                 <template v-if="post.status === 0">
                   <GlassButton
                     v-if="auth.hasPerm('MANAGE_FEATURED')"
-                    @click="togglePin"
                     :loading="actionLoading"
                     variant="secondary"
                     class="text-sm px-3 py-1"
+                    @click="togglePin"
                   >
                     {{ post.is_pinned ? '取消置顶' : '置顶' }}
                   </GlassButton>
                   
                   <GlassButton
                     v-if="auth.hasPerm('MANAGE_FEATURED')"
-                    @click="toggleFeature"
                     :loading="actionLoading"
                     variant="secondary"
                     class="text-sm px-3 py-1"
+                    @click="toggleFeature"
                   >
                     {{ post.is_featured ? '取消精华' : '精华' }}
                   </GlassButton>
@@ -220,20 +220,20 @@
                 
                 <GlassButton
                   v-if="auth.hasPerm('MANAGE_POSTS')"
-                  @click="toggleHide"
                   :loading="actionLoading"
                   variant="secondary"
                   class="text-sm px-3 py-1"
+                  @click="toggleHide"
                 >
                   {{ post.status === 1 ? '恢复' : '隐藏' }}
                 </GlassButton>
                 
                 <GlassButton
                   v-if="auth.hasPerm('MANAGE_POSTS')"
-                  @click="confirmDelete"
                   :loading="actionLoading"
                   variant="secondary"
                   class="text-sm px-3 py-1 !text-red-600"
+                  @click="confirmDelete"
                 >
                   删除
                 </GlassButton>
@@ -258,7 +258,7 @@
         <template v-else>
           <!-- Comment Form (if authenticated) -->
           <div v-if="auth.isAuthenticated" class="mb-6">
-            <form @submit.prevent="submitComment" class="space-y-4">
+            <form class="space-y-4" @submit.prevent="submitComment">
               <div class="relative">
                 <GlassTextarea
                   v-model="commentForm.content"
@@ -313,13 +313,13 @@
                     @click="navigateToUser(comment)"
                   >
                     <!-- 管理员光圈效果 -->
-                    <template v-if="comment.user_isadmin">
+                    <template v-if="comment.is_user_admin">
                       <div
                         class="absolute -inset-[3px] rounded-full border-[3px] border-sky-400/95 pointer-events-none"
-                      ></div>
+                      />
                       <div
                         class="absolute -inset-[7px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-                      ></div>
+                      />
                     </template>
 
                     <!-- 头像容器 -->
@@ -328,13 +328,13 @@
                       :src="assetUrl(comment.user_avatar_url)"
                       :alt="commentDisplayName(comment)"
                       class="relative z-10 w-full h-full rounded-full object-cover"
-                      :class="comment.user_isadmin ? 'border-0' : 'border-2 border-white/20'"
+                      :class="comment.is_user_admin ? 'border-0' : 'border-2 border-white/20'"
                       @error="() => { comment.user_avatar_url = null }"
                     >
                     <div
                       v-else
                       class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium"
-                      :class="comment.user_isadmin ? 'border-0' : 'border-2 border-white/20'"
+                      :class="comment.is_user_admin ? 'border-0' : 'border-2 border-white/20'"
                     >
                       {{ commentDisplayName(comment).slice(0, 2) }}
                     </div>
@@ -362,8 +362,8 @@
                         </span>
                         <button
                           v-if="canManageComment(comment)"
-                          @click="hideComment(comment)"
                           class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
+                          @click="hideComment(comment)"
                         >
                           {{ comment.status === 0 ? '隐藏' : '恢复' }}
                         </button>
@@ -380,9 +380,9 @@
               <!-- Load more comments -->
                 <div v-if="commentsData && commentsData.page * commentsData.page_size < commentsData.total" class="text-center pt-4">
                 <GlassButton
-                  @click="loadMoreComments"
                   :loading="commentsLoading"
                   variant="secondary"
+                  @click="loadMoreComments"
                 >
                   加载更多评论
                 </GlassButton>
@@ -412,11 +412,11 @@
       
       <template #footer>
         <div class="flex gap-3 justify-end">
-          <GlassButton @click="closeDeleteModal" variant="secondary">取消</GlassButton>
+          <GlassButton variant="secondary" @click="closeDeleteModal">取消</GlassButton>
           <GlassButton
-            @click="deletePost"
             :loading="actionLoading"
             class="!bg-red-600 hover:!bg-red-700"
+            @click="deletePost"
           >
             确认删除
           </GlassButton>
@@ -455,14 +455,14 @@
       <template #footer>
         <div class="flex gap-3 justify-end">
           <GlassButton
-            @click="showAIRejectionModal = false"
             variant="secondary"
+            @click="showAIRejectionModal = false"
           >
             知道了
           </GlassButton>
           <GlassButton
-            @click="requestReview"
             :loading="reviewRequesting"
+            @click="requestReview"
           >
             申请复核
           </GlassButton>
@@ -568,7 +568,7 @@ const fetchAuthorAvatar = async () => {
       }
     }
   } catch (error) {
-    // If can't fetch user info, just don't show avatar
+    // If it can't fetch user info, just don't show avatar
     console.warn('Failed to fetch author avatar:', error)
   }
 }
@@ -608,7 +608,7 @@ const loadComments = async (page = 1) => {
     const api = useApi()
     const data = await api.listComments(postId.value, { page, page_size: 20 })
 
-    const userIds = [...new Set(data.items.map(comment => comment.user_id))] as string[]
+    const userIds = [...new Set(data.items.map((comment : CommentDto) => comment.user_id))] as string[]
     const uncachedIds = userIds.filter(id => !userAvatarCache.value.has(id))
 
     if (uncachedIds.length > 0) {
@@ -622,7 +622,7 @@ const loadComments = async (page = 1) => {
       }))
     }
 
-    const enrichedComments = data.items.map(comment => ({
+    const enrichedComments = data.items.map((comment : CommentDto) => ({
       ...comment,
       user_avatar_url: userAvatarCache.value.get(comment.user_id) ?? null
     })) as CommentDto[]
@@ -836,7 +836,7 @@ const deletePost = async () => {
     await api.deletePost(post.value.id, deleteReason.value.trim() || undefined)
     toast.success('帖子已删除')
     closeDeleteModal()
-    router.push('/')
+    await router.push('/')
   } catch (err) {
     toast.error('删除失败')
   } finally {

@@ -4,7 +4,7 @@
     v-if="isOpen"
     class="fixed inset-0 bg-black/50 lg:hidden z-30"
     @click="$emit('close')"
-  ></div>
+  />
 
   <!-- 桌面端: 始终显示 (lg:translate-x-0)
        移动端: 根据 isOpen 显示/隐藏 -->
@@ -99,7 +99,7 @@
               暂无特殊权限
             </div>
             <div v-for="perm in auth.permissions" :key="perm" class="flex items-center gap-1">
-              <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+              <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"/>
               {{ getPermissionName(perm) }}
             </div>
           </template>
@@ -110,7 +110,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PermissionType } from '~/types'
 
 interface Props {
   isOpen: boolean

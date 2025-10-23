@@ -38,8 +38,8 @@
         <div class="flex gap-2">
           <select
             v-model="filters.status"
-            @change="applyFilters"
             class="glass-input px-3 py-2 text-sm"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="0">已发布</option>
@@ -48,8 +48,8 @@
           
           <select
             v-model="filters.featured"
-            @change="applyFilters"
             class="glass-input px-3 py-2 text-sm"
+            @change="applyFilters"
           >
             <option value="">全部类型</option>
             <option value="true">精华</option>
@@ -132,19 +132,19 @@
                   
                   <GlassButton
                     v-if="canEdit(post)"
-                    @click.stop="editPost(post)"
                     variant="secondary"
                     class="!p-2"
                     title="编辑"
+                    @click.stop="editPost(post)"
                   >
                     <EditIcon class="w-4 h-4" />
                   </GlassButton>
                   
                   <GlassButton
-                    @click.stop="confirmDelete(post)"
                     variant="secondary"
                     class="!p-2 !text-red-600 hover:!bg-red-50"
                     title="删除"
+                    @click.stop="confirmDelete(post)"
                   >
                     <Trash2Icon class="w-4 h-4" />
                   </GlassButton>
@@ -188,9 +188,9 @@
         class="text-center pt-6"
       >
         <GlassButton
-          @click="loadMore"
           :loading="loadingMore"
           variant="secondary"
+          @click="loadMore"
         >
           加载更多
         </GlassButton>
@@ -210,15 +210,15 @@
         </p>
         <div class="flex gap-3 justify-end">
           <GlassButton
-            @click="deleteModal.show = false"
             variant="secondary"
+            @click="deleteModal.show = false"
           >
             取消
           </GlassButton>
           <GlassButton
-            @click="deletePost"
             :loading="deleting"
             class="!bg-red-600 hover:!bg-red-700"
+            @click="deletePost"
           >
             确认删除
           </GlassButton>
@@ -231,7 +231,6 @@
 <script setup lang="ts">
 import {
   PlusIcon,
-  RefreshCwIcon,
   HeartIcon,
   EyeIcon,
   EditIcon,
@@ -241,6 +240,9 @@ import {
   MessageSquareIcon
 } from 'lucide-vue-next'
 import type { PostDto, Pagination } from '~/types'
+import GlassButton from "~/components/ui/GlassButton.vue";
+import GlassCard from "~/components/ui/GlassCard.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'auth'

@@ -26,6 +26,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import GlassModal from "~/components/ui/GlassModal.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
 
 const { state, respond } = useConfirm()
 

@@ -1,7 +1,6 @@
 <template>
-  <div class="content-container py-8">
+  <!--<div class="content-container py-8">
     <div class="max-w-2xl mx-auto space-y-8">
-      <!-- Debug Info -->
       <div class="glass-card p-6">
         <h2 class="text-xl font-bold mb-4">调试信息</h2>
         
@@ -37,7 +36,6 @@
         </div>
       </div>
 
-      <!-- Toast Test -->
       <div class="glass-card p-6">
         <h2 class="text-xl font-bold mb-4">通知测试</h2>
         
@@ -62,8 +60,7 @@
             直接调用Store
           </button>
         </div>
-        
-        <!-- Toast Store Debug Info -->
+
         <div class="mt-4 p-4 bg-gray-50/50 rounded-lg">
           <h3 class="font-bold mb-2">Toast Store 状态:</h3>
           <div class="text-sm">
@@ -74,7 +71,6 @@
         </div>
       </div>
 
-      <!-- API Connection Test -->
       <div class="glass-card p-6">
         <h2 class="text-xl font-bold mb-4">API连接测试</h2>
         
@@ -102,7 +98,7 @@
           </div>
         </div>
       </div>
-      <!-- Actions -->
+
       <div class="glass-card p-6">
         <h2 class="text-xl font-bold mb-4">操作</h2>
         
@@ -125,14 +121,15 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script setup lang="ts">
-const auth = useAuthStore()
+/*const auth = useAuthStore()
 const toast = useToast()
 const toastStore = useToastStore()
 const router = useRouter()
+const config = useRuntimeConfig()
 
 // Test toast notifications
 const testSuccess = () => {
@@ -226,5 +223,5 @@ onMounted(() => {
 // Page meta
 definePageMeta({
   title: '调试页面 - 郑州四中表白墙',
-})
+})*/
 </script>

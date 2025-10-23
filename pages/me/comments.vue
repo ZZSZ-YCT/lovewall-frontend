@@ -31,8 +31,8 @@
         <div class="flex gap-2">
           <select
             v-model="filters.status"
-            @change="applyFilters"
             class="glass-input px-3 py-2 text-sm"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="0">正常显示</option>
@@ -79,13 +79,13 @@
                   class="relative w-8 h-8 flex-shrink-0 transition-transform hover:scale-110"
                 >
                   <!-- 管理员光圈效果 -->
-                  <template v-if="auth.currentUser?.isadmin">
+                  <template v-if="auth.currentUser?.is_admin">
                     <div
                       class="absolute -inset-[3px] rounded-full border-[3px] border-sky-400/95 pointer-events-none"
-                    ></div>
+                    />
                     <div
                       class="absolute -inset-[7px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-                    ></div>
+                    />
                   </template>
 
                   <!-- 头像容器 -->
@@ -94,12 +94,12 @@
                     :src="assetUrl(auth.currentUser.avatar_url)"
                     :alt="auth.userDisplayName"
                     class="relative z-10 w-full h-full rounded-full object-cover"
-                    :class="auth.currentUser?.isadmin ? 'border-0' : 'border border-white/20'"
+                    :class="auth.currentUser?.is_admin ? 'border-0' : 'border border-white/20'"
                   >
                   <div
                     v-else
                     class="relative z-10 w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-medium"
-                    :class="auth.currentUser?.isadmin ? 'border-0' : 'border border-white/20'"
+                    :class="auth.currentUser?.is_admin ? 'border-0' : 'border border-white/20'"
                   >
                     {{ auth.userDisplayName.slice(0, 2) }}
                   </div>
@@ -138,19 +138,19 @@
                 
                 <GlassButton
                   v-if="canEdit(comment)"
-                  @click="startEdit(comment)"
                   variant="secondary"
                   class="!p-2"
                   title="编辑评论"
+                  @click="startEdit(comment)"
                 >
                   <EditIcon class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="confirmDelete(comment)"
                   variant="secondary"
                   class="!p-2 !text-red-600 hover:!bg-red-50"
                   title="删除评论"
+                  @click="confirmDelete(comment)"
                 >
                   <Trash2Icon class="w-4 h-4" />
                 </GlassButton>
@@ -168,16 +168,16 @@
               />
               <div class="flex gap-2 justify-end">
                 <GlassButton
-                  @click="cancelEdit"
                   variant="secondary"
                   class="text-sm px-3 py-1"
+                  @click="cancelEdit"
                 >
                   取消
                 </GlassButton>
                 <GlassButton
-                  @click="saveEdit"
                   :loading="editing"
                   class="text-sm px-3 py-1"
+                  @click="saveEdit"
                 >
                   保存
                 </GlassButton>
@@ -211,9 +211,9 @@
         class="text-center pt-6"
       >
         <GlassButton
-          @click="loadMore"
           :loading="loadingMore"
           variant="secondary"
+          @click="loadMore"
         >
           加载更多
         </GlassButton>
@@ -232,15 +232,15 @@
         </p>
         <div class="flex gap-3 justify-end">
           <GlassButton
-            @click="deleteModal.show = false"
             variant="secondary"
+            @click="deleteModal.show = false"
           >
             取消
           </GlassButton>
           <GlassButton
-            @click="deleteComment"
             :loading="deleting"
             class="!bg-red-600 hover:!bg-red-700"
+            @click="deleteComment"
           >
             确认删除
           </GlassButton>
@@ -258,6 +258,10 @@ import {
   Trash2Icon
 } from 'lucide-vue-next'
 import type { CommentDto, Pagination, CommentForm } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
+import GlassTextarea from "~/components/ui/GlassTextarea.vue";
 
 definePageMeta({
   middleware: 'auth'
@@ -422,7 +426,9 @@ const deleteComment = async () => {
     // Remove from local list or mark as hidden
     const index = comments.value.findIndex(c => c.id === deleteModal.comment!.id)
     if (index >= 0) {
-      comments.value[index].status = 1 // Mark as hidden
+      if(comments.value && comments.value[index]) {
+        comments.value[index].status = 1 // Mark as hidden
+      }
     }
     
     if (commentsData.value) {

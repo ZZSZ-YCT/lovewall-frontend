@@ -8,7 +8,7 @@
     <span
       class="w-1.5 h-1.5 rounded-full"
       :class="status ? 'bg-green-500' : 'bg-gray-400'"
-    ></span>
+    />
     <span>{{ status ? '在线' : '离线' }}</span>
   </div>
 </template>

@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   // Ensure we're on client side for SPA mode
-  if (process.server) return
+  if (import.meta.server) return
   
   const auth = useAuthStore()
   

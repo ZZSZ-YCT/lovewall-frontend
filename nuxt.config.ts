@@ -10,7 +10,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxt/eslint'
   ],
   
   // 添加页面过渡效果
@@ -31,7 +32,7 @@ export default defineNuxtConfig({
         { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' }
       ],
       link: [
-        { rel: 'icon', type: 'image/png', href: '/bandge.png' },
+        { rel: 'icon', type: 'image/png', href: '/badge.png' },
         { rel: 'preconnect', href: 'https://static.geetest.com' },
         { rel: 'dns-prefetch', href: 'https://static.geetest.com' }
       ]
@@ -57,18 +58,18 @@ export default defineNuxtConfig({
   
   runtimeConfig: {
     // Private runtime config (server only)
-    geetestKey: process.env.NUXT_GEETEST_KEY,
+    geeTestKey: process.env.NUXT_GEETEST_KEY,
     public: {
       // API 基址：优先使用环境变量，其次回落到同域 `/api`
       // 在生产环境设置 NUXT_PUBLIC_API_BASE，例如：
       //   https://api.example.com/api  或  http://127.0.0.1:8124/api
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       randomImageApiUrl: process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/',
-      pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE ? parseInt(process.env.NUXT_PUBLIC_PAGE_SIZE) : undefined,
-      // Geetest 登录验证码ID (前端验证)
-      geetestId: process.env.NUXT_PUBLIC_GEETEST_ID,
-      // Geetest 注册验证码ID (后端验证)
-      geetestRegisterId: process.env.NUXT_PUBLIC_GEETEST_REGISTER_ID,
+      pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE,
+      // GeeTest 登录验证码ID (前端验证)
+      geeTestId: process.env.NUXT_PUBLIC_GEETEST_ID,
+      // GeeTest 注册验证码ID (后端验证)
+      geeTestRegisterId: process.env.NUXT_PUBLIC_GEETEST_REGISTER_ID,
       // Mainland-friendly jsDelivr origin (used when building CDN links)
       jsdelivrOrigin: process.env.NUXT_PUBLIC_JSDELIVR_ORIGIN || 'https://fastly.jsdelivr.net',
     }

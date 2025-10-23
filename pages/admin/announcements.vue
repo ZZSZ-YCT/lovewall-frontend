@@ -13,8 +13,8 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.is_active"
-            @change="applyFilters"
             class="glass-input px-3 py-2"
+            @change="applyFilters"
           >
             <option value="">全部状态</option>
             <option value="true">已启用</option>
@@ -32,9 +32,9 @@
           </GlassButton>
           
           <GlassButton
-            @click="refresh"
             :loading="loading"
             variant="secondary"
+            @click="refresh"
           >
             <RefreshCwIcon class="w-4 h-4 mr-2" />
             刷新
@@ -119,28 +119,28 @@
               <!-- Actions -->
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <GlassButton
-                  @click="editAnnouncement(announcement)"
                   variant="secondary"
                   class="!p-2"
                   title="编辑公告"
+                  @click="editAnnouncement(announcement)"
                 >
                   <EditIcon class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="toggleStatus(announcement)"
                   variant="secondary"
                   class="!p-2"
                   :title="announcement.is_active ? '停用公告' : '启用公告'"
+                  @click="toggleStatus(announcement)"
                 >
                   <component :is="announcement.is_active ? PauseIcon : PlayIcon" class="w-4 h-4" />
                 </GlassButton>
                 
                 <GlassButton
-                  @click="confirmDelete(announcement)"
                   variant="secondary"
                   class="!p-2 !text-red-600 hover:!bg-red-50"
                   title="删除公告"
+                  @click="confirmDelete(announcement)"
                 >
                   <TrashIcon class="w-4 h-4" />
                 </GlassButton>
@@ -177,7 +177,7 @@
             </div>
 
             <div class="px-6 pb-6 space-y-6 overflow-y-auto">
-              <form id="announcement-form" @submit.prevent="saveAnnouncement" class="space-y-4">
+              <form id="announcement-form" class="space-y-4" @submit.prevent="saveAnnouncement">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">标题</label>
                   <input
@@ -196,14 +196,14 @@
                     :rows="6"
                     required
                     class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
-                  ></textarea>
+                  />
                 </div>
 
                 <div>
                   <label class="flex items-center gap-2">
                     <input
-                      type="checkbox"
                       v-model="form.is_active"
+                      type="checkbox"
                       class="rounded"
                     >
                     <span class="text-sm font-medium text-gray-700">启用公告</span>
@@ -226,7 +226,7 @@
                 class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 :disabled="saving"
               >
-                <span v-if="saving" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+                <span v-if="saving" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"/>
                 <span>{{ editModal.announcement ? '保存' : '创建' }}</span>
               </button>
             </div>
@@ -252,6 +252,9 @@ import {
   XIcon
 } from 'lucide-vue-next'
 import type { AnnouncementDto } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import GlassButton from "~/components/ui/GlassButton.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 console.log('[AnnouncementsAdmin] === SCRIPT ENTRY ===')
 
@@ -276,7 +279,7 @@ try {
   console.error('[AnnouncementsAdmin] Store initialization FAILED:', e)
   throw e
 }
-console.log('[AnnouncementsAdmin] Auth store snapshot ready', { hasUser: Boolean(auth?.user) })
+console.log('[AnnouncementsAdmin] Auth store snapshot ready', { hasUser: Boolean(auth?.currentUser) })
 
 // State
 const announcements = ref<AnnouncementDto[]>([])

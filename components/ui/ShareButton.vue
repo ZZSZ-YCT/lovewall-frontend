@@ -2,12 +2,12 @@
   <div ref="shareButtonRef" class="relative">
     <!-- 主分享按钮 -->
     <button
-      @click="handleMainShare"
       :disabled="loading"
       class="inline-flex items-center gap-1.5 text-gray-600 hover:text-brand-600 transition-colors font-medium"
       :class="[
         size === 'sm' ? 'text-xs' : 'text-sm'
       ]"
+      @click="handleMainShare"
     >
       <LoaderIcon 
         v-if="loading"
@@ -34,8 +34,8 @@
         <!-- 原生分享 -->
         <button
           v-if="canShare"
-          @click="shareNative"
           class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+          @click="shareNative"
         >
           <ShareIcon class="w-4 h-4" />
           <span>系统分享</span>
@@ -43,21 +43,21 @@
 
         <!-- 复制链接 -->
         <button
-          @click="copyLink"
           class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+          @click="copyLink"
         >
           <CopyIcon class="w-4 h-4" />
           <span>复制链接</span>
         </button>
 
-        <div class="border-t border-white/20 my-2"></div>
+        <div class="border-t border-white/20 my-2"/>
 
         <!-- 平台分享选项 -->
         <button
           v-for="platform in availablePlatforms"
           :key="platform.key"
-          @click="shareToPlatform(platform.key)"
           class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+          @click="shareToPlatform(platform.key)"
         >
           <component :is="getPlatformIcon(platform.key)" class="w-4 h-4" />
           <span>{{ platform.name }}</span>
@@ -70,7 +70,7 @@
       v-if="isOptionsOpen"
       class="fixed inset-0 z-40"
       @click="isOptionsOpen = false"
-    ></div>
+    />
   </div>
 </template>
 

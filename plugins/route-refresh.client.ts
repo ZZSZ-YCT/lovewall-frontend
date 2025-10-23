@@ -1,5 +1,5 @@
 export default defineNuxtPlugin(() => {
-  if (!process.client) return
+  if (!import.meta.client) return
   const router = useRouter()
 
   router.afterEach((to, from) => {
@@ -8,8 +8,8 @@ export default defineNuxtPlugin(() => {
       if (to.path === '/' && from.path !== to.path) {
         const home = useHomeStore()
         // Defer to next tick to avoid racing with mount
-        setTimeout(() => {
-          try { home.refresh() } catch {}
+        setTimeout(async () => {
+          try { await home.refresh() } catch {}
         }, 0)
       }
     } catch {}

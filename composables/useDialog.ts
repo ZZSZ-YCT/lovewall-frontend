@@ -66,7 +66,7 @@ export const useConfirm = () => {
   }
 
   const confirm = (options: string | ConfirmOptions) => {
-    if (!process.client) {
+    if (!import.meta.client) {
       return Promise.resolve(false)
     }
 
@@ -111,7 +111,7 @@ export const usePrompt = () => {
   }
 
   const prompt = (messageOrOptions: string | PromptOptions, defaultValue?: string) => {
-    if (!process.client) {
+    if (!import.meta.client) {
       return Promise.resolve(null)
     }
 

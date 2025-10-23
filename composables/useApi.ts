@@ -1,37 +1,36 @@
-import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
+import axios, {type AxiosInstance, type AxiosResponse} from 'axios'
 import type {
-  ApiResp,
-  AuthResponse,
-  UserProfile,
-  PostDto,
-  CommentDto,
-  AnnouncementDto,
-  TagDto,
-  UserTagDto,
-  RedemptionCodeDto,
-  LogEntry,
-  LogFilters,
-  Pagination,
-  LoginForm,
-  RegisterForm,
-  PostForm,
-  CommentForm,
-  AnnouncementForm,
-  TagForm,
-  GenerateCodesForm,
-  RedeemForm,
-  RedeemResponse,
-  UpdateProfileForm,
-  ChangePasswordForm,
   AdminChangePasswordForm,
   AdminUpdateUserForm,
-  User,
-  MyActiveTagStatusResponse,
-  MyTagStatusResponse,
+  AnnouncementDto,
+  AnnouncementForm,
+  ApiResp,
+  AuthResponse,
+  ChangePasswordForm,
+  CommentDto,
+  CommentForm,
   DeleteRedemptionCodesRequest,
   DeleteRedemptionCodesResponse,
+  GenerateCodesForm,
+  LogEntry,
+  LogFilters,
+  LoginForm,
+  MyActiveTagStatusResponse,
+  MyTagStatusResponse,
+  Pagination,
+  PostDto,
+  RedeemForm,
+  RedeemResponse,
+  RedemptionCodeDto,
+  RegisterForm,
+  TagDto,
+  TagForm,
+  UpdateProfileForm,
+  User,
+  UserProfile,
+  UserTagDto,
 } from '~/types'
-import type { ActiveTagDto, NotificationDto, UserStatusDto } from '~/types/extra'
+import type {ActiveTagDto, NotificationDto, UserStatusDto} from '~/types/extra'
 
 let fallbackApi: any | null = null
 
@@ -88,11 +87,11 @@ export const useApi = () => {
   const config = useRuntimeConfig()
   const baseURL = config.public.apiBase as string | undefined
 
-  let withCreds = true
+  let withCredentials = true
   try {
     if (baseURL && /^https?:\/\//i.test(baseURL) && typeof window !== 'undefined') {
       const u = new URL(baseURL)
-      withCreds = (u.origin === window.location.origin)
+      withCredentials = (u.origin === window.location.origin)
     }
   } catch {}
 
@@ -103,7 +102,7 @@ export const useApi = () => {
 
   const instance: AxiosInstance = axios.create({
     baseURL: normBase,
-    withCredentials: withCreds,
+    withCredentials: withCredentials,
     timeout: 30000,
   })
 
@@ -168,8 +167,7 @@ export const useApi = () => {
           message = '服务暂时不可用，请稍后重试'
         } else if (status === 429) {
           // 处理速率限制错误
-          const rateLimitMessage = error?.response?.data?.error?.message || '请求过于频繁，请稍后重试'
-          message = rateLimitMessage
+          message = error?.response?.data?.error?.message || '请求过于频繁，请稍后重试'
         }
         
         // Don't show toast for 404 errors on active tag endpoints - these are normal
@@ -191,7 +189,7 @@ export const useApi = () => {
           return false
         }
 
-        const isDeletedFlag = resolveFlag(extras, 'isdeleted', 'isDeleted') || resolveFlag(responseData, 'isdeleted', 'isDeleted')
+        const isDeletedFlag = resolveFlag(extras, 'is_deleted', 'isDeleted') || resolveFlag(responseData, 'is_deleted', 'isDeleted')
         const isBannedFlag = resolveFlag(extras, 'banned', 'isBanned') || resolveFlag(responseData, 'banned', 'isBanned')
         const banReason = (extras?.ban_reason as string) || (responseData?.ban_reason as string) || message
 

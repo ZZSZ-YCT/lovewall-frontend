@@ -23,7 +23,8 @@
             :text="activeTag.tag?.text_color || '#ffffff'"
           />
           <span v-else class="text-gray-500">未设置</span>
-          <span v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs rounded-full"
+          <span
+v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs rounded-full"
             :class="activeStatus.current_tag_enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'"
           >
             {{ activeStatus.current_tag_enabled ? '已启用' : '已停用' }}
@@ -42,8 +43,8 @@
         
         <div class="flex items-center gap-3">
           <button
-              @click="openRedeemModal"
               class="glass-button-secondary px-6 py-3 inline-flex items-center gap-2"
+              @click="openRedeemModal"
           >
             <TagIcon class="w-5 h-5" />
             <span>兑换标签</span>
@@ -134,10 +135,10 @@
               <div class="flex gap-2 shrink-0 whitespace-nowrap items-center">
                 <button
                   v-if="!userTag.is_active"
-                  @click="activateTag(userTag)"
                   :disabled="activating === userTag.user_tag_id || !userTag.tag?.is_active"
                   :title="userTag.tag?.is_active ? '设为当前标签' : '该标签已被停用，无法设为当前标签'"
                   class="glass-button-secondary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  @click="activateTag(userTag)"
                 >
                   <span v-if="activating === userTag.user_tag_id">设置中...</span>
                   <span v-else>设为当前标签</span>
@@ -175,6 +176,8 @@
 import { TagIcon, CheckCircleIcon } from 'lucide-vue-next'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import type { UserTagDto, RedeemResponse, MyActiveTagStatusResponse } from '~/types'
+import GlassCard from "~/components/ui/GlassCard.vue";
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'auth'

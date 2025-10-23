@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto'
 
-interface GeetestV4Tokens {
+interface GeeTestV4Tokens {
   lot_number: string
   captcha_output: string
   pass_token: string
@@ -13,10 +13,10 @@ export default defineEventHandler(async (event) => {
   const captchaKey = (config as any).geetestKey as string | undefined
 
   if (!captchaId || !captchaKey) {
-    return { success: false, error: 'Geetest not configured' }
+    return { success: false, error: 'GeeTest not configured' }
   }
 
-  const body = (await readBody<Partial<GeetestV4Tokens>>(event)) || {}
+  const body = (await readBody<Partial<GeeTestV4Tokens>>(event)) || {}
   const { lot_number, captcha_output, pass_token, gen_time } = body
 
   if (!lot_number || !captcha_output || !pass_token || !gen_time) {

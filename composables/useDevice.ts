@@ -9,7 +9,7 @@ export const useDevice = () => {
   const windowHeight = ref(1080)
   
   // 仅在客户端更新窗口尺寸
-  if (process.client) {
+  if (import.meta.client) {
     windowWidth.value = window.innerWidth
     windowHeight.value = window.innerHeight
     
