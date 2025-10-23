@@ -326,7 +326,7 @@ const fetchAuthorInfo = async () => {
       try {
         const userRes = await api.getUser(props.post.author_id)
         authorProfile.value = userRes
-        authorDeleted.value = !!userRes.isdeleted
+        authorDeleted.value = !!userRes.is_deleted
         if (userRes.avatar_url) {
           authorAvatar.value = assetUrl(userRes.avatar_url)
           authorHasAvatar.value = true
