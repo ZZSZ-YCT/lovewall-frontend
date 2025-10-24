@@ -67,8 +67,9 @@ const waitForSize = async (el: HTMLElement) => {
 const init = async () => {
   const config = useRuntimeConfig()
   // 优先使用传入的captchaId,否则使用默认的geetestId
-  const captchaId = props.captchaId || (config.public as any).geetestId as string | undefined
+  const captchaId = props.captchaId || config.public.geeTestId as string | undefined
   if (!captchaId) {
+    console.log(config.public)
     emit('error', '未配置 GeeTest 验证ID')
     return
   }
