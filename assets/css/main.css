@@ -434,7 +434,8 @@
   }
   
   .glass-input {
-    @apply bg-black/30 border-white/10 text-white placeholder-gray-400;
+    @apply bg-white/10 border-white/20 text-white placeholder-gray-300;
+    @apply focus:bg-white/20 focus:border-white/40;
   }
   
   .glass-button,
