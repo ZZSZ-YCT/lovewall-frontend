@@ -161,7 +161,7 @@ const captchaRef = ref<InstanceType<typeof GeeTestV4Type> | null>(null)
 
 // 获取注册专用验证码ID
 const config = useRuntimeConfig()
-const registerCaptchaId = (config.public as any).geetestRegisterId as string | undefined
+const registerCaptchaId = (config.public as any).geeTestRegisterId as string | undefined
 
 // Stores
 const auth = useAuthStore()

@@ -9,8 +9,8 @@ interface GeeTestV4Tokens {
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-  const captchaId = config.public?.geetestId as string | undefined
-  const captchaKey = (config as any).geetestKey as string | undefined
+  const captchaId = config.public?.geeTestId as string | undefined
+  const captchaKey = (config as any).geeTestKey as string | undefined
 
   if (!captchaId || !captchaKey) {
     return { success: false, error: 'GeeTest not configured' }

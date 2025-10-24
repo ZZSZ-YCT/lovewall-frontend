@@ -18,7 +18,7 @@ type Tokens = {
 
 declare global {
   interface Window {
-    initGeeTest4?: (
+    initGeetest4?: (
       opts: Record<string, any>,
       cb: (captchaObj: any) => void
     ) => void
@@ -67,15 +67,16 @@ const waitForSize = async (el: HTMLElement) => {
 const init = async () => {
   const config = useRuntimeConfig()
   // 优先使用传入的captchaId,否则使用默认的geetestId
-  const captchaId = props.captchaId || (config.public as any).geetestId as string | undefined
+  const captchaId = props.captchaId || config.public.geeTestId as string | undefined
   if (!captchaId) {
+    console.log(config.public)
     emit('error', '未配置 GeeTest 验证ID')
     return
   }
 
   await loadScript('https://static.geetest.com/v4/gt4.js')
 
-  if (!window.initGeeTest4) {
+  if (!window.initGeetest4) {
     emit('error', 'GeeTest 初始化函数不可用')
     return
   }
@@ -85,7 +86,7 @@ const init = async () => {
 
   const product = props.product || 'popup'
   // 不设置 width，使用 GeeTest 默认风格与自适应
-  window.initGeeTest4({
+  window.initGeetest4({
     captchaId,
     product,
     language: 'zh-CN',
