@@ -289,7 +289,6 @@ watch(
 // Page meta
 definePageMeta({
   title: '注册 - 郑州四中表白墙',
-  description: '创建您的郑州四中表白墙账户',
-  layout: false, // Use custom layout
+  description: '创建您的郑州四中表白墙账户'
 })
 </script>
