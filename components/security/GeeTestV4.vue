@@ -18,7 +18,7 @@ type Tokens = {
 
 declare global {
   interface Window {
-    initGeeTest4?: (
+    initGeetest4?: (
       opts: Record<string, any>,
       cb: (captchaObj: any) => void
     ) => void
@@ -76,7 +76,7 @@ const init = async () => {
 
   await loadScript('https://static.geetest.com/v4/gt4.js')
 
-  if (!window.initGeeTest4) {
+  if (!window.initGeetest4) {
     emit('error', 'GeeTest 初始化函数不可用')
     return
   }
@@ -86,7 +86,7 @@ const init = async () => {
 
   const product = props.product || 'popup'
   // 不设置 width，使用 GeeTest 默认风格与自适应
-  window.initGeeTest4({
+  window.initGeetest4({
     captchaId,
     product,
     language: 'zh-CN',
