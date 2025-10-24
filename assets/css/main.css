@@ -40,10 +40,7 @@
   #__nuxt {
     height: 100%;
   }
-  
-  * {
-    @apply transition-all duration-300 ease-in-out;
-  }
+
   /* 避免在表单控件上强制过渡，防止输入卡顿/焦点异常 */
   input, textarea, select {
     transition: none;
