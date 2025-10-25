@@ -85,7 +85,7 @@
             编辑资料
           </GlassButton>
           <GlassButton
-            v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_COMMENTS','MANAGE_TAGS'])"
+            v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
             class="glass-button"
             @click="navigateTo('/admin')"
           >

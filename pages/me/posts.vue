@@ -128,18 +128,6 @@
 
                 <!-- Actions -->
                 <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-
-                  
-                  <GlassButton
-                    v-if="canEdit(post)"
-                    variant="secondary"
-                    class="!p-2"
-                    title="编辑"
-                    @click.stop="editPost(post)"
-                  >
-                    <EditIcon class="w-4 h-4" />
-                  </GlassButton>
-                  
                   <GlassButton
                     variant="secondary"
                     class="!p-2 !text-red-600 hover:!bg-red-50"
@@ -233,7 +221,6 @@ import {
   PlusIcon,
   HeartIcon,
   EyeIcon,
-  EditIcon,
   Trash2Icon,
   CalendarIcon,
   ClockIcon,
@@ -336,19 +323,6 @@ const refresh = () => {
 }
 
 // Counts are returned inline per item; no extra stats fetch
-
-const canEdit = (post: PostDto) => {
-  if (!post.created_at) return false
-  const createdAt = new Date(post.created_at)
-  const now = new Date()
-  const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60)
-  return diffMinutes <= 15 || auth.hasPerm('MANAGE_POSTS')
-}
-
-const editPost = (post: PostDto) => {
-  // Open detail with edit modal via query flag
-  router.push(`/posts/${post.id}?edit=1`)
-}
 
 const goDetail = (post: PostDto) => {
   router.push(`/posts/${post.id}`)

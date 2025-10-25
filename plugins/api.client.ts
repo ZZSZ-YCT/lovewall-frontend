@@ -361,8 +361,8 @@ export default defineNuxtPlugin(() => {
       await instance.post(`/comments/${commentId}/request-review`)
     },
 
-    async updatePost(id: string, data: Partial<PostDto>): Promise<PostDto> {
-      const response = await instance.put<ApiResp<PostDto>>(`/posts/${id}`, data)
+    async updatePost(postId: string, data: { author_name?: string; target_name?: string; content?: string }): Promise<PostDto> {
+      const response = await instance.put<ApiResp<PostDto>>(`/posts/${postId}`, data)
       return unwrap(response)
     },
 
@@ -404,6 +404,21 @@ export default defineNuxtPlugin(() => {
       return unwrap(response)
     },
 
+    async lockPost(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const response = await instance.post<ApiResp<{ id: string; is_locked: boolean }>>(`/admin/posts/${postId}/lock`)
+      return unwrap(response)
+    },
+
+    async unlockPost(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const response = await instance.post<ApiResp<{ id: string; is_locked: boolean }>>(`/admin/posts/${postId}/unlock`)
+      return unwrap(response)
+    },
+
+    async getPostLockStatus(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const response = await instance.get<ApiResp<{ id: string; is_locked: boolean }>>(`/posts/${postId}/lock-status`)
+      return unwrap(response)
+    },
+
     async hidePost(id: string, hide: boolean, reason?: string): Promise<{ id: string; status: number }> {
       const payload = reason ? { hide, reason } : { hide }
       const response = await instance.post<ApiResp<{ id: string; status: number }>>(`/posts/${id}/hide`, payload)
@@ -435,6 +450,16 @@ export default defineNuxtPlugin(() => {
 
     async hideComment(id: string, hide: boolean): Promise<{ id: string; status: number }> {
       const response = await instance.post<ApiResp<{ id: string; status: number }>>(`/comments/${id}/hide`, { hide })
+      return unwrap(response)
+    },
+
+    async pinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
+      const response = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/pin`)
+      return unwrap(response)
+    },
+
+    async unpinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
+      const response = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/unpin`)
       return unwrap(response)
     },
 
@@ -709,6 +734,10 @@ export default defineNuxtPlugin(() => {
     },
     async markNotificationRead(id: string): Promise<void> {
       await instance.post(`/notifications/${id}/read`)
+    },
+    async getUnreadNotificationCount(): Promise<{ count: number }> {
+      const response = await instance.get<ApiResp<{ count: number }>>('/notifications/unread-count')
+      return unwrap(response)
     },
 
     // Admin moderation for posts

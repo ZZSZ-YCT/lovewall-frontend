@@ -20,7 +20,8 @@ export const usePermissions = () => {
 
     // 具体功能权限检查
     canManageUsers: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_USERS')),
-    canManageComments: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_COMMENTS')),
+    // 后端已废弃 MANAGE_COMMENTS，统一由 MANAGE_POSTS 负责评论权限
+    canManageComments: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')),
     canManageAnnouncements: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_ANNOUNCEMENTS')),
     canManageTags: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS')),
     canManagePosts: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')),
@@ -31,7 +32,7 @@ export const usePermissions = () => {
       const adminPerms: PermissionType[] = [
         'MANAGE_USERS',
         'MANAGE_ANNOUNCEMENTS', 
-        'MANAGE_COMMENTS',
+        'MANAGE_POSTS',
         'MANAGE_TAGS'
       ]
       return auth.isSuperadmin || auth.hasAnyPerm(adminPerms)
@@ -41,8 +42,7 @@ export const usePermissions = () => {
     isContentManager: computed(() => {
       const contentPerms: PermissionType[] = [
         'MANAGE_POSTS',
-        'MANAGE_FEATURED',
-        'MANAGE_COMMENTS'
+        'MANAGE_FEATURED'
       ]
       return auth.isSuperadmin || auth.hasAnyPerm(contentPerms)
     })
@@ -55,10 +55,9 @@ export const usePermissions = () => {
 export const getPermissionDisplayName = (perm: string): string => {
   const permissionNames: Record<string, string> = {
     'MANAGE_USERS': '用户管理',
-    'MANAGE_POSTS': '帖子管理',
-    'MANAGE_FEATURED': '精华管理',
+    'MANAGE_POSTS': '帖子/评论管理',
+    'MANAGE_FEATURED': '精选管理',
     'MANAGE_ANNOUNCEMENTS': '公告管理',
-    'MANAGE_COMMENTS': '评论管理',
     'MANAGE_TAGS': '标签管理',
   }
   return permissionNames[perm] || perm
@@ -79,7 +78,7 @@ export const getPermissionGroups = () => {
     },
     {
       name: '社区管理', 
-      permissions: ['MANAGE_COMMENTS', 'MANAGE_ANNOUNCEMENTS']
+      permissions: ['MANAGE_POSTS', 'MANAGE_ANNOUNCEMENTS']
     },
     {
       name: '系统管理',
@@ -117,7 +116,7 @@ export const getUserPermissionLevel = (user: any): 'superadmin' | 'admin' | 'con
   if (user?.is_superadmin) return 'superadmin'
   
   const permissions = user?.permissions || []
-  const adminPerms = ['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_COMMENTS', 'MANAGE_TAGS']
+  const adminPerms = ['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_POSTS', 'MANAGE_TAGS']
   const contentPerms = ['MANAGE_POSTS', 'MANAGE_FEATURED']
   
   if (permissions.some((p: string) => adminPerms.includes(p))) {

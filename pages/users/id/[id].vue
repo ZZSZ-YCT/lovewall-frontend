@@ -230,7 +230,7 @@ const userDisplayName = computed(() => {
 })
 
 const isDeleted = computed(() => {
-  return !!(user.value?.is_admin || userStatus.value?.is_deleted)
+  return !!(userStatus.value?.is_deleted)
 })
 
 // Methods
@@ -240,7 +240,7 @@ const loadUser = async () => {
     const status = await api.getUserStatus(userId.value)
     userStatus.value = {
       exists: status.exists,
-      is_deleted: status.is_admin,
+      is_deleted: status.is_deleted,
       is_banned: status.is_banned,
       ban_reason: status.ban_reason ?? null
     }

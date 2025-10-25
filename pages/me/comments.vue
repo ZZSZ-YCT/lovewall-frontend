@@ -359,7 +359,7 @@ const canEdit = (comment: CommentDto) => {
   const createdAt = new Date(comment.created_at)
   const now = new Date()
   const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60)
-  return diffMinutes <= 15 || auth.hasPerm('MANAGE_COMMENTS')
+  return diffMinutes <= 15 || auth.hasPerm('MANAGE_POSTS')
 }
 
 const startEdit = (comment: CommentDto) => {

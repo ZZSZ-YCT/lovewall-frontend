@@ -250,7 +250,8 @@ const assetUrl = useAssetUrl()
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
-  requiredPerms: ['MANAGE_COMMENTS']
+  // 后端已废弃 MANAGE_COMMENTS，统一由 MANAGE_POSTS 管理评论
+  requiredPerms: ['MANAGE_POSTS']
 })
 
 // Stores
