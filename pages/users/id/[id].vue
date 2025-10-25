@@ -240,7 +240,7 @@ const loadUser = async () => {
     const status = await api.getUserStatus(userId.value)
     userStatus.value = {
       exists: status.exists,
-      is_deleted: status.is_admin,
+      is_deleted: status.deleted,
       is_banned: status.is_banned,
       ban_reason: status.ban_reason ?? null
     }
