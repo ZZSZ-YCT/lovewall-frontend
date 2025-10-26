@@ -1,11 +1,11 @@
 import type { PermissionType } from '~/types'
 
+// 后端已废弃 MANAGE_COMMENTS，统一改为 MANAGE_POSTS 管理帖子与评论
 const BASE_ADMIN_PERMS: PermissionType[] = [
   'MANAGE_USERS',
   'MANAGE_POSTS',
   'MANAGE_FEATURED',
   'MANAGE_ANNOUNCEMENTS',
-  'MANAGE_COMMENTS',
   'MANAGE_TAGS',
 ]
 

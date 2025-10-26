@@ -320,6 +320,11 @@ export const useApi = () => {
       })
       return unwrap(res)
     },
+    // 查询帖子锁定状态（公开接口，无需认证）
+    async getPostLockStatus(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const res = await instance.get<ApiResp<{ id: string; is_locked: boolean }>>(`/posts/${postId}/lock-status`)
+      return unwrap(res)
+    },
     async getPostStats(id: string): Promise<{ id: string; view_count: number; comment_count: number }> {
       const res = await instance.get<ApiResp<{ id: string; view_count: number; comment_count: number }>>(`/posts/${id}/stats`)
       return unwrap(res)
@@ -331,8 +336,9 @@ export const useApi = () => {
     async requestPostReview(postId: string): Promise<void> {
       await instance.post(`/posts/${postId}/request-review`)
     },
-    async updatePost(id: string, data: Partial<PostDto>): Promise<PostDto> {
-      const res = await instance.put<ApiResp<PostDto>>(`/posts/${id}`, data)
+    // 管理员更新帖子内容（支持修改署名与正文）
+    async updatePost(postId: string, data: { author_name?: string; target_name?: string; content?: string }): Promise<PostDto> {
+      const res = await instance.put<ApiResp<PostDto>>(`/posts/${postId}`, data)
       return unwrap(res)
     },
     async deletePost(id: string, reason?: string): Promise<{ id: string; deleted: boolean }> {
@@ -359,6 +365,16 @@ export const useApi = () => {
       const res = await instance.post<ApiResp<{ id: string; is_featured: boolean }>>(`/posts/${id}/feature`, payload)
       return unwrap(res)
     },
+    // 管理员锁定帖子，阻止后续互动
+    async lockPost(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const res = await instance.post<ApiResp<{ id: string; is_locked: boolean }>>(`/admin/posts/${postId}/lock`)
+      return unwrap(res)
+    },
+    // 管理员解锁帖子，恢复正常互动
+    async unlockPost(postId: string): Promise<{ id: string; is_locked: boolean }> {
+      const res = await instance.post<ApiResp<{ id: string; is_locked: boolean }>>(`/admin/posts/${postId}/unlock`)
+      return unwrap(res)
+    },
     async hidePost(id: string, hide: boolean, reason?: string): Promise<{ id: string; status: number }> {
       const payload = reason ? { hide, reason } : { hide }
       const res = await instance.post<ApiResp<{ id: string; status: number }>>(`/posts/${id}/hide`, payload)
@@ -377,8 +393,9 @@ export const useApi = () => {
     async requestCommentReview(commentId: string): Promise<void> {
       await instance.post(`/comments/${commentId}/request-review`)
     },
-    async updateComment(id: string, data: CommentForm): Promise<CommentDto> {
-      const res = await instance.put<ApiResp<CommentDto>>(`/comments/${id}`, data)
+    // 评论作者（15分钟内）或管理员编辑评论正文
+    async updateComment(commentId: string, data: { content: string }): Promise<CommentDto> {
+      const res = await instance.put<ApiResp<CommentDto>>(`/comments/${commentId}`, data)
       return unwrap(res)
     },
     async deleteComment(id: string): Promise<void> {
@@ -386,6 +403,16 @@ export const useApi = () => {
     },
     async hideComment(id: string, hide: boolean): Promise<{ id: string; status: number }> {
       const res = await instance.post<ApiResp<{ id: string; status: number }>>(`/comments/${id}/hide`, { hide })
+      return unwrap(res)
+    },
+    // 管理员置顶评论
+    async pinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
+      const res = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/pin`)
+      return unwrap(res)
+    },
+    // 管理员取消置顶评论
+    async unpinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
+      const res = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/unpin`)
       return unwrap(res)
     },
     async getMyComments(params: { page?: number; page_size?: number } = {}): Promise<Pagination<CommentDto>> {

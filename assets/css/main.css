@@ -40,7 +40,7 @@
   #__nuxt {
     height: 100%;
   }
-
+  
   /* 避免在表单控件上强制过渡，防止输入卡顿/焦点异常 */
   input, textarea, select {
     transition: none;
@@ -154,6 +154,7 @@
   .glass-button-outline {
     @apply relative inline-flex items-center justify-center gap-2;
     @apply h-11 px-5 text-sm rounded-xl shadow-lg border backdrop-blur-xl;
+    @apply transition-all duration-300 ease-in-out;
     border-color: rgba(255,255,255,0.35);
     color: #1f2937; /* gray-800 */
     background: rgba(255,255,255,0.06);
@@ -182,6 +183,7 @@
   .text-button {
     @apply p-0 h-auto bg-transparent border-0 shadow-none;
     @apply font-medium;
+    @apply transition-colors duration-300 ease-in-out;
     color: #e04a91; /* brand-600 */
     text-underline-offset: 2px;
   }
@@ -432,7 +434,8 @@
   }
   
   .glass-input {
-    @apply bg-black/30 border-white/10 text-white placeholder-gray-400;
+    @apply bg-white/10 border-white/20 text-white placeholder-gray-300;
+    @apply focus:bg-white/20 focus:border-white/40;
   }
   
   .glass-button,

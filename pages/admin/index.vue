@@ -37,7 +37,7 @@
         </PermissionGuard>
         
         <!-- 评论数据 - 需要权限 -->
-        <PermissionGuard :any-perms="['MANAGE_COMMENTS']">
+        <PermissionGuard :any-perms="['MANAGE_POSTS']">
           <GlassCard class="p-6 text-center">
             <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <MessageSquareIcon class="w-6 h-6 text-white" />
@@ -115,9 +115,9 @@
         </PermissionGuard>
 
         <!-- 评论管理 - 需要权限 -->
-        <PermissionGuard :any-perms="['MANAGE_COMMENTS']">
+        <PermissionGuard :any-perms="['MANAGE_POSTS']">
           <NuxtLink
-            v-if="auth.isSuperadmin || auth.hasPerm('MANAGE_COMMENTS')"
+            v-if="auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')"
             to="/admin/comments"
             class="block"
           >
@@ -218,7 +218,7 @@
         </GlassCard>
 
         <!-- Recent Comments -->
-        <PermissionGuard :any-perms="['MANAGE_COMMENTS']">
+        <PermissionGuard :any-perms="['MANAGE_POSTS']">
           <GlassCard class="p-6">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-semibold text-gray-800">最新评论</h3>
@@ -338,7 +338,7 @@ const loadDashboardData = async () => {
     }
 
     // Load recent comments (if it has permission)
-    if (auth.hasPerm('MANAGE_COMMENTS')) {
+    if (auth.hasPerm('MANAGE_POSTS')) {
       try {
         const commentsData = await api.getAdminComments({ page: 1, page_size: 5 })
         recentComments.value = commentsData.items

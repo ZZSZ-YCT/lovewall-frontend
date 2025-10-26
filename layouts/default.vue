@@ -70,7 +70,7 @@
                 <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的评论</NuxtLink>
                 <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的标签</NuxtLink>
                 <button
-                  v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_COMMENTS','MANAGE_TAGS'])"
+                  v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
                   class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                   @click="goAdmin"
                 >管理后台</button>

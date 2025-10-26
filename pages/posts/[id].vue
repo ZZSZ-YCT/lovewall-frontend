@@ -197,46 +197,66 @@
             <div v-if="showAdminActions" class="mt-6 pt-4 border-t border-white/20">
               <div class="flex flex-wrap gap-2">
                 <template v-if="post.status === 0">
-                  <GlassButton
+                  <button
                     v-if="auth.hasPerm('MANAGE_FEATURED')"
-                    :loading="actionLoading"
-                    variant="secondary"
-                    class="text-sm px-3 py-1"
+                    type="button"
+                    class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors disabled:opacity-50"
+                    :disabled="actionLoading"
                     @click="togglePin"
                   >
                     {{ post.is_pinned ? '取消置顶' : '置顶' }}
-                  </GlassButton>
-                  
-                  <GlassButton
+                  </button>
+
+                  <button
                     v-if="auth.hasPerm('MANAGE_FEATURED')"
-                    :loading="actionLoading"
-                    variant="secondary"
-                    class="text-sm px-3 py-1"
+                    type="button"
+                    class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors disabled:opacity-50"
+                    :disabled="actionLoading"
                     @click="toggleFeature"
                   >
                     {{ post.is_featured ? '取消精华' : '精华' }}
-                  </GlassButton>
+                  </button>
                 </template>
-                
-                <GlassButton
+
+                <button
+                  v-if="canEditPost"
+                  type="button"
+                  class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors inline-flex items-center gap-1"
+                  @click="openEditPost"
+                >
+                  <EditIcon class="w-3 h-3" />
+                  <span>编辑帖子</span>
+                </button>
+
+                <button
                   v-if="auth.hasPerm('MANAGE_POSTS')"
-                  :loading="actionLoading"
-                  variant="secondary"
-                  class="text-sm px-3 py-1"
+                  type="button"
+                  class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors disabled:opacity-50"
+                  :disabled="actionLoading"
                   @click="toggleHide"
                 >
                   {{ post.status === 1 ? '恢复' : '隐藏' }}
-                </GlassButton>
-                
-                <GlassButton
+                </button>
+
+                <button
                   v-if="auth.hasPerm('MANAGE_POSTS')"
-                  :loading="actionLoading"
-                  variant="secondary"
-                  class="text-sm px-3 py-1 !text-red-600"
+                  type="button"
+                  class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors disabled:opacity-50"
+                  :disabled="actionLoading"
+                  @click="toggleLock"
+                >
+                  {{ lockStatus?.is_locked ? '解锁' : '锁定' }}
+                </button>
+
+                <button
+                  v-if="auth.hasPerm('MANAGE_POSTS')"
+                  type="button"
+                  class="px-2 py-1 text-xs text-red-600 hover:text-red-700 border border-red-300 hover:border-red-400 rounded transition-colors disabled:opacity-50"
+                  :disabled="actionLoading"
                   @click="confirmDelete"
                 >
                   删除
-                </GlassButton>
+                </button>
               </div>
             </div>
           </div>
@@ -302,11 +322,28 @@
             <!-- Comments -->
             <div v-else>
               <div
-                v-for="comment in comments"
+                v-for="(comment, index) in comments"
                 :key="comment.id"
-                class="p-4 bg-white/10 rounded-xl border border-white/10"
+                class="relative"
               >
-                <div class="flex items-start gap-3">
+                <hr
+                  v-if="index > 0 && !comment.is_pinned && comments[index - 1] && comments[index - 1].is_pinned"
+                  class="my-6 border-white/20"
+                >
+                <div
+                  :class="[
+                    'rounded-xl border border-white/10',
+                    comment.is_pinned ? 'pinned-comment backdrop-blur-xl' : 'p-4 bg-white/10'
+                  ]"
+                >
+                  <div
+                    v-if="comment.is_pinned"
+                    class="flex items-center gap-2 mb-3"
+                  >
+                    <PinIcon class="w-4 h-4 text-brand-600" />
+                    <span class="text-sm font-medium text-brand-600">置顶评论</span>
+                  </div>
+                  <div class="flex items-start gap-3">
                   <!-- User Avatar -->
                   <div
                     class="relative w-10 h-10 flex-shrink-0 transition-transform hover:scale-110 cursor-pointer"
@@ -361,6 +398,14 @@
                           {{ formatDate(comment.created_at) }}
                         </span>
                         <button
+                          v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
+                          type="button"
+                          class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
+                          @click="toggleCommentPin(comment)"
+                        >
+                          {{ comment.is_pinned ? '取消置顶' : '置顶' }}
+                        </button>
+                        <button
                           v-if="canManageComment(comment)"
                           class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
                           @click="hideComment(comment)"
@@ -374,6 +419,7 @@
                     
                     
                   </div>
+                </div>
                 </div>
               </div>
 
@@ -392,6 +438,55 @@
         </template>
       </GlassCard>
     </div>
+
+    <!-- Edit Post Modal -->
+    <GlassModal
+      :is-open="isEditingPost"
+      title="编辑帖子"
+      max-width="max-w-2xl"
+      @close="closeEditPost"
+    >
+      <form class="space-y-4" @submit.prevent="savePostEdit">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">作者名称</label>
+          <GlassInput v-model="editForm.author_name" required />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">对象名称</label>
+          <GlassInput v-model="editForm.target_name" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+          <GlassTextarea
+            v-model="editForm.content"
+            :rows="6"
+            :input-class="'min-h-[200px]'"
+            placeholder="请输入帖子内容"
+            required
+          />
+        </div>
+
+        <div class="flex gap-3 justify-end pt-2">
+          <GlassButton
+            type="button"
+            variant="outline"
+            @click="closeEditPost"
+          >
+            取消
+          </GlassButton>
+          <GlassButton
+            type="submit"
+            variant="secondary"
+            :loading="editSaving"
+            :disabled="!editForm.content.trim()"
+          >
+            保存
+          </GlassButton>
+        </div>
+      </form>
+    </GlassModal>
 
     <!-- Delete Confirmation Modal -->
     <GlassModal
@@ -474,18 +569,25 @@
 </template>
 
 <script setup lang="ts">
-import { CalendarIcon } from 'lucide-vue-next'
-import { onBeforeRouteUpdate } from 'vue-router'
+import { CalendarIcon, EditIcon, PinIcon } from 'lucide-vue-next'
+import { onBeforeRouteUpdate, type LocationQueryValue } from 'vue-router'
 // 显式导入，确保本页组件解析正常
 import GlassButton from '~/components/ui/GlassButton.vue'
 import GlassTextarea from '~/components/ui/GlassTextarea.vue'
 import GlassModal from '~/components/ui/GlassModal.vue'
+import GlassInput from '~/components/ui/GlassInput.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import OnlineBadge from '~/components/ui/OnlineBadge.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import ImageGrid from '~/components/ui/ImageGrid.vue'
 import type { PostDto, CommentDto, Pagination, CommentForm } from '~/types'
+
+interface PostEditFormState {
+  author_name: string
+  target_name: string
+  content: string
+}
 
 // Get route params
 const route = useRoute()
@@ -522,6 +624,15 @@ const loading = ref(true)
 const commentsLoading = ref(false)
 const commentSubmitting = ref(false)
 const actionLoading = ref(false)
+const lockStatus = ref<{ id: string; is_locked: boolean } | null>(null)
+const isEditingPost = ref(false)
+const editSaving = ref(false)
+const editForm = ref<PostEditFormState>({
+  author_name: '',
+  target_name: '',
+  content: ''
+})
+const pendingOpenEdit = ref(false)
 const error = ref<string | null>(null)
 const showDeleteModal = ref(false)
 const deleteReason = ref('')
@@ -557,6 +668,10 @@ const showAdminActions = computed(() => {
   )
 })
 
+const canEditPost = computed(() => {
+  return auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])
+})
+
 // Fetch author avatar
 const fetchAuthorAvatar = async () => {
   try {
@@ -573,6 +688,61 @@ const fetchAuthorAvatar = async () => {
   }
 }
 
+const removeEditQuery = () => {
+  if (!import.meta.client) return
+  if (route.query.edit === undefined) return
+  const newQuery = { ...route.query } as Record<string, unknown>
+  delete newQuery.edit
+  router.replace({ query: newQuery }).catch(() => {})
+}
+
+const openEditPost = () => {
+  if (!post.value || !canEditPost.value) return
+  editForm.value = {
+    author_name: post.value.author_name ?? '',
+    target_name: post.value.target_name ?? '',
+    content: post.value.content ?? ''
+  }
+  pendingOpenEdit.value = false
+  isEditingPost.value = true
+}
+
+const closeEditPost = () => {
+  isEditingPost.value = false
+  pendingOpenEdit.value = false
+  removeEditQuery()
+}
+
+const savePostEdit = async () => {
+  if (!post.value || !canEditPost.value) return
+
+  editSaving.value = true
+  try {
+    const api = useApi()
+    const payload = {
+      author_name: editForm.value.author_name,
+      target_name: editForm.value.target_name,
+      content: editForm.value.content
+    }
+    const updated = await api.updatePost(post.value.id, payload)
+    post.value = updated
+
+    const index = home.posts.findIndex(item => item.id === updated.id)
+    if (index !== -1) {
+      home.posts[index] = { ...home.posts[index], ...updated }
+    }
+
+    toast.success('帖子已更新')
+    isEditingPost.value = false
+    pendingOpenEdit.value = false
+    removeEditQuery()
+  } catch (error: any) {
+    toast.error(error?.message || '更新失败')
+  } finally {
+    editSaving.value = false
+  }
+}
+
 // Methods
 const loadPost = async () => {
   try {
@@ -585,6 +755,14 @@ const loadPost = async () => {
     }
     // Fetch author avatar after loading post
     await fetchAuthorAvatar()
+
+    // 加载锁定状态
+    try {
+      lockStatus.value = await api.getPostLockStatus(postId.value)
+    } catch (err) {
+      console.warn('Failed to load lock status:', err)
+      lockStatus.value = { id: postId.value, is_locked: false }
+    }
   } catch (err: any) {
     // 若普通详情接口拿不到，且当前用户具备管理权限，尝试从首页缓存里回退读取（隐藏贴在首页可见）
     const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
@@ -595,6 +773,14 @@ const loadPost = async () => {
         error.value = null
         // Fetch author avatar for cached post too
         await fetchAuthorAvatar()
+
+        // 加载锁定状态
+        try {
+          lockStatus.value = await api.getPostLockStatus(postId.value)
+        } catch (err) {
+          console.warn('Failed to load lock status:', err)
+          lockStatus.value = { id: postId.value, is_locked: false }
+        }
         return
       }
     }
@@ -643,6 +829,24 @@ const loadComments = async (page = 1) => {
 const loadMoreComments = () => {
   if (commentsData.value) {
     loadComments(commentsData.value.page + 1)
+  }
+}
+
+const toggleCommentPin = async (comment: CommentDto) => {
+  try {
+    const api = useApi()
+    let result: { is_pinned: boolean }
+    if (comment.is_pinned) {
+      result = await api.unpinComment(comment.id)
+      toast.success('已取消置顶')
+    } else {
+      result = await api.pinComment(comment.id)
+      toast.success('评论已置顶')
+    }
+    comment.is_pinned = result.is_pinned
+    await loadComments()
+  } catch (error: any) {
+    toast.error(error?.message || '操作失败')
   }
 }
 
@@ -822,6 +1026,41 @@ const toggleHide = async () => {
   }
 }
 
+const toggleLock = async () => {
+  if (!post.value || !lockStatus.value) return
+
+  const shouldLock = !lockStatus.value.is_locked
+
+  if (shouldLock) {
+    const { confirm } = useAdminDialog()
+    const confirmed = await confirm({
+      title: '确认锁定',
+      message: '锁定后普通用户将无法评论此帖子,确定要锁定吗？',
+      confirmText: '确认锁定',
+      cancelText: '取消'
+    })
+    if (!confirmed) return
+  }
+
+  actionLoading.value = true
+  try {
+    const api = useApi()
+    if (shouldLock) {
+      const result = await api.lockPost(post.value.id)
+      lockStatus.value = result
+      toast.success('帖子已锁定')
+    } else {
+      const result = await api.unlockPost(post.value.id)
+      lockStatus.value = result
+      toast.success('帖子已解锁')
+    }
+  } catch (err: any) {
+    toast.error(err?.message || '操作失败')
+  } finally {
+    actionLoading.value = false
+  }
+}
+
 const confirmDelete = () => {
   deleteReason.value = ''
   showDeleteModal.value = true
@@ -936,6 +1175,43 @@ const requestReview = async () => {
   }
 }
 
+const normalizeEditQueryValue = (value: LocationQueryValue | LocationQueryValue[] | undefined): string | undefined => {
+  if (Array.isArray(value)) {
+    return value[0]
+  }
+  return value
+}
+
+const shouldAutoOpenEdit = computed(() => {
+  const value = normalizeEditQueryValue(route.query.edit)
+  return value === '1' || value === 'true'
+})
+
+watch(shouldAutoOpenEdit, (shouldOpen) => {
+  if (!canEditPost.value) return
+  if (shouldOpen) {
+    if (post.value) {
+      openEditPost()
+    } else {
+      pendingOpenEdit.value = true
+    }
+  } else {
+    pendingOpenEdit.value = false
+    if (isEditingPost.value) {
+      closeEditPost()
+    }
+  }
+}, { immediate: true })
+
+watch(post, (newPost) => {
+  if (!newPost) return
+  if (!canEditPost.value) return
+  if (!shouldAutoOpenEdit.value) return
+  if (isEditingPost.value) return
+  pendingOpenEdit.value = false
+  openEditPost()
+})
+
 // Initialize
 onMounted(async () => {
   await loadPost()
@@ -983,4 +1259,19 @@ useHead(() => {
   }
 })
 </script>
+
+<style scoped>
+.pinned-comment {
+  background: linear-gradient(135deg, rgba(255, 92, 163, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border-left: 3px solid #e04a91;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(18px);
+}
+
+.pinned-comment:last-child {
+  margin-bottom: 0;
+}
+</style>
 

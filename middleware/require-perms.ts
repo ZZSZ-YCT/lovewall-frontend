@@ -1,11 +1,11 @@
 import type { PermissionType } from '~/types'
 
+// 后端已废弃 MANAGE_COMMENTS，统一改为 MANAGE_POSTS 管理帖子与评论
 const ADMIN_BASE_PERMS: PermissionType[] = [
   'MANAGE_USERS',
   'MANAGE_POSTS',
   'MANAGE_FEATURED',
   'MANAGE_ANNOUNCEMENTS',
-  'MANAGE_COMMENTS',
   'MANAGE_TAGS',
 ]
 
@@ -29,10 +29,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const displayName = (perm: PermissionType): string => {
     const map: Record<string, string> = {
       MANAGE_USERS: '用户管理',
-      MANAGE_POSTS: '帖子管理',
-      MANAGE_FEATURED: '精华管理',
+      MANAGE_POSTS: '帖子/评论管理',
+      MANAGE_FEATURED: '精选管理',
       MANAGE_ANNOUNCEMENTS: '公告管理',
-      MANAGE_COMMENTS: '评论管理',
       MANAGE_TAGS: '标签管理',
     }
     return map[perm] || perm

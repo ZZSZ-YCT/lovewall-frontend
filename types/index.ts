@@ -78,6 +78,7 @@ export interface PostDto {
   status: 0 | 1 // 0=显示, 1=隐藏 (拒绝后直接删除,不可查询)
   is_pinned: boolean
   is_featured: boolean
+  is_locked: boolean // 帖子是否被锁定 (默认 false)
   created_at: string
   updated_at: string
   author_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color'>
@@ -112,6 +113,7 @@ export interface CommentDto {
   is_user_admin?: boolean // 评论作者是否是管理员
   content: string
   status: 0 | 1 // 0=normal, 1=hidden
+  is_pinned: boolean // 评论是否被置顶 (默认 false)
   created_at: string
   updated_at?: string
   user_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color'>
@@ -290,12 +292,11 @@ export interface DeleteRedemptionCodesResponse {
 
 // Permission constants
 export const PERMISSIONS = {
-  MANAGE_POSTS: 'MANAGE_POSTS',
-  MANAGE_FEATURED: 'MANAGE_FEATURED',
-  MANAGE_COMMENTS: 'MANAGE_COMMENTS',
   MANAGE_USERS: 'MANAGE_USERS',
-  MANAGE_ANNOUNCEMENTS: 'MANAGE_ANNOUNCEMENTS',
+  MANAGE_POSTS: 'MANAGE_POSTS',
   MANAGE_TAGS: 'MANAGE_TAGS',
+  MANAGE_ANNOUNCEMENTS: 'MANAGE_ANNOUNCEMENTS',
+  MANAGE_FEATURED: 'MANAGE_FEATURED',
 } as const
 
 export type PermissionType = typeof PERMISSIONS[keyof typeof PERMISSIONS]

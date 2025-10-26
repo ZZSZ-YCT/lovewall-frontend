@@ -123,6 +123,14 @@
               已隐藏
             </span>
             
+            <div
+              v-if="post.is_locked"
+              class="inline-flex items-center gap-1 text-sm text-gray-500"
+            >
+              <LockIcon class="w-4 h-4" />
+              <span>已锁定</span>
+            </div>
+            
             <span class="text-xs text-gray-500 ml-auto">{{ formatDate(post.created_at) }}</span>
           </div>
         </div>
@@ -151,6 +159,14 @@
           
           <template v-if="canManagePost">
             <hr class="my-1 border-white/20">
+            <button
+              v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20 flex items-center gap-2"
+              @click="handleEdit"
+            >
+              <EditIcon class="w-4 h-4" />
+              <span>✏️ 编辑</span>
+            </button>
             <button
               v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
               class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
@@ -268,7 +284,7 @@
 </template>
 
 <script setup lang="ts">
-import {MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
+import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
@@ -367,8 +383,7 @@ const handleAuthorAvatarError = () => {
 const canManage = computed(() => {
   return auth.isAuthenticated && (
     auth.isSuperadmin ||
-    auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS']) ||
-    auth.currentUser?.id === props.post.author_id
+    auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])
   )
 })
 
@@ -397,6 +412,11 @@ const shareData = computed(() => {
 
 const goDetail = async () => {
   await navigateTo(`/posts/${props.post.id}`)
+}
+
+const handleEdit = async () => {
+  showDropdown.value = false
+  await navigateTo(`/posts/${props.post.id}?edit=1`)
 }
 
 // Navigate to author profile

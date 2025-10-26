@@ -131,7 +131,8 @@ const canManageUsers = computed(() =>
 )
 
 const canManageComments = computed(() => 
-  auth.isSuperadmin || auth.hasPerm('MANAGE_COMMENTS')
+  // 后端已废弃 MANAGE_COMMENTS，统一由 MANAGE_POSTS 控制评论权限
+  auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
 )
 
 const canManageAnnouncements = computed(() => 
@@ -146,10 +147,9 @@ const canManageTags = computed(() =>
 const getPermissionName = (perm: string): string => {
   const names: Record<string, string> = {
     'MANAGE_USERS': '用户管理',
-    'MANAGE_POSTS': '帖子管理',
-    'MANAGE_FEATURED': '精华管理',
+    'MANAGE_POSTS': '帖子/评论管理',
+    'MANAGE_FEATURED': '精选管理',
     'MANAGE_ANNOUNCEMENTS': '公告管理',
-    'MANAGE_COMMENTS': '评论管理',
     'MANAGE_TAGS': '标签管理',
   }
   return names[perm] || perm
