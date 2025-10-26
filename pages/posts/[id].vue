@@ -30,6 +30,7 @@
               :alt-prefix="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? `${post.author_name}对${post.target_name}的表白` : `${post.author_name}的交流`"
             />
             <div
+              v-if="!post.images?.length"
               class="relative w-24 h-24 mx-auto flex-shrink-0 transition-transform hover:scale-105 cursor-pointer"
               @click="navigateToUser(post)"
             >
