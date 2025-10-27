@@ -157,28 +157,8 @@ const home = useHomeStore()
 const {isMobile, isTablet} = useDevice()
 
 // State
-// 首页展示：置顶始终靠前
-const posts = computed(() => {
-  const arr = home.posts as PostDto[]
-  const score = (p: PostDto) => {
-    if ((p as any).status === 2) return 5
-    if ((p as any).status === 1) return 4
-    if (p.is_pinned && p.is_featured) return 0
-    if (p.is_pinned) return 1
-    if (p.is_featured) return 2
-    return 3
-  }
-  const sorted = (arr || []).slice().sort((a, b) => {
-    const sa = score(a)
-    const sb = score(b)
-    if (sa !== sb) return sa - sb
-    const at = new Date(a.created_at).getTime()
-    const bt = new Date(b.created_at).getTime()
-    return bt - at
-  })
-  console.log('Index: posts recalculated, count:', sorted.length)
-  return sorted
-})
+// 首页展示：置顶始终靠前（由 store 负责排序）
+const posts = computed(() => home.posts as PostDto[])
 const loading = computed(() => home.loading)
 const loadingMore = computed(() => home.loadingMore)
 computed(() => home.page);
@@ -232,9 +212,7 @@ watch(layoutMode, (newLayout) => {
 // Refresh all posts
 const refreshPosts = async () => {
   try {
-    console.log('[Index] Refresh button clicked')
-    await home.refresh()
-    console.log('[Index] Refresh completed')
+    await home.forceRefresh()
   } catch (e) {
     console.error('[Index] Refresh failed', e)
   }
@@ -243,39 +221,32 @@ const refreshPosts = async () => {
 // Load more posts
 const loadMore = async () => {
   try {
-    console.log('[Index] Load more clicked')
     await home.loadMore()
-    console.log('[Index] Load more completed')
   } catch (e) {
     console.error('[Index] Load more failed', e)
   }
 }
 
+const waitForAuthInitialization = () => new Promise<void>((resolve) => {
+  if (auth.initialized) {
+    resolve()
+    return
+  }
+  const stop = watch(
+    () => auth.initialized,
+    (initialized) => {
+      if (!initialized) return
+      stop()
+      resolve()
+    },
+    { immediate: true }
+  )
+})
+
 // Initialize - load data when page mounts
 onMounted(async () => {
-  console.log('Index: onMounted called')
-  
-  // 等待认证初始化完成
-  if (!auth.initialized) {
-    console.log('Index: waiting for auth initialization...')
-    // 简单等待机制
-    const maxWait = 50 // 最多等待5秒
-    let waitCount = 0
-    while (!auth.initialized && waitCount < maxWait) {
-      await new Promise(resolve => setTimeout(resolve, 100))
-      waitCount++
-    }
-  }
-  
-  console.log('Index: auth state:', {
-    isAuthenticated: auth.isAuthenticated,
-    currentUser: auth.currentUser?.id,
-    isSuperadmin: auth.isSuperadmin,
-    initialized: auth.initialized
-  })
-  
-  await home.forceRefresh()
-  console.log('Index: forceRefresh completed')
+  await waitForAuthInitialization()
+  await home.initialLoad()
 })
 
 // Use Vue Router 4 composition guard signature (no next)
@@ -284,8 +255,7 @@ onBeforeRouteUpdate((to, from) => {
     return
   }
 
-  console.log('Index: onBeforeRouteUpdate triggered', { to: to.fullPath })
-  home.forceRefresh().catch((error) => {
+  home.refreshIfStale().catch((error) => {
     console.error('Index: onBeforeRouteUpdate refresh failed', error)
   })
 })
@@ -293,8 +263,7 @@ onBeforeRouteUpdate((to, from) => {
 // When returning to this page via in-app navigation, refresh to ensure data is shown
 onActivated(async () => {
   try {
-    console.log('Index: onActivated refresh')
-    await home.forceRefresh()
+    await home.refreshIfStale()
   } catch (e) {
     console.error('Index: onActivated refresh failed', e)
   }

@@ -1,6 +1,158 @@
 import { defineStore } from 'pinia'
 import type { PostDto, Pagination } from '~/types'
 
+const REFRESH_TTL = 30_000 // 30 seconds cache window
+
+const scorePost = (p: PostDto) => {
+  if ((p as any).status === 2) return 5
+  if ((p as any).status === 1) return 4
+  if (p.is_pinned && p.is_featured) return 0
+  if (p.is_pinned) return 1
+  if (p.is_featured) return 2
+  return 3
+}
+
+const createdAtCache = new WeakMap<PostDto, number>()
+
+const getCreatedAt = (post: PostDto) => {
+  const cached = createdAtCache.get(post)
+  if (cached !== undefined) {
+    return cached
+  }
+  const value = new Date(post.created_at).getTime()
+  createdAtCache.set(post, value)
+  return value
+}
+
+const comparePosts = (a: PostDto, b: PostDto) => {
+  const sa = scorePost(a)
+  const sb = scorePost(b)
+  if (sa !== sb) return sa - sb
+  const at = getCreatedAt(a)
+  const bt = getCreatedAt(b)
+  return bt - at
+}
+
+const sortPosts = (posts: PostDto[]) => [...posts].sort(comparePosts)
+
+const mergeSortedPosts = (existing: PostDto[], incoming: PostDto[]) => {
+  if (!existing.length) return sortPosts(incoming)
+  if (!incoming.length) return existing.slice()
+
+  const sortedIncoming = sortPosts(incoming)
+  const merged: PostDto[] = []
+  let i = 0
+  let j = 0
+
+  while (i < existing.length && j < sortedIncoming.length) {
+    if (comparePosts(existing[i], sortedIncoming[j]) <= 0) {
+      merged.push(existing[i])
+      i++
+    } else {
+      merged.push(sortedIncoming[j])
+      j++
+    }
+  }
+
+  while (i < existing.length) {
+    merged.push(existing[i])
+    i++
+  }
+
+  while (j < sortedIncoming.length) {
+    merged.push(sortedIncoming[j])
+    j++
+  }
+
+  return merged
+}
+
+const normalizeStatus = (s: any): 0 | 1 => {
+  if (typeof s === 'number') return s === 1 ? 1 : 0
+  if (typeof s === 'string' && s.toLowerCase().includes('hide')) return 1
+  return 0
+}
+
+const normalizeImages = (p: any): string[] => {
+  if (Array.isArray(p.images) && p.images.length > 0) return p.images
+  if (p.images && typeof p.images === 'string') return [String(p.images)]
+  if (p.image_path) return [p.image_path]
+  if (p.image_url) return [p.image_url]
+  return []
+}
+
+const normalizePost = (p: any): PostDto => {
+  const createdAt = p.created_at ?? new Date().toISOString()
+  const normalized: PostDto = {
+    id: String(p.id),
+    author_id: String(p.author_id ?? p.user_id ?? ''),
+    author_name: String(p.author_name ?? p.author_display_name ?? p.author_username ?? '匿名'),
+    target_name: String(p.target_name ?? p.to_name ?? 'TA'),
+    content: String(p.content ?? ''),
+    images: normalizeImages(p),
+    status: normalizeStatus(p.status),
+    is_pinned: !!p.is_pinned,
+    is_featured: !!p.is_featured,
+    created_at: createdAt,
+    updated_at: p.updated_at ?? createdAt,
+    author_tag: p.author_tag,
+    is_author_admin: p.is_author_admin,
+    moderation_reason: p.moderation_reason ?? null,
+    view_count: p.view_count,
+    comment_count: p.comment_count,
+    audit_status: p.audit_status,
+    audit_msg: p.audit_msg,
+    manual_review_requested: p.manual_review_requested,
+  }
+  createdAtCache.set(normalized, new Date(normalized.created_at).getTime())
+  return normalized
+}
+
+const extractItems = (response: any): any[] => {
+  if (!response) return []
+  if (Array.isArray(response.items)) return response.items
+  if (Array.isArray(response.list)) return response.list
+  if (Array.isArray(response.records)) return response.records
+  if (Array.isArray(response.rows)) return response.rows
+  if (Array.isArray(response.data)) return response.data
+  return []
+}
+
+const dedupeById = (posts: PostDto[]) => {
+  const seen = new Set<string>()
+  return posts.filter((post) => {
+    if (seen.has(post.id)) return false
+    seen.add(post.id)
+    return true
+  })
+}
+
+const getPostFingerprint = (post: PostDto) => [
+  post.id,
+  post.updated_at,
+  post.status,
+  Number(post.is_pinned),
+  Number(post.is_featured),
+  post.view_count ?? '',
+  post.comment_count ?? '',
+  post.moderation_reason ?? '',
+  post.audit_status ?? '',
+  post.audit_msg ?? '',
+  Number(post.manual_review_requested ?? 0),
+  Number(post.is_author_admin ?? 0),
+].join('|')
+
+const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
+  if (a === b) return true
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (getPostFingerprint(a[i]) !== getPostFingerprint(b[i])) {
+      return false
+    }
+  }
+  return true
+}
+
 interface HomeState {
   posts: PostDto[]
   pinned: PostDto[]
@@ -30,32 +182,32 @@ export const useHomeStore = defineStore('home', {
   getters: {
     hasData: (s) => s.loaded && (s.posts.length > 0 || s.pinned.length > 0 || s.featured.length > 0),
     // 全局排序优先级: 置顶+精华 > 置顶 > 精华 > 普通 > 隐藏
-    sortedPosts: (s) =>
-      s.posts.slice().sort((a, b) => {
-        const score = (p: PostDto) => {
-          if (p.status === 1) return 4
-          // status === 0
-          if (p.is_pinned && p.is_featured) return 0
-          if (p.is_pinned) return 1
-          if (p.is_featured) return 2
-          return 3
-        }
-        const sa = score(a)
-        const sb = score(b)
-        if (sa !== sb) return sa - sb
-        // Newest first within same class
-        const at = new Date(a.created_at).getTime()
-        const bt = new Date(b.created_at).getTime()
-        return bt - at
-      }),
+    sortedPosts: (s) => sortPosts(s.posts),
   },
   actions: {
-    // Force refresh data every time (no caching)
-    async initialLoad() {
+    shouldRefresh(maxAge = REFRESH_TTL) {
+      if (!this.loaded || !this.lastLoadedAt) return true
+      return Date.now() - this.lastLoadedAt > maxAge
+    },
+
+    async refreshIfStale(maxAge = REFRESH_TTL) {
+      if (this.loading || !this.shouldRefresh(maxAge)) {
+        return
+      }
       await this.forceRefresh()
     },
 
+    async initialLoad() {
+      if (this.loading) return
+      if (!this.loaded) {
+        await this.forceRefresh()
+        return
+      }
+      await this.refreshIfStale()
+    },
+
     async forceRefresh() {
+      if (this.loading) return
       this.loading = true
       try {
         const api = useApi()
@@ -65,14 +217,11 @@ export const useHomeStore = defineStore('home', {
         
         // Add timestamp to prevent caching
         const timestamp = Date.now()
-        const params = { 
-          page: 1, 
+        const params = {
+          page: 1,
           page_size: pageSize,
-          _t: timestamp 
+          _t: timestamp,
         }
-        
-        console.log('HomeStore: Starting forceRefresh, params:', params)
-        console.log('HomeStore: API instance created')
         
         // 简化调用，只使用 listPosts，管理员通过前端筛选
         const [listResp, pinnedResp, featuredResp] = await Promise.all([
@@ -81,87 +230,30 @@ export const useHomeStore = defineStore('home', {
           api.listPosts({ featured: true, page_size: 6, _t: timestamp }),
         ])
         
-        console.log('HomeStore: API responses received:', {
-          listResp: listResp,
-          listCount: listResp.items?.length || 0,
-          pinnedCount: pinnedResp.items?.length || 0,
-          featuredCount: featuredResp.items?.length || 0
-        })
-        
-        // Normalize shape to be robust against slight backend variations
-        const normalizeStatus = (s: any): 0 | 1 => {
-          if (typeof s === 'number') return s === 1 ? 1 : 0
-          if (typeof s === 'string' && s.toLowerCase().includes('hide')) return 1
-          return 0
-        }
-        // 统一的图片字段规范化函数
-        const normalizeImages = (p: any): string[] => {
-          if (Array.isArray(p.images) && p.images.length > 0) return p.images
-          if (p.images && typeof p.images === 'string') return [String(p.images)]
-          if (p.image_path) return [p.image_path]
-          if (p.image_url) return [p.image_url]
-          return []
+        const rawItems = extractItems(listResp)
+        const normalizedItems = dedupeById(rawItems.map(normalizePost))
+        const filteredPosts = canModerate
+          ? normalizedItems
+          : normalizedItems.filter((p: PostDto) => p.status === 0)
+        const sortedPosts = sortPosts(filteredPosts)
+
+        if (!postsAreIdentical(this.posts, sortedPosts)) {
+          this.posts = sortedPosts
         }
 
-        const normalizePost = (p: any): PostDto => ({
-          id: String(p.id),
-          author_id: String(p.author_id ?? p.user_id ?? ''),
-          author_name: String(p.author_name ?? p.author_display_name ?? p.author_username ?? '匿名'),
-          target_name: String(p.target_name ?? p.to_name ?? 'TA'),
-          content: String(p.content ?? ''),
-          images: normalizeImages(p),
-          status: normalizeStatus(p.status),
-          is_pinned: !!p.is_pinned,
-          is_featured: !!p.is_featured,
-          created_at: p.created_at ?? new Date().toISOString(),
-          updated_at: p.updated_at ?? p.created_at ?? new Date().toISOString(),
-          author_tag: p.author_tag,
-          is_author_admin: p.is_author_admin,
-          moderation_reason: p.moderation_reason ?? null,
-          view_count: p.view_count,
-          comment_count: p.comment_count,
-          audit_status: p.audit_status,
-          audit_msg: p.audit_msg,
-          manual_review_requested: p.manual_review_requested,
-        })
-
-        const rawItems: any[] = (listResp as any)?.items
-          ?? (listResp as any)?.list
-          ?? (listResp as any)?.records
-          ?? (listResp as any)?.rows
-          ?? (Array.isArray((listResp as any)?.data) ? (listResp as any).data : [])
-        const normalizedItems: PostDto[] = (rawItems || []).map(normalizePost)
-        if (canModerate) {
-          this.posts = normalizedItems
-          console.log('HomeStore: Filtered posts for moderator:', this.posts.length)
-        } else {
-          this.posts = normalizedItems.filter((p: PostDto) => p.status === 0)
-          console.log('HomeStore: Filtered posts for user:', this.posts.length)
+        const normalizedPinned = dedupeById(extractItems(pinnedResp).map(normalizePost))
+        const normalizedFeatured = dedupeById(extractItems(featuredResp).map(normalizePost))
+        if (!postsAreIdentical(this.pinned, normalizedPinned)) {
+          this.pinned = normalizedPinned
         }
-
-        const pinnedRaw: any[] = (pinnedResp as any)?.items
-          ?? (pinnedResp as any)?.list
-          ?? (pinnedResp as any)?.records
-          ?? (pinnedResp as any)?.rows
-          ?? (Array.isArray((pinnedResp as any)?.data) ? (pinnedResp as any).data : [])
-        const featuredRaw: any[] = (featuredResp as any)?.items
-          ?? (featuredResp as any)?.list
-          ?? (featuredResp as any)?.records
-          ?? (featuredResp as any)?.rows
-          ?? (Array.isArray((featuredResp as any)?.data) ? (featuredResp as any).data : [])
-        this.pinned = (pinnedRaw || []).map(normalizePost)
-        this.featured = (featuredRaw || []).map(normalizePost)
+        if (!postsAreIdentical(this.featured, normalizedFeatured)) {
+          this.featured = normalizedFeatured
+        }
         this.page = 1
-        this.hasMore = (rawItems || []).length === pageSize
+        this.hasMore = rawItems.length === pageSize
         this.loaded = true
         this.lastLoadedAt = Date.now()
-        
-        console.log('HomeStore: Final state:', {
-          postsCount: this.posts.length,
-          pinnedCount: this.pinned.length,
-          featuredCount: this.featured.length,
-          loaded: this.loaded
-        })
+
       } catch (error) {
         console.error('HomeStore: Failed to refresh posts:', error)
         // 显示友好的错误信息
@@ -196,49 +288,23 @@ export const useHomeStore = defineStore('home', {
 
         const listResp: Pagination<PostDto> = await api.listPosts(params)
 
-        // 统一的图片字段规范化函数
-        const normalizeImages = (p: any): string[] => {
-          if (Array.isArray(p.images) && p.images.length > 0) return p.images
-          if (p.images && typeof p.images === 'string') return [String(p.images)]
-          if (p.image_path) return [p.image_path]
-          if (p.image_url) return [p.image_url]
-          return []
-        }
-
-        // 普通用户只能看到正常帖子，管理员可以看到隐藏的帖子
-        const itemsRaw: any[] = (listResp as any)?.items
-          ?? (listResp as any)?.list
-          ?? (listResp as any)?.records
-          ?? (listResp as any)?.rows
-          ?? (Array.isArray((listResp as any)?.data) ? (listResp as any).data : [])
-        const normalizeStatus = (s: any): 0 | 1 => {
-          if (typeof s === 'number') return s === 1 ? 1 : 0
-          if (typeof s === 'string' && s.toLowerCase().includes('hide')) return 1
-          return 0
-        }
-
-        const items = itemsRaw.map((p: any) => ({
-          id: String(p.id),
-          author_id: String(p.author_id ?? p.user_id ?? ''),
-          author_name: String(p.author_name ?? p.author_display_name ?? p.author_username ?? '匿名'),
-          target_name: String(p.target_name ?? p.to_name ?? 'TA'),
-          content: String(p.content ?? ''),
-          images: normalizeImages(p),
-          status: normalizeStatus((p as any).status),
-          is_pinned: !!(p as any).is_pinned,
-          is_featured: !!(p as any).is_featured,
-          created_at: (p as any).created_at ?? new Date().toISOString(),
-          updated_at: (p as any).updated_at ?? (p as any).created_at ?? new Date().toISOString(),
-          author_tag: p.author_tag,
-          is_author_admin: p.is_author_admin,
-        } as PostDto))
+        const itemsRaw = extractItems(listResp)
+        const items = dedupeById(itemsRaw.map(normalizePost))
         const newPosts = canModerate
           ? items
           : items.filter((p: PostDto) => p.status === 0)
-          
-        this.posts.push(...newPosts)
+
+        const existingIds = new Set(this.posts.map((post) => post.id))
+        const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
+
+        if (uniqueNewPosts.length > 0) {
+          const merged = mergeSortedPosts(this.posts, uniqueNewPosts)
+          if (!postsAreIdentical(this.posts, merged)) {
+            this.posts = merged
+          }
+        }
         this.page = next
-        this.hasMore = (itemsRaw || []).length === pageSize
+        this.hasMore = itemsRaw.length === pageSize
       } catch (error) {
         console.error('Failed to load more posts:', error)
         const toast = useToast()
