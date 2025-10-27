@@ -254,16 +254,16 @@ export const useApi = () => {
       
       // 只包含有变化的字段
       if (data.display_name !== undefined) {
-        requestData.display_name = data.display_name || null
+        requestData.display_name = data.display_name ?? null
       }
       if (data.email !== undefined) {
-        requestData.email = data.email || null
+        requestData.email = data.email ?? null
       }
       if (data.phone !== undefined) {
-        requestData.phone = data.phone || null
+        requestData.phone = data.phone ?? null
       }
       if (data.bio !== undefined) {
-        requestData.bio = data.bio || null
+        requestData.bio = data.bio ?? null
       }
       if (data.avatar) {
         // 转换为base64格式
