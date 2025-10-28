@@ -6,7 +6,7 @@
   >
     <!-- Output window -->
     <div ref="scroll" class="flex-1 overflow-y-auto space-y-1 no-scrollbar">
-      <div v-for="(line, i) in history" :key="i" class="whitespace-pre-wrap">
+      <div v-for="line in history" :key="line.id" class="whitespace-pre-wrap">
         <template v-if="line.type === 'input'">
           <span class="text-emerald-400">$</span> {{ line.text }}
         </template>
@@ -84,23 +84,25 @@ function onContainerClick(e: MouseEvent) {
 
 async function onEnter() {
   const value = input.value
-  if (!value.trim()) return
 
   if (busy.value && !isPrompting()) {
     return
   }
 
-  issuedInputs.value.push(value)
-  cursor.value = -1
-  input.value = ''
-
   if (isPrompting()) {
+    input.value = ''
     submitPromptInput(value)
     await nextTick()
     scrollToBottom()
     focusInput()
     return
   }
+
+  if (!value.trim()) return
+
+  issuedInputs.value.push(value)
+  cursor.value = -1
+  input.value = ''
 
   await run(value)
 

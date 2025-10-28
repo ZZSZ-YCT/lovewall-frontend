@@ -16,7 +16,7 @@ export function registerAuthCommands() {
         const [username] = parsed.argv as [string]
         println(`Username: ${username}`)
 
-        const password = await promptInput('Password', { mask: true })
+        const password = await promptInput('Password:', { mask: true })
 
         const { open } = useCaptchaGate()
 
@@ -87,9 +87,9 @@ export function registerAuthCommands() {
         println(`Privacy Policy: ${useRequestURL().origin}/privacy_en`)
         println()
 
-        const choice = await promptInput('Agree? (Y/n)', { mask: false })
-        if (choice == 'n') {
-          println("Please agree to our terms for the next step")
+        const choice = await promptInput('Agree? (Y/n):')
+        if (choice.toLowerCase() == 'n' || choice.toLowerCase() == 'no') {
+          println("Please agree to our terms to continue")
           return
         }
 
