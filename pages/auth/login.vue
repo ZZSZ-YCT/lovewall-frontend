@@ -217,6 +217,7 @@ watch(
 // Page meta
 definePageMeta({
   title: '登录 - 郑州四中表白墙',
-  description: '登录郑州四中表白墙账户'
+  description: '登录郑州四中表白墙账户',
+  ssr: false
 })
 </script>

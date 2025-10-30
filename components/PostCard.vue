@@ -4,7 +4,8 @@
       variant === 'list' ? 'post-card-list' : 'post-card',
       'cursor-pointer group relative overflow-hidden',
       'transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg',
-      deviceType === 'mobile' ? 'rounded-2xl' : 'rounded-3xl'
+      'rounded-3xl',
+      isMobile && 'rounded-2xl sm:rounded-3xl',
     ]" 
     @click="goDetail"
   >
@@ -12,14 +13,14 @@
     <div
 :class="[
       'flex items-center justify-between pb-3',
-      deviceType === 'mobile' ? 'px-3 pt-3' : 'px-4 pt-4'
+      isMobile ? 'px-3 pt-3' : 'px-4 pt-4'
     ]">
       <div class="flex items-center gap-3 flex-1 min-w-0">
         <!-- Author Avatar -->
         <div
           :class="[
             'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer',
-            deviceType === 'mobile' ? 'w-8 h-8' : 'w-10 h-10'
+            isMobile ? 'w-8 h-8' : 'w-10 h-10'
           ]"
           @click.stop="navigateToAuthor"
         >
@@ -34,14 +35,14 @@
           </template>
 
           <!-- 头像容器 -->
-          <img
+          <NuxtImg
             v-if="authorHasAvatar === true && authorAvatar"
             :src="authorAvatar"
             :alt="post.author_name"
             class="relative z-10 w-full h-full rounded-full object-cover"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
             @error="handleAuthorAvatarError"
-          >
+          />
 
           <!-- Transparent placeholder while loading/unknown -->
           <div
@@ -55,7 +56,7 @@
             v-else
             class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-medium"
             :class="[
-              deviceType === 'mobile' ? 'text-xs' : 'text-sm',
+              isMobile ? 'text-xs' : 'text-sm',
               post.is_author_admin ? 'border-0' : 'border-2 border-white/20'
             ]"
           >
@@ -67,12 +68,12 @@
           <div
 :class="[
             'flex items-center gap-2',
-            deviceType === 'mobile' ? 'mb-0.5' : 'mb-1'
+            isMobile ? 'mb-0.5' : 'mb-1'
           ]">
             <h3
 :class="[
               'font-semibold text-gray-900 cursor-pointer hover:text-brand-600 transition-colors truncate',
-              deviceType === 'mobile' ? 'text-sm' : 'text-base'
+              isMobile ? 'text-sm' : 'text-base'
             ]" @click.stop="navigateToAuthor">
               {{ post.author_name }}
             </h3>
@@ -136,86 +137,91 @@
         </div>
       </div>
 
-      <!-- Actions dropdown -->
-      <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
-        <button
-          class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
-          @click="showDropdown = !showDropdown"
+      <ClientOnly>
+        <!-- Actions dropdown -->
+        <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
+          <button
+            class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
+            @click="showDropdown = !showDropdown"
           >
             <MoreVerticalIcon class="w-4 h-4" />
           </button>
 
-        <div
-          v-if="showDropdown"
-          class="absolute right-0 mt-1 w-48 glass-card py-2 shadow-lg z-50"
-        >
-          <NuxtLink
-            :to="`/posts/${post.id}`"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-            @click="showDropdown = false"
+          <div
+            v-if="showDropdown"
+            class="absolute right-0 mt-1 w-48 glass-card py-2 shadow-lg z-50"
+          >
+            <NuxtLink
+              :to="`/posts/${post.id}`"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+              @click="showDropdown = false"
             >
               查看详情
             </NuxtLink>
-          
-          <template v-if="canManagePost">
-            <hr class="my-1 border-white/20">
-            <button
-              v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20 flex items-center gap-2"
-              @click="handleEdit"
-            >
-              <EditIcon class="w-4 h-4" />
-              <span>✏️ 编辑</span>
-            </button>
-            <button
-              v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-              @click="handlePin(!post.is_pinned)"
-            >
-              {{ post.is_pinned ? '取消置顶' : '置顶' }}
-            </button>
-            
-            <button
-              v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-              @click="handleFeature(!post.is_featured)"
-            >
-              {{ post.is_featured ? '取消精华' : '设为精华' }}
-            </button>
-            
-            <button
-              v-if="auth.hasPerm('MANAGE_POSTS')"
-              class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
-              @click="handleHide"
-            >
-              {{ post.status === 0 ? '隐藏' : '恢复' }}
-            </button>
-            
-            <button
-              v-if="auth.hasPerm('MANAGE_POSTS')"
-              class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
-              @click="handleDelete"
-            >
-              删除
-            </button>
-          </template>
+
+            <template v-if="canManagePost">
+              <hr class="my-1 border-white/20">
+              <button
+                v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20 flex items-center gap-2"
+                @click="handleEdit"
+              >
+                <EditIcon class="w-4 h-4" />
+                <span>✏️ 编辑</span>
+              </button>
+              <button
+                v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                @click="handlePin(!post.is_pinned)"
+              >
+                {{ post.is_pinned ? '取消置顶' : '置顶' }}
+              </button>
+
+              <button
+                v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
+                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                @click="handleFeature(!post.is_featured)"
+              >
+                {{ post.is_featured ? '取消精华' : '设为精华' }}
+              </button>
+
+              <button
+                v-if="auth.hasPerm('MANAGE_POSTS')"
+                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
+                @click="handleHide"
+              >
+                {{ post.status === 0 ? '隐藏' : '恢复' }}
+              </button>
+
+              <button
+                v-if="auth.hasPerm('MANAGE_POSTS')"
+                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
+                @click="handleDelete"
+              >
+                删除
+              </button>
+            </template>
+          </div>
         </div>
-      </div>
+        <template #fallback>
+          <div class="relative flex-shrink-0 invisible"></div>
+        </template>
+      </ClientOnly>
     </div>
 
     <!-- Content -->
     <div
 :class="[
       'pb-3',
-      deviceType === 'mobile' ? 'px-3' : 'px-4'
+      isMobile ? 'px-3' : 'px-4'
     ]">
       <!-- Love declaration -->
-      <div :class="deviceType === 'mobile' ? 'mb-2' : 'mb-3'">
+      <div :class="isMobile ? 'mb-2' : 'mb-3'">
         <p
           v-if="(post.card_type !== 'communication' && post.card_type !== 'social') && post.target_name"
           :class="[
             'font-medium text-gray-900 mb-2',
-            deviceType === 'mobile' ? 'text-base' : 'text-lg'
+            isMobile ? 'text-base' : 'text-lg'
           ]"
         >
           → {{ post.target_name }}
@@ -223,9 +229,9 @@
         <p
 :class="[
           'text-gray-700 leading-relaxed',
-          deviceType === 'mobile' ? 'text-xs' : 'text-sm',
-          { 'line-clamp-3': !expanded && deviceType === 'mobile' },
-          { 'line-clamp-4': !expanded && deviceType !== 'mobile' }
+          isMobile ? 'text-xs' : 'text-sm',
+          { 'line-clamp-3': !expanded && isMobile },
+          { 'line-clamp-4': !expanded && !isMobile }
         ]">
           {{ post.content }}
         </p>
@@ -245,7 +251,7 @@
       v-if="post.images?.length"
       :class="[
         'pb-3',
-        deviceType === 'mobile' ? 'px-3' : 'px-4'
+        isMobile ? 'px-3' : 'px-4'
       ]"
       @click.stop
     >
@@ -259,13 +265,13 @@
     <div
 :class="[
       'flex items-center justify-between border-t border-white/10',
-      deviceType === 'mobile' ? 'px-3 py-2' : 'px-4 py-3'
+      isMobile ? 'px-3 py-2' : 'px-4 py-3'
     ]">
       <div class="flex items-center gap-4">
         <ShareButton
           :data="shareData"
-          :show-text="deviceType !== 'mobile'"
-          :size="deviceType === 'mobile' ? 'sm' : 'md'"
+          :show-text="!isMobile"
+          :size="isMobile ? 'sm' : 'md'"
           mode="smart"
           @click.stop
         />
@@ -274,7 +280,7 @@
       <div
 :class="[
         'text-gray-400',
-        deviceType === 'mobile' ? 'text-xs' : 'text-sm'
+        isMobile ? 'text-xs' : 'text-sm'
       ]">
         {{ formatTimeAgo(post.created_at) }}
       </div>
@@ -314,7 +320,7 @@ const api = useApi()
 const toast = useToast()
 const assetUrl = useAssetUrl()
 const router = useRouter()
-const { deviceType, isMobile } = useDevice()
+const { isMobile } = useDeviceSafe()
 const { confirm: confirmDialog } = useAdminDialog()
 const { prompt: promptDialog } = useAdminDialog()
 

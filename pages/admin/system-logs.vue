@@ -39,4 +39,8 @@ import {
 } from 'lucide-vue-next'
 
 import {activeLogType, logsData} from "~/server/useSystemLogs.js";
+
+definePageMeta({
+  ssr: false
+})
 </script>

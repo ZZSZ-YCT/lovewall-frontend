@@ -791,7 +791,8 @@ import GlassCard from "~/components/ui/GlassCard.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
-  requiredPerms: ['MANAGE_TAGS']
+  requiredPerms: ['MANAGE_TAGS'],
+  ssr: false
 })
 
 // Stores

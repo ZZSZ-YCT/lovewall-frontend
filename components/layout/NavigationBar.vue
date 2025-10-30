@@ -107,14 +107,14 @@
                   />
 
                   <!-- 头像 -->
-                  <img
+                  <NuxtImg
                     :src="assetUrl(auth.currentUser.avatar_url)"
                     :alt="auth.userDisplayName"
                     :class="[
                       'relative rounded-full object-cover border border-white/20',
                       isMobile ? 'w-5 h-5' : 'w-6 h-6'
                     ]"
-                  >
+                  />
                 </div>
                 <UserIcon v-else :class="isMobile ? 'w-5 h-5' : 'w-6 h-6'" />
                 <span v-if="!isMobile" class="hidden sm:block">{{ auth.userDisplayName }}</span>
@@ -258,7 +258,7 @@ import { onClickOutside } from '@vueuse/core'
 const auth = useAuthStore()
 const api = useApi()
 const assetUrl = useAssetUrl()
-const { isMobile, deviceType } = useDevice()
+const { isMobile } = useDeviceSafe()
 const showUserMenu = ref(false)
 const showMobileMenu = ref(false)
 const userMenuRef = ref<HTMLElement>()

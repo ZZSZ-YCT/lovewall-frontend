@@ -180,11 +180,11 @@
                   :key="`preview-${index}`"
                   class="relative group"
                 >
-                  <img
+                  <NuxtImg
                     :src="preview"
                     alt="预览图片"
                     class="w-full h-40 object-cover rounded-lg border border-white/20"
-                  >
+                  />
                   <button
                     type="button"
                     class="absolute -top-2 -right-2 p-1 bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition"
@@ -285,6 +285,7 @@
               <li>• 发布后的内容会公开显示，请注意隐私保护</li>
               <li>• 不当内容可能会被管理员隐藏或删除</li>
             </ul>
+            <h3 class="font-medium text-gray-900 mb-2">注：由于缓存原因，帖子可能需要一段时间才能完成更新</h3>
           </div>
         </div>
       </GlassCard>
@@ -557,6 +558,7 @@ definePageMeta({
   title: '发布信息 - 郑州四中表白墙',
   description: '发布您的表白内容',
   middleware: ['auth'],
+  ssr: false
 })
 
 useHead({

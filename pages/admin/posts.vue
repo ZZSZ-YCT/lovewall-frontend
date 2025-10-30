@@ -108,12 +108,12 @@
             <div class="flex gap-6">
               <!-- Image -->
               <div class="w-32 flex-shrink-0">
-                <img
+                <NuxtPicture
                   v-if="post.images?.length"
                   :src="assetUrl(post.images[0])"
                   :alt="`${post.author_name}对${post.target_name}的表白`"
                   class="w-32 h-32 object-cover rounded-xl"
-                >
+                />
               </div>
 
               <!-- Content -->
@@ -464,7 +464,8 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
-  anyPerms: ['MANAGE_POSTS', 'MANAGE_FEATURED']
+  anyPerms: ['MANAGE_POSTS', 'MANAGE_FEATURED'],
+  ssr: false
 })
 
 // Stores

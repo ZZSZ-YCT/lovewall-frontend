@@ -4,17 +4,43 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   components: true,
   
-  // SPA mode
-  ssr: false,
-  
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@vueuse/nuxt',
-    '@nuxt/eslint'
+    '@nuxt/eslint',
+    '@nuxt/image'
   ],
-  
-  // 添加页面过渡效果
+
+  image: {
+    provider: 'ipx',
+    domains: [
+      new URL(process.env.NUXT_PUBLIC_API_BASE ?? "http://localhost").host,
+      new URL(process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL ?? "http://localhost").host,
+    ],
+    formats: ['webp'],
+    inject: true,
+    presets: {
+      default: {
+        modifiers: {
+          format: 'webp'
+        }
+      }
+    }
+  },
+
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        prependPath: true,
+        ws: true
+      }
+    },
+    preset: process.env.NODE_ENV === 'production' ? 'bun' : undefined
+  },
+
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -38,37 +64,23 @@ export default defineNuxtConfig({
       ]
     }
   },
-  
-  // 确保代理配置正确 - SPA 模式下用 vite.server.proxy
+
   vite: {
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     },
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://127.0.0.1:8124',
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, '/api'),
-        }
-      }
-    }
   },
   
   runtimeConfig: {
     // Private runtime config (server only)
     geeTestKey: process.env.NUXT_GEETEST_KEY,
     public: {
-      // API 基址：优先使用环境变量，其次回落到同域 `/api`
-      // 在生产环境设置 NUXT_PUBLIC_API_BASE，例如：
-      //   https://api.example.com/api  或  http://127.0.0.1:8124/api
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       randomImageApiUrl: process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/',
       pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE,
-      // GeeTest 登录验证码ID (前端验证)
+      // GeeTest Login ID
       geeTestId: process.env.NUXT_PUBLIC_GEETEST_ID,
-      // GeeTest 注册验证码ID (后端验证)
+      // GeeTest Register ID
       geeTestRegisterId: process.env.NUXT_PUBLIC_GEETEST_REGISTER_ID,
       // Mainland-friendly jsDelivr origin (used when building CDN links)
       jsdelivrOrigin: process.env.NUXT_PUBLIC_JSDELIVR_ORIGIN || 'https://fastly.jsdelivr.net',
@@ -80,21 +92,31 @@ export default defineNuxtConfig({
   tailwindcss: {
     configPath: '~/tailwind.config.js'
   },
-  
-  // 强制UTF-8编码
+
   build: {
-    transpile: []
+    transpile: [],
+    analyze: true
   },
-    
-  // Nitro 代理作为备用
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8124',
-        changeOrigin: true,
-        prependPath: true,
-        ws: true
-      }
-    }
+
+  routeRules: {
+    '/': { isr: 60 },
+    '/posts/**': { isr: 600 },
+    '/users/**': { isr: 600 },
+    '/admin/**': { ssr: false },
+    '/auth/**': { ssr: false },
+    '/me/**': { ssr: false },
+    '/debug': { ssr: false },
+    '/test-**': { ssr: false },
+    '/terminal': { ssr: false },
+
+    '/api/__proxy/posts/**/comments': { swr: 30 },
+  },
+
+  // Some Experimental Optimizations
+  experimental: {
+    componentIslands: true,
+    buildCache: true,
+    viewTransition: true,
+    asyncContext: true
   }
 })

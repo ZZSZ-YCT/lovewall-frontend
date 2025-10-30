@@ -274,7 +274,8 @@ import GlassInput from "~/components/ui/GlassInput.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
-  middleware: ['admin', 'require-superadmin']
+  middleware: ['admin', 'require-superadmin'],
+  ssr: false
 })
 
 // Stores

@@ -24,12 +24,12 @@
 
           <!-- 头像容器 -->
           <div class="relative w-24 h-24 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-2xl font-bold">
-            <img
+            <NuxtImg
               v-if="auth.currentUser?.avatar_url"
               :src="assetUrl(auth.currentUser.avatar_url)"
               :alt="auth.userDisplayName"
               class="w-24 h-24 rounded-full object-cover border-2 border-white/20"
-            >
+            />
             <span v-else>
               {{ auth.userDisplayName.slice(0, 2) }}
             </span>
@@ -259,7 +259,8 @@ import UserPermissionDisplay from "~/components/ui/UserPermissionDisplay.vue";
 import TagBadge from "~/components/ui/TagBadge.vue";
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
+  ssr: false
 })
 
 // Stores

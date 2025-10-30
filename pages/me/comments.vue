@@ -89,13 +89,13 @@
                   </template>
 
                   <!-- 头像容器 -->
-                  <img
+                  <NuxtImg
                     v-if="auth.currentUser?.avatar_url"
                     :src="assetUrl(auth.currentUser.avatar_url)"
                     :alt="auth.userDisplayName"
                     class="relative z-10 w-full h-full rounded-full object-cover"
                     :class="auth.currentUser?.is_admin ? 'border-0' : 'border border-white/20'"
-                  >
+                  />
                   <div
                     v-else
                     class="relative z-10 w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-medium"
@@ -264,7 +264,8 @@ import GlassButton from "~/components/ui/GlassButton.vue";
 import GlassTextarea from "~/components/ui/GlassTextarea.vue";
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
+  ssr: false
 })
 
 // Stores

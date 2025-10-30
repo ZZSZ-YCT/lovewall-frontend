@@ -66,7 +66,7 @@
         :key="item.id"
         class="group relative overflow-hidden rounded-xl border border-neutral-700/60 bg-neutral-900/40"
       >
-        <img :src="item.url" :alt="item.file.name" class="h-28 w-full object-cover" />
+        <NuxtImg :src="item.url" :alt="item.file.name" class="h-28 w-full object-cover" />
         <div class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-neutral-900/70 px-2 py-1.5">
           <div class="min-w-0">
             <p class="truncate text-[11px] text-neutral-200">{{ item.file.name }}</p>
@@ -119,7 +119,7 @@
         @click.self="lightboxIdx = null"
       >
         <div class="relative max-h-[85vh] max-w-[90vw] overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-900">
-          <img :src="previews[lightboxIdx!]?.url" class="max-h-[85vh] max-w-[90vw] object-contain" />
+          <NuxtImg :src="previews[lightboxIdx!]?.url" class="max-h-[85vh] max-w-[90vw] object-contain" />
           <button
             class="absolute right-2 top-2 rounded bg-neutral-800/80 px-2 py-1 text-xs text-neutral-200 hover:bg-neutral-700"
             @click="lightboxIdx = null"

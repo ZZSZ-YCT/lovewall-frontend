@@ -116,7 +116,8 @@ import GlassButton from "~/components/ui/GlassButton.vue";
 
 definePageMeta({
   title: '修改密码 - 郑州四中表白墙',
-  middleware: ['auth']
+  middleware: ['auth'],
+  ssr: false
 })
 
 // Form schema

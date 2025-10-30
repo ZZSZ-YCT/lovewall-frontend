@@ -112,13 +112,13 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
                   <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    <img
+                    <NuxtImg
                       v-if="comment.user_avatar_url"
                       :src="assetUrl(comment.user_avatar_url)"
                       :alt="commentDisplayName(comment)"
                       class="w-8 h-8 object-cover"
                       @error="() => { comment.user_avatar_url = null }"
-                    >
+                    />
                     <div
                       v-else
                       class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-xs font-medium"
@@ -251,7 +251,8 @@ const assetUrl = useAssetUrl()
 definePageMeta({
   middleware: ['admin', 'require-perms'],
   // 后端已废弃 MANAGE_COMMENTS，统一由 MANAGE_POSTS 管理评论
-  requiredPerms: ['MANAGE_POSTS']
+  requiredPerms: ['MANAGE_POSTS'],
+  ssr: false
 })
 
 // Stores

@@ -4,81 +4,70 @@
     <button
       :disabled="loading"
       class="inline-flex items-center gap-1.5 text-gray-600 hover:text-brand-600 transition-colors font-medium"
-      :class="[
-        size === 'sm' ? 'text-xs' : 'text-sm'
-      ]"
+      :class="[!hydrated ? 'text-sm' : (size === 'sm' ? 'text-xs' : 'text-sm')]"
       @click="handleMainShare"
     >
-      <LoaderIcon 
-        v-if="loading"
-        class="w-4 h-4 animate-spin"
-      />
-      <ShareIcon 
-        v-else-if="canShare"
-        class="w-4 h-4"
-      />
-      <ExternalLinkIcon 
-        v-else
-        class="w-4 h-4"
-      />
+      <LoaderIcon v-if="loading" class="w-4 h-4 animate-spin" />
+      <ShareIcon v-else class="w-4 h-4" />
       <span v-if="showText">{{ shareText }}</span>
     </button>
 
-    <!-- 分享选项下拉菜单 -->
-    <div 
-      v-if="showOptions && isOptionsOpen"
-      class="absolute top-full left-0 mt-2 w-48 bg-white/20 backdrop-blur-lg rounded-xl border border-white/20 shadow-glass p-2 z-50"
-      @click.stop
-    >
-      <div class="space-y-1">
-        <!-- 原生分享 -->
-        <button
-          v-if="canShare"
-          class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
-          @click="shareNative"
-        >
-          <ShareIcon class="w-4 h-4" />
-          <span>系统分享</span>
-        </button>
+    <!-- 分享选项下拉菜单（仅客户端渲染） -->
+    <ClientOnly>
+      <div
+        v-if="showOptions && isOptionsOpen"
+        class="absolute top-full left-0 mt-2 w-48 bg-white/20 backdrop-blur-lg rounded-xl border border-white/20 shadow-glass p-2 z-50"
+        @click.stop
+      >
+        <div class="space-y-1">
+          <!-- 原生分享 -->
+          <button
+            v-if="canShare"
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            @click="shareNative"
+          >
+            <ShareIcon class="w-4 h-4" />
+            <span>系统分享</span>
+          </button>
 
-        <!-- 复制链接 -->
-        <button
-          class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
-          @click="copyLink"
-        >
-          <CopyIcon class="w-4 h-4" />
-          <span>复制链接</span>
-        </button>
+          <!-- 复制链接 -->
+          <button
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            @click="copyLink"
+          >
+            <CopyIcon class="w-4 h-4" />
+            <span>复制链接</span>
+          </button>
 
-        <div class="border-t border-white/20 my-2"/>
+          <div class="border-t border-white/20 my-2" />
 
-        <!-- 平台分享选项 -->
-        <button
-          v-for="platform in availablePlatforms"
-          :key="platform.key"
-          class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
-          @click="shareToPlatform(platform.key)"
-        >
-          <component :is="getPlatformIcon(platform.key)" class="w-4 h-4" />
-          <span>{{ platform.name }}</span>
-        </button>
+          <!-- 平台分享 -->
+          <button
+            v-for="platform in availablePlatforms"
+            :key="platform.key"
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            @click="shareToPlatform(platform.key)"
+          >
+            <component :is="getPlatformIcon(platform.key)" class="w-4 h-4" />
+            <span>{{ platform.name }}</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- 点击外部关闭菜单 -->
-    <div 
-      v-if="isOptionsOpen"
-      class="fixed inset-0 z-40"
-      @click="isOptionsOpen = false"
-    />
+      <!-- 点击外部关闭菜单 -->
+      <div
+        v-if="isOptionsOpen"
+        class="fixed inset-0 z-40"
+        @click="isOptionsOpen = false"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
-import { 
-  LoaderIcon, 
-  ShareIcon, 
-  ExternalLinkIcon,
+import {
+  LoaderIcon,
+  ShareIcon,
   CopyIcon,
   SendIcon,
   MessageCircleIcon,
@@ -87,12 +76,7 @@ import {
 } from 'lucide-vue-next'
 
 interface Props {
-  data: {
-    title: string
-    text: string
-    url: string
-    image?: string
-  }
+  data: { title: string; text: string; url: string; image?: string }
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
   showText?: boolean
@@ -108,51 +92,58 @@ const props = withDefaults(defineProps<Props>(), {
   mode: 'smart'
 })
 
-const { canShare, platform, share, smartShare, copyToClipboard, getPlatformShareUrl } = useShare()
+const hydrated = useHydrated()
 
 const loading = ref(false)
 const isOptionsOpen = ref(false)
+const canShare = ref(false)
+const shareButtonRef = ref<HTMLElement>()
 
-const shareIcon = computed(() => {
-  if (canShare.value) return 'lucide:share'
-  return 'lucide:external-link'
+// 延迟加载 useShare，只在客户端执行
+let share: any
+let smartShare: any
+let copyToClipboard: any
+let getPlatformShareUrl: any
+
+onMounted(async () => {
+  const { useShare } = await import('~/composables/useShare')
+  const shareComposable = useShare()
+
+  // 将返回的响应式值同步到本地 ref
+  canShare.value = shareComposable.canShare.value
+  share = shareComposable.share
+  smartShare = shareComposable.smartShare
+  copyToClipboard = shareComposable.copyToClipboard
+  getPlatformShareUrl = shareComposable.getPlatformShareUrl
 })
 
-const shareText = computed(() => {
-  if (canShare.value) return '分享'
-  return '分享'
-})
+const shareText = computed(() => '分享')
 
-// 获取平台图标组件
-const getPlatformIcon = (platformKey: string) => {
-  const iconMap: Record<string, any> = {
+// 图标映射
+const getPlatformIcon = (key: string) => {
+  const map: Record<string, any> = {
     twitter: TwitterIcon,
     facebook: FacebookIcon,
     telegram: SendIcon,
-    whatsapp: MessageCircleIcon,
+    whatsapp: MessageCircleIcon
   }
-  return iconMap[platformKey] || ShareIcon
+  return map[key] || ShareIcon
 }
 
-// 可用的分享平台
-const availablePlatforms = computed(() => {
-  const platforms = [
-    { key: 'twitter', name: 'Twitter' },
-    { key: 'facebook', name: 'Facebook' },
-    { key: 'telegram', name: 'Telegram' },
-    { key: 'whatsapp', name: 'WhatsApp' },
-  ]
+const availablePlatforms = computed(() => [
+  { key: 'twitter', name: 'Twitter' },
+  { key: 'facebook', name: 'Facebook' },
+  { key: 'telegram', name: 'Telegram' },
+  { key: 'whatsapp', name: 'WhatsApp' }
+])
 
-  // 根据平台显示不同的选项
-  if (platform.value === 'ios' || platform.value === 'android') {
-    platforms.unshift({ key: 'telegram', name: 'Telegram' })
+// 主分享逻辑
+const handleMainShare = async () => {
+  if (!share) {
+    useToast().info('正在加载分享功能，请稍候...')
+    return
   }
 
-  return platforms
-})
-
-// 主分享处理
-const handleMainShare = async () => {
   if (props.showOptions) {
     isOptionsOpen.value = !isOptionsOpen.value
     return
@@ -163,32 +154,22 @@ const handleMainShare = async () => {
     if (props.mode === 'smart') {
       await smartShare(props.data)
     } else if (props.mode === 'native' && canShare.value) {
-      // 强制使用原生分享，不降级
       await share(props.data, { preferredMethod: 'native' })
     } else {
       await share(props.data, { preferredMethod: 'copy' })
     }
-  } catch (error) {
-    console.error('分享失败:', error)
-    // 如果原生分享失败，尝试复制链接作为降级
-    if (props.mode === 'native' || props.mode === 'smart') {
-      try {
-        const shareText = `${props.data.title}\n${props.data.text}\n${props.data.url}`
-        const copied = await copyToClipboard(shareText)
-        if (copied) {
-          useToast().success('系统分享不可用，链接已复制到剪贴板')
-        }
-      } catch {
-        useToast().error('分享失败')
-      }
-    }
+  } catch (err) {
+    console.error('分享失败:', err)
+    const text = `${props.data.title}\n${props.data.text}\n${props.data.url}`
+    await copyToClipboard?.(text)
+    useToast().info('分享不可用，链接已复制')
   } finally {
     loading.value = false
   }
 }
 
-// 原生分享
 const shareNative = async () => {
+  if (!share) return
   loading.value = true
   try {
     await share(props.data, { preferredMethod: 'native' })
@@ -198,31 +179,20 @@ const shareNative = async () => {
   }
 }
 
-// 复制链接
 const copyLink = async () => {
-  const success = await copyToClipboard(props.data.url)
-  if (success) {
-    useToast().success('链接已复制')
-  } else {
-    useToast().error('复制失败')
-  }
+  if (!copyToClipboard) return
+  const ok = await copyToClipboard(props.data.url)
+  useToast()[ok ? 'success' : 'error'](ok ? '链接已复制' : '复制失败')
   isOptionsOpen.value = false
 }
 
-// 分享到特定平台
-const shareToPlatform = (platformKey: string) => {
-  const url = getPlatformShareUrl(props.data, platformKey)
-  if (url) {
-    window.open(url, '_blank', 'width=600,height=400')
-  }
+const shareToPlatform = (key: string) => {
+  if (!getPlatformShareUrl) return
+  const url = getPlatformShareUrl(props.data, key)
+  if (url) window.open(url, '_blank', 'width=600,height=400')
   isOptionsOpen.value = false
 }
 
-// 组件引用
-const shareButtonRef = ref<HTMLElement>()
-
-// 点击外部关闭
-onClickOutside(shareButtonRef, () => {
-  isOptionsOpen.value = false
-})
+// 点击外部关闭菜单
+onClickOutside(shareButtonRef, () => (isOptionsOpen.value = false))
 </script>

@@ -159,13 +159,13 @@
                   </template>
 
                   <!-- 头像容器 -->
-                  <img
+                  <NuxtImg
                     v-if="user.avatar_url"
                     :src="assetUrl(user.avatar_url)"
                     :alt="user.username"
                     class="relative z-10 w-full h-full rounded-full object-cover"
                     :class="user.is_admin ? 'border-0' : 'border border-white/20'"
-                  >
+                  />
                   <div
                     v-else
                     class="relative z-10 w-full h-full rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium"
@@ -488,12 +488,12 @@
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
-                  <img
+                  <NuxtImg
                     v-if="permissionsModal.user.avatar_url"
                     :src="assetUrl(permissionsModal.user.avatar_url)"
                     :alt="permissionsModal.user.username"
                     class="w-10 h-10 rounded-full object-cover"
-                  >
+                  />
                   <span v-else>{{ permissionsModal.user.username.slice(0, 2).toUpperCase() }}</span>
                 </div>
                 <div>
@@ -578,12 +578,12 @@
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
-                  <img
+                  <NuxtImg
                     v-if="passwordModal.user.avatar_url"
                     :src="assetUrl(passwordModal.user.avatar_url)"
                     :alt="passwordModal.user.username"
                     class="w-10 h-10 rounded-full object-cover"
-                  >
+                  />
                   <span v-else>{{ passwordModal.user.username.slice(0, 2).toUpperCase() }}</span>
                 </div>
                 <div>
@@ -678,12 +678,12 @@
                 <div class="flex items-center gap-3">
                   <div
                     class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
-                    <img
+                    <NuxtImg
                       v-if="editModal.user.avatar_url"
                       :src="assetUrl(editModal.user.avatar_url)"
                       :alt="editModal.user.username"
                       class="w-12 h-12 rounded-full object-cover"
-                    >
+                    />
                     <span v-else>{{ editModal.user.username.slice(0, 2).toUpperCase() }}</span>
                   </div>
                   <div>
@@ -772,18 +772,18 @@
                         title="点击更换头像"
                         @click="avatarInput?.click()"
                       >
-                        <img
+                        <NuxtImg
                           v-if="avatarPreview"
                           :src="avatarPreview"
                           alt="头像预览"
                           class="w-16 h-16 rounded-full object-cover"
-                        >
-                        <img
+                        />
+                        <NuxtImg
                           v-else-if="editModal.user?.avatar_url"
                           :src="assetUrl(editModal.user.avatar_url)"
                           :alt="editModal.user.username"
                           class="w-16 h-16 rounded-full object-cover"
-                        >
+                        />
                         <span v-else>{{ (editForm.username || '').slice(0, 2).toUpperCase() }}</span>
                       </div>
 
@@ -855,12 +855,12 @@
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
-                  <img
+                  <NuxtImg
                     v-if="userTagsModal.user.avatar_url"
                     :src="assetUrl(userTagsModal.user.avatar_url)"
                     :alt="userTagsModal.user.username"
                     class="w-10 h-10 rounded-full object-cover"
-                  >
+                  />
                   <span v-else>{{ userTagsModal.user.username.slice(0, 2).toUpperCase() }}</span>
                 </div>
                 <div>
@@ -992,7 +992,8 @@ import GlassCard from "~/components/ui/GlassCard.vue";
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
-  requiredPerms: ['MANAGE_USERS']
+  requiredPerms: ['MANAGE_USERS'],
+  ssr: false
 })
 
 // Stores
