@@ -285,11 +285,6 @@ export default defineNuxtPlugin(() => {
       
       const response = await instance.patch<ApiResp<User>>('/profile', requestData)
 
-      await $fetch('/api/_nitro/revalidate', {
-        method: 'POST',
-        body: { path: '/users/id/123' },
-      })
-
       return unwrap(response)
     },
 
