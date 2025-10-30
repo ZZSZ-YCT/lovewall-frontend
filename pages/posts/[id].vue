@@ -569,7 +569,7 @@
             variant="secondary"
             @click="showAIRejectionModal = false"
           >
-            知道了
+            好
           </GlassButton>
           <GlassButton
             :loading="reviewRequesting"
@@ -1215,51 +1215,28 @@ const postStructuredData = computed(() => {
 })
 
 // --- SEO ---
-useHead(() => {
-  if (!post.value) {
-    return { title: `\u5e16\u5b50\u4e0d\u5b58\u5728 - ${siteName}` }
-  }
-  const canonical = canonicalUrl.value
-  const description = postSeoDescription.value
-  const title_ = postSeoTitle.value
-  const image = ogImageUrl.value
-  const structured = postStructuredData.value
-  const published = toIsoString(post.value.created_at)
-  const updated = toIsoString(post.value.updated_at || post.value.created_at)
-
-  return {
-    title_,
-    meta: [
-      { name: 'description', content: description },
-      { name: 'author', content: post.value.author_name || '\u533f\u540d' },
-      { property: 'og:title', content: title_ },
-      { property: 'og:description', content: description },
-      { property: 'og:url', content: canonical },
-      { property: 'og:image', content: image },
-      { property: 'og:type', content: 'article' },
-      { property: 'og:site_name', content: siteName },
-      { property: 'article:published_time', content: published },
-      { property: 'article:modified_time', content: updated },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title_ },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: image },
-    ],
-    link: [
-      { rel: 'canonical', href: canonical },
-    ],
-    script: structured
-      ? [
-          {
-            type: 'application/ld+json',
-            key: 'ld-post-detail',
-            children: JSON.stringify(structured),
-          },
-        ]
-      : [],
-  }
+useSeoMeta({
+  title: computed(() => postSeoTitle.value),
+  description: computed(() => postSeoDescription.value),
+  ogTitle: computed(() => postSeoTitle.value),
+  ogDescription: computed(() => postSeoDescription.value),
+  ogImage: computed(() => ogImageUrl.value),
+  ogUrl: computed(() => canonicalUrl.value),
+  twitterCard: 'summary_large_image'
 })
 
+useHead({
+  script: computed(() => {
+    if (!postStructuredData.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        key: 'ld-post-detail',
+        children: JSON.stringify(postStructuredData.value),
+      },
+    ]
+  }),
+})
 
 </script>
 

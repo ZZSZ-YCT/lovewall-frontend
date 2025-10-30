@@ -66,7 +66,7 @@
             :disabled="pending"
             variant="secondary"
             class="!px-3 !py-1.5 text-sm"
-            @click="refresh"
+            @click="() => refresh"
           >
             <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': pending }]" />
             刷新
@@ -193,7 +193,7 @@ const loadingMore = computed(() => home.loadingMore)
 // 加载更多
 const loadMore = async () => {
   await home.loadMore()
-  data.value.posts = home.posts
+  data.value!!.posts = home.posts
 }
 
 // Use Vue Router 4 composition guard signature (no next)
@@ -280,41 +280,40 @@ definePageMeta({
   key: (route: any) => `index-${(route as any).fullPath || '/'}`
 })
 
-useHead(() => {
-  const canonical = canonicalUrl.value
-  const ogImage = homepageOgImage.value
-  const structured = homepageStructuredData.value
+useSeoMeta({
+  title: homepageTitle,
+  description: homepageDescription,
+  keywords: homepageKeywords,
 
-  return {
-    title: homepageTitle,
-    meta: [
-      { name: 'description', content: homepageDescription },
-      { name: 'keywords', content: homepageKeywords },
-      { property: 'og:title', content: homepageTitle },
-      { property: 'og:description', content: homepageDescription },
-      { property: 'og:url', content: canonical },
-      { property: 'og:image', content: ogImage },
-      { property: 'og:site_name', content: siteName },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: homepageTitle },
-      { name: 'twitter:description', content: homepageDescription },
-      { name: 'twitter:image', content: ogImage }
-    ],
-    link: [
-      { rel: 'canonical', href: canonical },
-      { rel: 'alternate', hreflang: 'zh-CN', href: canonical }
-    ],
-    script: structured
-      ? [
-          {
-            type: 'application/ld+json',
-            key: 'ld-homepage',
-            children: JSON.stringify(structured)
-          }
-        ]
-      : []
-  }
+  // --- Open Graph ---
+  ogTitle: homepageTitle,
+  ogDescription: homepageDescription,
+  ogType: 'website',
+  ogUrl: computed(() => canonicalUrl.value),
+  ogImage: computed(() => homepageOgImage.value),
+  ogSiteName: siteName,
+
+  // --- Twitter ---
+  twitterCard: 'summary_large_image',
+  twitterTitle: homepageTitle,
+  twitterDescription: homepageDescription,
+  twitterImage: computed(() => homepageOgImage.value),
+
+  // --- Canonical ---
+  canonical: computed(() => canonicalUrl.value),
+})
+
+useHead({
+  script: computed(() => {
+    if (!homepageStructuredData.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        key: 'ld-homepage',
+        children: JSON.stringify(homepageStructuredData.value),
+      },
+    ]
+  }),
 })
 </script>
 

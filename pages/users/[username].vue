@@ -158,15 +158,12 @@ import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import OnlineBadge from '~/components/ui/OnlineBadge.vue'
 import { HeartIcon } from 'lucide-vue-next'
-import type { User, PostDto, Pagination } from '~/types'
-import type { ActiveTagDto } from '~/types/extra'
 
 // 路由参数
 const route = useRoute()
 const username = computed(() => route.params.username as string)
 const api = useApi()
 const assetUrl = useAssetUrl()
-const toast = useToast()
 
 // 用户基本信息 + 状态
 const { data: userData, pending, error: userError } = await useAsyncData(
@@ -359,71 +356,62 @@ const profileStructuredData = computed(() => {
   return data
 })
 
-useHead(() => {
-  const canonical = canonicalUrl.value
+useSeoMeta({
+  title: computed(() =>
+    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+  ),
+  description: computed(() =>
+    user.value ? profileDescription.value : defaultProfileDescription
+  ),
 
-  if (!user.value) {
-    const fallbackImage = defaultOgImage.value
-    return {
-      title: `\u7528\u6237\u8d44\u6599 - ${siteName}`,
-      meta: [
-        { name: 'description', content: defaultProfileDescription },
-        { property: 'og:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { property: 'og:description', content: defaultProfileDescription },
-        { property: 'og:url', content: canonical },
-        { property: 'og:image', content: fallbackImage },
-        { property: 'og:site_name', content: siteName },
-        { name: 'twitter:card', content: 'summary' },
-        { name: 'twitter:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { name: 'twitter:description', content: defaultProfileDescription },
-        { name: 'twitter:image', content: fallbackImage },
-      ],
-      link: [
-        { rel: 'canonical', href: canonical },
-        { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-      ],
-    }
-  }
+  // --- Open Graph ---
+  ogTitle: computed(() =>
+    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+  ),
+  ogDescription: computed(() =>
+    user.value ? profileDescription.value : defaultProfileDescription
+  ),
+  ogType: 'profile',
+  ogUrl: computed(() => canonicalUrl.value),
+  ogImage: computed(() =>
+    user.value ? profileOgImage.value : defaultOgImage.value
+  ),
+  ogSiteName: siteName,
 
-  const title = profileTitle.value
-  const description = profileDescription.value
-  const image = profileOgImage.value
-  const structured = profileStructuredData.value
-  const created = toIsoString(user.value.created_at)
+  // --- Twitter ---
+  twitterCard: computed(() =>
+    user.value?.avatar_url ? 'summary_large_image' : 'summary'
+  ),
+  twitterTitle: computed(() =>
+    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+  ),
+  twitterDescription: computed(() =>
+    user.value ? profileDescription.value : defaultProfileDescription
+  ),
+  twitterImage: computed(() =>
+    user.value ? profileOgImage.value : defaultOgImage.value
+  ),
 
-  return {
-    title,
-    meta: [
-      { name: 'description', content: description },
-      { name: 'author', content: userDisplayName.value },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:url', content: canonical },
-      { property: 'og:image', content: image },
-      { property: 'og:type', content: 'profile' },
-      { property: 'og:site_name', content: siteName },
-      { property: 'profile:username', content: user.value.username || '' },
-      { property: 'profile:first_name', content: userDisplayName.value },
-      { property: 'article:published_time', content: created },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: image },
-    ],
-    link: [
-      { rel: 'canonical', href: canonical },
-      { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-    ],
-    script: structured
-      ? [
-          {
-            type: 'application/ld+json',
-            key: 'ld-profile-page',
-            children: JSON.stringify(structured),
-          },
-        ]
-      : [],
-  }
+  // --- Profile-specific OG fields ---
+  profileUsername: computed(() => user.value?.username || ''),
+  profileFirstName: computed(() => userDisplayName.value),
+
+  // --- Canonical ---
+  canonical: computed(() => canonicalUrl.value),
+})
+
+// --- JSON-LD 结构化数据 ---
+useHead({
+  script: computed(() => {
+    if (!profileStructuredData.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        key: 'ld-profile-page',
+        children: JSON.stringify(profileStructuredData.value),
+      },
+    ]
+  }),
 })
 </script>
 

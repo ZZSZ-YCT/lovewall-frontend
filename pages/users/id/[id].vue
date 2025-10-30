@@ -405,71 +405,46 @@ const profileStructuredData = computed(() => {
   return data
 })
 
-useHead(() => {
-  const canonical = canonicalUrl.value
+useSeoMeta({
+  // 标题与描述
+  title: computed(() => profileTitle.value),
+  description: computed(() => profileDescription.value),
 
-  if (!user.value) {
-    const fallbackImage = defaultOgImage.value
-    return {
-      title: `\u7528\u6237\u8d44\u6599 - ${siteName}`,
-      meta: [
-        { name: 'description', content: defaultProfileDescription },
-        { property: 'og:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { property: 'og:description', content: defaultProfileDescription },
-        { property: 'og:url', content: canonical },
-        { property: 'og:image', content: fallbackImage },
-        { property: 'og:site_name', content: siteName },
-        { name: 'twitter:card', content: 'summary' },
-        { name: 'twitter:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { name: 'twitter:description', content: defaultProfileDescription },
-        { name: 'twitter:image', content: fallbackImage },
-      ],
-      link: [
-        { rel: 'canonical', href: canonical },
-        { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-      ],
-    }
-  }
+  // --- Open Graph ---
+  ogTitle: computed(() => profileTitle.value),
+  ogDescription: computed(() => profileDescription.value),
+  ogType: 'profile',
+  ogUrl: computed(() => canonicalUrl.value),
+  ogImage: computed(() => profileOgImage.value),
+  ogSiteName: siteName,
 
-  const title = profileTitle.value
-  const description = profileDescription.value
-  const image = profileOgImage.value
-  const structured = profileStructuredData.value
-  const created = toIsoString(user.value.created_at)
+  // --- Twitter ---
+  twitterCard: computed(() =>
+    user.value?.avatar_url ? 'summary_large_image' : 'summary'
+  ),
+  twitterTitle: computed(() => profileTitle.value),
+  twitterDescription: computed(() => profileDescription.value),
+  twitterImage: computed(() => profileOgImage.value),
 
-  return {
-    title,
-    meta: [
-      { name: 'description', content: description },
-      { name: 'author', content: userDisplayName.value },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:url', content: canonical },
-      { property: 'og:image', content: image },
-      { property: 'og:type', content: 'profile' },
-      { property: 'og:site_name', content: siteName },
-      { property: 'profile:username', content: user.value.username || '' },
-      { property: 'profile:first_name', content: userDisplayName.value },
-      { property: 'article:published_time', content: created },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: image },
-    ],
-    link: [
-      { rel: 'canonical', href: canonical },
-      { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-    ],
-    script: structured
-      ? [
-          {
-            type: 'application/ld+json',
-            key: 'ld-profile-page-id',
-            children: JSON.stringify(structured),
-          },
-        ]
-      : [],
-  }
+  // --- Profile-specific OG fields ---
+  profileUsername: computed(() => user.value?.username || ''),
+  profileFirstName: computed(() => userDisplayName.value),
+
+  // --- Canonical ---
+  canonical: computed(() => canonicalUrl.value),
+})
+
+useHead({
+  script: computed(() => {
+    if (!profileStructuredData.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        key: 'ld-profile-page-id',
+        children: JSON.stringify(profileStructuredData.value),
+      },
+    ]
+  }),
 })
 </script>
 

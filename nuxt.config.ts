@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     domains: [
       new URL(process.env.NUXT_PUBLIC_API_BASE ?? "http://localhost").host,
       new URL(process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL ?? "http://localhost").host,
+      new URL(SITE_URL).host
     ],
     formats: ['webp'],
     inject: true,
@@ -62,14 +63,14 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#ffffff' },
         { property: 'og:locale', content: 'zh_CN' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: '֣�����б���ǽ' },
-        { property: 'og:description', content: '֣���е��ĸ߼���ѧУ԰��Ϣ����ƽ̨������У԰���������������������' },
-        { property: 'og:site_name', content: '֣�����б���ǽ' },
+        { property: 'og:title', content: '郑州四中表白墙' },
+        { property: 'og:description', content: '郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区' },
+        { property: 'og:site_name', content: '郑州四中表白墙' },
         { property: 'og:url', content: SITE_URL },
         { property: 'og:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: '֣�����б���ǽ' },
-        { name: 'twitter:description', content: '֣���е��ĸ߼���ѧУ԰��Ϣ����ƽ̨������У԰���������������������' },
+        { name: 'twitter:title', content: '郑州四中表白墙' },
+        { name: 'twitter:description', content: '郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区' },
         { name: 'twitter:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` }
       ],
       link: [
