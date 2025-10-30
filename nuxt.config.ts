@@ -41,7 +41,7 @@ export default defineNuxtConfig({
         ws: true
       }
     },
-    preset: 'bun'
+    preset: process.env.NUXT_PRESET ?? 'bun',
   },
 
   app: {

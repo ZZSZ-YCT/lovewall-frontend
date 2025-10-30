@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "build:bun": "cross-env NUXT_PRESET=bun nuxt build",
+    "build:node": "cross-env NUXT_PRESET=node-server nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -42,6 +44,7 @@
     "@nuxt/eslint-plugin": "^1.10.0",
     "@types/dompurify": "^3.2.0",
     "@types/node": "^24.9.2",
+    "cross-env": "^10.1.0",
     "eslint": "^9.38.0",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.1.2"
