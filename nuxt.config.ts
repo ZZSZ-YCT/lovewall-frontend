@@ -41,7 +41,7 @@ export default defineNuxtConfig({
         ws: true
       }
     },
-    preset: process.env.NODE_ENV === 'production' ? 'bun' : undefined
+    preset: 'bun'
   },
 
   app: {
