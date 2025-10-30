@@ -38,12 +38,12 @@
                 class="relative z-10 w-full h-full rounded-full overflow-hidden shadow-lg"
                 :class="user.is_admin ? 'border-0' : 'border-2 border-white/20'"
               >
-                <img
+                <NuxtImg
                   v-if="user.avatar_url"
                   :src="assetUrl(user.avatar_url)"
                   :alt="userDisplayName"
                   class="w-full h-full object-cover"
-                >
+                />
                 <div
                   v-else
                   class="w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-4xl font-bold"
@@ -129,11 +129,11 @@
             <div class="flex gap-4">
               <!-- Post Image Thumbnail -->
               <div v-if="post.images?.length" class="flex-shrink-0">
-                <img
+                <NuxtPicture
                   :src="assetUrl(post.images[0])"
                   :alt="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? `${post.author_name}对${post.target_name}的表白` : `${post.author_name}的交流`"
                   class="w-20 h-20 object-cover rounded-lg"
-                >
+                />
               </div>
               
               <!-- Post Content -->
@@ -195,7 +195,6 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeRouteUpdate } from 'vue-router'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
@@ -210,14 +209,32 @@ const route = useRoute()
 const userId = computed(() => route.params.id as string)
 
 // State
-const user = ref<User | null>(null)
+const { data: userData, error: userError, pending } = await useAsyncData(
+  `user-${userId.value}`,
+  () => useApi().getUser(userId.value)
+)
+
+const user = computed(() => userData.value)
+const loading = computed(() => pending.value)
+const error = computed(() => userError.value ? '用户不存在或已注销' : null)
+
+const {
+  data: userPostsData,
+  pending: postsPending,
+  refresh: refreshPosts
+} = await useAsyncData(
+  () => `user-posts-${userId.value}`,
+  () => user.value ? useApi().getUserPosts(user.value.id, { page: 1, page_size: 10 }) : [],
+  { watch: [user] } // 👈 当 user 加载成功时自动加载帖子
+)
+
 const activeTag = ref<ActiveTagDto | null>(null)
 const userStatus = ref<{ exists: boolean; is_deleted: boolean; is_banned: boolean; ban_reason?: string | null } | null>(null)
-const userPosts = ref<PostDto[]>([])
+
+const userPosts = computed(() => userPostsData.value?.items ?? [])
+const postsLoading = computed(() => postsPending.value)
+
 const postsData = ref<Pagination<PostDto> | null>(null)
-const loading = ref(true)
-const postsLoading = ref(false)
-const error = ref<string | null>(null)
 
 // Composable
 const assetUrl = useAssetUrl()
@@ -233,52 +250,12 @@ const isDeleted = computed(() => {
   return !!(userStatus.value?.is_deleted)
 })
 
-// Methods
-const loadUser = async () => {
-  try {
-    const api = useApi()
-    const status = await api.getUserStatus(userId.value)
-    userStatus.value = {
-      exists: status.exists,
-      is_deleted: status.is_deleted,
-      is_banned: status.is_banned,
-      ban_reason: status.ban_reason ?? null
-    }
-    if (!status.exists) {
-      error.value = '用户不存在或已注销'
-      return
-    }
-    user.value = await api.getUser(userId.value)
-    activeTag.value = await api.getUserActiveTag(userId.value)
-  } catch (err: any) {
-    error.value = err.message || '用户信息加载失败'
-  }
-}
-
-const loadUserPosts = async (page = 1) => {
-  if (!user.value) return
-  
-  postsLoading.value = true
-  try {
-    const api = useApi()
-    const data = await api.getUserPosts(user.value.id, { page, page_size: 10 })
-    
-    if (page === 1) {
-      userPosts.value = data.items
-    } else {
-      userPosts.value.push(...data.items)
-    }
-    postsData.value = data
-  } catch (err: any) {
-    toast.error('加载用户表白失败')
-  } finally {
-    postsLoading.value = false
-  }
-}
-
-const loadMorePosts = () => {
-  if (postsData.value) {
-    loadUserPosts(postsData.value.page + 1)
+const loadMorePosts = async () => {
+  if (postsData.value && user.value) {
+    const nextPage = postsData.value.page + 1
+    const data = await useApi().getUserPosts(user.value.id, { page: nextPage, page_size: 10 })
+    postsData.value.items.push(...data.items)
+    postsData.value.page = nextPage
   }
 }
 
@@ -286,56 +263,9 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN')
 }
 
-// Initialize
-onMounted(async () => {
-  await loadUser()
-  if (user.value) {
-    await loadUserPosts()
-  }
-  loading.value = false
-})
-
-// Handle in-app navigation to different user IDs
-onBeforeRouteUpdate(async (to, from) => {
-  if (to.params.id !== from.params.id) {
-    console.log('[UserProfileById] onBeforeRouteUpdate triggered', { from: from.params.id, to: to.params.id })
-    loading.value = true
-    error.value = null
-    user.value = null
-    activeTag.value = null
-    userPosts.value = []
-    postsData.value = null
-    await loadUser()
-    if (user.value) {
-      await loadUserPosts(1)
-    }
-    loading.value = false
-    try { window.scrollTo({ top: 0, behavior: 'smooth' }) } catch {}
-  }
-})
-
 definePageMeta({
   key: (route: any) => `user-id-${(route as any).params?.id ?? ''}`
 })
-
-// React when navigating between /users/id/:id without full reload
-watch(
-  () => userId.value,
-  async () => {
-    loading.value = true
-    error.value = null
-    user.value = null
-    activeTag.value = null
-    userPosts.value = []
-    postsData.value = null
-    await loadUser()
-    if (user.value) {
-      await loadUserPosts(1)
-    }
-    loading.value = false
-    try { window.scrollTo({ top: 0, behavior: 'smooth' }) } catch {}
-  }
-)
 
 // SEO
 const siteName = '郑州四中表白墙'
@@ -475,73 +405,47 @@ const profileStructuredData = computed(() => {
   return data
 })
 
-useHead(() => {
-  const canonical = canonicalUrl.value
+useSeoMeta({
+  // 标题与描述
+  title: computed(() => profileTitle.value),
+  description: computed(() => profileDescription.value),
 
-  if (!user.value) {
-    const fallbackImage = defaultOgImage.value
-    return {
-      title: `\u7528\u6237\u8d44\u6599 - ${siteName}`,
-      meta: [
-        { name: 'description', content: defaultProfileDescription },
-        { property: 'og:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { property: 'og:description', content: defaultProfileDescription },
-        { property: 'og:url', content: canonical },
-        { property: 'og:image', content: fallbackImage },
-        { property: 'og:site_name', content: siteName },
-        { name: 'twitter:card', content: 'summary' },
-        { name: 'twitter:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
-        { name: 'twitter:description', content: defaultProfileDescription },
-        { name: 'twitter:image', content: fallbackImage },
-      ],
-      link: [
-        { rel: 'canonical', href: canonical },
-        { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-      ],
-    }
-  }
+  // --- Open Graph ---
+  ogTitle: computed(() => profileTitle.value),
+  ogDescription: computed(() => profileDescription.value),
+  ogType: 'profile',
+  ogUrl: computed(() => canonicalUrl.value),
+  ogImage: computed(() => profileOgImage.value),
+  ogSiteName: siteName,
 
-  const title = profileTitle.value
-  const description = profileDescription.value
-  const image = profileOgImage.value
-  const structured = profileStructuredData.value
-  const created = toIsoString(user.value.created_at)
+  // --- Twitter ---
+  twitterCard: computed(() =>
+    user.value?.avatar_url ? 'summary_large_image' : 'summary'
+  ),
+  twitterTitle: computed(() => profileTitle.value),
+  twitterDescription: computed(() => profileDescription.value),
+  twitterImage: computed(() => profileOgImage.value),
 
-  return {
-    title,
-    meta: [
-      { name: 'description', content: description },
-      { name: 'author', content: userDisplayName.value },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:url', content: canonical },
-      { property: 'og:image', content: image },
-      { property: 'og:type', content: 'profile' },
-      { property: 'og:site_name', content: siteName },
-      { property: 'profile:username', content: user.value.username || '' },
-      { property: 'profile:first_name', content: userDisplayName.value },
-      { property: 'article:published_time', content: created },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: image },
-    ],
-    link: [
-      { rel: 'canonical', href: canonical },
-      { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
-    ],
-    script: structured
-      ? [
-          {
-            type: 'application/ld+json',
-            key: 'ld-profile-page-id',
-            children: JSON.stringify(structured),
-          },
-        ]
-      : [],
-  }
+  // --- Profile-specific OG fields ---
+  profileUsername: computed(() => user.value?.username || ''),
+  profileFirstName: computed(() => userDisplayName.value),
+
+  // --- Canonical ---
+  canonical: computed(() => canonicalUrl.value),
 })
 
+useHead({
+  script: computed(() => {
+    if (!profileStructuredData.value) return []
+    return [
+      {
+        type: 'application/ld+json',
+        key: 'ld-profile-page-id',
+        children: JSON.stringify(profileStructuredData.value),
+      },
+    ]
+  }),
+})
 </script>
 
 <style scoped>

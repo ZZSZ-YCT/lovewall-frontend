@@ -270,7 +270,8 @@ import PermissionGuard from "~/components/ui/PermissionGuard.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
-  middleware: 'admin'
+  middleware: 'admin',
+  ssr: false
 })
 
 // Stores

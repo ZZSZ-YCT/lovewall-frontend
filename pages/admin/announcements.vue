@@ -261,7 +261,8 @@ console.log('[AnnouncementsAdmin] === SCRIPT ENTRY ===')
 try {
   definePageMeta({
     middleware: ['admin', 'require-perms'],
-    requiredPerms: ['MANAGE_ANNOUNCEMENTS']
+    requiredPerms: ['MANAGE_ANNOUNCEMENTS'],
+    ssr: false
   })
   console.log('[AnnouncementsAdmin] definePageMeta succeeded')
 } catch (e) {

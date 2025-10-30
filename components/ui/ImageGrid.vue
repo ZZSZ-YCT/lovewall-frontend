@@ -11,12 +11,12 @@
         rel="noreferrer"
         @click.prevent.stop="openGallery(index)"
       >
-        <img
+        <NuxtPicture
           :src="resolveThumbnail(image)"
           :alt="`${altPrefix} ${index + 1}`"
           :class="imageClass"
           loading="lazy"
-        >
+        />
       </a>
     </div>
   </div>

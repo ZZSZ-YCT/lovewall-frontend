@@ -87,12 +87,12 @@
           <div class="flex gap-4">
             <!-- Image -->
             <div class="w-24 flex-shrink-0">
-              <img
+              <NuxtPicture
                 v-if="post.images?.length"
                 :src="assetUrl(post.images[0])"
                 :alt="`${post.author_name}对${post.target_name}的表白`"
                 class="w-24 h-24 object-cover rounded-lg"
-              >
+              />
             </div>
 
             <!-- Content -->
@@ -232,7 +232,8 @@ import GlassCard from "~/components/ui/GlassCard.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
+  ssr: false
 })
 
 // Stores

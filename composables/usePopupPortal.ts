@@ -6,7 +6,9 @@ export type PopupOpenParams = {
   component: any            // a Vue component (SFC or defineComponent)
   props?: Record<string, any>
   // If true, clicking backdrop closes the popup (default true)
-  closeOnBackdrop?: boolean
+  closeOnBackdrop?: boolean,
+  cancelAsResolve?: boolean,
+  cancelPayload?: any
 }
 
 const isOpen = ref(false)
@@ -14,6 +16,8 @@ const title = ref<string | undefined>()
 const comp = shallowRef<any | null>(null)
 const compProps = reactive<Record<string, any>>({})
 const closeOnBackdrop = ref(true)
+let _cancelAsResolve = false
+let _cancelPayload: any = ''
 
 let _resolve: ((v: any) => void) | null = null
 let _reject: ((e: any) => void) | null = null
@@ -27,6 +31,8 @@ export function usePopupPortal() {
     comp.value = params.component
     Object.assign(compProps, params.props ?? {})
     closeOnBackdrop.value = params.closeOnBackdrop ?? true
+    _cancelAsResolve = !!params.cancelAsResolve
+    _cancelPayload = params.cancelPayload ?? ''
 
     return new Promise((resolve, reject) => {
       _resolve = resolve
@@ -47,9 +53,15 @@ export function usePopupPortal() {
   }
 
   function cancel(reason = 'Cancelled') {
+    const res = _resolve
     const rej = _reject
+    const asResolve = _cancelAsResolve
+    const payload = _cancelPayload
     cleanup()
-    queueMicrotask(() => rej?.(new Error(reason)))
+    queueMicrotask(() => {
+      if (asResolve) res?.(payload)
+      else rej?.(new Error(reason))
+    })
   }
 
   function cleanup() {
@@ -60,6 +72,8 @@ export function usePopupPortal() {
     _resolve = null
     _reject = null
     closeOnBackdrop.value = true
+    _cancelAsResolve = false
+    _cancelPayload = ''
   }
 
   return {

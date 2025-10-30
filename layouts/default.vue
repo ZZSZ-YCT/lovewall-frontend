@@ -24,61 +24,63 @@
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
           <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
-            <img :src="badgeUrl" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg">
+            <NuxtImg src="/badge.png" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg" />
             <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
           </NuxtLink>
 
           <!-- Auth Area -->
-          <div ref="userMenuRef" class="relative flex items-center gap-2 overflow-visible z-50">
-            <!-- 未登录：登录/注册 -->
-            <template v-if="!auth.isAuthenticated">
-              <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">登录</NuxtLink>
-              <NuxtLink to="/auth/register" class="glass-button px-3 py-1.5 text-sm font-medium">注册</NuxtLink>
-            </template>
+          <ClientOnly>
+            <div ref="userMenuRef" class="relative flex items-center gap-2 overflow-visible z-50">
+              <!-- 未登录：登录/注册 -->
+              <template v-if="!auth.isAuthenticated">
+                <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">登录</NuxtLink>
+                <NuxtLink to="/auth/register" class="glass-button px-3 py-1.5 text-sm font-medium">注册</NuxtLink>
+              </template>
 
-            <!-- 已登录：通知按钮 + 头像/昵称 + 下拉 -->
-            <template v-else>
-              <!-- 通知按钮（在头像左侧） -->
-              <NuxtLink
-                to="/notifications"
-                class="relative inline-flex items-center justify-center rounded-lg h-9 w-9 text-gray-700 hover:text-brand-600 hover:bg-white/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
-                title="系统通知"
-                aria-label="系统通知"
-              >
-                <BellIcon class="w-5 h-5" />
-                <!-- 未读红点 -->
-                <span v-if="unreadCount > 0" class="absolute top-1 right-1 inline-block w-2 h-2 bg-red-500 rounded-full" />
-              </NuxtLink>
-              <button
-                class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/20 transition-colors"
-                @click="showUserMenu = !showUserMenu"
-              >
-                <img
-                  v-if="auth.currentUser?.avatar_url"
-                  :src="assetUrl(auth.currentUser.avatar_url)"
-                  :alt="auth.userDisplayName"
-                  class="w-7 h-7 rounded-full"
+              <!-- 已登录：通知按钮 + 头像/昵称 + 下拉 -->
+              <template v-else>
+                <!-- 通知按钮（在头像左侧） -->
+                <NuxtLink
+                  to="/notifications"
+                  class="relative inline-flex items-center justify-center rounded-lg h-9 w-9 text-gray-700 hover:text-brand-600 hover:bg-white/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
+                  title="系统通知"
+                  aria-label="系统通知"
                 >
-                <UserIcon v-else class="w-6 h-6" />
-                <span class="hidden sm:block">{{ auth.userDisplayName }}</span>
-                <ChevronDownIcon class="w-4 h-4" />
-              </button>
-
-              <!-- Dropdown menu -->
-              <div v-if="showUserMenu" class="absolute right-0 top-full mt-2 w-56 glass-card backdrop-blur-ultra py-2 shadow-lg z-50">
-                <NuxtLink to="/me" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">个人中心</NuxtLink>
-                <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的评论</NuxtLink>
-                <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的标签</NuxtLink>
+                  <BellIcon class="w-5 h-5" />
+                  <!-- 未读红点 -->
+                  <span v-if="unreadCount > 0" class="absolute top-1 right-1 inline-block w-2 h-2 bg-red-500 rounded-full" />
+                </NuxtLink>
                 <button
-                  v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
-                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-                  @click="goAdmin"
-                >管理后台</button>
-                <hr class="my-1 border-white/20">
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="handleLogout">退出登录</button>
-              </div>
-            </template>
-          </div>
+                  class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/20 transition-colors"
+                  @click="showUserMenu = !showUserMenu"
+                >
+                  <NuxtImg
+                    v-if="auth.currentUser?.avatar_url"
+                    :src="assetUrl(auth.currentUser.avatar_url)"
+                    :alt="auth.userDisplayName"
+                    class="w-7 h-7 rounded-full"
+                  />
+                  <UserIcon v-else class="w-6 h-6" />
+                  <span class="hidden sm:block">{{ auth.userDisplayName }}</span>
+                  <ChevronDownIcon class="w-4 h-4" />
+                </button>
+
+                <!-- Dropdown menu -->
+                <div v-if="showUserMenu" class="absolute right-0 top-full mt-2 w-56 glass-card backdrop-blur-ultra py-2 shadow-lg z-50">
+                  <NuxtLink to="/me" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">个人中心</NuxtLink>
+                  <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的评论</NuxtLink>
+                  <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的标签</NuxtLink>
+                  <button
+                    v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                    @click="goAdmin"
+                  >管理后台</button>
+                  <hr class="my-1 border-white/20">
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="handleLogout">退出登录</button>
+                </div>
+              </template>
+            </div>
+          </ClientOnly>
         </div>
       </header>
 
@@ -144,7 +146,6 @@ import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
 import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
-import badgeUrl from '~/public/badge.png'
 
 // Stores
 const auth = useAuthStore()

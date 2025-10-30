@@ -11,7 +11,10 @@
 
 <script setup lang="ts">
 import NotificationsList from '~/pages/notifications.vue'
-definePageMeta({ middleware: ['auth'] })
+definePageMeta({
+  middleware: ['auth'],
+  ssr: false
+})
 useHead({ title: '我的通知 - 郑州四中表白墙' })
 </script>
 

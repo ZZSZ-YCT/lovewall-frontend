@@ -6,6 +6,7 @@ import PopupPortal from "~/components/terminal/PopupPortal.vue";
 import {registerBasicCommands} from "~/composables/terminal/commands/basicCommand";
 import {registerAuthCommands} from "~/composables/terminal/commands/authCommand";
 import {registerUserCommands} from "~/composables/terminal/commands/userCommand";
+import {registerPostCommands} from "~/composables/terminal/commands/postCommand";
 
 definePageMeta({
   layout: 'terminal',
@@ -18,6 +19,7 @@ useHead({
 registerBasicCommands()
 registerAuthCommands()
 registerUserCommands()
+registerPostCommands()
 
 </script>
 

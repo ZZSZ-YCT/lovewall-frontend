@@ -67,7 +67,10 @@ import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { Pagination } from '~/types'
 import type { NotificationDto } from '~/types/extra'
 
-definePageMeta({ middleware: ['auth'] })
+definePageMeta({
+  middleware: ['auth'],
+  ssr: false
+})
 
 const api = useApi()
 const toast = useToast()

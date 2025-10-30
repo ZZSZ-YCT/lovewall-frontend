@@ -5,6 +5,7 @@
     max-width="max-w-2xl"
     @close="closeModal"
   >
+    <div class="text-gray-700 mb-6">注：由于缓存原因，个人可能需要一段时间才能完成更新</div>
     <!-- Form -->
     <form @submit.prevent="handleSubmit">
       <div class="space-y-6">
@@ -12,12 +13,12 @@
           <div class="flex flex-col items-center space-y-4">
             <div class="relative">
               <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
-                <img
+                <NuxtImg
                   v-if="avatarPreview || user?.avatar_url"
                   :src="avatarPreview || (user?.avatar_url ? assetUrl(user.avatar_url) : undefined)"
                   :alt="user?.display_name || user?.username"
                   class="w-24 h-24 object-cover"
-                >
+                />
                 <span v-else>
                   {{ (user?.display_name || user?.username || '').slice(0, 2) }}
                 </span>

@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
     <!-- Background Image with Blur Overlay -->
     <div class="fixed inset-0 z-0">
-      <img 
+      <img
         v-if="backgroundSrc" 
         :src="backgroundSrc" 
         alt="Background"

@@ -6,7 +6,7 @@
         class="relative h-20 w-20 aspect-square rounded-full overflow-hidden ring-2 ring-neutral-700 hover:ring-emerald-500 transition"
         @click="triggerFile()"
       >
-        <img
+        <NuxtImg
           v-if="previewUrl"
           :src="previewUrl"
           alt="Avatar preview"

@@ -284,6 +284,12 @@ export default defineNuxtPlugin(() => {
       }
       
       const response = await instance.patch<ApiResp<User>>('/profile', requestData)
+
+      await $fetch('/api/_nitro/revalidate', {
+        method: 'POST',
+        body: { path: '/users/id/123' },
+      })
+
       return unwrap(response)
     },
 
@@ -425,13 +431,27 @@ export default defineNuxtPlugin(() => {
       return unwrap(response)
     },
 
+    /*
+    * About the changes:
+    * Use an API proxy to enable swr in order to optimize the data loading speed
+    * Now the comments data is cached
+    * */
     // Comments
     async listComments(postId: string, params: {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
-      return unwrap(response)
+      //const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
+      //return unwrap(response)
+      const res = await $fetch<ApiResp<Pagination<CommentDto>>>(`/__proxy/posts/${postId}/comments`, {
+        method: 'GET',
+        params,
+      })
+
+      if (res.success) {
+        return res.data
+      }
+      throw new Error(`${res.error.code}: ${res.error.message} (trace ${res.trace_id})`)
     },
 
     async createComment(postId: string, data: CommentForm): Promise<CommentDto> {

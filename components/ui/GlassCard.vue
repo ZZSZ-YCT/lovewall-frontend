@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     :class="[
       'glass-card relative overflow-hidden',
       variant,
@@ -14,17 +14,17 @@
     v-bind="$attrs"
   >
     <!-- 内发光效果 -->
-    <div 
+    <div
       v-if="innerGlow"
       class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none"
     />
-    
+
     <!-- 边框高光 -->
-    <div 
+    <div
       v-if="borderGlow"
       class="absolute inset-0 rounded-[inherit] border border-white/30 pointer-events-none"
     />
-    
+
     <slot />
   </div>
 </template>

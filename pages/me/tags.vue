@@ -180,7 +180,8 @@ import GlassCard from "~/components/ui/GlassCard.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
+  ssr: false
 })
 
 // Stores

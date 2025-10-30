@@ -1,5 +1,5 @@
 // composables/useCli.ts
-import { ref, computed } from 'vue'
+import {ref, computed, watch, reactive} from 'vue'
 
 /** ============ Types ============ */
 export type Primitive = string | number | boolean
@@ -34,14 +34,25 @@ export type Parsed = {
 }
 
 export type CommandActionCtx = {
-  println: (line?: string) => void
-  print: (line: string) => void
+  println: (line?: string) => number
+  print: (line: string) => number
   clear: () => void
   run: (input: string) => Promise<void>
   fullPath: string[]            // resolved command path
   parsed: Parsed                // parsed args/options
   signal: AbortSignal
   checkCancelled: () => void
+  kv: {
+    get<T = any>(key: string): T | undefined
+    set<T = any>(key: string, value: T): void
+    has(key: string): boolean
+    delete(key: string): void
+    keys(): string[]
+  }
+  popLine: (opts?: { onlyOutput?: boolean; onlyInput?: boolean }) => boolean
+  replaceLast: (text: string, opts?: { onlyOutput?: boolean; onlyInput?: boolean }) => boolean
+  removeLineById: (id: number) => boolean
+  updateLineById: (id: number, text: string) => boolean
 }
 
 export type CommandAction = (ctx: CommandActionCtx) => void | Promise<void>
@@ -65,7 +76,9 @@ export type Middleware = (ctx: {
 
 /** ============ Registry state ============ */
 const rootCommands = ref<CommandSpec[]>([])
-const history = ref<{ type: 'input' | 'output'; text: string }[]>([])
+type HistoryItem = { id: number; type: 'input' | 'output'; text: string }
+const history = ref<HistoryItem[]>([])
+let _hid = 1
 const busy = ref(false)
 const promptActive = ref(false)
 const promptMask = ref(false)
@@ -73,26 +86,130 @@ const promptLabel = ref<string | null>(null)
 let promptResolve: ((v: string) => void) | null = null
 let promptReject: ((e: any) => void) | null = null
 
+const KV_STORAGE_KEY = 'terminal.kv'          // change if you want namespacing
+const kvData = reactive<Record<string, any>>({})
+
+try {
+  const raw = localStorage.getItem(KV_STORAGE_KEY)
+  if (raw) Object.assign(kvData, JSON.parse(raw))
+} catch { /* ignore */
+}
+
+let kvTimer: any
+watch(kvData, () => {
+  clearTimeout(kvTimer)
+  kvTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(KV_STORAGE_KEY, JSON.stringify(kvData))
+    } catch {
+    }
+  }, 50)
+}, {deep: true})
+
+const kv = {
+  get<T = any>(key: string): T | undefined {
+    return kvData[key] as T | undefined
+  },
+  set<T = any>(key: string, value: T) {
+    kvData[key] = value
+  },
+  has(key: string) {
+    return Object.prototype.hasOwnProperty.call(kvData, key)
+  },
+  delete(key: string) {
+    delete kvData[key]
+  },
+  keys() {
+    return Object.keys(kvData)
+  },
+}
+
 // when true, the UI should *not* disable the input even if busy=true
 const interactiveBusyOverride = ref(false)
 
-export function isPrompting() { return promptActive.value }
+export function isPrompting() {
+  return promptActive.value
+}
 
 let currentAbort: AbortController | null = null
 const interrupted = ref(false)
 
 export function interrupt() {
-  if (promptActive.value) { cancelPrompt(); return }
+  if (promptActive.value) {
+    cancelPrompt();
+    return
+  }
   if (currentAbort) {
     interrupted.value = true
     currentAbort.abort()
-    history.value.push({ type: 'output', text: '^C' })
+    history.value.push({id: _hid++, type: 'output', text: '^C'})
   }
 }
 
-function println(line = '') { history.value.push({ type: 'output', text: line }) }
-function print(line: string) { history.value.push({ type: 'output', text: line }) }
-function clear() { history.value.length = 0 }
+function println(line = '') {
+  const item: HistoryItem = {id: _hid++, type: 'output', text: line}
+  history.value.push(item)
+  return item.id
+}
+
+function print(line: string) {
+  const item: HistoryItem = {id: _hid++, type: 'output', text: line}
+  history.value.push(item)
+  return item.id
+}
+
+function clear() {
+  history.value.length = 0
+}
+
+/** ============ History helpers ============ */
+function popLast(options?: { onlyOutput?: boolean; onlyInput?: boolean }) {
+  const {onlyOutput = false, onlyInput = false} = options || {}
+  for (let i = history.value.length - 1; i >= 0; i--) {
+    const h = history.value[i]
+    // @ts-ignore
+    if (onlyOutput && h.type !== 'output') continue
+    // @ts-ignore
+    if (onlyInput && h.type !== 'input') continue
+    history.value.splice(i, 1)
+    return true
+  }
+  return false
+}
+
+function removeById(id: number) {
+  const i = history.value.findIndex(h => h.id === id)
+  if (i !== -1) {
+    history.value.splice(i, 1);
+    return true
+  }
+  return false
+}
+
+function replaceLast(text: string, options?: { onlyOutput?: boolean; onlyInput?: boolean }) {
+  const {onlyOutput = false, onlyInput = false} = options || {}
+  for (let i = history.value.length - 1; i >= 0; i--) {
+    const h = history.value[i]
+    // @ts-ignore
+    if (onlyOutput && h.type !== 'output') continue
+    // @ts-ignore
+    if (onlyInput && h.type !== 'input') continue
+    // @ts-ignore
+    history.value[i] = {...h, text}
+    return true
+  }
+  return false
+}
+
+function updateById(id: number, text: string) {
+  const i = history.value.findIndex(h => h.id === id)
+  if (i !== -1) {
+    // @ts-ignore
+    history.value[i] = {...history.value[i], text};
+    return true
+  }
+  return false
+}
 
 /** ============ Tokenizer (quotes-aware) ============ */
 function tokenize(input: string): string[] {
@@ -128,23 +245,34 @@ function parseArgs(tokens: string[]): Parsed {
   while (i < tokens.length) {
     const t = tokens[i]
 
+    // @ts-ignore
     if (endOfOptions || !t.startsWith('-') || t === '-') {
+      // @ts-ignore
       argv.push(t)
       i++
       continue
     }
 
-    if (t === '--') { endOfOptions = true; i++; continue }
+    if (t === '--') {
+      endOfOptions = true;
+      i++;
+      continue
+    }
 
     // --long=value or --long value
+    // @ts-ignore
     if (t.startsWith('--')) {
+      // @ts-ignore
       const eq = t.indexOf('=')
       if (eq !== -1) {
+        // @ts-ignore
         const key = t.slice(2, eq)
+        // @ts-ignore
         const val = t.slice(eq + 1)
         options[key] = val === '' ? true : val
         i++
       } else {
+        // @ts-ignore
         const key = t.slice(2)
         const next = tokens[i + 1]
         if (!next || next.startsWith('-')) {
@@ -159,33 +287,43 @@ function parseArgs(tokens: string[]): Parsed {
     }
 
     // -abc or -k=value or -k value
+    // @ts-ignore
     if (t.startsWith('-')) {
+      // @ts-ignore
+      // @ts-ignore
       if (t.length > 2 && t.includes('=')) {
         // -k=value
+        // @ts-ignore
         const [k, v] = t.slice(1).split('=')
+        // @ts-ignore
+        // @ts-ignore
         options[k] = v ?? true
         i++
-      } else if (t.length > 2) {
-        // -abc (bundle)
-        const bundle = t.slice(1).split('')
-        for (const k of bundle) options[k] = true
-        i++
-      } else {
-        // -k value?
-        const k = t.slice(1)
-        const next = tokens[i + 1]
-        if (!next || next.startsWith('-')) {
-          options[k] = true
+      } else { // @ts-ignore
+        if (t.length > 2) {
+          // -abc (bundle)
+          // @ts-ignore
+          const bundle = t.slice(1).split('')
+          for (const k of bundle) options[k] = true
           i++
         } else {
-          options[k] = next
-          i += 2
+          // -k value?
+          // @ts-ignore
+          const k = t.slice(1)
+          const next = tokens[i + 1]
+          if (!next || next.startsWith('-')) {
+            options[k] = true
+            i++
+          } else {
+            options[k] = next
+            i += 2
+          }
         }
       }
     }
   }
 
-  return { argv, options, raw: tokens.join(' ') }
+  return {argv, options, raw: tokens.join(' ')}
 }
 
 /** ============ Command resolution ============ */
@@ -206,7 +344,7 @@ function findCommand(path: string[]): { cmd?: CommandSpec; consumed: number; anc
     consumed++
     list = found.subcommands ?? []
   }
-  return { cmd, consumed, ancestors }
+  return {cmd, consumed, ancestors}
 }
 
 /** ============ Coercion & validation ============ */
@@ -253,13 +391,19 @@ function buildHelp(cmd: CommandSpec, lineage: CommandSpec[]) {
     }
   }
 
-  const common = [{ name: 'help', short: 'h', description: 'Show help for this command', type: 'boolean' } satisfies OptionSpec]
+  const common = [{
+    name: 'help',
+    short: 'h',
+    description: 'Show help for this command',
+    type: 'boolean'
+  } satisfies OptionSpec]
   const opts = [...(cmd.options ?? []), ...common]
   if (opts.length) {
     lines.push('\nOptions:')
-    const pad = Math.max(...opts.map(o => `${o.short ? '-' + o.short + ', ' : '    ' }--${o.name}`.length)) + 2
+    const pad = Math.max(...opts.map(o => `${o.short ? '-' + o.short + ', ' : '    '}--${o.name}`.length)) + 2
     for (const o of opts) {
-      const left = `${o.short ? '-' + o.short + ', ' : '    ' }--${o.name}`
+      const left = `${o.short ? '-' + o.short + ', ' : '    '}--${o.name}`
+      // @ts-ignore
       const right = [
         o.description ?? '',
         o.required ? '(required)' : '',
@@ -298,10 +442,12 @@ const afterEach: Middleware[] = []
 function register(spec: CommandSpec) {
   rootCommands.value.push(spec)
 }
+
 function unregister(name: string) {
   const i = rootCommands.value.findIndex(c => c.name === name)
   if (i !== -1) rootCommands.value.splice(i, 1)
 }
+
 const commandsFlat = computed(() => {
   const out: string[] = []
   const walk = (list: CommandSpec[], prefix: string[] = []) => {
@@ -317,7 +463,7 @@ const commandsFlat = computed(() => {
 /** ============ Runner ============ */
 async function run(input: string) {
   const trimmed = input.trim()
-  history.value.push({ type: 'input', text: trimmed })
+  history.value.push({id: _hid++, type: 'input', text: trimmed})
   if (!trimmed) return
 
   // keep local refs for use inside catch (to show contextual help)
@@ -470,18 +616,25 @@ async function run(input: string) {
     const ctxBase = {
       println, print, clear, run,
       fullPath: ancestors.map(a => a.name),
-      parsed: { argv: positionals, options: finalOptions, raw: input },
+      parsed: {argv: positionals, options: finalOptions, raw: input},
       signal: ac.signal,
-      checkCancelled: () => { if (ac.signal.aborted) throw new Error('Interrupted') }
+      checkCancelled: () => {
+        if (ac.signal.aborted) throw new Error('Interrupted')
+      },
+      kv,
+      popLine: (opts?: { onlyOutput?: boolean; onlyInput?: boolean }) => popLast(opts),
+      replaceLast: (text: string, opts?: { onlyOutput?: boolean; onlyInput?: boolean }) => replaceLast(text, opts),
+      removeLineById: (id: number) => removeById(id),
+      updateLineById: (id: number, text: string) => updateById(id, text),
     }
 
     busy.value = true
     try {
       // beforeEach middleware
-      for (const mw of beforeEach) await mw({ path: ctxBase.fullPath, parsed: ctxBase.parsed })
+      for (const mw of beforeEach) await mw({path: ctxBase.fullPath, parsed: ctxBase.parsed})
       if (cmd.action) await cmd.action(ctxBase)
       // afterEach middleware
-      for (const mw of afterEach) await mw({ path: ctxBase.fullPath, parsed: ctxBase.parsed })
+      for (const mw of afterEach) await mw({path: ctxBase.fullPath, parsed: ctxBase.parsed})
     } finally {
       busy.value = false
       currentAbort = null
@@ -502,11 +655,11 @@ export function promptInput(message: string, opts?: { mask?: boolean }): Promise
   // show the label in history
   promptActive.value = true
   promptMask.value = !!opts?.mask
-  promptLabel.value = opts?.mask ? `${message}:` : `${message}:`
+  promptLabel.value = opts?.mask ? `${message}` : `${message}`
   interactiveBusyOverride.value = true
 
   // print the label (no trailing input echo yet)
-  history.value.push({ type: 'output', text: promptLabel.value })
+  history.value.push({ id: _hid++, type: 'output', text: promptLabel.value})
 
   return new Promise((resolve, reject) => {
     promptResolve = resolve
@@ -518,12 +671,14 @@ export function promptInput(message: string, opts?: { mask?: boolean }): Promise
 export function submitPromptInput(value: string) {
   if (!promptActive.value) return
   // echo masked or plain
-  history.value.push({ type: 'output', text: promptMask.value ? '' : value })
+  history.value[history.value.length - 1]!!.text += promptMask.value ? '' : value
   promptActive.value = false
   promptMask.value = false
   promptLabel.value = null
   interactiveBusyOverride.value = false
-  const res = promptResolve; promptResolve = null; promptReject = null
+  const res = promptResolve;
+  promptResolve = null;
+  promptReject = null
   res?.(value)
 }
 
@@ -533,15 +688,17 @@ export function cancelPrompt(reason = 'Interrupted') {
   promptActive.value = false
   promptMask.value = false
   interactiveBusyOverride.value = false
-  history.value.push({ type: 'output', text: '^C' })
-  const rej = promptReject; promptResolve = null; promptReject = null
+  history.value.push({ id: _hid++, type: 'output', text: '^C'})
+  const rej = promptReject;
+  promptResolve = null;
+  promptReject = null
   rej?.(new Error(reason))
 }
 
 
 /** ============ Built-in 'help' (top-level) ============ */
 function topLevelHelp(opts?: { includeSubcommands?: boolean; style?: 'flat' | 'tree' }) {
-  const { includeSubcommands = false, style = 'flat' } = opts ?? {}
+  const {includeSubcommands = false, style = 'flat'} = opts ?? {}
   const lines: string[] = []
 
   const visible = (list: CommandSpec[]) => list.filter(c => !c.hidden)
@@ -589,17 +746,20 @@ function registerBasicHelp() {
   register({
     name: 'help',
     summary: 'Show global or command help',
-    args: [{ name: 'cmd', description: 'Command path (optional)' }],
+    args: [{name: 'cmd', description: 'Command path (optional)'}],
     options: [
-      { name: 'all', short: 'a', type: 'boolean', description: 'Include subcommands in top-level help' },
-      { name: 'tree', type: 'boolean', description: 'Render subcommands as a tree (with --all)' },
-      { name: 'flat', type: 'boolean', description: 'Render subcommands as a flat list (with --all)' }
+      {name: 'all', short: 'a', type: 'boolean', description: 'Include subcommands in top-level help'},
+      {name: 'tree', type: 'boolean', description: 'Render subcommands as a tree (with --all)'},
+      {name: 'flat', type: 'boolean', description: 'Render subcommands as a flat list (with --all)'}
     ],
-    action: ({ println, parsed }) => {
+    action: ({println, parsed}) => {
       const query = (parsed.argv[0] as string | undefined)?.split(' ').filter(Boolean) ?? []
       if (query.length) {
-        const { cmd } = findCommand(query)
-        if (!cmd) { println(`No such command: ${query.join(' ')}`); return }
+        const {cmd} = findCommand(query)
+        if (!cmd) {
+          println(`No such command: ${query.join(' ')}`);
+          return
+        }
         println(buildHelp(cmd, []))
         return
       }
@@ -610,7 +770,7 @@ function registerBasicHelp() {
           parsed.options.flat ? 'flat' :
             'flat'
 
-      println(topLevelHelp({ includeSubcommands: include, style }))
+      println(topLevelHelp({includeSubcommands: include, style}))
     }
   })
 }
@@ -631,5 +791,7 @@ export function useCli() {
     run,
     // io helpers (if needed externally)
     println, print, clear,
+    kv,
+    popLast, removeById, replaceLast, updateById
   }
 }
