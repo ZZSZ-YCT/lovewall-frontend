@@ -196,21 +196,125 @@ const loadMore = async () => {
   data.value.posts = home.posts
 }
 
-// SEO + 元信息
-useHead({
-  title: '郑州四中表白墙 - 校园信息交流平台',
-  meta: [
-    {
-      name: 'description',
-      content:
-        '郑州四中官方校园信息交流平台，学生可以在这里发布表白、分享联系方式、交流校园生活。安全、正规、实名认证的校园社区。',
-    },
-    {
-      name: 'keywords',
-      content:
-        '郑州四中表白墙,郑州市第四高级中学,校园表白,学生社区,校园交流平台',
-    },
-  ],
+// Use Vue Router 4 composition guard signature (no next)
+onBeforeRouteUpdate((to, from) => {
+  if (to.fullPath === from.fullPath) {
+    return
+  }
+
+  home.refreshIfStale().catch((error) => {
+    console.error('Index: onBeforeRouteUpdate refresh failed', error)
+  })
+})
+
+// When returning to this page via in-app navigation, refresh to ensure data is shown
+onActivated(async () => {
+  try {
+    await home.refreshIfStale()
+  } catch (e) {
+    console.error('Index: onActivated refresh failed', e)
+  }
+})
+
+// Set page meta
+const homepageMetaTitle = '郑州四中表白墙'
+const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
+const homepageDescription = '郑州四中官方校园信息交流平台，帮助同学匿名分享心声、表白与校园资讯，营造温暖真实的互动社区。'
+const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生互动,校园社区'
+const siteName = '郑州四中表白墙'
+
+const runtimeConfig = useRuntimeConfig()
+const route = useRoute()
+
+const normalizedSiteOrigin = computed(() => {
+  const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
+  if (configured) {
+    return configured.replace(/\/+$/, '')
+  }
+  if (import.meta.client && typeof window !== 'undefined') {
+    return window.location.origin.replace(/\/+$/, '')
+  }
+  return ''
+})
+
+const canonicalUrl = computed(() => {
+  const base = normalizedSiteOrigin.value
+  const path = route.fullPath || '/'
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  if (!base) {
+    return normalizedPath
+  }
+  return `${base}${normalizedPath}`
+})
+
+const homepageOgImage = computed(() => {
+  const base = normalizedSiteOrigin.value
+  if (!base) {
+    return '/badge.png'
+  }
+  return `${base}/badge.png`
+})
+
+const homepageStructuredData = computed(() => {
+  const base = normalizedSiteOrigin.value
+  if (!base) {
+    return null
+  }
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: base,
+    description: homepageDescription,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${base}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  }
+})
+
+definePageMeta({
+  title: homepageMetaTitle,
+  description: homepageDescription,
+  key: (route: any) => `index-${(route as any).fullPath || '/'}`
+})
+
+useHead(() => {
+  const canonical = canonicalUrl.value
+  const ogImage = homepageOgImage.value
+  const structured = homepageStructuredData.value
+
+  return {
+    title: homepageTitle,
+    meta: [
+      { name: 'description', content: homepageDescription },
+      { name: 'keywords', content: homepageKeywords },
+      { property: 'og:title', content: homepageTitle },
+      { property: 'og:description', content: homepageDescription },
+      { property: 'og:url', content: canonical },
+      { property: 'og:image', content: ogImage },
+      { property: 'og:site_name', content: siteName },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: homepageTitle },
+      { name: 'twitter:description', content: homepageDescription },
+      { name: 'twitter:image', content: ogImage }
+    ],
+    link: [
+      { rel: 'canonical', href: canonical },
+      { rel: 'alternate', hreflang: 'zh-CN', href: canonical }
+    ],
+    script: structured
+      ? [
+          {
+            type: 'application/ld+json',
+            key: 'ld-homepage',
+            children: JSON.stringify(structured)
+          }
+        ]
+      : []
+  }
 })
 </script>
 

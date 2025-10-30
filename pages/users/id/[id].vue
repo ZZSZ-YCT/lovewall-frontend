@@ -268,22 +268,208 @@ definePageMeta({
 })
 
 // SEO
+const siteName = '郑州四中表白墙'
+const defaultProfileDescription = '郑州四中表白墙用户个人主页，集中当前公开发布的表白与校园信息。'
+const runtimeConfig = useRuntimeConfig()
+
+const normalizedSiteOrigin = computed(() => {
+  const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
+  if (configured) {
+    return configured.replace(/\/+$/, '')
+  }
+  if (import.meta.client && typeof window !== 'undefined') {
+    return window.location.origin.replace(/\/+$/, '')
+  }
+  return ''
+})
+
+const defaultOgImage = computed(() => {
+  const base = normalizedSiteOrigin.value
+  if (!base) {
+    return '/badge.png'
+  }
+  return `${base}/badge.png`
+})
+
+const canonicalUrl = computed(() => {
+  const base = normalizedSiteOrigin.value
+  const pathValue = route.fullPath || `/users/id/${userId.value}`
+  const normalizedPath = pathValue.startsWith('/') ? pathValue : `/${pathValue}`
+  if (!base) {
+    return normalizedPath
+  }
+  return `${base}${normalizedPath}`
+})
+
+const sanitizeContent = (value?: string | null) => {
+  if (!value) {
+    return defaultProfileDescription
+  }
+  const text = value.replace(/\s+/g, ' ').trim()
+  if (!text) {
+    return defaultProfileDescription
+  }
+  return text.length > 160 ? `${text.slice(0, 157)}...` : text
+}
+
+const profileDescription = computed(() => {
+  if (!user.value) {
+    return defaultProfileDescription
+  }
+  if (user.value.bio) {
+    return sanitizeContent(user.value.bio)
+  }
+  return `${userDisplayName.value}在${siteName}的个人主页，展示公开的表白与交流记录。`
+})
+
+const profileOgImage = computed(() => {
+  if (!user.value?.avatar_url) {
+    return defaultOgImage.value
+  }
+  const resolved = assetUrl(user.value.avatar_url)
+  if (resolved) {
+    if (/^(https?:)?\/\//i.test(resolved)) {
+      return resolved.startsWith('//') ? `https:${resolved}` : resolved
+    }
+    if (normalizedSiteOrigin.value) {
+      const normalizedPath = resolved.startsWith('/') ? resolved : `/${resolved}`
+      return `${normalizedSiteOrigin.value}${normalizedPath}`
+    }
+    return resolved
+  }
+  return defaultOgImage.value
+})
+
+const toIsoString = (value?: string | null) => {
+  if (!value) {
+    return undefined
+  }
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return undefined
+  }
+  return date.toISOString()
+}
+
+const profileTitle = computed(() => {
+  if (!user.value) {
+    return `用户资料 - ${siteName}`
+  }
+  const uname = user.value.username ? `(@${user.value.username})` : ''
+  return `${userDisplayName.value} ${uname} - ${siteName}`.trim()
+})
+
+const profileStructuredData = computed(() => {
+  if (!user.value) {
+    return null
+  }
+  const canonical = canonicalUrl.value
+  const image = profileOgImage.value
+  const mainEntity: Record<string, any> = {
+    '@type': 'Person',
+    name: userDisplayName.value,
+    alternateName: user.value.username || undefined,
+    identifier: user.value.id,
+    description: user.value.bio ? sanitizeContent(user.value.bio) : undefined,
+  }
+  if (image) {
+    mainEntity.image = image
+  }
+  const data: Record<string, any> = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: canonical,
+    name: profileTitle.value,
+    description: profileDescription.value,
+    dateCreated: toIsoString(user.value.created_at),
+    inLanguage: 'zh-CN',
+    mainEntity,
+    publisher: {
+      '@type': 'Organization',
+      name: siteName,
+      url: normalizedSiteOrigin.value || undefined,
+    },
+  }
+  if (!mainEntity.description) {
+    delete mainEntity.description
+  }
+  if (!mainEntity.alternateName) {
+    delete mainEntity.alternateName
+  }
+  if (!image) {
+    delete mainEntity.image
+  }
+  if (!data.publisher.url) {
+    delete data.publisher.url
+  }
+  return data
+})
+
 useHead(() => {
-  if (loading.value) {
-    return { title: '加载中... - 郑州四中表白墙' }
-  }
-  if (error.value) {
-    return { title: '用户不存在 - 郑州四中表白墙' }
-  }
-  if (user.value) {
+  const canonical = canonicalUrl.value
+
+  if (!user.value) {
+    const fallbackImage = defaultOgImage.value
     return {
-      title: `${user.value.display_name || user.value.username} (@${user.value.username}) - 郑州四中表白墙`,
+      title: `\u7528\u6237\u8d44\u6599 - ${siteName}`,
       meta: [
-        { name: 'description', content: `查看 ${user.value.display_name || user.value.username} 在郑州四中表白墙的个人主页` },
+        { name: 'description', content: defaultProfileDescription },
+        { property: 'og:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
+        { property: 'og:description', content: defaultProfileDescription },
+        { property: 'og:url', content: canonical },
+        { property: 'og:image', content: fallbackImage },
+        { property: 'og:site_name', content: siteName },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: `\u7528\u6237\u8d44\u6599 - ${siteName}` },
+        { name: 'twitter:description', content: defaultProfileDescription },
+        { name: 'twitter:image', content: fallbackImage },
+      ],
+      link: [
+        { rel: 'canonical', href: canonical },
+        { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
       ],
     }
   }
-  return { title: '郑州四中表白墙' }
+
+  const title = profileTitle.value
+  const description = profileDescription.value
+  const image = profileOgImage.value
+  const structured = profileStructuredData.value
+  const created = toIsoString(user.value.created_at)
+
+  return {
+    title,
+    meta: [
+      { name: 'description', content: description },
+      { name: 'author', content: userDisplayName.value },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:url', content: canonical },
+      { property: 'og:image', content: image },
+      { property: 'og:type', content: 'profile' },
+      { property: 'og:site_name', content: siteName },
+      { property: 'profile:username', content: user.value.username || '' },
+      { property: 'profile:first_name', content: userDisplayName.value },
+      { property: 'article:published_time', content: created },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: image },
+    ],
+    link: [
+      { rel: 'canonical', href: canonical },
+      { rel: 'alternate', hreflang: 'zh-CN', href: canonical },
+    ],
+    script: structured
+      ? [
+          {
+            type: 'application/ld+json',
+            key: 'ld-profile-page-id',
+            children: JSON.stringify(structured),
+          },
+        ]
+      : [],
+  }
 })
 </script>
 
