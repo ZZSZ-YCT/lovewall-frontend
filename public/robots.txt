@@ -1,2 +1,7 @@
-User-Agent: *
-Disallow:
+User-agent: *
+Disallow: /admin/
+Disallow: /me/
+Disallow: /auth/
+Allow: /
+
+Sitemap: https://lovewall.zz4th.space/sitemap.xml

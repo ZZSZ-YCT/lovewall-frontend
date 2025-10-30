@@ -1244,21 +1244,204 @@ watch(() => postId.value, async () => {
 })
 
 // SEO
+const siteName = '\u90d1\u5dde\u56db\u4e2d\u8868\u767d\u5899'
+const defaultPostDescription = '\u90d1\u5dde\u56db\u4e2d\u5b98\u65b9\u6821\u56ed\u4fe1\u606f\u4ea4\u6d41\u5e73\u53f0\uff0c\u5e2e\u52a9\u540c\u5b66\u533f\u540d\u5206\u4eab\u5fc3\u58f0\u3001\u8868\u767d\u4e0e\u6821\u56ed\u8d44\u8baf\uff0c\u8425\u9020\u6e29\u6696\u771f\u5b9e\u7684\u4e92\u52a8\u793e\u533a\u3002'
+const runtimeConfig = useRuntimeConfig()
+
+const normalizedSiteOrigin = computed(() => {
+  const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
+  if (configured) {
+    return configured.replace(/\/+$/, '')
+  }
+  if (import.meta.client && typeof window !== 'undefined') {
+    return window.location.origin.replace(/\/+$/, '')
+  }
+  return ''
+})
+
+const canonicalUrl = computed(() => {
+  const base = normalizedSiteOrigin.value
+  const pathValue = route.fullPath || `/posts/${postId.value}`
+  const normalizedPath = pathValue.startsWith('/') ? pathValue : `/${pathValue}`
+  if (!base) {
+    return normalizedPath
+  }
+  return `${base}${normalizedPath}`
+})
+
+const defaultOgImage = computed(() => {
+  const base = normalizedSiteOrigin.value
+  if (!base) {
+    return '/badge.png'
+  }
+  return `${base}/badge.png`
+})
+
+const postHeadline = computed(() => {
+  if (!post.value) {
+    return '\u5e16\u5b50\u4e0d\u5b58\u5728'
+  }
+  const confession = post.value.card_type !== 'communication' && post.value.card_type !== 'social'
+  if (confession && post.value.target_name) {
+    return `${post.value.author_name}\u5bf9${post.value.target_name}\u7684\u8868\u767d`
+  }
+  return `${post.value.author_name}\u7684\u6295\u7a3f`
+})
+
+const postSeoTitle = computed(() => {
+  if (!post.value) {
+    return `\u5e16\u5b50\u4e0d\u5b58\u5728 - ${siteName}`
+  }
+  return `${postHeadline.value} - ${siteName}`
+})
+
+const sanitizeContent = (value?: string | null) => {
+  if (!value) {
+    return defaultPostDescription
+  }
+  const text = value.replace(/\s+/g, ' ').trim()
+  if (!text) {
+    return defaultPostDescription
+  }
+  return text.length > 160 ? `${text.slice(0, 157)}...` : text
+}
+
+const postSeoDescription = computed(() => sanitizeContent(post.value?.content))
+
+const ogImageUrl = computed(() => {
+  if (!post.value?.images?.length) {
+    return defaultOgImage.value
+  }
+  const firstImage = post.value.images[0]
+  const resolved = assetUrl(firstImage)
+  if (resolved) {
+    if (/^(https?:)?\/\//i.test(resolved)) {
+      return resolved.startsWith('//') ? `https:${resolved}` : resolved
+    }
+    if (normalizedSiteOrigin.value) {
+      const normalizedPath = resolved.startsWith('/') ? resolved : `/${resolved}`
+      return `${normalizedSiteOrigin.value}${normalizedPath}`
+    }
+    return resolved
+  }
+  return defaultOgImage.value
+})
+
+const toIsoString = (value?: string | null) => {
+  if (!value) {
+    return undefined
+  }
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return undefined
+  }
+  return date.toISOString()
+}
+
+const postStructuredData = computed(() => {
+  if (!post.value) {
+    return null
+  }
+  const canonical = canonicalUrl.value
+  const image = ogImageUrl.value
+  const stats: any[] = []
+  if (typeof post.value.view_count === 'number') {
+    stats.push({
+      '@type': 'InteractionCounter',
+      interactionType: 'https://schema.org/ViewAction',
+      userInteractionCount: post.value.view_count,
+    })
+  }
+  if (typeof post.value.comment_count === 'number') {
+    stats.push({
+      '@type': 'InteractionCounter',
+      interactionType: 'https://schema.org/CommentAction',
+      userInteractionCount: post.value.comment_count,
+    })
+  }
+  const author: Record<string, any> = {
+    '@type': 'Person',
+    name: post.value.author_name || '\u533f\u540d',
+  }
+  if (post.value.author_id) {
+    author.identifier = post.value.author_id
+  }
+  const data: Record<string, any> = {
+    '@context': 'https://schema.org',
+    '@type': 'SocialMediaPosting',
+    '@id': canonical,
+    url: canonical,
+    headline: postHeadline.value,
+    articleBody: post.value.content,
+    datePublished: toIsoString(post.value.created_at),
+    dateModified: toIsoString(post.value.updated_at || post.value.created_at),
+    inLanguage: 'zh-CN',
+    author,
+    publisher: {
+      '@type': 'Organization',
+      name: siteName,
+      url: normalizedSiteOrigin.value || undefined,
+    },
+    about: post.value.card_type || undefined,
+    interactionStatistic: stats.length ? stats : undefined,
+  }
+  if (image) {
+    data.image = [image]
+  }
+  if (!data.publisher.url) {
+    delete data.publisher.url
+  }
+  if (!stats.length) {
+    delete data.interactionStatistic
+  }
+  return data
+})
+
 useHead(() => {
   if (!post.value) {
-    return { title: '加载中 - 郑州四中表白墙' }
+    return { title: `\u5e16\u5b50\u4e0d\u5b58\u5728 - ${siteName}` }
   }
-  const isConfession = post.value.card_type !== 'communication' && post.value.card_type !== 'social'
-  const title = isConfession && post.value.target_name
-    ? `${post.value.author_name}对${post.value.target_name}的表白 - 郑州四中表白墙`
-    : `${post.value.author_name}的交流 - 郑州四中表白墙`
+  const canonical = canonicalUrl.value
+  const description = postSeoDescription.value
+  const title = postSeoTitle.value
+  const image = ogImageUrl.value
+  const structured = postStructuredData.value
+  const published = toIsoString(post.value.created_at)
+  const updated = toIsoString(post.value.updated_at || post.value.created_at)
+
   return {
     title,
     meta: [
-      { name: 'description', content: post.value.content.slice(0, 150) + '...' },
-    ]
+      { name: 'description', content: description },
+      { name: 'author', content: post.value.author_name || '\u533f\u540d' },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:url', content: canonical },
+      { property: 'og:image', content: image },
+      { property: 'og:type', content: 'article' },
+      { property: 'og:site_name', content: siteName },
+      { property: 'article:published_time', content: published },
+      { property: 'article:modified_time', content: updated },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: image },
+    ],
+    link: [
+      { rel: 'canonical', href: canonical },
+    ],
+    script: structured
+      ? [
+          {
+            type: 'application/ld+json',
+            key: 'ld-post-detail',
+            children: JSON.stringify(structured),
+          },
+        ]
+      : [],
   }
 })
+
 </script>
 
 <style scoped>

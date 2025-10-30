@@ -184,6 +184,20 @@
                   <div v-if="user.email" class="text-xs text-gray-500">
                     {{ user.email }}
                   </div>
+                  <div
+                    v-if="!canManageTags && user.active_tag"
+                    class="mt-2 inline-flex items-center"
+                  >
+                    <span
+                      class="px-2 py-0.5 text-xs rounded-full font-medium"
+                      :style="{
+                        backgroundColor: user.active_tag.background_color || '#6b7280',
+                        color: user.active_tag.text_color || '#ffffff'
+                      }"
+                    >
+                      {{ user.active_tag.title || user.active_tag.name }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </td>
@@ -219,7 +233,7 @@
 
             <!-- Tags -->
             <td class="px-6 py-4">
-              <div class="flex flex-wrap gap-1">
+              <div v-if="canManageTags" class="flex flex-wrap gap-1">
                 <TagBadge
                   v-for="tag in getUserTags(user.id)"
                   :key="tag.user_tag_id"
@@ -229,6 +243,19 @@
                   :class="{ 'ring-2 ring-blue-300': tag.is_active }"
                 />
                 <span v-if="!getUserTags(user.id).length" class="text-xs text-gray-400">暂无标签</span>
+              </div>
+              <div v-else class="inline-flex items-center">
+                <span
+                  v-if="user.active_tag"
+                  class="px-2 py-0.5 text-xs rounded-full font-medium"
+                  :style="{
+                    backgroundColor: user.active_tag.background_color || '#6b7280',
+                    color: user.active_tag.text_color || '#ffffff'
+                  }"
+                >
+                  {{ user.active_tag.title || user.active_tag.name }}
+                </span>
+                <span v-else class="text-xs text-gray-400">暂无标签</span>
               </div>
             </td>
 
@@ -289,7 +316,7 @@
                 </GlassButton>
 
                 <GlassButton
-                  v-if="!user.is_superadmin && (auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS'))"
+                  v-if="!user.is_superadmin && canManageTags"
                   variant="secondary"
                   class="!p-2"
                   title="管理标签"
@@ -999,6 +1026,7 @@ definePageMeta({
 const auth = useAuthStore()
 const assetUrl = useAssetUrl()
 const toast = useToast()
+const canManageTags = computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS'))
 
 // State
 const users = ref<User[]>([])
@@ -1180,8 +1208,13 @@ const loadUsers = async (page = 1) => {
       }
     })
 
-    // 预加载所有用户的标签信息
-    await loadAllUsersTags(data.items)
+    // 重置标签缓存，避免旧数据残留
+    userTags.value = {}
+
+    if (canManageTags.value) {
+      // 预加载所有用户的标签信息（仅管理权限可用）
+      await loadAllUsersTags(data.items)
+    }
 
   } catch (error: any) {
     toast.error('加载用户列表失败')
@@ -1192,6 +1225,13 @@ const loadUsers = async (page = 1) => {
 
 // 预加载所有用户的标签信息
 const loadAllUsersTags = async (usersList: User[]) => {
+  if (!canManageTags.value) {
+    usersList.forEach((user) => {
+      userTags.value[user.id] = []
+    })
+    return
+  }
+
   const api = useApi()
 
   // 并发加载所有用户的标签，提高加载效率
@@ -1403,7 +1443,7 @@ const deleteUser = async () => {
 // Initialize
 onMounted(() => {
   loadUsers()
-  if (auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS')) {
+  if (canManageTags.value) {
     loadTags()
   }
 })
@@ -1420,6 +1460,10 @@ const loadTags = async () => {
     const data = await api.listTags()
     allTags.value = data.items
   } catch (error: any) {
+    if (error?.response?.status === 403) {
+      console.warn('加载标签列表失败：权限不足')
+      return
+    }
     toast.error('加载标签列表失败')
   }
 }

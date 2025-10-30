@@ -1,3 +1,5 @@
+const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -29,9 +31,24 @@ export default defineNuxtConfig({
         { name: 'keywords', content: '郑州四中,郑州市第四高级中学,表白墙,校园社区,学生交流' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
-        { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' }
+        { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
+        { name: 'format-detection', content: 'telephone=no, email=no, address=no' },
+        { name: 'theme-color', content: '#ffffff' },
+        { property: 'og:locale', content: 'zh_CN' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: '֣�����б���ǽ' },
+        { property: 'og:description', content: '֣���е��ĸ߼���ѧУ԰��Ϣ����ƽ̨������У԰���������������������' },
+        { property: 'og:site_name', content: '֣�����б���ǽ' },
+        { property: 'og:url', content: SITE_URL },
+        { property: 'og:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: '֣�����б���ǽ' },
+        { name: 'twitter:description', content: '֣���е��ĸ߼���ѧУ԰��Ϣ����ƽ̨������У԰���������������������' },
+        { name: 'twitter:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` }
       ],
       link: [
+        { rel: 'canonical', href: SITE_URL },
+        { rel: 'alternate', hreflang: 'zh-CN', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
         { rel: 'preconnect', href: 'https://static.geetest.com' },
         { rel: 'dns-prefetch', href: 'https://static.geetest.com' }
@@ -64,6 +81,7 @@ export default defineNuxtConfig({
       // 在生产环境设置 NUXT_PUBLIC_API_BASE，例如：
       //   https://api.example.com/api  或  http://127.0.0.1:8124/api
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
+      siteUrl: SITE_URL,
       randomImageApiUrl: process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/',
       pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE,
       // GeeTest 登录验证码ID (前端验证)
