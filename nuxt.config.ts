@@ -3,7 +3,13 @@ const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   components: true,
   
   modules: [
@@ -33,15 +39,8 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    devProxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8000',
-        changeOrigin: true,
-        prependPath: true,
-        ws: true
-      }
-    },
-    preset: process.env.NUXT_PRESET ?? 'bun',
+    preset: 'node-server',
+    compressPublicAssets: true
   },
 
   app: {
@@ -87,6 +86,9 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     },
+    build: {
+      cssCodeSplit: true
+    }
   },
   
   runtimeConfig: {

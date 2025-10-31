@@ -128,6 +128,8 @@ export default defineNuxtPlugin(() => {
   instance.interceptors.response.use(
     (response: AxiosResponse<ApiResp<any>>) => response,
     (error) => {
+      console.error(error)
+
       const responseData = (error?.response?.data ?? {}) as Record<string, unknown>
       const status = error?.response?.status
       const trace = responseData?.trace_id as string | undefined
