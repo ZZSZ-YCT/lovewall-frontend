@@ -1,4 +1,4 @@
-import { defineEventHandler, getRequestURL, setHeader } from 'h3'
+import { defineEventHandler, getRequestURL } from 'h3'
 import { useRuntimeConfig } from '#imports'
 import type { Pagination, PostDto, User } from '~/types'
 
@@ -15,6 +15,9 @@ interface SitemapEntry {
 }
 
 const CACHE_TTL_SECONDS = 60 * 5
+
+// Add version to force CDN cache refresh
+const SITEMAP_VERSION = '5-bun-fix'
 
 let cachedResult: { xml: string; expiresAt: number } | null = null
 
@@ -136,12 +139,24 @@ const extractUsersFromResponse = (data: unknown): User[] => {
 export default defineEventHandler(async (event) => {
   const now = Date.now()
   if (cachedResult && cachedResult.expiresAt > now) {
-    setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
-    setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+    const xmlBuffer = Buffer.from(cachedResult.xml, 'utf-8')
+    const contentLength = xmlBuffer.length
+
+    // Bypass h3/Nitro - directly write to Node.js response
+    const res = event.node.res
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8')
+    res.setHeader('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+    res.setHeader('ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
+    res.setHeader('Content-Length', contentLength)
+
     console.info('[sitemap] Cache hit, returning cached sitemap', {
       expiresInMs: cachedResult.expiresAt - now,
+      contentLength,
     })
-    return cachedResult.xml
+
+    res.end(xmlBuffer)
+    return
   }
 
   console.info('[sitemap] Cache miss, regenerating sitemap')
@@ -259,12 +274,6 @@ export default defineEventHandler(async (event) => {
     priority: '1.0',
   })
   addEntry({
-    loc: resolveSiteUrl('/posts/new'),
-    lastmod: generatedAt,
-    changefreq: 'weekly',
-    priority: '0.8',
-  })
-  addEntry({
     loc: resolveSiteUrl('/auth/login'),
     lastmod: generatedAt,
     changefreq: 'monthly',
@@ -275,12 +284,6 @@ export default defineEventHandler(async (event) => {
     lastmod: generatedAt,
     changefreq: 'monthly',
     priority: '0.5',
-  })
-  addEntry({
-    loc: resolveSiteUrl('/notifications'),
-    lastmod: generatedAt,
-    changefreq: 'daily',
-    priority: '0.6',
   })
 
   // Dynamic post pages (only publicly visible)
@@ -316,24 +319,18 @@ export default defineEventHandler(async (event) => {
     })
   }
   const eligibleUsers = rawUsers
-    .filter((user) => user && !user.is_deleted && !user.is_banned && user.status === 0)
+    .filter((user) => user && !user.is_deleted && !user.is_banned)
     .slice(0, 1000)
   let userEntriesAdded = 0
   eligibleUsers.forEach((user) => {
-    if (user.username) {
-      addEntry({
-        loc: resolveSiteUrl(`/users/${user.username}`),
-        lastmod: toIsoString(user.updated_at || user.created_at),
-        changefreq: 'weekly',
-        priority: '0.6',
-      })
-      userEntriesAdded += 1
+    if (!user.username) {
+      return
     }
     addEntry({
-      loc: resolveSiteUrl(`/users/id/${user.id}`),
+      loc: resolveSiteUrl(`/users/${user.username}`),
       lastmod: toIsoString(user.updated_at || user.created_at),
       changefreq: 'weekly',
-      priority: '0.4',
+      priority: '0.6',
     })
     userEntriesAdded += 1
   })
@@ -370,7 +367,18 @@ export default defineEventHandler(async (event) => {
     expiresAt: now + CACHE_TTL_SECONDS * 1000,
   }
 
-  setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
-  setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
-  return xml
+  const xmlBuffer = Buffer.from(xml, 'utf-8')
+  const contentLength = xmlBuffer.length
+
+  // Bypass h3/Nitro - directly write to Node.js response
+  const res = event.node.res
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8')
+  res.setHeader('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+  res.setHeader('ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
+  res.setHeader('Content-Length', contentLength)
+
+  console.info('[sitemap] Returning fresh sitemap', { contentLength })
+
+  res.end(xmlBuffer)
 })

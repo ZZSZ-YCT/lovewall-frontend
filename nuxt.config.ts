@@ -129,6 +129,13 @@ export default defineNuxtConfig({
     '/debug': { ssr: false },
     '/test-**': { ssr: false },
     '/terminal': { ssr: false },
+
+    '/sitemap.xml': {
+      headers: {
+        'content-type': 'application/xml; charset=utf-8',
+        'cache-control': 'public, max-age=300',
+      },
+    },
   },
 
   // Some Experimental Optimizations
