@@ -2,6 +2,8 @@ User-agent: *
 Disallow: /admin/
 Disallow: /me/
 Disallow: /auth/
+Disallow: /notifications
+Disallow: /posts/new
 Allow: /
 
-Sitemap: https://lovewall.zz4th.space/sitemap.xml
+Sitemap: https://zz4th.xyz/sitemap.xml

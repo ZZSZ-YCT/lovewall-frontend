@@ -138,6 +138,7 @@ export default defineEventHandler(async (event) => {
   if (cachedResult && cachedResult.expiresAt > now) {
     setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
     setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+    setHeader(event, 'Content-Length', String(Buffer.byteLength(cachedResult.xml, 'utf-8')))
     console.info('[sitemap] Cache hit, returning cached sitemap', {
       expiresInMs: cachedResult.expiresAt - now,
     })
@@ -259,12 +260,6 @@ export default defineEventHandler(async (event) => {
     priority: '1.0',
   })
   addEntry({
-    loc: resolveSiteUrl('/posts/new'),
-    lastmod: generatedAt,
-    changefreq: 'weekly',
-    priority: '0.8',
-  })
-  addEntry({
     loc: resolveSiteUrl('/auth/login'),
     lastmod: generatedAt,
     changefreq: 'monthly',
@@ -275,12 +270,6 @@ export default defineEventHandler(async (event) => {
     lastmod: generatedAt,
     changefreq: 'monthly',
     priority: '0.5',
-  })
-  addEntry({
-    loc: resolveSiteUrl('/notifications'),
-    lastmod: generatedAt,
-    changefreq: 'daily',
-    priority: '0.6',
   })
 
   // Dynamic post pages (only publicly visible)
@@ -316,24 +305,18 @@ export default defineEventHandler(async (event) => {
     })
   }
   const eligibleUsers = rawUsers
-    .filter((user) => user && !user.is_deleted && !user.is_banned && user.status === 0)
+    .filter((user) => user && !user.is_deleted && !user.is_banned)
     .slice(0, 1000)
   let userEntriesAdded = 0
   eligibleUsers.forEach((user) => {
-    if (user.username) {
-      addEntry({
-        loc: resolveSiteUrl(`/users/${user.username}`),
-        lastmod: toIsoString(user.updated_at || user.created_at),
-        changefreq: 'weekly',
-        priority: '0.6',
-      })
-      userEntriesAdded += 1
+    if (!user.username) {
+      return
     }
     addEntry({
-      loc: resolveSiteUrl(`/users/id/${user.id}`),
+      loc: resolveSiteUrl(`/users/${user.username}`),
       lastmod: toIsoString(user.updated_at || user.created_at),
       changefreq: 'weekly',
-      priority: '0.4',
+      priority: '0.6',
     })
     userEntriesAdded += 1
   })
@@ -372,5 +355,6 @@ export default defineEventHandler(async (event) => {
 
   setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
   setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+  setHeader(event, 'Content-Length', String(Buffer.byteLength(xml, 'utf-8')))
   return xml
 })
