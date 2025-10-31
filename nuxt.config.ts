@@ -128,6 +128,13 @@ export default defineNuxtConfig({
     '/test-**': { ssr: false },
     '/terminal': { ssr: false },
 
+    '/sitemap.xml': {
+      headers: {
+        'content-type': 'application/xml; charset=utf-8',
+        'cache-control': 'public, max-age=300',
+      },
+    },
+
     '/api/__proxy/posts/**/comments': { swr: 30 },
   },
 
