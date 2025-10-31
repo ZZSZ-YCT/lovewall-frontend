@@ -127,8 +127,6 @@ export default defineNuxtConfig({
     '/debug': { ssr: false },
     '/test-**': { ssr: false },
     '/terminal': { ssr: false },
-
-    '/api/__proxy/posts/**/comments': { swr: 30 },
   },
 
   // Some Experimental Optimizations
