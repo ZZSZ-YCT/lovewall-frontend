@@ -16,6 +16,9 @@ interface SitemapEntry {
 
 const CACHE_TTL_SECONDS = 60 * 5
 
+// Add version to force CDN cache refresh
+const SITEMAP_VERSION = '2'
+
 let cachedResult: { xml: string; expiresAt: number } | null = null
 
 const escapeXml = (value: string) =>
@@ -136,11 +139,15 @@ const extractUsersFromResponse = (data: unknown): User[] => {
 export default defineEventHandler(async (event) => {
   const now = Date.now()
   if (cachedResult && cachedResult.expiresAt > now) {
+    const contentLength = Buffer.byteLength(cachedResult.xml, 'utf-8')
     setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
     setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
-    setHeader(event, 'Content-Length', String(Buffer.byteLength(cachedResult.xml, 'utf-8')))
+    setHeader(event, 'Content-Length', contentLength)
+    setHeader(event, 'ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
+    setHeader(event, 'X-Content-Length', contentLength)
     console.info('[sitemap] Cache hit, returning cached sitemap', {
       expiresInMs: cachedResult.expiresAt - now,
+      contentLength,
     })
     return cachedResult.xml
   }
@@ -353,8 +360,12 @@ export default defineEventHandler(async (event) => {
     expiresAt: now + CACHE_TTL_SECONDS * 1000,
   }
 
+  const contentLength = Buffer.byteLength(xml, 'utf-8')
   setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
   setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
-  setHeader(event, 'Content-Length', String(Buffer.byteLength(xml, 'utf-8')))
+  setHeader(event, 'Content-Length', contentLength)
+  setHeader(event, 'ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
+  setHeader(event, 'X-Content-Length', contentLength)
+  console.info('[sitemap] Returning fresh sitemap', { contentLength })
   return xml
 })
