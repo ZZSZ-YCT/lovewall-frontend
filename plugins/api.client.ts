@@ -128,6 +128,8 @@ export default defineNuxtPlugin(() => {
   instance.interceptors.response.use(
     (response: AxiosResponse<ApiResp<any>>) => response,
     (error) => {
+      console.error(error)
+
       const responseData = (error?.response?.data ?? {}) as Record<string, unknown>
       const status = error?.response?.status
       const trace = responseData?.trace_id as string | undefined
@@ -436,9 +438,9 @@ export default defineNuxtPlugin(() => {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      //const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
-      //return unwrap(response)
-      const res = await $fetch<ApiResp<Pagination<CommentDto>>>(`/__proxy/posts/${postId}/comments`, {
+      const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
+      return unwrap(response)
+      /*const res = await $fetch<ApiResp<Pagination<CommentDto>>>(`/__proxy/posts/${postId}/comments`, {
         method: 'GET',
         params,
       })
@@ -446,7 +448,7 @@ export default defineNuxtPlugin(() => {
       if (res.success) {
         return res.data
       }
-      throw new Error(`${res.error.code}: ${res.error.message} (trace ${res.trace_id})`)
+      throw new Error(`${res.error.code}: ${res.error.message} (trace ${res.trace_id})`)*/
     },
 
     async createComment(postId: string, data: CommentForm): Promise<CommentDto> {

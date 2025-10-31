@@ -39,6 +39,7 @@
             v-if="authorHasAvatar === true && authorAvatar"
             :src="authorAvatar"
             :alt="post.author_name"
+            format="webp"
             class="relative z-10 w-full h-full rounded-full object-cover"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
             @error="handleAuthorAvatarError"
