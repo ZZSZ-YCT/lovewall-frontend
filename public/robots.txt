@@ -1,7 +1,6 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /me/
-Disallow: /auth/
 Disallow: /notifications
 Disallow: /posts/new
 Allow: /
