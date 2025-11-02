@@ -4,8 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "build:bun": "cross-env NUXT_PRESET=bun nuxt build",
-    "build:node": "cross-env NUXT_PRESET=node-server nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

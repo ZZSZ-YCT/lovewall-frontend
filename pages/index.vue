@@ -178,6 +178,8 @@ const { data, pending, refresh, error } = await useAsyncData(
   'home-posts',
   async () => {
     await home.initialLoad()
+    await home.forceRefresh()
+    console.log("loading data")
     return {
       posts: home.posts,
       hasMore: home.hasMore,
@@ -298,9 +300,6 @@ useSeoMeta({
   twitterTitle: homepageTitle,
   twitterDescription: homepageDescription,
   twitterImage: computed(() => homepageOgImage.value),
-
-  // --- Canonical ---
-  canonical: computed(() => canonicalUrl.value),
 })
 
 useHead({

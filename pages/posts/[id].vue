@@ -699,7 +699,7 @@ watchEffect(() => {
 // ✅ 2. SSR加载评论
 const { data: commentsInit, pending: commentsPending, refresh: refreshComments } = await useAsyncData(
   () => `post-comments-${postId.value}`,
-  async () => await api.listComments(postId.value, { page: 1, page_size: 20 }),
+  async () => await fetchComments(1),
   {
     server: false,
     lazy: true,
@@ -719,30 +719,38 @@ const errorMsg = computed(() => error.value?.message || null)
 const showAdminActions = computed(() => auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])))
 const canEditPost = computed(() => auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS']))
 
+async function fetchComments(page = 1) {
+  const data = await api.listComments(postId.value, { page, page_size: 20 })
+  const userIds = [...new Set(data.items.map(c => c.user_id))] as string[]
+  const uncached = userIds.filter(id => !userAvatarCache.value.has(id))
+  if (uncached.length > 0) {
+    await Promise.all(uncached.map(async (id) => {
+      try {
+        const u = await api.getUser(id)
+        userAvatarCache.value.set(id, u.avatar_url || null)
+      } catch {
+        userAvatarCache.value.set(id, null)
+      }
+    }))
+  }
+  const enriched = data.items.map(c => ({
+    ...c,
+    user_avatar_url: userAvatarCache.value.get(c.user_id) ?? null,
+  }))
+  return { ...data, items: enriched }
+}
+
 // --- 方法（保留原逻辑） ---
 const loadMoreComments = () => {
   if (commentsData.value) loadComments(commentsData.value.page + 1)
 }
-const loadComments = async (page = 1) => {
+async function loadComments(page = 1) {
   commentsLoading.value = true
   try {
-    const data = await api.listComments(postId.value, { page, page_size: 20 })
-    const userIds = [...new Set(data.items.map(c => c.user_id))] as string[]
-    const uncached = userIds.filter(id => !userAvatarCache.value.has(id))
-    if (uncached.length > 0) {
-      await Promise.all(uncached.map(async (id) => {
-        try {
-          const u = await api.getUser(id)
-          userAvatarCache.value.set(id, u.avatar_url || null)
-        } catch { userAvatarCache.value.set(id, null) }
-      }))
-    }
-    const enriched = data.items.map(c => ({ ...c, user_avatar_url: userAvatarCache.value.get(c.user_id) ?? null }))
-    if (page === 1) comments.value = enriched
-    else comments.value.push(...enriched)
+    const data = await fetchComments(page)
+    if (page === 1) comments.value = data.items
+    else comments.value.push(...data.items)
     commentsData.value = data
-  } catch {
-    toast.error('加载评论失败')
   } finally {
     commentsLoading.value = false
   }

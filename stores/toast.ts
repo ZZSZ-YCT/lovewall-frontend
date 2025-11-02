@@ -28,7 +28,7 @@ export const useToastStore = defineStore('toast', {
         ...toast,
       }
       
-      console.log('Adding toast:', newToast)
+      // console.log('Adding toast:', newToast) // fuck u too
       
       // Keep only latest 3 toasts
       if (this.toasts.length >= 3) {
@@ -36,13 +36,13 @@ export const useToastStore = defineStore('toast', {
       }
       
       this.toasts.push(newToast)
-      console.log('Current toasts:', this.toasts)
+      //console.log('Current toasts:', this.toasts) // fuck u trash logs pusher
       
       // Auto remove after duration
       if (newToast.duration && newToast.duration > 0) {
-        console.log(`Setting timeout for toast ${id} with duration ${newToast.duration}ms`)
+        //console.log(`Setting timeout for toast ${id} with duration ${newToast.duration}ms`)
         setTimeout(() => {
-          console.log(`Auto-removing toast ${id} after ${newToast.duration}ms`)
+          //console.log(`Auto-removing toast ${id} after ${newToast.duration}ms`)
           this.removeToast(id)
         }, newToast.duration)
       }
@@ -51,7 +51,7 @@ export const useToastStore = defineStore('toast', {
     },
 
     removeToast(id: string): void {
-      console.log('Removing toast:', id)
+      //console.log('Removing toast:', id)
       const index = this.toasts.findIndex(t => t.id === id)
       if (index > -1) {
         if (this.toasts && this.toasts[index]) {
@@ -62,7 +62,7 @@ export const useToastStore = defineStore('toast', {
           const currentIndex = this.toasts.findIndex(t => t.id === id)
           if (currentIndex > -1) {
             this.toasts.splice(currentIndex, 1)
-            console.log('Toast removed from array:', id)
+            //console.log('Toast removed from array:', id)
           }
         }, 300)
       }
@@ -74,22 +74,22 @@ export const useToastStore = defineStore('toast', {
 
     // Convenience methods
     success(message: string, title?: string, duration?: number): string {
-      console.log('Toast success called:', message, title, duration)
+      //console.log('Toast success called:', message, title, duration)
       return this.addToast({ type: 'success', message, title, duration: duration ?? 3000 })
     },
 
     error(message: string, title?: string, duration?: number): string {
-      console.log('Toast error called:', message, title, duration)
+      //console.log('Toast error called:', message, title, duration)
       return this.addToast({ type: 'error', message, title, duration: duration ?? 3000 })
     },
 
     warning(message: string, title?: string, duration?: number): string {
-      console.log('Toast warning called:', message, title, duration)
+      //console.log('Toast warning called:', message, title, duration)
       return this.addToast({ type: 'warning', message, title, duration: duration ?? 3000 })
     },
 
     info(message: string, title?: string, duration?: number): string {
-      console.log('Toast info called:', message, title, duration)
+      //console.log('Toast info called:', message, title, duration)
       return this.addToast({ type: 'info', message, title, duration: duration ?? 3000 })
     },
   },
