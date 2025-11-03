@@ -9,7 +9,7 @@ import {registerUserCommands} from "~/composables/terminal/commands/userCommand"
 import {registerPostCommands} from "~/composables/terminal/commands/postCommand";
 
 definePageMeta({
-  layout: 'terminal',
+  layout: 'empty',
 })
 
 useHead({

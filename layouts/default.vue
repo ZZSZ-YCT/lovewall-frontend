@@ -234,3 +234,7 @@ watch(() => route.path, () => {
   if (import.meta.client) setTimeout(loadUnreadCount, 500)
 })
 </script>
+
+<style src="~/assets/css/default.css">
+
+</style>

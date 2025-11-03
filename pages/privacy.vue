@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import {useRenderMd} from "~/composables/useRenderMd";
-import tosMarkdown from '~/assets/tos.md?raw'
+import tosMarkdown from '~/assets/privacy.md?raw'
 
 const { render } = useRenderMd()
 
