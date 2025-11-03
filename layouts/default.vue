@@ -110,8 +110,8 @@
           <div class="space-y-2">
             <p>© 2024 郑州市第四高级中学表白墙</p>
             <div class="flex justify-center gap-4">
-              <a href="#" class="hover:text-brand-600 transition-colors">隐私政策</a>
-              <a href="#" class="hover:text-brand-600 transition-colors">服务条款</a>
+              <a href="/privacy" class="hover:text-brand-600 transition-colors">隐私政策</a>
+              <a href="/tos" class="hover:text-brand-600 transition-colors">服务条款</a>
               <a href="#" class="hover:text-brand-600 transition-colors">联系我们</a>
             </div>
           </div>
