@@ -24,7 +24,15 @@
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
           <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
-            <NuxtImg src="/badge.png" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg" />
+            <NuxtImg
+              src="/badge.png"
+              alt="郑州四中表白墙"
+              class="w-8 h-8 rounded-lg"
+              :modifiers="{ fit: 'cover' }"
+              sizes="32px"
+              format="webp"
+              densities="x1 x2"
+            />
             <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
           </NuxtLink>
 

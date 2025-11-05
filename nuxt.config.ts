@@ -35,6 +35,16 @@ export default defineNuxtConfig({
           format: 'webp'
         }
       }
+    },
+    screens: {
+      xxs: 32,
+      xs: 64,
+      s: 96,
+      sm: 320,
+      md: 640,
+      lg: 768,
+      xl: 1024,
+      '2xl': 1280,
     }
   },
 
