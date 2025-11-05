@@ -15,7 +15,10 @@
           :src="resolveThumbnail(image)"
           :alt="`${altPrefix} ${index + 1}`"
           :class="imageClass"
-          loading="lazy"
+          class="relative w-full h-full rounded-lg overflow-hidden"
+          fit='inside'
+          sizes="100vw sm:50vw md:400px"
+          :imgAttrs="{ class: 'w-full h-full object-cover' }"
         />
       </a>
     </div>

@@ -35,13 +35,18 @@
           </template>
 
           <!-- 头像容器 -->
-          <NuxtImg
+          <NuxtPicture
             v-if="authorHasAvatar === true && authorAvatar"
             :src="authorAvatar"
             :alt="post.author_name"
+            sizes="(max-width: 640px) 25vw, (max-width: 1024px) 12vw, 48px"
             format="webp"
-            class="relative z-10 w-full h-full rounded-full object-cover"
+            :modifiers="{ fit: 'cover', quality: 60 }"
+            class="relative z-10 w-full h-full rounded-full object-cover block box-border"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+            :imgAttrs="{
+              class: 'w-full h-full rounded-full object-cover block align-middle'
+            }"
             @error="handleAuthorAvatarError"
           />
 
