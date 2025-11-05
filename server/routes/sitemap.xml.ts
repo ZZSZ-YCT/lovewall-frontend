@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
   const now = Date.now()
   if (cachedResult && cachedResult.expiresAt > now) {
     setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
-    setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+    setHeader(event, 'Cache-Control', 'public, max-age=300, s-maxage=300, stale-while-revalidate=600')
     setHeader(event, 'ETag', `W/"sitemap-v${SITEMAP_VERSION}-${cachedResult.xml.length}"`)
     return cachedResult.xml
   }
