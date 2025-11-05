@@ -1,165 +1,61 @@
-import { defineEventHandler, getRequestURL } from 'h3'
+// server/routes/sitemap.xml.ts
+import { defineEventHandler, getRequestURL, setHeader } from 'h3'
 import { useRuntimeConfig } from '#imports'
 import type { Pagination, PostDto, User } from '~/types'
 
-interface ApiResponse<T> {
-  success: boolean
-  data: T
-}
-
-interface SitemapEntry {
-  loc: string
-  lastmod: string
-  changefreq: string
-  priority: string
-}
+interface ApiResponse<T> { success: boolean; data: T }
+interface SitemapEntry { loc: string; lastmod: string; changefreq: string; priority: string }
 
 const CACHE_TTL_SECONDS = 60 * 5
+const SITEMAP_VERSION = '6-runtime-safe'
 
-// Add version to force CDN cache refresh
-const SITEMAP_VERSION = '5-bun-fix'
-
+// process lifetime cache (will be best-effort on edge)
 let cachedResult: { xml: string; expiresAt: number } | null = null
 
 const escapeXml = (value: string) =>
-  value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;')
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&apos;')
 
-const toIsoString = (value?: string | null) => {
-  if (!value) {
-    return new Date().toISOString()
-  }
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) {
-    return new Date().toISOString()
-  }
-  return date.toISOString()
+// Use second precision to avoid picky parsers
+const toIsoSec = (value?: string | null) => {
+  const d = value ? new Date(value) : new Date()
+  if (Number.isNaN(d.getTime())) return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
+  return d.toISOString().replace(/\.\d{3}Z$/, 'Z')
 }
 
-const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path}`)
+const normalizePath = (p: string) => (p.startsWith('/') ? p : `/${p}`)
+const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null
-
-const previewForLog = (value: unknown, maxArrayItems = 5, depth = 0): unknown => {
-  if (depth > 2) {
-    return value
-  }
-  if (typeof value === 'string') {
-    return value.length > 200 ? `${value.slice(0, 200)}...(+${value.length - 200} chars)` : value
-  }
-  if (Array.isArray(value)) {
-    return value.slice(0, maxArrayItems).map((item) => previewForLog(item, maxArrayItems, depth + 1))
-  }
-  if (isRecord(value)) {
-    const result: Record<string, unknown> = {}
-    for (const [key, val] of Object.entries(value)) {
-      result[key] = previewForLog(val, maxArrayItems, depth + 1)
-    }
-    return result
-  }
-  return value
-}
-
-const describePayload = (value: unknown) => {
-  if (value === null) return { type: 'null' }
-  if (Array.isArray(value)) return { type: 'array', length: value.length }
-  if (isRecord(value)) return { type: 'object', keys: Object.keys(value) }
-  return { type: typeof value }
-}
-
-const normalizeApiPayload = <T>(payload: unknown, url: string): T | null => {
+const normalizeApiPayload = <T>(payload: unknown): T | null => {
   if (isRecord(payload) && 'success' in payload) {
-    const record = payload as Record<string, unknown>
-    if (record.success === true) {
-      if ('data' in record) {
-        return record.data as T
-      }
-      console.warn('[sitemap] API success payload missing data', { url, preview: previewForLog(record) })
-      return null
-    }
-    console.error('[sitemap] API error payload', { url, preview: previewForLog(record) })
-    return null
+    const r = payload as Record<string, unknown>
+    return r.success === true && 'data' in r ? (r.data as T) : null
   }
-
-  if (isRecord(payload) && 'data' in payload) {
-    console.warn('[sitemap] API payload missing success flag, using data field', {
-      url,
-      preview: previewForLog(payload),
-    })
-    return (payload as Record<string, unknown>).data as T
-  }
-
-  if (Array.isArray(payload)) {
-    return payload as T
-  }
-
-  if (payload == null) {
-    console.warn('[sitemap] API returned null/undefined payload', { url })
-    return null
-  }
-
-  console.warn('[sitemap] Using raw payload as data', { url, preview: previewForLog(payload) })
-  return payload as T
+  if (isRecord(payload) && 'data' in payload) return (payload as any).data as T
+  if (Array.isArray(payload)) return payload as T
+  return payload == null ? null : (payload as T)
 }
 
 const extractUsersFromResponse = (data: unknown): User[] => {
   if (!data) return []
   if (Array.isArray(data)) return data as User[]
   if (!isRecord(data)) return []
-
-  const record = data as Record<string, unknown>
-
-  const directUsers = record.users
-  if (Array.isArray(directUsers)) {
-    return directUsers as User[]
-  }
-
-  const items = record.items
-  if (Array.isArray(items)) {
-    return items as User[]
-  }
-
-  if ('data' in data) {
-    return extractUsersFromResponse(record.data)
-  }
-
-  const results = record.results
-  if (Array.isArray(results)) {
-    return results as User[]
-  }
-
+  if (Array.isArray((data as any).users)) return (data as any).users as User[]
+  if (Array.isArray((data as any).items)) return (data as any).items as User[]
+  if ('data' in data) return extractUsersFromResponse((data as any).data)
+  if (Array.isArray((data as any).results)) return (data as any).results as User[]
   return []
 }
 
 export default defineEventHandler(async (event) => {
   const now = Date.now()
   if (cachedResult && cachedResult.expiresAt > now) {
-    const xmlBuffer = Buffer.from(cachedResult.xml, 'utf-8')
-    const contentLength = xmlBuffer.length
-
-    // Bypass h3/Nitro - directly write to Node.js response
-    const res = event.node.res
-    res.statusCode = 200
-    res.setHeader('Content-Type', 'application/xml; charset=utf-8')
-    res.setHeader('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
-    res.setHeader('ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
-    res.setHeader('Content-Length', contentLength)
-
-    console.info('[sitemap] Cache hit, returning cached sitemap', {
-      expiresInMs: cachedResult.expiresAt - now,
-      contentLength,
-    })
-
-    res.end(xmlBuffer)
-    return
+    setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
+    setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+    setHeader(event, 'ETag', `W/"sitemap-v${SITEMAP_VERSION}-${cachedResult.xml.length}"`)
+    return cachedResult.xml
   }
 
-  console.info('[sitemap] Cache miss, regenerating sitemap')
   const config = useRuntimeConfig(event)
   const requestUrl = getRequestURL(event)
   const origin = `${requestUrl.protocol}//${requestUrl.host}`
@@ -167,81 +63,35 @@ export default defineEventHandler(async (event) => {
   const siteUrlBase =
     (config.public?.siteUrl as string | undefined)?.replace(/\/+$/, '') || origin
 
+  // Prefer absolute api base to avoid self-fetch quirks
   const apiBase = (config.public?.apiBase as string | undefined) || '/api'
   const apiBaseAbsolute = /^https?:\/\//i.test(apiBase)
     ? apiBase.replace(/\/+$/, '')
     : `${origin}${normalizePath(apiBase).replace(/\/+$/, '')}`
 
-  const resolveApiUrl = (path: string) => {
-    const relativePath = normalizePath(path)
-    return `${apiBaseAbsolute}${relativePath}`
-  }
-
-  const resolveSiteUrl = (path: string) => {
-    try {
-      return new URL(normalizePath(path), `${siteUrlBase}/`).toString()
-    } catch {
-      return `${siteUrlBase}${normalizePath(path)}`
+  const resolveApiUrl = (path: string, query?: Record<string, string | number | undefined>) => {
+    const url = new URL(`${apiBaseAbsolute}${normalizePath(path)}`)
+    if (query) {
+      for (const [k, v] of Object.entries(query)) {
+        if (v == null) continue
+        url.searchParams.set(k, String(v))
+      }
     }
+    return url
   }
 
-  const fetchApi = async <T>(
-    path: string,
-    query?: Record<string, string | number | undefined>
-  ): Promise<T | null> => {
+  const resolveSiteUrl = (path: string) =>
+    new URL(normalizePath(path), `${siteUrlBase}/`).toString()
+
+  const fetchApi = async <T>(path: string, query?: Record<string, string | number | undefined>) => {
     try {
-      const url = new URL(resolveApiUrl(path))
-      if (query) {
-        for (const [key, value] of Object.entries(query)) {
-          if (value === undefined || value === null) continue
-          url.searchParams.set(key, String(value))
-        }
-      }
-      console.info('[sitemap] Fetching API', { url: url.toString(), path })
-      const response = await fetch(url.toString(), {
-        headers: { accept: 'application/json' },
-      })
-      const responseText = await response.text()
-      if (!response.ok) {
-        console.error('[sitemap] API request failed', {
-          url: url.toString(),
-          status: response.status,
-          statusText: response.statusText,
-          bodyPreview: previewForLog(responseText),
-        })
-        return null
-      }
-
-      let payload: unknown
-      try {
-        payload = responseText ? (JSON.parse(responseText) as ApiResponse<T>) : null
-      } catch (parseError) {
-        console.error('[sitemap] Failed to parse API response', {
-          url: url.toString(),
-          error: parseError,
-          bodyPreview: previewForLog(responseText),
-        })
-        return null
-      }
-
-      console.info('[sitemap] API response received', {
-        url: url.toString(),
-        summary: describePayload(payload),
-        preview: previewForLog(payload),
-      })
-
-      const normalized = normalizeApiPayload<T>(payload, url.toString())
-      if (normalized !== null) {
-        return normalized
-      }
-
-      console.warn('[sitemap] Unable to normalize API payload', {
-        url: url.toString(),
-        summary: describePayload(payload),
-      })
-      return null
-    } catch (error) {
-      console.error('[sitemap] API request error', { path, error })
+      const url = resolveApiUrl(path, query)
+      const res = await fetch(url.toString(), { headers: { accept: 'application/json' } })
+      if (!res.ok) return null
+      const text = await res.text()
+      const payload = text ? (JSON.parse(text) as ApiResponse<T>) : null
+      return normalizeApiPayload<T>(payload)
+    } catch {
       return null
     }
   }
@@ -251,134 +101,64 @@ export default defineEventHandler(async (event) => {
     fetchApi<unknown>('/users/search', { page: 1, page_size: 1000 }),
   ])
 
-  if (!postsData) {
-    console.warn('[sitemap] Post data missing from API response')
-  }
-
-  if (!usersPayload) {
-    console.warn('[sitemap] User payload missing from API response')
-  }
-
   const urlEntries: SitemapEntry[] = []
-  const generatedAt = new Date().toISOString()
+  const generatedAt = toIsoSec()
 
-  const addEntry = (entry: SitemapEntry) => {
-    urlEntries.push(entry)
-  }
+  const add = (e: SitemapEntry) => urlEntries.push(e)
 
-  // Static pages
-  addEntry({
-    loc: resolveSiteUrl('/'),
-    lastmod: generatedAt,
-    changefreq: 'hourly',
-    priority: '1.0',
-  })
-  addEntry({
-    loc: resolveSiteUrl('/auth/login'),
-    lastmod: generatedAt,
-    changefreq: 'monthly',
-    priority: '0.4',
-  })
-  addEntry({
-    loc: resolveSiteUrl('/auth/register'),
-    lastmod: generatedAt,
-    changefreq: 'monthly',
-    priority: '0.5',
-  })
+  // Static pages (avoid /auth/* to prevent robots conflicts)
+  add({ loc: resolveSiteUrl('/'), lastmod: generatedAt, changefreq: 'hourly', priority: '1.0' })
+  // If you really want auth pages listed, ensure robots.txt allows them before re-adding.
 
-  // Dynamic post pages (only publicly visible)
-  const posts = postsData?.items ?? (Array.isArray(postsData) ? postsData : [])
-  console.info('[sitemap] Posts fetched', {
-    total: postsData?.total ?? posts.length,
-    page: postsData?.page,
-    pageSize: postsData?.page_size,
-    itemsReturned: posts.length,
-  })
-  const visiblePosts = posts.filter((post) => post && post.status === 0).slice(0, 1000)
-  visiblePosts.forEach((post) => {
-    addEntry({
-      loc: resolveSiteUrl(`/posts/${post.id}`),
-      lastmod: toIsoString(post.updated_at || post.created_at),
-      changefreq: 'daily',
-      priority: '0.7',
-    })
-  })
-  console.info('[sitemap] Post entries added', {
-    eligible: visiblePosts.length,
-  })
-
-  // Dynamic user pages (only active/public users)
-  const rawUsers = extractUsersFromResponse(usersPayload)
-  console.info('[sitemap] Users fetched', {
-    itemsReturned: rawUsers.length,
-    preview: previewForLog(rawUsers),
-  })
-  if (!rawUsers.length) {
-    console.warn('[sitemap] No user data extracted from API response', {
-      payloadSummary: describePayload(usersPayload),
-    })
-  }
-  const eligibleUsers = rawUsers
-    .filter((user) => user && !user.is_deleted && !user.is_banned)
+  // Posts (status === 0 only)
+  const posts = (Array.isArray(postsData) ? postsData : postsData?.items) ?? []
+  posts
+    .filter((p) => p && p.status === 0)
     .slice(0, 1000)
-  let userEntriesAdded = 0
-  eligibleUsers.forEach((user) => {
-    if (!user.username) {
-      return
-    }
-    addEntry({
-      loc: resolveSiteUrl(`/users/${user.username}`),
-      lastmod: toIsoString(user.updated_at || user.created_at),
+    .forEach((post) =>
+      add({
+        loc: resolveSiteUrl(`/posts/${post.id}`),
+        lastmod: toIsoSec(post.updated_at || post.created_at),
+        changefreq: 'daily',
+        priority: '0.7',
+      })
+    )
+
+  // Users (active only)
+  const users = extractUsersFromResponse(usersPayload)
+    .filter((u) => u && !u.is_deleted && !u.is_banned && u.username)
+    .slice(0, 1000)
+
+  users.forEach((user) =>
+    add({
+      loc: resolveSiteUrl(`/users/${user.username!}`),
+      lastmod: toIsoSec(user.updated_at || user.created_at),
       changefreq: 'weekly',
       priority: '0.6',
     })
-    userEntriesAdded += 1
-  })
-  console.info('[sitemap] User entries added', {
-    rawUsers: rawUsers.length,
-    eligibleUsers: eligibleUsers.length,
-    addedEntries: userEntriesAdded,
-  })
+  )
 
-  const xml = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urlEntries.map(
-      (entry) => [
-        '  <url>',
-        `    <loc>${escapeXml(entry.loc)}</loc>`,
-        `    <lastmod>${escapeXml(entry.lastmod)}</lastmod>`,
-        `    <changefreq>${escapeXml(entry.changefreq)}</changefreq>`,
-        `    <priority>${escapeXml(entry.priority)}</priority>`,
-        '  </url>',
-      ].join('\n')
-    ),
-    '</urlset>',
-  ].join('\n')
+  const xml =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urlEntries
+      .map(
+        (e) =>
+          '  <url>\n' +
+          `    <loc>${escapeXml(e.loc)}</loc>\n` +
+          `    <lastmod>${escapeXml(e.lastmod)}</lastmod>\n` +
+          `    <changefreq>${escapeXml(e.changefreq)}</changefreq>\n` +
+          `    <priority>${escapeXml(e.priority)}</priority>\n` +
+          '  </url>'
+      )
+      .join('\n') +
+    '\n</urlset>\n'
 
-  console.info('[sitemap] Sitemap generated', {
-    totalEntries: urlEntries.length,
-    generatedAt,
-    cacheTtlSeconds: CACHE_TTL_SECONDS,
-  })
+  cachedResult = { xml, expiresAt: now + CACHE_TTL_SECONDS * 1000 }
 
-  cachedResult = {
-    xml,
-    expiresAt: now + CACHE_TTL_SECONDS * 1000,
-  }
-
-  const xmlBuffer = Buffer.from(xml, 'utf-8')
-  const contentLength = xmlBuffer.length
-
-  // Bypass h3/Nitro - directly write to Node.js response
-  const res = event.node.res
-  res.statusCode = 200
-  res.setHeader('Content-Type', 'application/xml; charset=utf-8')
-  res.setHeader('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
-  res.setHeader('ETag', `"sitemap-v${SITEMAP_VERSION}-${contentLength}"`)
-  res.setHeader('Content-Length', contentLength)
-
-  console.info('[sitemap] Returning fresh sitemap', { contentLength })
-
-  res.end(xmlBuffer)
+  setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
+  setHeader(event, 'Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`)
+  setHeader(event, 'ETag', `W/"sitemap-v${SITEMAP_VERSION}-${xml.length}"`)
+  // On Nitro, returning the string is fine; `send` also works.
+  return xml
 })
