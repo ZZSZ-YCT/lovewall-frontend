@@ -8,7 +8,7 @@
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <GlassCard class="p-8">
-        <h1 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h1>
+        <h2 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
         <GlassButton variant="secondary" @click="$router.back()">
           返回上页

@@ -9,7 +9,7 @@
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <div class="glass-card p-8">
-        <h1 class="text-2xl font-bold text-red-600 mb-4">加载失败</h1>
+        <h2 class="text-2xl font-bold text-red-600 mb-4">加载失败</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
         <GlassButton variant="secondary" @click="() => refresh()">
           重新加载
@@ -102,6 +102,9 @@
 
                   <h1 class="text-2xl font-bold text-gray-800">
                     {{ post.author_name }}
+                    <template v-if="(post.card_type !== 'communication' && post.card_type !== 'social') && post.target_name">
+                      → {{ post.target_name }}
+                    </template>
                   </h1>
                   <!-- 新增: 在线状态徽章 -->
                   <OnlineBadge
@@ -116,13 +119,6 @@
                     :text="post.author_tag.text_color"
                   />
                 </div>
-
-                <h1
-                  v-if="(post.card_type !== 'communication' && post.card_type !== 'social') && post.target_name"
-                  class="text-2xl font-bold text-gray-800"
-                >
-                  → {{ post.target_name }}
-                </h1>
               </div>
 
                 <div class="flex items-center gap-2 text-sm text-gray-500">
@@ -1234,6 +1230,12 @@ useSeoMeta({
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!postStructuredData.value) return []
     return [

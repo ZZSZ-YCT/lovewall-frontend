@@ -303,6 +303,12 @@ useSeoMeta({
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!homepageStructuredData.value) return []
     return [
