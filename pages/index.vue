@@ -179,7 +179,6 @@ const { data, pending, refresh, error } = await useAsyncData(
   async () => {
     await home.initialLoad()
     await home.forceRefresh()
-    console.log("loading data")
     return {
       posts: home.posts,
       hasMore: home.hasMore,
