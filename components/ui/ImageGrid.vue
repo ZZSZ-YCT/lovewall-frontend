@@ -15,8 +15,8 @@
           :src="resolveThumbnail(image)"
           :alt="`${altPrefix} ${index + 1}`"
           :class="imageClass"
-          :modifiers="{ fit: 'cover', quality: 60 }"
-          sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
+          :modifiers="{ fit: 'cover', quality: 70 }"
+          sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 10vw"
           :imgAttrs="{
             class: 'w-full h-full object-cover'
           }"
