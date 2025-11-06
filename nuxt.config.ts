@@ -144,6 +144,9 @@ export default defineNuxtConfig({
         'cache-control': 'public, max-age=300',
       },
     },
+
+    '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/**/*.{css,js,woff2,png,jpg,webp,avif,svg}': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
   },
 
   // Some Experimental Optimizations

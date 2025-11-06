@@ -154,6 +154,7 @@ import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
 import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
+import '~/assets/css/default.css'
 
 // Stores
 const auth = useAuthStore()
@@ -243,6 +244,6 @@ watch(() => route.path, () => {
 })
 </script>
 
-<style src="~/assets/css/default.css">
+<style>
 
 </style>
