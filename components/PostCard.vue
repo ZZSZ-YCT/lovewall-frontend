@@ -264,6 +264,7 @@
       <ImageGrid
         :images="post.images"
         :alt-prefix="(post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name) ? (post.author_name + ' 的表白图片') : (post.author_name + ' 的交流图片')"
+        :eager="imageGridEager"
       />
     </div>
 
@@ -309,6 +310,7 @@ interface Props {
   post: PostDto
   showActions?: boolean
   variant?: 'grid' | 'list'
+  imageGridEager?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {

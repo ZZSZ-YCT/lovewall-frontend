@@ -1,26 +1,41 @@
 <template>
-  <div v-if="images?.length" class="space-y-3">
-    <div ref="galleryRef" :class="gridWrapperClass">
-      <a
-        v-for="(image, index) in images"
-        :key="`${image}-${index}`"
-        :href="resolveOriginalImage(image)"
-        :data-pswp-width="2400"
-        :data-pswp-height="2400"
-        target="_blank"
-        rel="noreferrer"
-        @click.prevent.stop="openGallery(index)"
-      >
-        <NuxtPicture
-          :src="resolveThumbnail(image)"
-          :alt="`${altPrefix} ${index + 1}`"
-          :class="imageClass"
-          class="relative w-full h-full rounded-lg overflow-hidden"
-          fit='inside'
-          sizes="100vw sm:50vw md:400px"
-          :imgAttrs="{ class: 'w-full h-full object-cover' }"
-        />
-      </a>
+  <div ref="root">
+    <div v-if="!visible" class="h-40 bg-gray-100 rounded-lg"></div>
+
+    <div v-if="images?.length" class="space-y-3">
+      <div ref="galleryRef" :class="gridWrapperClass">
+        <a
+          v-for="(image, index) in thumbnails"
+          :key="`${image}-${index}`"
+          :href="resolveOriginalImage(image)"
+          :data-pswp-width="2400"
+          :data-pswp-height="2400"
+          target="_blank"
+          rel="noreferrer"
+          @click.prevent.stop="openGallery(index)"
+          class="relative"
+        >
+          <NuxtPicture
+            :src="resolveThumbnail(image)"
+            :alt="`${altPrefix} ${index + 1}`"
+            :class="imageClass"
+            class="relative w-full h-full rounded-lg overflow-hidden"
+            fit="inside"
+            sizes="100vw sm:50vw md:400px"
+            :imgAttrs="{ class: 'w-full h-full object-cover' }"
+            :loading="loadingMode"
+            decoding="async"
+          />
+
+          <!-- Last visible tile: overlay +N if there are more images -->
+          <div
+            v-if="hiddenCount > 0 && index === thumbnails.length - 1"
+            class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold"
+          >
+            +{{ hiddenCount }}
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -32,53 +47,46 @@ import 'photoswipe/style.css'
 interface Props {
   images: string[]
   altPrefix?: string
+  eager?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   altPrefix: '图片'
 })
 
+const root = ref<HTMLElement | null>(null)
+const visible = ref(false)
+
+const { stop } = useIntersectionObserver(
+  root,
+  ([entry]) => {
+    if (entry!!.isIntersecting) {
+      visible.value = true
+      stop() // only trigger once
+    }
+  },
+  {
+    rootMargin: '200px 0px', // start loading a bit before it enters viewport
+  },
+)
+
+const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
+
+const maxThumbs = 4
+const thumbnails = computed(() => props.images.slice(0, maxThumbs))
+const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))
+
 const assetUrl = useAssetUrl()
 const galleryRef = ref<HTMLElement>()
-let lightbox: PhotoSwipeLightbox | null = null
 
-const images = computed(() => props.images ?? [])
+const lightbox = ref<PhotoSwipeLightbox | null>(null)
 
-const gridWrapperClass = computed(() => {
-  const count = images.value.length
-  if (count <= 0) return ''
-  if (count === 1) return 'grid gap-3 grid-cols-1'
-  if (count <= 3) return `grid gap-3 grid-cols-${count}`
-  if (count === 4) return 'grid gap-3 grid-cols-2'
-  return 'grid gap-3 grid-cols-3'
-})
+const ensureLightbox = async () => {
+  if (lightbox.value) return lightbox.value
 
-const imageClass = computed(() => {
-  const base = 'w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl'
-  // 所有图片统一使用正方形宽高比 (aspect-square)
-  return `${base} aspect-square object-cover`
-})
+  const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
 
-// 统一使用assetUrl处理图片
-const resolveImage = (image: string) => {
-  if (!image) return ''
-  return image.startsWith('http') ? image : assetUrl(image)
-}
-
-// 缩略图和原图使用相同URL（后端应该已经优化过）
-const resolveThumbnail = resolveImage
-const resolveOriginalImage = resolveImage
-
-const openGallery = (index: number) => {
-  if (lightbox) {
-    lightbox.loadAndOpen(index)
-  }
-}
-
-onMounted(() => {
-  if (!galleryRef.value) return
-
-  lightbox = new PhotoSwipeLightbox({
+  lightbox.value = new PhotoSwipeLightbox({
     gallery: galleryRef.value,
     children: 'a',
     pswpModule: () => import('photoswipe'),
@@ -121,13 +129,53 @@ onMounted(() => {
     arrowKeys: true,
   })
 
-  lightbox.init()
+  lightbox.value.init()
+
+  return lightbox.value
+}
+
+const images = computed(() => props.images ?? [])
+
+const gridWrapperClass = computed(() => {
+  const count = images.value.length
+  if (count <= 0) return ''
+  if (count === 1) return 'grid gap-3 grid-cols-1'
+  if (count <= 3) return `grid gap-3 grid-cols-${count}`
+  if (count === 4) return 'grid gap-3 grid-cols-2'
+  return 'grid gap-3 grid-cols-3'
 })
 
+const imageClass = computed(() => {
+  const base = 'w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl'
+  // 所有图片统一使用正方形宽高比 (aspect-square)
+  return `${base} aspect-square object-cover`
+})
+
+// 统一使用assetUrl处理图片
+const resolveImage = (image: string) => {
+  if (!image) return ''
+  return image.startsWith('http') ? image : assetUrl(image)
+}
+
+const resolveThumbnail = (image: string) => {
+  const base = resolveImage(image)
+  if (!base) return ''
+
+  const separator = base.includes('?') ? '&' : '?'
+  return `${base}${separator}w=400&h=400&fit=cover&q=70&format=webp`
+}
+
+const resolveOriginalImage = resolveImage
+
+const openGallery = async (index: number) => {
+  const lb = await ensureLightbox()
+  lb.loadAndOpen(index)
+}
+
 onUnmounted(() => {
-  if (lightbox) {
-    lightbox.destroy()
-    lightbox = null
+  if (lightbox.value) {
+    lightbox.value.destroy()
+    lightbox.value = null
   }
 })
 </script>

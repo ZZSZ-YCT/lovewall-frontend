@@ -106,6 +106,7 @@
             variant="grid"
             class="animate-fade-in-up card"
             @refresh="refresh"
+            :image-grid-eager="post.is_pinned || post.is_featured"
           />
         </div>
 
@@ -123,6 +124,7 @@
             variant="list"
             class="w-full animate-fade-in-up card"
             @refresh="refresh"
+            :image-grid-eager="post.is_pinned || post.is_featured"
           />
         </div>
       </div>
