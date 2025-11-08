@@ -12,13 +12,7 @@ export default defineNuxtConfig({
   },
   components: true,
   
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/image'
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration'],
 
   image: {
     provider: 'ipx',
@@ -46,6 +40,10 @@ export default defineNuxtConfig({
       xl: 1024,
       '2xl': 1280,
     }
+  },
+
+  delayHydration: {
+    mode: 'init'
   },
 
   nitro: {
@@ -97,7 +95,11 @@ export default defineNuxtConfig({
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     },
     build: {
-      cssCodeSplit: true
+      cssCodeSplit: true,
+      minify: 'esbuild',
+      rollupOptions: {
+        output: { manualChunks: { vendor: ['vue', 'vue-router'] } }
+      }
     }
   },
   
@@ -154,6 +156,7 @@ export default defineNuxtConfig({
     componentIslands: true,
     buildCache: true,
     viewTransition: true,
-    asyncContext: true
+    asyncContext: true,
+    renderJsonPayloads: true,
   }
 })

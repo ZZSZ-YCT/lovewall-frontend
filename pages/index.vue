@@ -100,10 +100,11 @@
           <PostCard
             v-for="post in posts"
             :key="post.id"
+            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="grid"
-            class="animate-fade-in-up"
+            class="animate-fade-in-up card"
             @refresh="refresh"
           />
         </div>
@@ -111,15 +112,16 @@
         <!-- 列表布局 -->
         <div
           v-else
-          :class="['space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
+          :class="['posts', 'space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
         >
           <PostCard
             v-for="post in posts"
             :key="post.id"
+            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="list"
-            class="w-full animate-fade-in-up"
+            class="w-full animate-fade-in-up card"
             @refresh="refresh"
           />
         </div>
@@ -160,7 +162,7 @@ const effectiveLayout = computed(() => {
   return layoutMode.value
 })
 const gridClasses = computed(() => {
-  const base = 'grid gap-4 md:gap-6'
+  const base = 'posts grid gap-4 md:gap-6'
   if (isMobile.value) return `${base} grid-cols-1`
   if (isTablet.value) return `${base} grid-cols-1 sm:grid-cols-2`
   return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`
@@ -184,7 +186,7 @@ const { data, pending, refresh, error } = await useAsyncData(
       hasMore: home.hasMore,
     }
   },
-  { server: true, lazy: false }
+  { server: false, lazy: true }
 )
 
 const posts = computed(() => (data.value?.posts ?? []) as PostDto[])
@@ -332,4 +334,8 @@ useHead({
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
+.posts > .card {
+  content-visibility: auto; contain-intrinsic-size: 1px 360px;
+}
+
 </style>
