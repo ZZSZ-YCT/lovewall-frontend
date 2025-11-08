@@ -186,7 +186,7 @@ const { data, pending, refresh, error } = await useAsyncData(
       hasMore: home.hasMore,
     }
   },
-  { server: false, lazy: true }
+  { server: true, lazy: false }
 )
 
 const posts = computed(() => (data.value?.posts ?? []) as PostDto[])
