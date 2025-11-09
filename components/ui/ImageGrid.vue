@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import PhotoSwipeLightbox from 'photoswipe/lightbox'
 import 'photoswipe/style.css'
 
 interface Props {

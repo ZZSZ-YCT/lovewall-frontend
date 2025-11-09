@@ -302,9 +302,10 @@ import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
-import ImageGrid from '~/components/ui/ImageGrid.vue'
 import type {PostDto} from '~/types'
 import type {ActiveTagDto} from '~/types/extra'
+
+const ImageGrid = defineAsyncComponent(() => import('~/components/ui/ImageGrid.vue'))
 
 interface Props {
   post: PostDto
