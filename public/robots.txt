@@ -1,8 +1,0 @@
-User-agent: *
-Disallow: /admin/
-Disallow: /me/
-Disallow: /notifications
-Disallow: /posts/new
-Allow: /
-
-Sitemap: https://zz4th.xyz/sitemap.xml

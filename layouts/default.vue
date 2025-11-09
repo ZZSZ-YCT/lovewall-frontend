@@ -24,7 +24,15 @@
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
           <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
-            <NuxtImg src="/badge.png" alt="郑州四中表白墙" class="w-8 h-8 rounded-lg" />
+            <NuxtImg
+              src="/badge.png"
+              alt="郑州四中表白墙"
+              class="w-8 h-8 rounded-lg"
+              :modifiers="{ fit: 'cover' }"
+              sizes="32px"
+              format="webp"
+              densities="x1 x2"
+            />
             <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
           </NuxtLink>
 
@@ -110,8 +118,8 @@
           <div class="space-y-2">
             <p>© 2024 郑州市第四高级中学表白墙</p>
             <div class="flex justify-center gap-4">
-              <a href="#" class="hover:text-brand-600 transition-colors">隐私政策</a>
-              <a href="#" class="hover:text-brand-600 transition-colors">服务条款</a>
+              <a href="/privacy" class="hover:text-brand-600 transition-colors">隐私政策</a>
+              <a href="/tos" class="hover:text-brand-600 transition-colors">服务条款</a>
               <a href="#" class="hover:text-brand-600 transition-colors">联系我们</a>
             </div>
           </div>
@@ -146,6 +154,7 @@ import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
 import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
+import '~/assets/css/default.css'
 
 // Stores
 const auth = useAuthStore()
@@ -235,6 +244,6 @@ watch(() => route.path, () => {
 })
 </script>
 
-<style src="~/assets/css/default.css">
+<style>
 
 </style>

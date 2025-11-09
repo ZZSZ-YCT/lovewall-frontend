@@ -100,27 +100,31 @@
           <PostCard
             v-for="post in posts"
             :key="post.id"
+            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="grid"
-            class="animate-fade-in-up"
+            class="animate-fade-in-up card"
             @refresh="refresh"
+            :image-grid-eager="post.is_pinned || post.is_featured"
           />
         </div>
 
         <!-- 列表布局 -->
         <div
           v-else
-          :class="['space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
+          :class="['posts', 'space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
         >
           <PostCard
             v-for="post in posts"
             :key="post.id"
+            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
             variant="list"
-            class="w-full animate-fade-in-up"
+            class="w-full animate-fade-in-up card"
             @refresh="refresh"
+            :image-grid-eager="post.is_pinned || post.is_featured"
           />
         </div>
       </div>
@@ -144,15 +148,14 @@
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import PostCard from '~/components/PostCard.vue'
 import type { PostDto } from '~/types'
 
-// composables
+const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
+
 const auth = useAuthStore()
 const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
 
-// 布局控制
 const layoutMode = ref<'grid' | 'list' | 'auto'>('auto')
 const effectiveLayout = computed(() => {
   if (isMobile.value) return 'list'
@@ -160,26 +163,23 @@ const effectiveLayout = computed(() => {
   return layoutMode.value
 })
 const gridClasses = computed(() => {
-  const base = 'grid gap-4 md:gap-6'
+  const base = 'posts grid gap-4 md:gap-6'
   if (isMobile.value) return `${base} grid-cols-1`
   if (isTablet.value) return `${base} grid-cols-1 sm:grid-cols-2`
   return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`
 })
 
-// 从 localStorage 读取布局偏好
 onMounted(() => {
   const saved = localStorage.getItem('love-wall-layout')
   if (saved && ['grid', 'list', 'auto'].includes(saved)) layoutMode.value = saved as any
 })
 watch(layoutMode, (v) => !isMobile.value && localStorage.setItem('love-wall-layout', v))
 
-// --- 数据加载 (SSR 友好) ---
 const { data, pending, refresh, error } = await useAsyncData(
   'home-posts',
   async () => {
     await home.initialLoad()
     await home.forceRefresh()
-    console.log("loading data")
     return {
       posts: home.posts,
       hasMore: home.hasMore,
@@ -192,7 +192,6 @@ const posts = computed(() => (data.value?.posts ?? []) as PostDto[])
 const hasMore = computed(() => data.value?.hasMore ?? false)
 const loadingMore = computed(() => home.loadingMore)
 
-// 加载更多
 const loadMore = async () => {
   await home.loadMore()
   data.value!!.posts = home.posts
@@ -218,7 +217,6 @@ onActivated(async () => {
   }
 })
 
-// Set page meta
 const homepageMetaTitle = '郑州四中表白墙'
 const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
 const homepageDescription = '郑州四中官方校园信息交流平台，帮助同学匿名分享心声、表白与校园资讯，营造温暖真实的互动社区。'
@@ -303,6 +301,12 @@ useSeoMeta({
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!homepageStructuredData.value) return []
     return [
@@ -327,4 +331,8 @@ useHead({
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
+.posts > .card {
+  content-visibility: auto; contain-intrinsic-size: 1px 360px;
+}
+
 </style>

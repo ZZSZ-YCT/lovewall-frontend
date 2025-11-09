@@ -35,13 +35,18 @@
           </template>
 
           <!-- 头像容器 -->
-          <NuxtImg
+          <NuxtPicture
             v-if="authorHasAvatar === true && authorAvatar"
             :src="authorAvatar"
             :alt="post.author_name"
+            sizes="(max-width: 640px) 25vw, (max-width: 1024px) 12vw, 48px"
             format="webp"
-            class="relative z-10 w-full h-full rounded-full object-cover"
+            :modifiers="{ fit: 'cover', quality: 60 }"
+            class="relative z-10 w-full h-full rounded-full object-cover block box-border"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+            :imgAttrs="{
+              class: 'w-full h-full rounded-full object-cover block align-middle'
+            }"
             @error="handleAuthorAvatarError"
           />
 
@@ -259,6 +264,7 @@
       <ImageGrid
         :images="post.images"
         :alt-prefix="(post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name) ? (post.author_name + ' 的表白图片') : (post.author_name + ' 的交流图片')"
+        :eager="imageGridEager"
       />
     </div>
 
@@ -296,14 +302,16 @@ import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
-import ImageGrid from '~/components/ui/ImageGrid.vue'
 import type {PostDto} from '~/types'
 import type {ActiveTagDto} from '~/types/extra'
+
+const ImageGrid = defineAsyncComponent(() => import('~/components/ui/ImageGrid.vue'))
 
 interface Props {
   post: PostDto
   showActions?: boolean
   variant?: 'grid' | 'list'
+  imageGridEager?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
