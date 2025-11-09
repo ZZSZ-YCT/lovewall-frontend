@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   },
   components: true,
   
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration', '@nuxtjs/i18n'],
 
   image: {
     provider: 'ipx',
