@@ -139,6 +139,8 @@ export default defineNuxtConfig({
     '/debug': { ssr: false },
     '/test-**': { ssr: false },
     '/terminal': { ssr: false },
+    '/tos': { prerender: true },
+    '/privacy': { prerender: true },
 
     '/sitemap.xml': {
       headers: {
