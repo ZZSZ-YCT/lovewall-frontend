@@ -10,6 +10,7 @@ export default defineEventHandler((event) => {
     'Disallow: /me/',
     'Disallow: /notifications',
     'Disallow: /posts/new',
+    'Disallow: /auth/',
     'Allow: /',
     '',
     `Sitemap: ${base}/sitemap.xml`
