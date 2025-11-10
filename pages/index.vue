@@ -3,9 +3,9 @@
     <!-- Header -->
     <section>
       <div class="page-header">
-        <h1 class="page-title">郑州市第四高级中学表白墙</h1>
+        <h1 class="page-title">{{ t('home.title') }}</h1>
         <p class="text-gray-600 max-w-2xl mx-auto">
-          校园信息交流平台。在这里发布你的想法、分享校园生活，与同学建立联系。
+          {{ t('home.description') }}
         </p>
       </div>
 
@@ -69,7 +69,7 @@
             @click="() => refresh"
           >
             <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': pending }]" />
-            刷新
+            {{ t('button.refresh') }}
           </GlassButton>
         </div>
       </div>
@@ -149,6 +149,8 @@ import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } fro
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { PostDto } from '~/types'
+
+const { t } = useI18n()
 
 const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 

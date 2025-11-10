@@ -26,14 +26,14 @@
           <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
             <NuxtImg
               src="/badge.png"
-              alt="郑州四中表白墙"
+              :alt="t('home.title')"
               class="w-8 h-8 rounded-lg"
               :modifiers="{ fit: 'cover' }"
               sizes="32px"
               format="webp"
               densities="x1 x2"
             />
-            <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
+            <span class="font-bold text-lg hidden sm:block">{{ t('home.title') }}</span>
           </NuxtLink>
 
           <!-- Auth Area -->
@@ -41,8 +41,8 @@
             <div ref="userMenuRef" class="relative flex items-center gap-2 overflow-visible z-50">
               <!-- 未登录：登录/注册 -->
               <template v-if="!auth.isAuthenticated">
-                <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">登录</NuxtLink>
-                <NuxtLink to="/auth/register" class="glass-button px-3 py-1.5 text-sm font-medium">注册</NuxtLink>
+                <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">{{ t('home.login') }}</NuxtLink>
+                <NuxtLink to="/auth/register" class="glass-button px-3 py-1.5 text-sm font-medium"> {{ t('home.register') }} </NuxtLink>
               </template>
 
               <!-- 已登录：通知按钮 + 头像/昵称 + 下拉 -->
@@ -114,14 +114,26 @@
       <!-- Footer -->
       <div class="shrink-0">
         <hr class="border-t border-white/40 mb-4" >
-        <footer class="glass-card rounded-none py-6 text-center text-sm text-gray-600">
-          <div class="space-y-2">
-            <p>© 2024 郑州市第四高级中学表白墙</p>
-            <div class="flex justify-center gap-4">
-              <a href="/privacy" class="hover:text-brand-600 transition-colors">隐私政策</a>
-              <a href="/tos" class="hover:text-brand-600 transition-colors">服务条款</a>
-              <a href="#" class="hover:text-brand-600 transition-colors">联系我们</a>
+        <footer class="glass-card rounded-none py-6 text-sm text-gray-600 overflow-visible">
+          <div class="mx-auto flex max-w-6xl items-center justify-between px-4">
+            <LocaleSwitcher />
+
+            <div class="flex-1 text-center space-y-2">
+              <p>© 2025 {{ t('home.title') }}</p>
+              <div class="flex justify-center gap-4">
+                <a href="/privacy" class="hover:text-brand-600 transition-colors">
+                  {{ t('home.privacy') }}
+                </a>
+                <a href="/tos" class="hover:text-brand-600 transition-colors">
+                  {{ t('home.tos') }}
+                </a>
+                <a href="#" class="hover:text-brand-600 transition-colors">
+                  {{ t('home.contact') }}
+                </a>
+              </div>
             </div>
+
+            <div class="w-[120px] md:w-[140px]"></div>
           </div>
         </footer>
       </div>
@@ -131,7 +143,7 @@
     <div v-if="initializing" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
       <div class="text-center">
         <LoadingSpinner size="lg" />
-        <p class="mt-4 text-gray-600">加载中...</p>
+        <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
       </div>
     </div>
 
@@ -155,6 +167,9 @@ import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
 import '~/assets/css/default.css'
+import LocaleSwitcher from "~/components/ui/LocaleSwitcher.vue";
+
+const { t } = useI18n()
 
 // Stores
 const auth = useAuthStore()

@@ -1,0 +1,18 @@
+{
+  "button": {
+    "refresh": "刷新"
+  },
+  "common": {
+    "loading": "加载中..."
+  },
+  "home": {
+    "contact": "联系我们",
+    "description": "校园信息交流平台。在这里发布你的想法、分享校园生活，与同学建立联系。",
+    "login": "登录",
+    "logout": "退出登录",
+    "privacy": "隐私条款",
+    "register": "注册",
+    "title": "郑州市第四高级中学表白墙",
+    "tos": "服务条款"
+  }
+}

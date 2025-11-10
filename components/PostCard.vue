@@ -1,12 +1,12 @@
 <template>
-  <GlassCard 
+  <GlassCard
     :class="[
       variant === 'list' ? 'post-card-list' : 'post-card',
       'cursor-pointer group relative overflow-hidden',
       'transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg',
       'rounded-3xl',
       isMobile && 'rounded-2xl sm:rounded-3xl',
-    ]" 
+    ]"
     @click="goDetail"
   >
     <!-- Header -->
@@ -69,7 +69,7 @@
             {{ post.author_name.slice(0, 2) }}
           </div>
         </div>
-        
+
         <div class="flex-1 min-w-0">
           <div
 :class="[
@@ -103,7 +103,7 @@
               标签所属用户已注销
             </span>
           </div>
-          
+
           <!-- Status badges -->
           <div class="flex items-center gap-1.5">
             <span
@@ -113,7 +113,7 @@
               <PinIcon class="w-3 h-3" />
               置顶
             </span>
-            
+
             <span
               v-if="post.status !== 1 && post.is_featured"
               class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/80 text-white"
@@ -129,7 +129,7 @@
             >
               已隐藏
             </span>
-            
+
             <div
               v-if="post.is_locked"
               class="inline-flex items-center gap-1 text-sm text-gray-500"
@@ -137,7 +137,7 @@
               <LockIcon class="w-4 h-4" />
               <span>已锁定</span>
             </div>
-            
+
             <span class="text-xs text-gray-500 ml-auto">{{ formatDate(post.created_at) }}</span>
           </div>
         </div>
@@ -241,7 +241,7 @@
         ]">
           {{ post.content }}
         </p>
-        
+
         <button
           v-if="post.content.length > 150"
           class="mt-2 text-sm text-brand-600 hover:text-brand-700 transition-colors"
@@ -283,7 +283,7 @@
           @click.stop
         />
       </div>
-      
+
       <div
 :class="[
         'text-gray-400',
@@ -341,7 +341,6 @@ const authorProfile = ref<any>(null)
 const authorDeleted = ref(false)
 const activeTag = ref<ActiveTagDto | null>(null)
 const authorAvatar = ref<string | null>(null)
-// 三态：true(确认有头像)、false(没有头像)、null(未知/加载中)
 const authorHasAvatar = ref<boolean | null>(null)
 
 // Close dropdown when clicking outside
@@ -417,8 +416,8 @@ const shareData = computed(() => {
     : `${props.post.author_name} 的交流`
   return {
     title,
-    text: props.post.content.length > 100 ? 
-      `${props.post.content.substring(0, 100)}...` : 
+    text: props.post.content.length > 100 ?
+      `${props.post.content.substring(0, 100)}...` :
       props.post.content,
     url: `${origin}/posts/${props.post.id}`,
     image: props.post.images?.[0] ? assetUrl(props.post.images[0]) : undefined
@@ -507,7 +506,7 @@ const handleDelete = async () => {
     cancelText: '取消'
   })
   if (!confirmed) return
-  
+
   try {
     const reason = await promptModerationReason('删除')
     if (reason === null) return
@@ -540,17 +539,17 @@ const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-  
+
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
+
   if (minutes < 1) return '刚刚'
   if (minutes < 5) return '几分钟前'
   if (minutes < 60) return `${minutes}分钟前`
   if (hours < 24) return `${hours}小时前`
   if (days < 7) return `${days}天前`
-  
+
   return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
 }
 

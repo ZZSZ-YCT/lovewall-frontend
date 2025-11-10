@@ -14,6 +14,18 @@ export default defineNuxtConfig({
   
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration', '@nuxtjs/i18n'],
 
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'jp', name: '日本語', file: 'jp.json' },
+      { code: 'zh_cn', name: '中文（简体）', file: 'zh_cn.json' },
+      { code: 'zh_tw', name: '中文（繁體）', file: 'zh_tw.json' },
+    ],
+
+    defaultLocale: 'zh_cn',
+    strategy: 'prefix',
+  },
+
   image: {
     provider: 'ipx',
     domains: [
@@ -82,7 +94,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'canonical', href: SITE_URL },
-        { rel: 'alternate', hreflang: 'zh-CN', href: SITE_URL },
+        { rel: 'alternate', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
         { rel: 'preconnect', href: 'https://static.geetest.com' },
         { rel: 'dns-prefetch', href: 'https://static.geetest.com' }

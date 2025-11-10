@@ -1,0 +1,18 @@
+{
+  "button": {
+    "refresh": "Refresh"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "home": {
+    "contact": "Contact Us",
+    "description": "A wall to contact each other.",
+    "login": "Login",
+    "logout": "Logout",
+    "privacy": "Privacy Policy",
+    "register": "Register",
+    "title": "Zhengzhou No.4 Middle School Confession Wall",
+    "tos": "Terms of Service"
+  }
+}

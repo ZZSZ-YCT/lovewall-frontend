@@ -1,0 +1,18 @@
+{
+  "button": {
+    "refresh": "リフレッシュ"
+  },
+  "common": {
+    "loading": "読み込み中..."
+  },
+  "home": {
+    "contact": "お問い合わせ",
+    "description": "生徒同士が連絡を取り合う壁",
+    "login": "ログイン",
+    "logout": "サインアウト",
+    "privacy": "プライバシー規約",
+    "register": "サインアップ",
+    "title": "鄭州第四高校告白壁",
+    "tos": "利用規約"
+  }
+}
