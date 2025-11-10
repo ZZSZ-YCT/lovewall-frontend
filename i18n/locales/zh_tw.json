@@ -1,9 +1,15 @@
 {
-  "button": {
-    "refresh": "刷新"
+  "admin": {
+    "index": "管理後台"
   },
   "common": {
-    "loading": "載入中..."
+    "layouts": {
+      "grid": "網格佈局",
+      "list": "清單佈局"
+    },
+    "loadMore": "加載更多",
+    "loading": "載入中...",
+    "refresh": "刷新"
   },
   "home": {
     "contact": "聯絡我們",
@@ -14,5 +20,22 @@
     "register": "注冊",
     "title": "郑州市第四高級中學表白牆",
     "tos": "服務條款"
+  },
+  "notifications": {
+    "amount": "共 {number} 條",
+    "checkLater": "請稍後再來。",
+    "description": "這裡顯示各項通知",
+    "index": "通知"
+  },
+  "posts": {
+    "beFirst": "成為第一個",
+    "empty": "這裡還沒有帖子",
+    "post": "發布貼文",
+    "recently": "最近貼文"
+  },
+  "user": {
+    "center": "個人中心",
+    "myComments": "我的評論",
+    "myTags": "我的標籤"
   }
 }

@@ -328,15 +328,10 @@ const loadAnnouncements = async () => {
     let data: AnnouncementDto[]
 
     try {
-      console.log('调用管理员公告列表接口')
       // 优先使用管理员接口,可以获取所有公告(包括停用的)
       data = await api.listAnnouncementsAdmin()
-      console.log('管理员公告列表接口返回', { total: data.length })
     } catch (adminError: any) {
-      console.warn('管理员公告列表接口调用失败,改用普通接口', adminError)
-      console.log('调用公共公告列表接口')
       data = await api.listAnnouncements()
-      console.log('公共公告列表接口返回', { total: data.length })
     }
 
     announcements.value = data

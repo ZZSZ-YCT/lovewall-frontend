@@ -1,14 +1,14 @@
 <template>
   <div class="w-full space-y-6">
     <div class="page-header">
-      <h1 class="page-title">系统通知</h1>
-      <p class="text-gray-600 mt-2">审核结果和管理员操作通知</p>
+      <h1 class="page-title">{{ t('notifications.index') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('notifications.description') }}</p>
     </div>
 
     <GlassCard class="p-4">
       <div class="flex justify-between items-center">
-        <div class="text-sm text-gray-600">共 {{ data?.total || 0 }} 条</div>
-        <GlassButton variant="secondary" :loading="loading" @click="refresh">刷新</GlassButton>
+        <div class="text-sm text-gray-600"> {{ t('notifications.amount', { number: (data?.total || 0) }) }} </div>
+        <GlassButton variant="secondary" :loading="loading" @click="refresh">{{ t('common.refresh') }}</GlassButton>
       </div>
     </GlassCard>
 
@@ -66,6 +66,8 @@ import GlassCard from '~/components/ui/GlassCard.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { Pagination } from '~/types'
 import type { NotificationDto } from '~/types/extra'
+
+const { t } = useI18n()
 
 definePageMeta({
   middleware: ['auth'],

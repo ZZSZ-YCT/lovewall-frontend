@@ -1,9 +1,15 @@
 {
-  "button": {
-    "refresh": "刷新"
+  "admin": {
+    "index": "管理后台"
   },
   "common": {
-    "loading": "加载中..."
+    "layouts": {
+      "grid": "网格布局",
+      "list": "列表布局"
+    },
+    "loadMore": "加载更多",
+    "loading": "加载中...",
+    "refresh": "刷新"
   },
   "home": {
     "contact": "联系我们",
@@ -14,5 +20,22 @@
     "register": "注册",
     "title": "郑州市第四高级中学表白墙",
     "tos": "服务条款"
+  },
+  "notifications": {
+    "amount": "共 {number} 条",
+    "checkLater": "稍后再来看看。",
+    "description": "这里显示各项通知",
+    "index": "通知"
+  },
+  "posts": {
+    "beFirst": "成为第一个",
+    "empty": "还没有帖子哦",
+    "post": "发布帖子",
+    "recently": "最近帖子"
+  },
+  "user": {
+    "center": "个人中心",
+    "myComments": "我的评论",
+    "myTags": "我的标签"
   }
 }

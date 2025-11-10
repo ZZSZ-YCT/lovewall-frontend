@@ -1,9 +1,15 @@
 {
-  "button": {
-    "refresh": "Refresh"
+  "admin": {
+    "index": "Administration"
   },
   "common": {
-    "loading": "Loading..."
+    "layouts": {
+      "grid": "Grid Layout",
+      "list": "List Layout"
+    },
+    "loadMore": "Load more",
+    "loading": "Loading...",
+    "refresh": "Refresh"
   },
   "home": {
     "contact": "Contact Us",
@@ -14,5 +20,22 @@
     "register": "Register",
     "title": "Zhengzhou No.4 Middle School Confession Wall",
     "tos": "Terms of Service"
+  },
+  "notifications": {
+    "amount": "{number} in total",
+    "checkLater": "Come back later.",
+    "description": "Get notifications here",
+    "index": "Notifications"
+  },
+  "posts": {
+    "beFirst": "Be the first one",
+    "empty": "No posts here yet",
+    "post": "Post",
+    "recently": "Recent Posts"
+  },
+  "user": {
+    "center": "Personal Center",
+    "myComments": "My Comments",
+    "myTags": "My Badges"
   }
 }

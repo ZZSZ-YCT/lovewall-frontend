@@ -51,8 +51,8 @@
                 <NuxtLink
                   to="/notifications"
                   class="relative inline-flex items-center justify-center rounded-lg h-9 w-9 text-gray-700 hover:text-brand-600 hover:bg-white/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
-                  title="系统通知"
-                  aria-label="系统通知"
+                  :title="t('notifications.index')"
+                  :aria-label="t('notifications.index')"
                 >
                   <BellIcon class="w-5 h-5" />
                   <!-- 未读红点 -->
@@ -75,16 +75,16 @@
 
                 <!-- Dropdown menu -->
                 <div v-if="showUserMenu" class="absolute right-0 top-full mt-2 w-56 glass-card backdrop-blur-ultra py-2 shadow-lg z-50">
-                  <NuxtLink to="/me" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">个人中心</NuxtLink>
-                  <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的评论</NuxtLink>
-                  <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">我的标签</NuxtLink>
+                  <NuxtLink to="/me" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">{{ t('user.center') }}</NuxtLink>
+                  <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">{{ t('user.myComments') }}</NuxtLink>
+                  <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="showUserMenu = false">{{ t('user.myTags') }}</NuxtLink>
                   <button
                     v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                     @click="goAdmin"
-                  >管理后台</button>
+                  >{{ t('admin.index') }}</button>
                   <hr class="my-1 border-white/20">
-                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="handleLogout">退出登录</button>
+                  <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20" @click="handleLogout">{{ t('home.logout') }}</button>
                 </div>
               </template>
             </div>

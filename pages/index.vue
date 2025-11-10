@@ -17,7 +17,7 @@
             class="glass-button-secondary inline-flex items-center gap-2 rounded-full"
           >
             <PlusIcon class="w-5 h-5" />
-            发布表白
+            {{ t('posts.post') }}
           </NuxtLink>
         </div>
       </ClientOnly>
@@ -28,7 +28,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <ClockIcon class="w-5 h-5 text-gray-600" />
-          <h2 class="text-xl font-semibold text-gray-800">最新表白</h2>
+          <h2 class="text-xl font-semibold text-gray-800">{{ t('posts.recently') }}</h2>
         </div>
         <div class="flex items-center gap-2">
           <!-- 布局切换 -->
@@ -43,7 +43,7 @@
                   ? 'bg-white text-brand-600 shadow-sm'
                   : 'text-gray-600 hover:text-brand-600'
               ]"
-              title="网格布局"
+              :title="t('common.layouts.grid')"
               @click="layoutMode = 'grid'"
             >
               <GridIcon class="w-4 h-4" />
@@ -55,7 +55,7 @@
                   ? 'bg-white text-brand-600 shadow-sm'
                   : 'text-gray-600 hover:text-brand-600'
               ]"
-              title="列表布局"
+              :title="t('common.layouts.list')"
               @click="layoutMode = 'list'"
             >
               <ListIcon class="w-4 h-4" />
@@ -69,7 +69,7 @@
             @click="() => refresh"
           >
             <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': pending }]" />
-            {{ t('button.refresh') }}
+            {{ t('common.refresh') }}
           </GlassButton>
         </div>
       </div>
@@ -79,19 +79,19 @@
         <!-- 加载中 -->
         <div v-if="pending && posts.length === 0" class="text-center py-12">
           <LoadingSpinner size="lg" />
-          <p class="mt-4 text-gray-600">加载表白中...</p>
+          <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
         </div>
 
         <!-- 空状态 -->
         <div v-else-if="!pending && posts.length === 0" class="text-center py-12">
           <HeartIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p class="text-gray-600 mb-4">还没有表白哦</p>
+          <p class="text-gray-600 mb-4">{{ t('posts.empty') }}</p>
           <NuxtLink
             v-if="auth.isAuthenticated"
             to="/posts/new"
             class="glass-button-secondary inline-flex items-center gap-2"
           >
-            <PlusIcon class="w-4 h-4" /> 成为第一个
+            <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
           </NuxtLink>
         </div>
 
@@ -137,7 +137,7 @@
           @click="loadMore"
         >
           <LoadingSpinner v-if="loadingMore" size="sm" variant="white" />
-          <span>{{ loadingMore ? '加载中...' : '加载更多' }}</span>
+          <span>{{ loadingMore ? t('common.loading') : t('common.loadMore') }}</span>
         </GlassButton>
       </div>
     </section>

@@ -1,9 +1,15 @@
 {
-  "button": {
-    "refresh": "リフレッシュ"
+  "admin": {
+    "index": "管理"
   },
   "common": {
-    "loading": "読み込み中..."
+    "layouts": {
+      "grid": "グリッドレイアウト",
+      "list": "リストレイアウト"
+    },
+    "loadMore": "さらに読み込む",
+    "loading": "読み込み中...",
+    "refresh": "リフレッシュ"
   },
   "home": {
     "contact": "お問い合わせ",
@@ -14,5 +20,22 @@
     "register": "サインアップ",
     "title": "鄭州第四高校告白壁",
     "tos": "利用規約"
+  },
+  "notifications": {
+    "amount": "合計 {number} 点",
+    "checkLater": "後でまた来てください。",
+    "description": "ここで通知を受け取る",
+    "index": "通知"
+  },
+  "posts": {
+    "beFirst": "最初になりましょう",
+    "empty": "まだ投稿はありません",
+    "post": "役職",
+    "recently": "最近の投稿"
+  },
+  "user": {
+    "center": "パーソナルセンター",
+    "myComments": "マイコメント",
+    "myTags": "マイタグ"
   }
 }
