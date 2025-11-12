@@ -254,7 +254,7 @@ const openRedeemModal = async () => {
 const loadUserTags = async () => {
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const response = await api.getMyTags(true) // 传入 all=true 获取所有标签
     userTags.value = response.items // 取出 items 数组
     // 同步查询当前活跃标签状态（如果存在）
@@ -283,7 +283,7 @@ const redeemCode = async (code: string) => {
   }
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const result: RedeemResponse = await api.redeem({ code: code.toUpperCase() })
 
     // Merge into list (update if exists, else add)
@@ -299,7 +299,7 @@ const redeemCode = async (code: string) => {
 
     // 刷新活动标签状态徽章
     try {
-      const api = useApi()
+      const api = useNuxtApp().$api
       activeStatus.value = await api.getMyActiveTagStatus()
     } catch {}
 
@@ -321,7 +321,7 @@ const redeemCode = async (code: string) => {
 const activateTag = async (userTag: UserTagDto) => {
   activating.value = userTag.user_tag_id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     // 禁止选择已被全局停用的标签
     if (!userTag.tag?.is_active) {
       toast.warning('该标签已被停用，无法设为当前标签')
@@ -350,7 +350,7 @@ const activateTag = async (userTag: UserTagDto) => {
 const deactivateTag = async (userTag: UserTagDto) => {
   deactivating.value = userTag.user_tag_id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deactivateTag(userTag.tag?.id || '')
     
     // Update local state - set all tags to inactive
@@ -372,7 +372,7 @@ const deactivateTag = async (userTag: UserTagDto) => {
 
 const showAllTags = async () => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const allTags = await api.listTags({ active: true })
     
     // 跳转到标签浏览页面或显示模态框

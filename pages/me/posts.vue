@@ -277,7 +277,7 @@ const loadPosts = async (page = 1, reset = false) => {
   }
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     // Note: We need a "my posts" endpoint. For now, we'll simulate it
     // In real implementation, there should be an endpoint like `/my/posts`
     const params: any = {
@@ -343,7 +343,7 @@ const deletePost = async () => {
   
   deleting.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deletePost(deleteModal.post.id)
     
     // Remove from local list

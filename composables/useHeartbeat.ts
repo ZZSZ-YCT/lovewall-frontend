@@ -1,9 +1,13 @@
-// Heartbeat service composable keeps the user session marked as online.
+import type { HeartbeatResponse } from '~/types'
+
 let heartbeatTimer: ReturnType<typeof setInterval> | null = null
 let isRunning = false
 
+const unreadNotifications = ref<number>(0)
+
 export function useHeartbeat() {
-  const api = useApi()
+  // SSR guard - only access $api on client
+  const $api = import.meta.client ? useNuxtApp().$api : null
   const auth = useAuthStore()
 
   const stopHeartbeat = () => {
@@ -15,15 +19,18 @@ export function useHeartbeat() {
   }
 
   const sendHeartbeat = async () => {
+    // SSR guard
+    if (!import.meta.client || !$api) return
+
     if (!auth.isAuthenticated) {
       stopHeartbeat()
       return
     }
 
     try {
-      await api.heartbeat()
+      const response: HeartbeatResponse = await $api.heartbeat()
+      unreadNotifications.value = response.unread_notifications || 0
     } catch (error) {
-      // Silence production errors, only log in dev for debugging.
       if (import.meta.dev) {
         console.warn('[Heartbeat] Failed to send heartbeat:', error)
       }
@@ -47,5 +54,6 @@ export function useHeartbeat() {
     startHeartbeat,
     stopHeartbeat,
     isRunning: () => isRunning,
+    unreadNotifications: readonly(unreadNotifications),
   }
 }

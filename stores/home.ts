@@ -103,6 +103,12 @@ const normalizePost = (p: any): PostDto => {
     audit_status: p.audit_status,
     audit_msg: p.audit_msg,
     manual_review_requested: p.manual_review_requested,
+    // 保留作者扩展信息（v3.2新增字段）
+    author_display_name: p.author_display_name ?? null,
+    author_avatar_url: p.author_avatar_url ?? null,
+    author_is_online: p.author_is_online ?? false,
+    author_last_heartbeat: p.author_last_heartbeat ?? null,
+    author_is_deleted: p.author_is_deleted ?? p.author_deleted ?? false,
   }
   createdAtCache.set(normalized, new Date(normalized.created_at).getTime())
   return normalized
@@ -140,6 +146,9 @@ const getPostFingerprint = (post: PostDto) => [
   post.audit_msg ?? '',
   Number(post.manual_review_requested ?? 0),
   Number(post.is_author_admin ?? 0),
+  (post as any).author_avatar_url ?? '',
+  (post as any).author_display_name ?? '',
+  Number((post as any).author_is_online ?? 0),
 ].join('|')
 
 const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
@@ -155,8 +164,6 @@ const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
 
 interface HomeState {
   posts: PostDto[]
-  pinned: PostDto[]
-  featured: PostDto[]
   page: number
   pageSize: number
   hasMore: boolean
@@ -169,8 +176,6 @@ interface HomeState {
 export const useHomeStore = defineStore('home', {
   state: (): HomeState => ({
     posts: [],
-    pinned: [],
-    featured: [],
     page: 1,
     pageSize: +useRuntimeConfig().public.pageSize || 20,
     hasMore: true,
@@ -180,7 +185,7 @@ export const useHomeStore = defineStore('home', {
     lastLoadedAt: null,
   }),
   getters: {
-    hasData: (s) => s.loaded && (s.posts.length > 0 || s.pinned.length > 0 || s.featured.length > 0),
+    hasData: (s) => s.loaded && s.posts.length > 0,
     // 全局排序优先级: 置顶+精华 > 置顶 > 精华 > 普通 > 隐藏
     sortedPosts: (s) => sortPosts(s.posts),
   },
@@ -210,11 +215,11 @@ export const useHomeStore = defineStore('home', {
       if (this.loading) return
       this.loading = true
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
-        
+
         // Add timestamp to prevent caching
         const timestamp = Date.now()
         const params = {
@@ -222,14 +227,10 @@ export const useHomeStore = defineStore('home', {
           page_size: pageSize,
           _t: timestamp,
         }
-        
-        // 简化调用，只使用 listPosts，管理员通过前端筛选
-        const [listResp, pinnedResp, featuredResp] = await Promise.all([
-          api.listPosts(params),
-          api.listPosts({ pinned: true, page_size: 6, _t: timestamp }),
-          api.listPosts({ featured: true, page_size: 6, _t: timestamp }),
-        ])
-        
+
+        // ✅ 优化：只发起一个请求，帖子数据已包含is_pinned和is_featured信息
+        const listResp = await api.listPosts(params)
+
         const rawItems = extractItems(listResp)
         const normalizedItems = dedupeById(rawItems.map(normalizePost))
         const filteredPosts = canModerate
@@ -237,18 +238,8 @@ export const useHomeStore = defineStore('home', {
           : normalizedItems.filter((p: PostDto) => p.status === 0)
         const sortedPosts = sortPosts(filteredPosts)
 
-        if (!postsAreIdentical(this.posts, sortedPosts)) {
-          this.posts = sortedPosts
-        }
-
-        const normalizedPinned = dedupeById(extractItems(pinnedResp).map(normalizePost))
-        const normalizedFeatured = dedupeById(extractItems(featuredResp).map(normalizePost))
-        if (!postsAreIdentical(this.pinned, normalizedPinned)) {
-          this.pinned = normalizedPinned
-        }
-        if (!postsAreIdentical(this.featured, normalizedFeatured)) {
-          this.featured = normalizedFeatured
-        }
+        // ✅ 刷新时始终替换数据，重置到第一页
+        this.posts = sortedPosts
         this.page = 1
         this.hasMore = rawItems.length === pageSize
         this.loaded = true
@@ -272,7 +263,7 @@ export const useHomeStore = defineStore('home', {
       if (!this.hasMore || this.loadingMore) return
       this.loadingMore = true
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20

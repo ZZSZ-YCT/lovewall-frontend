@@ -90,7 +90,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
       
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const response: AuthResponse = await api.register(form)
         
         this.currentUser = response.user
@@ -127,7 +127,7 @@ export const useAuthStore = defineStore('auth', {
       
       try {
         console.log('Auth store: Starting login process')
-        const api = useApi()
+        const api = useNuxtApp().$api
         const response: AuthResponse = await api.login(form)
         console.log('Auth store: Login API successful, response:', response)
         
@@ -171,7 +171,7 @@ export const useAuthStore = defineStore('auth', {
     async logout(): Promise<void> {
       try {
         // 确保API调用时带上Authorization头，让token进入黑名单
-        const api = useApi()
+        const api = useNuxtApp().$api
         await api.logout() // 这会自动在拦截器中添加Authorization头
       } catch (error) {
         // 即使API调用失败也要清理本地状态
@@ -189,7 +189,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.accessToken) return
       
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const profile: UserProfile = await api.getProfile()
         
         this.currentUser = profile.user

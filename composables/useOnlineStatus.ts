@@ -9,7 +9,7 @@ export const useOnlineStatus = () => {
     error.value = null
     
     try {
-      const api = useApi()
+      const api = useNuxtApp().$api
       const response = await api.getOnlineStatus()
       isOnline.value = response.online
       expiresAt.value = response.expires_at || null

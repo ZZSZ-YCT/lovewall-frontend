@@ -153,7 +153,7 @@ const errors = reactive<Partial<Record<keyof ChangePasswordForm, string>>>({})
 const loading = ref(false)
 
 // Stores
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
 const router = useRouter()
 

@@ -106,11 +106,19 @@
             <div class="flex justify-between items-start">
               <div class="flex-1 pr-4">
                 <div class="flex items-center gap-3 mb-3">
-                  <TagBadge
-                    :title="tag.title"
-                    :background="tag.background_color"
-                    :text="tag.text_color"
-                  />
+                  <span
+                    v-if="renderTag(tag)?.useCssMode"
+                    :class="renderTag(tag)?.className"
+                  >
+                    {{ renderTag(tag)?.title }}
+                  </span>
+                  <span
+                    v-else-if="renderTag(tag)"
+                    class="inline-block text-xs px-2 py-1 rounded font-medium"
+                    :style="renderTag(tag)?.inlineStyles"
+                  >
+                    {{ renderTag(tag)?.title }}
+                  </span>
                   <code class="text-sm bg-gray-100 px-2 py-1 rounded">{{ tag.name }}</code>
                   <span
                     :class="{
@@ -258,6 +266,33 @@
                   />
                 </div>
 
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <label class="block text-sm font-medium text-gray-700">CSS样式（高级）</label>
+                    <div class="flex gap-1 flex-wrap">
+                      <button
+                        v-for="template in cssTemplates"
+                        :key="template.name"
+                        type="button"
+                        class="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 rounded transition-colors"
+                        :title="template.description"
+                        @click="applyCssTemplate(template.css)"
+                      >
+                        {{ template.name }}
+                      </button>
+                    </div>
+                  </div>
+                  <textarea
+                    v-model="tagForm.css_styles"
+                    placeholder='完整CSS类定义，类名必须为标签name。示例：&#10;.vip-gold { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 4px; font-weight: 500; animation: glow 2s infinite; } @keyframes glow { 0%, 100% { box-shadow: 0 0 5px #667eea; } 50% { box-shadow: 0 0 20px #764ba2; } }'
+                    rows="6"
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none font-mono text-xs"
+                  />
+                  <p class="text-xs text-gray-500 mt-1">
+                    留空使用简单颜色模式；填写CSS则优先使用（支持@keyframes、animation、渐变等，最大50KB）
+                  </p>
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">背景色</label>
@@ -296,11 +331,19 @@
 
                 <div class="p-3 bg-gray-50 rounded-lg">
                   <p class="text-sm text-gray-600 mb-2">预览：</p>
-                  <TagBadge
-                    :title="tagForm.title || '标签预览'"
-                    :background="tagForm.background_color"
-                    :text="tagForm.text_color"
-                  />
+                  <span
+                    v-if="tagPreviewStyle?.useCssMode"
+                    :class="previewClassName"
+                  >
+                    {{ tagPreviewStyle.title }}
+                  </span>
+                  <span
+                    v-else-if="tagPreviewStyle"
+                    :style="tagPreviewStyle.inlineStyles"
+                  >
+                    {{ tagPreviewStyle.title }}
+                  </span>
+                  <div v-else class="text-sm text-gray-400">请填写标签信息</div>
                 </div>
 
                 <div>
@@ -342,11 +385,19 @@
             <div class="px-6 pb-6 flex-1 overflow-y-auto">
               <div v-if="codesModal.tag" class="mb-4 p-3 bg-gray-50 rounded-lg">
                 <p class="text-sm text-gray-600 mb-2">为标签生成兑换码：</p>
-                <TagBadge
-                  :title="codesModal.tag.title"
-                  :background="codesModal.tag.background_color"
-                  :text="codesModal.tag.text_color"
-                />
+                <span
+                  v-if="renderTag(codesModal.tag)?.useCssMode"
+                  :class="renderTag(codesModal.tag)?.className"
+                >
+                  {{ renderTag(codesModal.tag)?.title }}
+                </span>
+                <span
+                  v-else-if="renderTag(codesModal.tag)"
+                  class="inline-block text-xs px-2 py-1 rounded font-medium"
+                  :style="renderTag(codesModal.tag)?.inlineStyles"
+                >
+                  {{ renderTag(codesModal.tag)?.title }}
+                </span>
               </div>
 
               <form id="codes-form" class="space-y-4" @submit.prevent="generateCodes">
@@ -579,12 +630,21 @@
                         <code class="text-xs bg-gray-100 px-2 py-1 rounded font-mono">{{ code.code }}</code>
                       </td>
                       <td class="px-4 py-3">
-                        <TagBadge
-                          v-if="code.tag"
-                          :title="code.tag.title"
-                          :background="code.tag.background_color"
-                          :text="code.tag.text_color"
-                        />
+                        <template v-if="code.tag">
+                          <span
+                            v-if="renderTag(code.tag)?.useCssMode"
+                            :class="renderTag(code.tag)?.className"
+                          >
+                            {{ renderTag(code.tag)?.title }}
+                          </span>
+                          <span
+                            v-else-if="renderTag(code.tag)"
+                            class="inline-block text-xs px-2 py-1 rounded font-medium"
+                            :style="renderTag(code.tag)?.inlineStyles"
+                          >
+                            {{ renderTag(code.tag)?.title }}
+                          </span>
+                        </template>
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
                         <span
@@ -701,11 +761,19 @@
 
                 <div v-if="codeDetailsModal.code.tag">
                   <label class="block text-sm font-medium text-gray-700 mb-1">关联标签</label>
-                  <TagBadge
-                    :title="codeDetailsModal.code.tag.title"
-                    :background="codeDetailsModal.code.tag.background_color"
-                    :text="codeDetailsModal.code.tag.text_color"
-                  />
+                  <span
+                    v-if="renderTag(codeDetailsModal.code.tag)?.useCssMode"
+                    :class="renderTag(codeDetailsModal.code.tag)?.className"
+                  >
+                    {{ renderTag(codeDetailsModal.code.tag)?.title }}
+                  </span>
+                  <span
+                    v-else-if="renderTag(codeDetailsModal.code.tag)"
+                    class="inline-block text-xs px-2 py-1 rounded font-medium"
+                    :style="renderTag(codeDetailsModal.code.tag)?.inlineStyles"
+                  >
+                    {{ renderTag(codeDetailsModal.code.tag)?.title }}
+                  </span>
                 </div>
 
                 <div>
@@ -785,6 +853,7 @@ import {
 } from 'lucide-vue-next'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import type {Pagination, RedemptionCodeDto, TagDto, User} from '~/types'
+import type { TagRenderResult } from '~/composables/useTagRenderer'
 import GlassButton from "~/components/ui/GlassButton.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 import GlassCard from "~/components/ui/GlassCard.vue";
@@ -798,6 +867,7 @@ definePageMeta({
 // Stores
 const auth = useAuthStore()
 const toast = useToast()
+const { renderTag } = useTagRenderer()
 
 // State
 const tags = ref<TagDto[]>([])
@@ -885,14 +955,20 @@ const codesFilter = reactive({
   used: ''
 })
 
+const previewStyleEl = ref<HTMLStyleElement | null>(null)
+
 const tagForm = reactive({
   name: '',
   title: '',
   description: '',
+  tag_type: 'personal' as 'personal' | 'collective',
   background_color: '#FF5CA3',
   text_color: '#FFFFFF',
+  css_styles: '',
   is_active: true
 })
+
+const lastTagName = ref<string>('')
 
 const codesForm = reactive({
   count: 100,
@@ -908,11 +984,196 @@ const activeCount = computed(() => {
   return tags.value.filter(tag => tag.is_active).length
 })
 
+const previewClassName = computed(() => tagForm.name?.trim() || 'tag-preview-temp')
+
+const tagPreviewStyle = computed<TagRenderResult | null>(() => {
+  const title = tagForm.title?.trim()
+  if (!title) return null
+
+  const className = previewClassName.value
+  const cssStyles = tagForm.css_styles?.trim()
+
+  if (cssStyles) {
+    return {
+      className,
+      title,
+      useCssMode: true
+    }
+  }
+
+  return {
+    className,
+    title,
+    useCssMode: false,
+    inlineStyles: {
+      display: 'inline-block',
+      padding: '4px 12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      fontWeight: '500',
+      whiteSpace: 'nowrap',
+      backgroundColor: tagForm.background_color || '#CCCCCC',
+      color: tagForm.text_color || '#000000'
+    }
+  }
+})
+
+const ensurePreviewStyleElement = () => {
+  if (!import.meta.client) return null
+  if (previewStyleEl.value && document.head.contains(previewStyleEl.value)) {
+    return previewStyleEl.value
+  }
+
+  const existing = document.getElementById('tag-preview-style')
+  if (existing instanceof HTMLStyleElement) {
+    previewStyleEl.value = existing
+    return previewStyleEl.value
+  }
+
+  const style = document.createElement('style')
+  style.id = 'tag-preview-style'
+  document.head.appendChild(style)
+  previewStyleEl.value = style
+  return style
+}
+
+const cleanupPreviewStyleElement = () => {
+  if (!import.meta.client) return
+  if (previewStyleEl.value) {
+    previewStyleEl.value.remove()
+    previewStyleEl.value = null
+  }
+}
+
+const updatePreviewCss = (css: string | null | undefined) => {
+  if (!import.meta.client) return
+  const content = css ?? ''
+
+  if (!content.trim()) {
+    if (previewStyleEl.value) {
+      previewStyleEl.value.textContent = ''
+    }
+    return
+  }
+
+  const styleEl = ensurePreviewStyleElement()
+  if (styleEl) {
+    styleEl.textContent = content
+  }
+}
+
+const formatCSS = (css: string | null | undefined): string => {
+  if (!css?.trim()) return ''
+
+  let formatted = css
+    .replace(/\{/g, ' {\n  ')
+    .replace(/;/g, ';\n  ')
+    .replace(/\}/g, '\n}\n')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  formatted = formatted
+    .replace(/\s*{\s*/g, ' {\n  ')
+    .replace(/;\s*/g, ';\n  ')
+    .replace(/\s*}\s*/g, '\n}\n')
+    .replace(/\n{2,}/g, '\n')
+    .split('\n')
+    .map(line => line.trimEnd())
+    .join('\n')
+    .trim()
+
+  formatted = formatted.replace(/@keyframes([^{]+)\{/g, (_match, name: string) => {
+    const keyframeName = name.trim()
+    return keyframeName ? `@keyframes ${keyframeName} {\n  ` : '@keyframes {\n  '
+  })
+
+  return formatted
+}
+
+const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+watch(
+  () => tagForm.css_styles,
+  (css) => updatePreviewCss(css),
+  { immediate: true }
+)
+
+watch(
+  () => tagForm.name,
+  (newName, oldName) => {
+    const cssContent = tagForm.css_styles
+    if (!cssContent?.trim()) return
+
+    const previousName = oldName?.trim() || lastTagName.value.trim()
+    const nextName = newName?.trim() || ''
+
+    if (!previousName) return
+
+    const oldClass = `.${previousName}`
+    const targetClassName = nextName || 'my-tag'
+    const newClass = `.${targetClassName}`
+
+    if (oldClass === newClass) {
+      lastTagName.value = targetClassName
+      return
+    }
+
+    tagForm.css_styles = cssContent.replace(
+      new RegExp(escapeRegex(oldClass), 'g'),
+      newClass
+    )
+
+    lastTagName.value = targetClassName
+  }
+)
+
+// CSS快捷模板（来自后端API文档）
+const cssTemplates = [
+  {
+    name: '渐变背景',
+    description: '线性渐变背景',
+    css: `.{{TAG_NAME}} { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 16px; font-weight: 500; }`
+  },
+  {
+    name: '发光动画',
+    description: '绿色发光脉冲动画',
+    css: `.{{TAG_NAME}} { background: #1a1a1a; color: #00ff00; padding: 4px 12px; border-radius: 4px; font-weight: bold; text-shadow: 0 0 10px #00ff00; animation: glow-pulse 2s ease-in-out infinite; } @keyframes glow-pulse { 0%, 100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; } 50% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; } }`
+  },
+  {
+    name: '彩虹滚动',
+    description: '彩虹渐变滚动动画',
+    css: `.{{TAG_NAME}} { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); background-size: 200% 100%; animation: rainbow-slide 3s linear infinite; color: white; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); } @keyframes rainbow-slide { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }`
+  },
+  {
+    name: '悬浮效果',
+    description: 'Hover上浮动画',
+    css: `.{{TAG_NAME}} { background: #4a90e2; color: white; padding: 4px 12px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; } .{{TAG_NAME}}:hover { background: #357abd; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }`
+  },
+  {
+    name: '脉冲缩放',
+    description: '缩放脉冲动画',
+    css: `.{{TAG_NAME}} { background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; animation: pulse-scale 1.5s ease-in-out infinite; } @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }`
+  },
+  {
+    name: '闪烁效果',
+    description: '透明度闪烁动画',
+    css: `.{{TAG_NAME}} { background: #f39c12; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600; animation: blink-opacity 2s step-start infinite; } @keyframes blink-opacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`
+  }
+]
+
 // Methods
+const applyCssTemplate = (template: string) => {
+  // 替换{{TAG_NAME}}为实际的tag name
+  const normalizedName = tagForm.name?.trim()
+  const tagName = normalizedName || 'my-tag'
+  const css = template.replace(/\{\{TAG_NAME\}\}/g, tagName)
+  tagForm.css_styles = formatCSS(css)
+  lastTagName.value = tagName
+}
 const loadTags = async (page = 1) => {
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       page,
       page_size: 20
@@ -923,8 +1184,24 @@ const loadTags = async (page = 1) => {
     }
     
     const data = await api.listTags(params)
-    tags.value = data.items
-    tagsData.value = data
+    // 后端返回camelCase，需要转换为前端的snake_case
+    tags.value = data.items.map((tag: any) => ({
+      id: tag.id,
+      name: tag.name,
+      title: tag.title,
+      tag_type: tag.tagType || tag.tag_type || 'collective',
+      background_color: tag.backgroundColor || tag.background_color || '#6b7280',
+      text_color: tag.textColor || tag.text_color || '#ffffff',
+      css_styles: tag.cssStyles || tag.css_styles ? formatCSS(tag.cssStyles || tag.css_styles) : null,
+      is_active: tag.isActive !== undefined ? tag.isActive : (tag.is_active !== undefined ? tag.is_active : true),
+      description: tag.description || null,
+      created_at: tag.created_at,
+      updated_at: tag.updated_at
+    }))
+    tagsData.value = {
+      ...data,
+      items: tags.value
+    }
   } catch (error: any) {
     toast.error('加载标签列表失败')
   } finally {
@@ -935,7 +1212,7 @@ const loadTags = async (page = 1) => {
 // Refresh global codes stats (totals across all)
 const refreshCodesStats = async () => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const [allResp, usedResp] = await Promise.all([
       api.listCodes({ page: 1, page_size: 1 }),
       api.listCodes({ used: true as any, page: 1, page_size: 1 })
@@ -969,10 +1246,13 @@ const openTagModal = () => {
   tagForm.name = ''
   tagForm.title = ''
   tagForm.description = ''
+  tagForm.tag_type = 'personal'
   tagForm.background_color = '#FF5CA3'
   tagForm.text_color = '#FFFFFF'
+  tagForm.css_styles = ''
   tagForm.is_active = true
   tagModal.tag = null
+  lastTagName.value = tagForm.name.trim()
   tagModal.show = true
 }
 
@@ -980,9 +1260,12 @@ const editTag = (tag: TagDto) => {
   tagForm.name = tag.name
   tagForm.title = tag.title
   tagForm.description = tag.description || ''
+  tagForm.tag_type = tag.tag_type || 'personal'
   tagForm.background_color = tag.background_color
   tagForm.text_color = tag.text_color
+  tagForm.css_styles = formatCSS(tag.css_styles || '')
   tagForm.is_active = tag.is_active
+  lastTagName.value = tagForm.name?.trim() || ''
   tagModal.tag = tag
   tagModal.show = true
 }
@@ -990,35 +1273,62 @@ const editTag = (tag: TagDto) => {
 const closeTagModal = () => {
   tagModal.show = false
   tagModal.tag = null
+  cleanupPreviewStyleElement()
 }
 
 const saveTag = async () => {
+  const cssContent = tagForm.css_styles?.trim()
+  if (cssContent) {
+    const byteLength = new TextEncoder().encode(cssContent).length
+    if (byteLength > 50000) {
+      toast.error(`CSS超出大小限制: ${(byteLength / 1000).toFixed(1)}KB / 50KB`)
+      return
+    }
+
+    const normalizedName = tagForm.name?.trim()
+    if (!normalizedName) {
+      toast.error('使用CSS模式前请先填写标签标识')
+      return
+    }
+
+    const requiredSelector = `.${normalizedName}`
+    if (!cssContent.includes(requiredSelector)) {
+      toast.error(`CSS必须包含类选择器 "${requiredSelector}"`)
+      return
+    }
+  }
+
   saving.value = true
   try {
-    const api = useApi()
-    
+    const api = useNuxtApp().$api
+    const cssPayload = cssContent || null
+
     if (tagModal.tag) {
       // Update existing
       await api.updateTag(tagModal.tag.id, {
         name: tagForm.name,
         title: tagForm.title,
         description: tagForm.description,
-        background_color: tagForm.background_color,
-        text_color: tagForm.text_color,
-        is_active: tagForm.is_active
+        tagType: tagForm.tag_type,
+        backgroundColor: tagForm.background_color,
+        textColor: tagForm.text_color,
+        cssStyles: cssPayload,
+        isActive: tagForm.is_active
       })
-      
+
       // Update local state
       Object.assign(tagModal.tag, {
         name: tagForm.name,
         title: tagForm.title,
         description: tagForm.description,
+        tag_type: tagForm.tag_type,
         background_color: tagForm.background_color,
         text_color: tagForm.text_color,
+        css_styles: cssPayload,
         is_active: tagForm.is_active,
         updated_at: new Date().toISOString()
       })
-      
+
       toast.success('标签已更新')
     } else {
       // Create new
@@ -1026,16 +1336,33 @@ const saveTag = async () => {
         name: tagForm.name,
         title: tagForm.title,
         description: tagForm.description,
-        background_color: tagForm.background_color,
-        text_color: tagForm.text_color,
-        is_active: tagForm.is_active
+        tagType: tagForm.tag_type,
+        backgroundColor: tagForm.background_color,
+        textColor: tagForm.text_color,
+        cssStyles: cssPayload,
+        isActive: tagForm.is_active
       })
-      
-      tags.value.unshift(newTag)
+
+      // 后端返回camelCase，需要转换为前端的snake_case
+      const normalizedTag: TagDto = {
+        id: newTag.id,
+        name: newTag.name,
+        title: newTag.title,
+        tag_type: (newTag as any).tagType || tagForm.tag_type,
+        background_color: (newTag as any).backgroundColor || tagForm.background_color,
+        text_color: (newTag as any).textColor || tagForm.text_color,
+        css_styles: (newTag as any).cssStyles ? formatCSS((newTag as any).cssStyles) : null,
+        is_active: (newTag as any).isActive !== undefined ? (newTag as any).isActive : tagForm.is_active,
+        description: newTag.description || null,
+        created_at: newTag.created_at,
+        updated_at: newTag.updated_at
+      }
+
+      tags.value.unshift(normalizedTag)
       if (tagsData.value) {
         tagsData.value.total += 1
       }
-      
+
       toast.success('标签已创建')
     }
     
@@ -1060,14 +1387,14 @@ const toggleStatus = async (tag: TagDto) => {
   if (!confirmed) return
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.updateTag(tag.id, {
       name: tag.name,
       title: tag.title,
       description: tag.description,
-      background_color: tag.background_color,
-      text_color: tag.text_color,
-      is_active: nextState
+      backgroundColor: tag.background_color,
+      textColor: tag.text_color,
+      isActive: nextState
     })
 
     tag.is_active = nextState
@@ -1096,7 +1423,7 @@ const generateCodes = async () => {
   
   generating.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       tag_id: codesModal.tag.id,
       count: parseInt(codesForm.count.toString())
@@ -1157,7 +1484,7 @@ const deleteTag = async () => {
   
   deleting.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deleteTag(deleteModal.tag.id)
     
     // Remove from local list
@@ -1197,7 +1524,7 @@ const closeCodesListModal = () => {
 const loadCodes = async (page = 1) => {
   loadingCodes.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     // 公共过滤参数
     const base: any = {}
     if (codesFilter.code) base.code = codesFilter.code
@@ -1262,7 +1589,7 @@ const preloadUsersForCodes = async (list: RedemptionCodeDto[]) => {
   const ids = Array.from(new Set(list.map(c => c.used_by).filter(Boolean))) as string[]
   const remain = ids.filter(id => !(id in userCache.value))
   if (!remain.length) return
-  const api = useApi()
+  const api = useNuxtApp().$api
   await Promise.all(remain.map(async (id) => {
     try {
       userCache.value[id] = await api.getUser(id)
@@ -1327,7 +1654,7 @@ const bulkDeleteSelected = async () => {
     cancelText: '取消'
   })) return
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const res = await api.deleteRedemptionCodes({ ids: selectedIds.value })
     if (res.deleted > 0) {
       toast.success(`已删除 ${res.deleted} 个兑换码`)
@@ -1343,7 +1670,7 @@ const bulkDeleteSelected = async () => {
 
 const viewCodeDetails = async (code: RedemptionCodeDto) => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     // 获取完整的兑换码详情
     const detailCode = await api.getCodeByCode(code.code)
     // 合并本地标签信息，启用 TagBadge 预览
@@ -1375,7 +1702,7 @@ const confirmDeleteCode = async (code: RedemptionCodeDto) => {
     cancelText: '取消'
   })) return
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const res = await api.deleteRedemptionCodes({ ids: [code.id] })
     if (res.deleted > 0) {
       toast.success('兑换码已删除')
@@ -1404,10 +1731,12 @@ onUnmounted(() => {
     document.body.style.overflow = ''
     window.removeEventListener('keydown', handleEscape)
   }
+  cleanupPreviewStyleElement()
 })
 
 // Initialize
 onMounted(() => {
+  ensurePreviewStyleElement()
   loadTags()
   refreshCodesStats()
 })

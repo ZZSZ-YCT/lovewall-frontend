@@ -537,7 +537,7 @@ const sortedPosts = computed(() =>
 const loadPosts = async (page = 1) => {
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       page,
       page_size: 20
@@ -664,7 +664,7 @@ const confirmActionReason = async () => {
   if (!actionReasonModal.post) return
   actionLoading.value = actionReasonModal.post.id
   const reason = actionReasonModal.reason.trim() || undefined
-  const api = useApi()
+  const api = useNuxtApp().$api
   try {
     if (actionReasonModal.action === 'pin') {
       const res = await api.pinPost(actionReasonModal.post.id, actionReasonModal.enable, reason)
@@ -690,7 +690,7 @@ const confirmActionReason = async () => {
 const approvePost = async (post: PostDto) => {
   actionLoading.value = post.id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.adminApprovePost(post.id)
     post.status = 0
     post.is_pending_review = false
@@ -712,14 +712,21 @@ const openReject = (post: PostDto) => {
 const rejectPost = async () => {
   if (!rejectModal.post) return
 
-  if (!confirm('⚠️ 拒绝后帖子将永久删除,确定继续?')) {
+  const { confirm } = useAdminDialog()
+  const confirmed = await confirm({
+    title: '确认拒绝',
+    message: '⚠️ 拒绝后帖子将永久删除,确定继续?',
+    confirmText: '确认拒绝',
+    cancelText: '取消'
+  })
+  if (!confirmed) {
     return
   }
 
   const rejectedId = rejectModal.post.id
   actionLoading.value = rejectedId
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.adminRejectPost(rejectModal.post.id, rejectModal.reason || undefined)
 
     posts.value = posts.value.filter(p => p.id !== rejectedId)
@@ -753,7 +760,7 @@ const confirmDelete = async (post: PostDto) => {
 
   actionLoading.value = post.id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deletePost(post.id, reason.trim() || undefined)
 
     // Remove from local list

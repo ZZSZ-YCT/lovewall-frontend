@@ -1,8 +1,8 @@
 <template>
   <span
       class="inline-block align-middle whitespace-nowrap
-           px-1.5 py-0.5 rounded-md
-           text-xs font-medium leading-none
+           px-2 py-0.5 rounded-md
+           text-base font-medium leading-tight
            border border-white/30"
       :style="{
       backgroundColor: background,

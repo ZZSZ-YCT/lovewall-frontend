@@ -100,7 +100,9 @@
           </div>
         </div>
         <!-- Toast Notifications -->
-        <ToastContainer />
+        <ClientOnly>
+          <ToastContainer />
+        </ClientOnly>
       </main>
 
       <!-- Footer -->
@@ -130,8 +132,7 @@
     <!-- Route announcer for accessibility -->
     <NuxtRouteAnnouncer />
 
-    <ConfirmDialog />
-    <PromptDialog />
+    <!-- 统一使用AdminDialog -->
     <AdminDialog />
   </div>
 </template>
@@ -143,8 +144,6 @@ import { onClickOutside } from '@vueuse/core'
 import ToastContainer from '~/components/ui/ToastContainer.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
-import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
-import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
 
 // Stores
@@ -177,7 +176,7 @@ const initializeApp = async () => {
     await auth.initAuth()
     if (import.meta.client) {
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         announcements.value = await api.listAnnouncements()
       } catch {}
     }
@@ -192,46 +191,32 @@ onMounted(() => {
   initializeApp()
 })
 
-// 通知红点：未读计数和轮询刷新
-const api = useApi()
-const unreadCount = ref(0)
-
-const loadUnreadCount = async () => {
-  if (!auth.isAuthenticated) return
-  try {
-    const res = await api.getUnreadNotificationCount()
-    unreadCount.value = res.count || 0
-  } catch {}
-}
-
-let unreadInterval: ReturnType<typeof setInterval> | null = null
+// 通知红点：使用heartbeat合并后的unread_notifications
+const { unreadNotifications, startHeartbeat, stopHeartbeat } = useHeartbeat()
+const unreadCount = unreadNotifications
 
 onMounted(() => {
   if (import.meta.client && auth.isAuthenticated) {
-    loadUnreadCount()
-    unreadInterval = setInterval(loadUnreadCount, 30000)
+    startHeartbeat()
   }
 })
 
 onUnmounted(() => {
-  if (unreadInterval) clearInterval(unreadInterval)
+  stopHeartbeat()
 })
 
 watch(() => auth.isAuthenticated, (v) => {
   if (v) {
-    loadUnreadCount()
-    if (!unreadInterval) unreadInterval = setInterval(loadUnreadCount, 30000)
+    startHeartbeat()
   } else {
-    unreadCount.value = 0
-    if (unreadInterval) { clearInterval(unreadInterval); unreadInterval = null }
+    stopHeartbeat()
   }
 })
 
-// 路由变化时刷新一次（进入通知页读完后尽快清红点）
+// 路由变化时关闭菜单
 const route = useRoute()
 watch(() => route.path, () => {
   showUserMenu.value = false
-  if (import.meta.client) setTimeout(loadUnreadCount, 500)
 })
 </script>
 

@@ -234,14 +234,22 @@
             <!-- Tags -->
             <td class="px-6 py-4">
               <div v-if="canManageTags" class="flex flex-wrap gap-1">
-                <TagBadge
-                  v-for="tag in getUserTags(user.id)"
-                  :key="tag.user_tag_id"
-                  :title="tag.tag?.title || ''"
-                  :background="tag.tag?.background_color || '#6b7280'"
-                  :text="tag.tag?.text_color || '#ffffff'"
-                  :class="{ 'ring-2 ring-blue-300': tag.is_active }"
-                />
+                <template v-for="tag in getUserTags(user.id)" :key="tag.user_tag_id">
+                  <span
+                    v-if="renderTag(tag.tag)?.useCssMode"
+                    :class="[renderTag(tag.tag)?.className, { 'ring-2 ring-blue-300': tag.is_active }]"
+                  >
+                    {{ renderTag(tag.tag)?.title }}
+                  </span>
+                  <span
+                    v-else-if="renderTag(tag.tag)"
+                    class="inline-block text-xs px-2 py-1 rounded font-medium"
+                    :style="renderTag(tag.tag)?.inlineStyles"
+                    :class="{ 'ring-2 ring-blue-300': tag.is_active }"
+                  >
+                    {{ renderTag(tag.tag)?.title }}
+                  </span>
+                </template>
                 <span v-if="!getUserTags(user.id).length" class="text-xs text-gray-400">暂无标签</span>
               </div>
               <div v-else class="inline-flex items-center">
@@ -907,12 +915,20 @@
                       :key="userTag.user_tag_id"
                       class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg"
                     >
-                      <TagBadge
-                        :title="userTag.tag?.title || ''"
-                        :background="userTag.tag?.background_color || '#6b7280'"
-                        :text="userTag.tag?.text_color || '#ffffff'"
+                      <span
+                        v-if="renderTag(userTag.tag)?.useCssMode"
+                        :class="[renderTag(userTag.tag)?.className, { 'ring-2 ring-blue-300': userTag.is_active }]"
+                      >
+                        {{ renderTag(userTag.tag)?.title }}
+                      </span>
+                      <span
+                        v-else-if="renderTag(userTag.tag)"
+                        class="inline-block text-xs px-2 py-1 rounded font-medium"
+                        :style="renderTag(userTag.tag)?.inlineStyles"
                         :class="{ 'ring-2 ring-blue-300': userTag.is_active }"
-                      />
+                      >
+                        {{ renderTag(userTag.tag)?.title }}
+                      </span>
                       <button
                         v-if="userTag.tag?.id"
                         class="text-red-500 hover:text-red-700 text-sm"
@@ -939,7 +955,7 @@
 
                 <div>
                   <h4 class="text-sm font-medium text-gray-700 mb-2">添加标签</h4>
-                  <div class="flex gap-2 items-center">
+                  <div class="flex flex-wrap gap-2 items-center">
                     <select
                       v-model="selectedTagId"
                       class="flex-1 px-3 py-2.5 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-white transition-all"
@@ -965,6 +981,14 @@
                       />
                       <span>添加</span>
                     </button>
+                    <button
+                      v-if="canManageTags && userTagsModal.user"
+                      type="button"
+                      class="px-5 py-2.5 text-sm font-medium text-brand-600 bg-white border-2 border-brand-100 hover:bg-brand-50 rounded-lg transition-colors shadow-sm"
+                      @click="openCreatePersonalTagModal(userTagsModal.user)"
+                    >
+                      创建专属标签
+                    </button>
                   </div>
                 </div>
               </div>
@@ -977,6 +1001,188 @@
                 @click="closeUserTagsModal"
               >
                 关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <!-- Create Personal Tag Modal -->
+    <Teleport to="body">
+      <Transition name="dialog-fade">
+        <div
+          v-if="createPersonalTagModal.show"
+          class="fixed inset-0 z-[10000] flex items-center justify-center p-4"
+        >
+          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeCreatePersonalTagModal"/>
+
+          <div
+            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            @click.stop
+          >
+            <div class="relative p-6 pb-4 pr-12 border-b border-gray-100">
+              <h3 class="text-xl font-semibold text-gray-900">
+                为 {{ createPersonalTagModal.userName || '该用户' }} 创建专属标签
+              </h3>
+              <p class="text-sm text-gray-500 mt-1">标签仅对该用户可见，可自定义配色或CSS样式</p>
+              <button
+                type="button"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                @click="closeCreatePersonalTagModal"
+              >
+                <XIcon class="w-5 h-5"/>
+              </button>
+            </div>
+
+            <div class="px-6 pb-6 flex-1 overflow-y-auto">
+              <form id="personal-tag-form" class="space-y-5" @submit.prevent="submitPersonalTag">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">标签标识 *</label>
+                    <input
+                      v-model="personalTagForm.name"
+                      type="text"
+                      placeholder="user-123-vip"
+                      class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                      required
+                    >
+                    <p class="text-xs text-gray-500 mt-1">自动生成，可调整；仅限字母、数字、下划线或连字符</p>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">标签类型</label>
+                    <input
+                      value="personal（仅该用户可见）"
+                      disabled
+                      class="w-full px-4 py-2.5 border-2 border-dashed border-brand-200 rounded-lg bg-brand-50/30 text-brand-600 cursor-not-allowed"
+                    >
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">显示名称 *</label>
+                  <input
+                    v-model="personalTagForm.title"
+                    type="text"
+                    placeholder="专属VIP"
+                    required
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">描述</label>
+                  <textarea
+                    v-model="personalTagForm.description"
+                    rows="3"
+                    placeholder="描述该专属标签的用途或含义..."
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
+                  />
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">背景色</label>
+                    <div class="flex items-center gap-2">
+                      <input
+                        v-model="personalTagForm.background_color"
+                        type="color"
+                        class="w-10 h-10 rounded border border-gray-300"
+                      >
+                      <input
+                        v-model="personalTagForm.background_color"
+                        type="text"
+                        placeholder="#FF5CA3"
+                        class="flex-1 w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                      >
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">文字色</label>
+                    <div class="flex items-center gap-2">
+                      <input
+                        v-model="personalTagForm.text_color"
+                        type="color"
+                        class="w-10 h-10 rounded border border-gray-300"
+                      >
+                      <input
+                        v-model="personalTagForm.text_color"
+                        type="text"
+                        placeholder="#FFFFFF"
+                        class="flex-1 w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-2 gap-2">
+                    <label class="block text-sm font-medium text-gray-700">CSS样式模板（可选）</label>
+                    <div class="flex flex-wrap gap-1 justify-end">
+                      <button
+                        v-for="template in personalCssTemplates"
+                        :key="template.name"
+                        type="button"
+                        class="px-2 py-1 text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 rounded transition-colors"
+                        :title="template.description"
+                        @click="applyPersonalCssTemplate(template.css)"
+                      >
+                        {{ template.name }}
+                      </button>
+                    </div>
+                  </div>
+                  <textarea
+                    v-model="personalTagForm.css_styles"
+                    :placeholder="`完整CSS类定义，类名必须为 .${personalTagForm.name || 'user-tag'}`"
+                    rows="7"
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none font-mono text-xs"
+                  />
+                  <p class="text-xs text-gray-500 mt-1">
+                    模板会自动将 <code v-text="'.{{TAG_NAME}}'"></code> 替换为当前标识。CSS 最大 50KB，需包含类选择器
+                    <code>.{{ personalTagForm.name || 'user-tag' }}</code>。
+                  </p>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p class="text-sm text-gray-600 mb-2">预览</p>
+                  <div>
+                    <span
+                      v-if="personalTagPreview?.useCssMode"
+                      :class="personalTagPreview.className"
+                    >
+                      {{ personalTagPreview.title }}
+                    </span>
+                    <span
+                      v-else-if="personalTagPreview"
+                      :style="personalTagPreview.inlineStyles"
+                    >
+                      {{ personalTagPreview.title }}
+                    </span>
+                    <div v-else class="text-sm text-gray-400">请先填写标签标识和显示名称</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="flex gap-3 justify-end px-6 pb-6 border-t border-gray-100">
+              <button
+                type="button"
+                class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                @click="closeCreatePersonalTagModal"
+              >
+                取消
+              </button>
+              <button
+                type="submit"
+                form="personal-tag-form"
+                class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                :disabled="creatingPersonalTag"
+              >
+                <span
+                  v-if="creatingPersonalTag"
+                  class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                />
+                <span>{{ creatingPersonalTag ? '创建中...' : '创建并分配' }}</span>
               </button>
             </div>
           </div>
@@ -1013,6 +1219,7 @@ import type {
   TagDto,
   UserTagDto
 } from '~/types'
+import type { TagRenderResult } from '~/composables/useTagRenderer'
 import GlassButton from "~/components/ui/GlassButton.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 import GlassCard from "~/components/ui/GlassCard.vue";
@@ -1027,6 +1234,7 @@ definePageMeta({
 const auth = useAuthStore()
 const assetUrl = useAssetUrl()
 const toast = useToast()
+const { renderTag } = useTagRenderer()
 const canManageTags = computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS'))
 
 // State
@@ -1091,6 +1299,28 @@ const userTags = ref<Record<string, UserTagDto[]>>({})
 const selectedTagId = ref<string>('')
 const assigningTag = ref(false)
 
+// Personal tag creation state
+const createPersonalTagModal = reactive({
+  show: false,
+  userId: '',
+  userName: ''
+})
+
+const personalTagForm = reactive({
+  name: '',
+  title: '',
+  description: '',
+  background_color: '#FF5CA3',
+  text_color: '#FFFFFF',
+  css_styles: '',
+  is_active: true
+})
+
+const personalCssTemplateSource = ref<string | null>(null)
+const personalPreviewStyleEl = ref<HTMLStyleElement | null>(null)
+const lastPersonalCssName = ref<string>('')
+const creatingPersonalTag = ref(false)
+
 // Pagination state
 const pageSize = ref(20)
 const jumpToPage = ref<number | null>(null)
@@ -1101,6 +1331,229 @@ const availableTags = computed(() => {
   const assignedTagIds = getUserTags(userTagsModal.user.id).map(ut => ut.tag?.id).filter(id => id)
   return allTags.value.filter(tag => !assignedTagIds.includes(tag.id))
 })
+
+const personalTagPreviewClassName = computed(() => personalTagForm.name?.trim() || 'personal-tag-preview')
+
+const personalTagPreview = computed<TagRenderResult | null>(() => {
+  const title = personalTagForm.title?.trim()
+  if (!title) return null
+
+  const cssStyles = personalTagForm.css_styles?.trim()
+  const className = personalTagPreviewClassName.value
+
+  if (cssStyles) {
+    return {
+      className,
+      title,
+      useCssMode: true
+    }
+  }
+
+  return {
+    className,
+    title,
+    useCssMode: false,
+    inlineStyles: {
+      display: 'inline-block',
+      padding: '4px 12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      fontWeight: '500',
+      whiteSpace: 'nowrap',
+      backgroundColor: personalTagForm.background_color || '#FF5CA3',
+      color: personalTagForm.text_color || '#FFFFFF'
+    }
+  }
+})
+
+// CSS模板（与标签管理保持一致）
+const personalCssTemplates = [
+  {
+    name: '渐变背景',
+    description: '线性渐变背景',
+    css: `.{{TAG_NAME}} { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 16px; font-weight: 500; }`
+  },
+  {
+    name: '发光动画',
+    description: '绿色发光脉冲动画',
+    css: `.{{TAG_NAME}} { background: #1a1a1a; color: #00ff00; padding: 4px 12px; border-radius: 4px; font-weight: bold; text-shadow: 0 0 10px #00ff00; animation: glow-pulse 2s ease-in-out infinite; } @keyframes glow-pulse { 0%, 100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; } 50% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; } }`
+  },
+  {
+    name: '彩虹滚动',
+    description: '彩虹渐变滚动动画',
+    css: `.{{TAG_NAME}} { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); background-size: 200% 100%; animation: rainbow-slide 3s linear infinite; color: white; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); } @keyframes rainbow-slide { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }`
+  },
+  {
+    name: '悬浮效果',
+    description: 'Hover上浮动画',
+    css: `.{{TAG_NAME}} { background: #4a90e2; color: white; padding: 4px 12px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; } .{{TAG_NAME}}:hover { background: #357abd; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }`
+  },
+  {
+    name: '脉冲缩放',
+    description: '缩放脉冲动画',
+    css: `.{{TAG_NAME}} { background: #e74c3c; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; animation: pulse-scale 1.5s ease-in-out infinite; } @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }`
+  },
+  {
+    name: '闪烁效果',
+    description: '透明度闪烁动画',
+    css: `.{{TAG_NAME}} { background: #f39c12; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600; animation: blink-opacity 2s step-start infinite; } @keyframes blink-opacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`
+  }
+]
+
+const formatCSS = (css: string): string => {
+  if (!css) return ''
+
+  let formatted = css
+    .replace(/\{/g, ' {\n  ')
+    .replace(/;/g, ';\n  ')
+    .replace(/\}/g, '\n}\n')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  formatted = formatted
+    .replace(/\s*{\s*/g, ' {\n  ')
+    .replace(/;\s*/g, ';\n  ')
+    .replace(/\s*}\s*/g, '\n}\n')
+    .replace(/\n{2,}/g, '\n')
+    .split('\n')
+    .map(line => line.trimEnd())
+    .join('\n')
+    .trim()
+
+  return formatted
+}
+
+const ensurePersonalPreviewStyleElement = () => {
+  if (!import.meta.client) return null
+  if (personalPreviewStyleEl.value && document.head.contains(personalPreviewStyleEl.value)) {
+    return personalPreviewStyleEl.value
+  }
+
+  const existing = document.getElementById('personal-tag-preview-style')
+  if (existing instanceof HTMLStyleElement) {
+    personalPreviewStyleEl.value = existing
+    return personalPreviewStyleEl.value
+  }
+
+  const style = document.createElement('style')
+  style.id = 'personal-tag-preview-style'
+  document.head.appendChild(style)
+  personalPreviewStyleEl.value = style
+  return style
+}
+
+const cleanupPersonalPreviewStyleElement = () => {
+  if (!import.meta.client) return
+  if (personalPreviewStyleEl.value) {
+    personalPreviewStyleEl.value.remove()
+    personalPreviewStyleEl.value = null
+  }
+}
+
+const updatePersonalPreviewCss = (css: string | null | undefined) => {
+  if (!import.meta.client) return
+  const content = css ?? ''
+
+  if (!content.trim()) {
+    if (personalPreviewStyleEl.value) {
+      personalPreviewStyleEl.value.textContent = ''
+    }
+    return
+  }
+
+  const styleEl = ensurePersonalPreviewStyleElement()
+  if (styleEl) {
+    styleEl.textContent = content
+  }
+}
+
+let isSettingPersonalCss = false
+
+const setPersonalCssStyles = (value: string) => {
+  isSettingPersonalCss = true
+  personalTagForm.css_styles = value
+  Promise.resolve().then(() => {
+    isSettingPersonalCss = false
+  })
+}
+
+const replaceCssClassName = (css: string, oldName: string | undefined, newName: string) => {
+  if (!css || !oldName || !newName || oldName === newName) return css
+  const escapedOld = oldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const pattern = new RegExp(`(\\.)${escapedOld}(?=[^a-zA-Z0-9_-]|$)`, 'g')
+  return css.replace(pattern, `$1${newName}`)
+}
+
+watch(
+  () => personalTagForm.css_styles,
+  (css) => {
+    updatePersonalPreviewCss(css)
+    if (isSettingPersonalCss) return
+
+    if (css && /\{\{TAG_NAME\}\}/.test(css)) {
+      personalCssTemplateSource.value = css
+      const tagName = personalTagForm.name?.trim() || 'user-tag'
+      const replaced = formatCSS(css.replace(/\{\{TAG_NAME\}\}/g, tagName))
+      if (replaced !== css) {
+        setPersonalCssStyles(replaced)
+      }
+      lastPersonalCssName.value = tagName
+      return
+    }
+
+    if (!css) {
+      personalCssTemplateSource.value = null
+      lastPersonalCssName.value = personalTagForm.name?.trim() || ''
+      return
+    }
+
+    // 用户手动编辑CSS后，清空模板引用，避免覆盖自定义内容
+    personalCssTemplateSource.value = null
+  },
+  { immediate: true }
+)
+
+watch(
+  () => personalTagForm.name,
+  (newName, oldName) => {
+    const normalized = newName?.trim()
+    const css = personalTagForm.css_styles
+    if (!normalized) {
+      lastPersonalCssName.value = ''
+      return
+    }
+
+    if (!css) {
+      lastPersonalCssName.value = normalized
+      return
+    }
+
+    if (personalCssTemplateSource.value) {
+      const fromTemplate = formatCSS(personalCssTemplateSource.value.replace(/\{\{TAG_NAME\}\}/g, normalized))
+      if (fromTemplate !== css) {
+        setPersonalCssStyles(fromTemplate)
+      }
+      lastPersonalCssName.value = normalized
+      return
+    }
+
+    if (/\{\{TAG_NAME\}\}/.test(css)) {
+      const replaced = formatCSS(css.replace(/\{\{TAG_NAME\}\}/g, normalized))
+      if (replaced !== css) {
+        setPersonalCssStyles(replaced)
+      }
+      lastPersonalCssName.value = normalized
+      return
+    }
+
+    const previousName = oldName?.trim() || lastPersonalCssName.value
+    const updatedCss = replaceCssClassName(css, previousName, normalized)
+    if (updatedCss !== css) {
+      setPersonalCssStyles(updatedCss)
+    }
+    lastPersonalCssName.value = normalized
+  }
+)
 
 // Pagination computed properties
 const totalPages = computed(() => {
@@ -1188,7 +1641,7 @@ const isEditFormValid = computed(() => {
 const loadUsers = async (page = 1) => {
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       page,
       page_size: pageSize.value
@@ -1233,13 +1686,19 @@ const loadAllUsersTags = async (usersList: User[]) => {
     return
   }
 
-  const api = useApi()
+  const api = useNuxtApp().$api
 
   // 并发加载所有用户的标签，提高加载效率
   const tagPromises = usersList.map(async (user) => {
     try {
       const data = await api.adminGetUserTags(user.id)
-      userTags.value[user.id] = data.items
+      userTags.value[user.id] = data.items.map(item => ({
+        ...item,
+        tag: item.tag ? {
+          ...item.tag,
+          css_styles: item.tag.css_styles ? formatCSS(item.tag.css_styles) : null
+        } : item.tag
+      }))
     } catch (error: any) {
       console.warn(`加载用户 ${user.username} 的标签失败:`, error)
       // 如果加载失败，设置为空数组，避免重复加载
@@ -1367,7 +1826,7 @@ const savePermissions = async () => {
 
   savingPermissions.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.setUserPerms(currentUser.id, {permissions: permissionsForm.value})
 
     // Update local state
@@ -1391,7 +1850,8 @@ const isAnyModalOpen = computed(() => (
   permissionsModal.show ||
   passwordModal.show ||
   editModal.show ||
-  userTagsModal.show
+  userTagsModal.show ||
+  createPersonalTagModal.show
 ))
 
 watch(isAnyModalOpen, (open) => {
@@ -1404,6 +1864,7 @@ onUnmounted(() => {
   if (typeof window !== 'undefined') {
     document.body.style.overflow = ''
   }
+  cleanupPersonalPreviewStyleElement()
 })
 
 const openDeleteUser = (user: User) => {
@@ -1424,7 +1885,7 @@ const deleteUser = async () => {
   }
   deletingUser.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.adminDeleteUser(deleteUserModal.user.id)
     // Remove from local list
     users.value = users.value.filter(u => u.id !== deleteUserModal.user!.id)
@@ -1454,12 +1915,178 @@ const getUserTags = (userId: string): UserTagDto[] => {
   return userTags.value[userId] || []
 }
 
+const sanitizeTagName = (value: string) => {
+  if (!value) return ''
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^[-_]+/, '')
+    .replace(/[-_]+$/, '')
+}
+
+const generatePersonalTagName = (user?: User | null) => {
+  const idPart = user?.id ? user.id.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : ''
+  const base = idPart ? `user-${idPart}` : `user-${Date.now()}`
+  const candidate = `${base}-vip`
+  return sanitizeTagName(candidate) || `user-${Date.now()}`
+}
+
+const resetPersonalTagForm = (user?: User | null) => {
+  const defaultName = generatePersonalTagName(user)
+  personalTagForm.name = defaultName
+  lastPersonalCssName.value = defaultName
+  personalTagForm.title = user ? `${user.display_name || user.username}专属VIP` : ''
+  personalTagForm.description = ''
+  personalTagForm.background_color = '#FF5CA3'
+  personalTagForm.text_color = '#FFFFFF'
+  personalTagForm.css_styles = ''
+  personalTagForm.is_active = true
+  personalCssTemplateSource.value = null
+}
+
+const openCreatePersonalTagModal = (user: User) => {
+  if (!canManageTags.value || !user) return
+  createPersonalTagModal.userId = user.id
+  createPersonalTagModal.userName = user.display_name || user.username
+  resetPersonalTagForm(user)
+  createPersonalTagModal.show = true
+  ensurePersonalPreviewStyleElement()
+  updatePersonalPreviewCss(personalTagForm.css_styles)
+}
+
+const closeCreatePersonalTagModal = () => {
+  createPersonalTagModal.show = false
+  createPersonalTagModal.userId = ''
+  createPersonalTagModal.userName = ''
+  resetPersonalTagForm()
+  cleanupPersonalPreviewStyleElement()
+}
+
+const applyPersonalCssTemplate = (template: string) => {
+  if (!template) return
+  const tagName = personalTagForm.name?.trim() || 'user-tag'
+  personalCssTemplateSource.value = template
+  lastPersonalCssName.value = tagName
+  setPersonalCssStyles(formatCSS(template.replace(/\{\{TAG_NAME\}\}/g, tagName)))
+}
+
+const appendUserTagToState = (userId: string, tag: TagDto) => {
+  if (!userId || !tag?.id) return
+  const newUserTag: UserTagDto = {
+    user_tag_id: `temp-${Date.now()}`,
+    is_active: false,
+    obtained_at: new Date().toISOString(),
+    status: 'active',
+    tag: {
+      ...tag
+    }
+  }
+  userTags.value[userId] ??= []
+  userTags.value[userId]!.push(newUserTag)
+}
+
+const submitPersonalTag = async () => {
+  if (creatingPersonalTag.value) return
+  if (!createPersonalTagModal.userId) {
+    toast.error('请选择要分配的用户')
+    return
+  }
+
+  const normalizedName = sanitizeTagName(personalTagForm.name) || generatePersonalTagName()
+  if (normalizedName !== personalTagForm.name) {
+    personalTagForm.name = normalizedName
+  }
+
+  const title = personalTagForm.title?.trim()
+  if (!title) {
+    toast.error('请填写显示名称')
+    return
+  }
+
+  const cssInput = personalTagForm.css_styles?.trim()
+  let formattedCss = ''
+
+  if (cssInput) {
+    formattedCss = formatCSS(cssInput)
+    const byteLength = new TextEncoder().encode(formattedCss).length
+    if (byteLength > 50000) {
+      toast.error(`CSS超出大小限制: ${(byteLength / 1024).toFixed(1)}KB / 50KB`)
+      return
+    }
+
+    const requiredSelector = `.${normalizedName}`
+    if (!formattedCss.includes(requiredSelector)) {
+      toast.error(`CSS必须包含类选择器 "${requiredSelector}"`)
+      return
+    }
+  }
+
+  creatingPersonalTag.value = true
+  try {
+    const api = useNuxtApp().$api
+    const payload = {
+      name: normalizedName,
+      title,
+      description: personalTagForm.description?.trim() || null,
+      tagType: 'personal' as const,
+      backgroundColor: personalTagForm.background_color || '#FF5CA3',
+      textColor: personalTagForm.text_color || '#FFFFFF',
+      cssStyles: cssInput ? formattedCss : null,
+      isActive: true
+    }
+
+    const newTag = await api.createTag(payload)
+    // 后端返回camelCase，需要转换为前端的snake_case
+    const normalizedTag: TagDto = {
+      id: newTag.id,
+      name: newTag.name,
+      title: newTag.title,
+      tag_type: (newTag as any).tagType || 'personal',
+      background_color: (newTag as any).backgroundColor || personalTagForm.background_color,
+      text_color: (newTag as any).textColor || personalTagForm.text_color,
+      css_styles: (newTag as any).cssStyles ? formatCSS((newTag as any).cssStyles) : null,
+      is_active: (newTag as any).isActive !== undefined ? (newTag as any).isActive : true,
+      description: newTag.description || null,
+      created_at: newTag.created_at,
+      updated_at: newTag.updated_at
+    }
+
+    allTags.value.unshift(normalizedTag)
+
+    await api.adminAssignUserTag(createPersonalTagModal.userId, normalizedTag.id, {active: false})
+    appendUserTagToState(createPersonalTagModal.userId, normalizedTag)
+
+    toast.success('专属标签已创建并分配')
+    closeCreatePersonalTagModal()
+  } catch (error: any) {
+    console.error('创建专属标签失败：', error)
+    const message = error?.response?.data?.error?.message || error?.message || '创建专属标签失败'
+    toast.error(message)
+  } finally {
+    creatingPersonalTag.value = false
+  }
+}
+
 const loadTags = async () => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     // Load all tags (not just active ones) for admin management
     const data = await api.listTags()
-    allTags.value = data.items
+    // 后端返回camelCase，需要转换为前端的snake_case
+    allTags.value = data.items.map((tag: any) => ({
+      id: tag.id,
+      name: tag.name,
+      title: tag.title,
+      tag_type: tag.tagType || tag.tag_type || 'collective',
+      background_color: tag.backgroundColor || tag.background_color || '#6b7280',
+      text_color: tag.textColor || tag.text_color || '#ffffff',
+      css_styles: tag.cssStyles || tag.css_styles ? formatCSS(tag.cssStyles || tag.css_styles) : null,
+      is_active: tag.isActive !== undefined ? tag.isActive : (tag.is_active !== undefined ? tag.is_active : true),
+      description: tag.description || null,
+      created_at: tag.created_at,
+      updated_at: tag.updated_at
+    }))
   } catch (error: any) {
     if (error?.response?.status === 403) {
       console.warn('加载标签列表失败：权限不足')
@@ -1485,6 +2112,9 @@ const closeUserTagsModal = () => {
   userTagsModal.show = false
   userTagsModal.user = null
   selectedTagId.value = ''
+  if (createPersonalTagModal.show) {
+    closeCreatePersonalTagModal()
+  }
 }
 
 const assignUserTag = async () => {
@@ -1492,11 +2122,11 @@ const assignUserTag = async () => {
 
   assigningTag.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
 
     // 确认选中的标签存在
-    const tag = allTags.value.find(t => t.id === selectedTagId.value)
-    if (!tag) {
+    const selectedTag = allTags.value.find(t => t.id === selectedTagId.value)
+    if (!selectedTag) {
       toast.error('选中的标签不存在')
       return
     }
@@ -1510,12 +2140,17 @@ const assignUserTag = async () => {
       obtained_at: new Date().toISOString(),
       status: 'active',
       tag: {
-        id: tag.id,
-        name: tag.name,
-        title: tag.title,
-        background_color: tag.background_color,
-        text_color: tag.text_color,
-        is_active: tag.is_active
+        id: selectedTag.id,
+        name: selectedTag.name,
+        title: selectedTag.title,
+        background_color: selectedTag.background_color,
+        text_color: selectedTag.text_color,
+        css_styles: selectedTag.css_styles,
+        tag_type: selectedTag.tag_type,
+        description: selectedTag.description,
+        is_active: selectedTag.is_active,
+        created_at: selectedTag.created_at,
+        updated_at: selectedTag.updated_at
       }
     }
 
@@ -1523,7 +2158,7 @@ const assignUserTag = async () => {
     userTags.value[userTagsModal.user.id]!.push(newUserTag)
 
     selectedTagId.value = ''
-    toast.success(`标签"${tag.title}"分配成功`)
+    toast.success(`标签"${selectedTag.title}"分配成功`)
   } catch (error: any) {
     console.error('分配标签失败：', error)
     const errorMessage = error.response?.data?.error?.message || error.message || '分配标签失败'
@@ -1545,9 +2180,7 @@ const removeUserTag = async (userId: string, tagId: string) => {
   if (!confirmed) return
 
   try {
-    const api = useApi()
-    console.log('删除用户标签：', {userId, tagId})
-
+    const api = useNuxtApp().$api
     await api.adminRemoveUserTag(userId, tagId)
 
     // Remove from local state
@@ -1565,9 +2198,7 @@ const removeUserTag = async (userId: string, tagId: string) => {
 
 const setActiveUserTag = async (userId: string, tagId: string) => {
   try {
-    const api = useApi()
-    console.log('设置活跃标签：', {userId, tagId})
-
+    const api = useNuxtApp().$api
     await api.adminAssignUserTag(userId, tagId, {active: true})
 
     // Update local state - only one tag can be active
@@ -1638,7 +2269,7 @@ const submitPasswordChange = async () => {
   passwordSubmitting.value = true
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.adminChangePassword(currentUser.id, passwordForm)
 
     toast.success(`已成功修改用户 ${currentUser.username} 的密码`)
@@ -1762,7 +2393,7 @@ const submitUserEdit = async () => {
   editSubmitting.value = true
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
 
     // 构建更新数据，只包含有变化的字段
     const updateData: AdminUpdateUserForm = {}
@@ -1820,7 +2451,7 @@ const confirmBanUser = async (user: User) => {
   }
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const result = await api.banUser(user.id, {reason: reason.trim()})
 
     // Update local state
@@ -1850,7 +2481,7 @@ const confirmUnbanUser = async (user: User) => {
   })) return
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const result = await api.unbanUser(user.id)
 
     // Update local state

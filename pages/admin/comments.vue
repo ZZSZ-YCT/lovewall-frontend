@@ -110,33 +110,11 @@
 
               <!-- User -->
               <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    <NuxtImg
-                      v-if="comment.user_avatar_url"
-                      :src="assetUrl(comment.user_avatar_url)"
-                      :alt="commentDisplayName(comment)"
-                      class="w-8 h-8 object-cover"
-                      @error="() => { comment.user_avatar_url = null }"
-                    />
-                    <div
-                      v-else
-                      class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-xs font-medium"
-                    >
-                      {{ commentDisplayName(comment).slice(0, 2) }}
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-800">{{ commentDisplayName(comment) }}</div>
-                    <TagBadge
-                      v-if="comment.user_tag"
-                      :title="comment.user_tag.title"
-                      :background="comment.user_tag.background_color"
-                      :text="comment.user_tag.text_color"
-                      class="mt-1"
-                    />
-                  </div>
-                </div>
+                <CommentUserInfo
+                  class="items-center"
+                  :comment="comment"
+                  :size="36"
+                />
               </td>
 
               <!-- Post -->
@@ -241,12 +219,9 @@
 import {EyeIcon, EyeOffIcon, MessageSquareIcon, RefreshCwIcon, TrashIcon} from 'lucide-vue-next'
 import type {CommentDto, Pagination} from '~/types'
 import GlassButton from "~/components/ui/GlassButton.vue";
-import TagBadge from "~/components/ui/TagBadge.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 import GlassCard from "~/components/ui/GlassCard.vue";
 import GlassInput from "~/components/ui/GlassInput.vue";
-
-const assetUrl = useAssetUrl()
 
 definePageMeta({
   middleware: ['admin', 'require-perms'],
@@ -264,7 +239,6 @@ const comments = ref<CommentDto[]>([])
 const commentsData = ref<Pagination<CommentDto> | null>(null)
 const loading = ref(true)
 const actionLoading = ref<string | null>(null)
-const userAvatarCache = ref<Map<string, string | null>>(new Map())
 
 const filters = reactive({
   status: '',
@@ -285,7 +259,7 @@ const hiddenCount = computed(() => {
 const loadComments = async (page = 1) => {
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       page,
       page_size: 20
@@ -297,26 +271,7 @@ const loadComments = async (page = 1) => {
 
     const data = await api.getAdminComments(params)
 
-    // Batch fetch user avatars
-    const userIds = [...new Set(data.items.map((comment : CommentDto) => comment.user_id))] as string[]
-    const uncachedIds = userIds.filter(id => !userAvatarCache.value.has(id))
-
-    if (uncachedIds.length > 0) {
-      await Promise.all(uncachedIds.map(async (userId) => {
-        try {
-          const user = await api.getUser(userId)
-          userAvatarCache.value.set(userId, user.avatar_url || null)
-        } catch {
-          userAvatarCache.value.set(userId, null)
-        }
-      }))
-    }
-
-    // Enrich comments with avatar URLs
-    comments.value = data.items.map((comment: CommentDto) => ({
-      ...comment,
-      user_avatar_url: userAvatarCache.value.get(comment.user_id) ?? null
-    })) as CommentDto[]
+    comments.value = data.items as CommentDto[]
     commentsData.value = data
   } catch (error: any) {
     toast.error('加载评论列表失败')
@@ -358,7 +313,7 @@ const hideComment = async (comment: CommentDto) => {
 
   actionLoading.value = comment.id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.hideComment(comment.id, true)
     comment.status = 1
     toast.success('评论已隐藏')
@@ -382,7 +337,7 @@ const showComment = async (comment: CommentDto) => {
 
   actionLoading.value = comment.id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.hideComment(comment.id, false)
     comment.status = 0
     toast.success('评论已恢复')
@@ -406,7 +361,7 @@ const confirmDelete = async (comment: CommentDto) => {
 
   actionLoading.value = comment.id
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deleteComment(comment.id)
 
     // Remove from local list
@@ -425,13 +380,6 @@ const confirmDelete = async (comment: CommentDto) => {
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleString('zh-CN')
-}
-
-const commentDisplayName = (c: CommentDto): string => {
-  const anyC: any = c as any
-  return (
-    anyC.user_display_name || anyC.user?.display_name || anyC.user_name || `用户${c.user_id?.slice(0, 6)}`
-  )
 }
 
 // Initialize

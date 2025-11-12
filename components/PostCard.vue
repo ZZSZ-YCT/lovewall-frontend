@@ -19,8 +19,8 @@
         <!-- Author Avatar -->
         <div
           :class="[
-            'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer',
-            isMobile ? 'w-8 h-8' : 'w-10 h-10'
+            'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer avatar-wrapper',
+            isMobile ? 'w-10 h-10' : 'w-12 h-12'
           ]"
           @click.stop="navigateToAuthor"
         >
@@ -36,39 +36,40 @@
 
           <!-- 头像容器 -->
           <NuxtImg
-            v-if="authorHasAvatar === true && authorAvatar"
-            :src="authorAvatar"
-            :alt="post.author_name"
+            v-if="authorAvatarUrl"
+            :src="authorAvatarUrl"
+            :alt="authorDisplayName"
             format="webp"
-            class="relative z-10 w-full h-full rounded-full object-cover"
+            class="author-avatar"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
             @error="handleAuthorAvatarError"
           />
 
-          <!-- Transparent placeholder while loading/unknown -->
-          <div
-            v-else-if="authorHasAvatar === null"
-            class="relative z-10 w-full h-full rounded-full bg-white/10"
-            :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
-          />
-
-          <!-- Default initials only when user has no avatar -->
+          <!-- Default initials when no avatar -->
           <div
             v-else
-            class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-medium"
+            class="avatar-placeholder"
             :class="[
               isMobile ? 'text-xs' : 'text-sm',
               post.is_author_admin ? 'border-0' : 'border-2 border-white/20'
             ]"
           >
-            {{ post.author_name.slice(0, 2) }}
+            {{ authorInitials }}
           </div>
+
+          <!-- 在线状态指示器：总是显示，在线绿色/离线灰色 -->
+          <span
+            class="online-indicator"
+            :class="authorIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
+            :title="authorIsOnline ? (authorOnlineTitle || '在线') : '离线'"
+          />
         </div>
         
         <div class="flex-1 min-w-0">
+          <!-- 用户名、徽章、标签在同一行 -->
           <div
 :class="[
-            'flex items-center gap-2',
+            'flex items-center gap-2 flex-wrap',
             isMobile ? 'mb-0.5' : 'mb-1'
           ]">
             <h3
@@ -76,7 +77,7 @@
               'font-semibold text-gray-900 cursor-pointer hover:text-brand-600 transition-colors truncate',
               isMobile ? 'text-sm' : 'text-base'
             ]" @click.stop="navigateToAuthor">
-              {{ post.author_name }}
+              {{ authorDisplayName }}
             </h3>
             <span
               v-if="authorDeleted"
@@ -84,56 +85,59 @@
             >
               已注销
             </span>
-            <!-- Author Active Tag -->
-            <TagBadge
-              v-if="activeTag && activeTag.title"
-              :title="activeTag.title"
-              :background="activeTag.background_color"
-              :text="activeTag.text_color"
-            />
+
+            <!-- 用户标签：比用户名小一号 -->
             <span
-              v-if="activeTag?.user_deleted"
-              class="px-1.5 py-0.5 text-[10px] bg-red-100 text-red-600 rounded-full"
+              v-if="authorTag && authorTag.useCssMode"
+              :class="authorTag.className"
+              class="inline-block text-xs leading-tight px-2 py-0.5 rounded"
             >
-              标签所属用户已注销
+              {{ authorTag.title }}
             </span>
-          </div>
-          
-          <!-- Status badges -->
-          <div class="flex items-center gap-1.5">
+            <span
+              v-else-if="authorTag"
+              class="inline-block text-xs leading-tight px-2 py-0.5 rounded font-medium"
+              :style="authorTag.inlineStyles"
+            >
+              {{ authorTag.title }}
+            </span>
+
+            <!-- 置顶精华徽章 -->
             <span
               v-if="post.status !== 1 && post.is_pinned"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-red-500/80 text-white"
             >
-              <PinIcon class="w-3 h-3" />
+              <PinIcon class="w-2.5 h-2.5" />
               置顶
             </span>
-            
+
             <span
               v-if="post.status !== 1 && post.is_featured"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-500/80 text-white"
             >
-              <StarIcon class="w-3 h-3" />
+              <StarIcon class="w-2.5 h-2.5" />
               精华
             </span>
 
-            <!-- Hidden badge for moderators -->
+            <!-- 已隐藏徽章（仅管理员可见） -->
             <span
               v-if="isModerator && post.status === 1"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-500/80 text-white"
             >
               已隐藏
             </span>
-            
+          </div>
+
+          <!-- 第二行：时间和锁定状态 -->
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span>{{ formatDate(post.created_at) }}</span>
             <div
               v-if="post.is_locked"
-              class="inline-flex items-center gap-1 text-sm text-gray-500"
+              class="inline-flex items-center gap-1"
             >
-              <LockIcon class="w-4 h-4" />
+              <LockIcon class="w-3 h-3" />
               <span>已锁定</span>
             </div>
-            
-            <span class="text-xs text-gray-500 ml-auto">{{ formatDate(post.created_at) }}</span>
           </div>
         </div>
       </div>
@@ -294,16 +298,23 @@
 import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
-import TagBadge from '~/components/ui/TagBadge.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
 import ImageGrid from '~/components/ui/ImageGrid.vue'
 import type {PostDto} from '~/types'
-import type {ActiveTagDto} from '~/types/extra'
 
 interface Props {
   post: PostDto
   showActions?: boolean
   variant?: 'grid' | 'list'
+}
+
+type PostAuthorMeta = {
+  author_display_name?: string | null
+  author_avatar_url?: string | null
+  author_is_online?: boolean
+  author_last_heartbeat?: string | null
+  author_is_deleted?: boolean
+  author_deleted?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -317,73 +328,65 @@ const emit = defineEmits<{
 
 // Stores
 const auth = useAuthStore()
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
 const assetUrl = useAssetUrl()
 const router = useRouter()
 const { isMobile } = useDeviceSafe()
-const { confirm: confirmDialog } = useAdminDialog()
-const { prompt: promptDialog } = useAdminDialog()
+const { confirm: confirmDialog, prompt: promptDialog } = useAdminDialog()
+const { renderTag } = useTagRenderer()
 
 // State
 const expanded = ref(false)
 const showDropdown = ref(false)
 const dropdownRef = ref<HTMLElement>()
-const authorProfile = ref<any>(null)
-const authorDeleted = ref(false)
-const activeTag = ref<ActiveTagDto | null>(null)
-const authorAvatar = ref<string | null>(null)
-// 三态：true(确认有头像)、false(没有头像)、null(未知/加载中)
-const authorHasAvatar = ref<boolean | null>(null)
+const avatarLoadFailed = ref(false)
+const postAuthorMeta = computed(() => props.post as PostDto & PostAuthorMeta)
+
+watch(() => postAuthorMeta.value.author_avatar_url, () => {
+  avatarLoadFailed.value = false
+})
 
 // Close dropdown when clicking outside
 onClickOutside(dropdownRef, () => {
   showDropdown.value = false
 })
 
-// Fetch author info
-const fetchAuthorInfo = async () => {
-  try {
-    if (props.post.author_id) {
-      // 获取用户详细信息
-      try {
-        const userRes = await api.getUser(props.post.author_id)
-        authorProfile.value = userRes
-        authorDeleted.value = !!userRes.is_deleted
-        if (userRes.avatar_url) {
-          authorAvatar.value = assetUrl(userRes.avatar_url)
-          authorHasAvatar.value = true
-        } else {
-          authorHasAvatar.value = false
-        }
-      } catch (error) {
-        console.warn('Failed to fetch user profile:', error)
-        // 拉取失败时保持未知态，避免误显示默认头像
-        authorHasAvatar.value = null
-      }
-
-      // 获取用户活跃标签
-      try {
-        activeTag.value = await api.getUserActiveTag(props.post.author_id)
-      } catch (error: any) {
-        // 没有活跃标签是正常情况，不需要报错或显示错误
-        activeTag.value = null
-      }
-    }
-  } catch (error) {
-    console.error('Failed to fetch author info:', error)
-  }
-}
-
-// 组件挂载时获取作者信息
-onMounted(() => {
-  fetchAuthorInfo()
+const authorDisplayName = computed(() => {
+  const displayName = postAuthorMeta.value.author_display_name?.trim()
+  return displayName && displayName.length > 0 ? displayName : props.post.author_name
 })
 
-// Avatar load error handler
+const authorInitials = computed(() => {
+  const source = authorDisplayName.value || props.post.author_name || ''
+  const trimmed = source.trim()
+  if (!trimmed) return '匿'
+  return trimmed.slice(0, 2).toUpperCase()
+})
+
+const authorAvatarUrl = computed(() => {
+  if (avatarLoadFailed.value) return null
+  const avatar = postAuthorMeta.value.author_avatar_url
+  return avatar ? assetUrl(avatar) : null
+})
+
+const authorIsOnline = computed(() => postAuthorMeta.value.author_is_online ?? false)
+const authorLastHeartbeat = computed(() => postAuthorMeta.value.author_last_heartbeat ?? null)
+
+const authorOnlineTitle = computed(() => {
+  if (!authorIsOnline.value) return ''
+  if (!authorLastHeartbeat.value) return '在线'
+  return `在线 · ${formatTimeAgo(authorLastHeartbeat.value)}`
+})
+
+const authorTag = computed(() => renderTag(postAuthorMeta.value.author_tag))
+
+const authorDeleted = computed(() =>
+  Boolean(postAuthorMeta.value.author_is_deleted ?? postAuthorMeta.value.author_deleted)
+)
+
 const handleAuthorAvatarError = () => {
-  authorHasAvatar.value = false
-  authorAvatar.value = null
+  avatarLoadFailed.value = true
 }
 
 // Computed
@@ -565,6 +568,31 @@ const formatDate = (dateString: string) => {
 }
 </script>
 
+<style scoped>
+.author-avatar {
+  @apply relative z-10 w-full h-full rounded-full object-cover;
+}
+
+.avatar-placeholder {
+  @apply relative z-10 w-full h-full rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-semibold uppercase;
+}
+
+.avatar-wrapper {
+  @apply relative;
+}
+
+.online-indicator {
+  @apply absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20;
+}
+
+.tag-badge {
+  @apply inline-block text-xs px-2 py-1 rounded font-medium leading-none;
+}
+
+.admin-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-sky-100 text-sky-700 font-medium;
+}
+</style>
 
 
 

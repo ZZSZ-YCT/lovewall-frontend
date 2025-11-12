@@ -27,7 +27,6 @@ const toastStore = useToastStore()
 const visibleToasts = computed(() => toastStore.toasts)
 
 const removeToast = (id: string) => {
-  console.log('ToastContainer removeToast called:', id)
   toastStore.removeToast(id)
 }
 
