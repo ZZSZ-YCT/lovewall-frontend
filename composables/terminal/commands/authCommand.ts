@@ -127,7 +127,7 @@ export function registerAuthCommands() {
     summary: 'Logout account',
     action: async ({ println }) => {
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         await api.logout()
         println(`Logout successful`)
       } catch (e: any) {

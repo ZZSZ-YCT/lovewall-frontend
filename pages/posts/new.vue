@@ -364,7 +364,7 @@ const imagePreviews = ref<string[]>([])
 
 // Stores
 const auth = useAuthStore()
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
 const router = useRouter()
 

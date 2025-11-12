@@ -30,7 +30,7 @@ export function registerUserCommands() {
     }
   })
 
-  const api = useApi()
+  const api = useNuxtApp().$api
 
   register({
     name: 'my',

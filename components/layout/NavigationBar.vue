@@ -256,56 +256,15 @@ import {
 import { onClickOutside } from '@vueuse/core'
 
 const auth = useAuthStore()
-const api = useApi()
+const api = useNuxtApp().$api
 const assetUrl = useAssetUrl()
 const { isMobile } = useDeviceSafe()
 const showUserMenu = ref(false)
 const showMobileMenu = ref(false)
 const userMenuRef = ref<HTMLElement>()
-const unreadCount = ref(0)
-
-// 加载未读通知数
-const loadUnreadCount = async () => {
-  if (!auth.isAuthenticated) return
-  try {
-    const res = await api.getUnreadNotificationCount()
-    unreadCount.value = res.count || 0
-  } catch (e) {
-    // 忽略错误,避免影响页面加载
-  }
-}
-
-// 定时刷新未读数
-let unreadInterval: ReturnType<typeof setInterval> | null = null
-
-onMounted(() => {
-  if (import.meta.client && auth.isAuthenticated) {
-    loadUnreadCount()
-    unreadInterval = setInterval(loadUnreadCount, 30000) // 30秒刷新一次
-  }
-})
-
-onUnmounted(() => {
-  if (unreadInterval) {
-    clearInterval(unreadInterval)
-  }
-})
-
-// 监听登录状态变化
-watch(() => auth.isAuthenticated, (newVal) => {
-  if (newVal) {
-    loadUnreadCount()
-    if (!unreadInterval) {
-      unreadInterval = setInterval(loadUnreadCount, 30000)
-    }
-  } else {
-    unreadCount.value = 0
-    if (unreadInterval) {
-      clearInterval(unreadInterval)
-      unreadInterval = null
-    }
-  }
-})
+// 使用heartbeat合并后的unread_notifications
+const { unreadNotifications } = useHeartbeat()
+const unreadCount = unreadNotifications
 
 // Close dropdowns when clicking outside
 onClickOutside(userMenuRef, () => {

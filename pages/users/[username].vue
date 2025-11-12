@@ -44,6 +44,13 @@
                   {{ userInitials }}
                 </div>
               </div>
+
+              <!-- 在线状态指示器：总是显示，在线绿色/离线灰色，部分盖住头像右下角 -->
+              <div
+                class="absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
+                :class="userIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
+                :title="userIsOnline ? (formatOnlineStatus(onlineStatusData?.last_heartbeat)) : '离线'"
+              />
             </div>
           </div>
 
@@ -52,7 +59,6 @@
             <div class="mb-4">
               <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <h1 class="text-3xl font-bold text-gray-800">{{ userDisplayName }}</h1>
-                <OnlineBadge v-if="!isDeleted && user?.id" :user-id="user.id" />
                 <span v-if="isDeleted" class="px-2 py-0.5 text-xs bg-gray-200 text-gray-700 rounded-full">已注销不可访问</span>
                 <TagBadge
                   v-if="activeTag"
@@ -158,13 +164,12 @@ import GlassCard from '~/components/ui/GlassCard.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
-import OnlineBadge from '~/components/ui/OnlineBadge.vue'
 import { HeartIcon } from 'lucide-vue-next'
 
 // 路由参数
 const route = useRoute()
 const username = computed(() => route.params.username as string)
-const api = useApi()
+const api = useNuxtApp().$api
 const assetUrl = useAssetUrl()
 
 // 用户基本信息 + 状态
@@ -188,6 +193,18 @@ const loading = computed(() => pending.value)
 const error = computed(() => userError.value ? userError.value.message || '用户不存在或已注销' : null)
 const isDeleted = computed(() => !!userStatus.value?.is_deleted)
 const userInitials = computed(() => (userDisplayName.value || '').slice(0, 2))
+
+// 获取用户在线状态
+const { data: onlineStatusData } = await useAsyncData(
+  () => `user-online-${user.value?.id}`,
+  async () => {
+    if (!user.value?.id) return null
+    return await api.getUserOnlineStatus(user.value.id)
+  },
+  { watch: [user] }
+)
+
+const userIsOnline = computed(() => onlineStatusData.value?.online ?? false)
 
 // 帖子
 const { data: postsData, pending: postsPending, refresh: refreshPosts } = await useAsyncData(
@@ -214,6 +231,28 @@ const loadMorePosts = async () => {
 
 // 工具
 const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('zh-CN')
+
+// 格式化在线状态：在线显示"在线"，离线显示最后心跳时间（GMT+8）
+const formatOnlineStatus = (lastHeartbeat?: string | null) => {
+  if (!lastHeartbeat) return '在线'
+
+  try {
+    const date = new Date(lastHeartbeat)
+    // 格式化为 GMT+8 可读时间：2025-01-12 14:30:25
+    return `离线 · 最后在线: ${date.toLocaleString('zh-CN', {
+      timeZone: 'Asia/Shanghai',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    })}`
+  } catch {
+    return '在线'
+  }
+}
 
 // 滚动行为
 watch(username, () => {

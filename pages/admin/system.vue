@@ -373,7 +373,7 @@ const loadLogs = async (page = 1) => {
   loadingLogs.value = true
   
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     
     // Prepare filters
     const filters: LogFilters = {
@@ -516,7 +516,7 @@ const preloadUserNames = async (items: LogEntry[]) => {
     id !== '00000000-0000-0000-0000-000000000001' && !(id in userMap.value)
   )
   if (!missing.length) return
-  const api = useApi()
+  const api = useNuxtApp().$api
   await Promise.all(missing.map(async (id) => {
     try {
       userMap.value[id] = await api.getUser(id)

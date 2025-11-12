@@ -246,7 +246,7 @@ const handleSubmit = async () => {
   loading.value = true
   
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const auth = useAuthStore()
     
     // Prepare update data

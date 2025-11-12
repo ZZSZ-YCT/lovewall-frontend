@@ -91,8 +91,8 @@ const normalizePost = (p: any): PostDto => {
     content: String(p.content ?? ''),
     images: normalizeImages(p),
     status: normalizeStatus(p.status),
-    is_pinned: p.is_pinned,
-    is_featured: p.is_featured,
+    is_pinned: !!p.is_pinned,
+    is_featured: !!p.is_featured,
     created_at: createdAt,
     updated_at: p.updated_at ?? createdAt,
     author_tag: p.author_tag,
@@ -103,7 +103,12 @@ const normalizePost = (p: any): PostDto => {
     audit_status: p.audit_status,
     audit_msg: p.audit_msg,
     manual_review_requested: p.manual_review_requested,
-    is_locked: p.is_locked
+    // 保留作者扩展信息（v3.2新增字段）
+    author_display_name: p.author_display_name ?? null,
+    author_avatar_url: p.author_avatar_url ?? null,
+    author_is_online: p.author_is_online ?? false,
+    author_last_heartbeat: p.author_last_heartbeat ?? null,
+    author_is_deleted: p.author_is_deleted ?? p.author_deleted ?? false,
   }
   createdAtCache.set(normalized, new Date(normalized.created_at).getTime())
   return normalized
@@ -128,11 +133,29 @@ const dedupeById = (posts: PostDto[]) => {
   })
 }
 
+const getPostFingerprint = (post: PostDto) => [
+  post.id,
+  post.updated_at,
+  post.status,
+  Number(post.is_pinned),
+  Number(post.is_featured),
+  post.view_count ?? '',
+  post.comment_count ?? '',
+  post.moderation_reason ?? '',
+  post.audit_status ?? '',
+  post.audit_msg ?? '',
+  Number(post.manual_review_requested ?? 0),
+  Number(post.is_author_admin ?? 0),
+  (post as any).author_avatar_url ?? '',
+  (post as any).author_display_name ?? '',
+  Number((post as any).author_is_online ?? 0),
+].join('|')
+
 const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
   if (a === b) return true
   if (a.length !== b.length) return false
   for (let i = 0; i < a.length; i++) {
-    if (a[i]!!.id !== b[i]!!.id || a[i]!!.updated_at !== b[i]!!.updated_at) {
+    if (getPostFingerprint(a[i]) !== getPostFingerprint(b[i])) {
       return false
     }
   }
@@ -166,9 +189,9 @@ export const useHomeStore = defineStore('home', {
     lastLoadedAt: null,
   }),
   getters: {
-    hasData: (s) => s.loaded && (s.posts.length > 0 || s.pinned.length > 0 || s.featured.length > 0),
-
-    sortedPosts: (s) => s.posts,
+    hasData: (s) => s.loaded && s.posts.length > 0,
+    // 全局排序优先级: 置顶+精华 > 置顶 > 精华 > 普通 > 隐藏
+    sortedPosts: (s) => sortPosts(s.posts),
   },
   actions: {
     shouldRefresh(maxAge = REFRESH_TTL) {
@@ -209,26 +232,18 @@ export const useHomeStore = defineStore('home', {
           _t: timestamp,
         }
 
-        const [listResp, pinnedResp, featuredResp] = await Promise.all([
-          api.listPosts(params),
-          api.listPosts({ pinned: true, page_size: 6, _t: timestamp }),
-          api.listPosts({ featured: true, page_size: 6, _t: timestamp }),
-        ])
-        
+        // ✅ 优化：只发起一个请求，帖子数据已包含is_pinned和is_featured信息
+        const listResp = await api.listPosts(params)
+
         const rawItems = extractItems(listResp)
         const normalizedItems = dedupeById(rawItems.map(normalizePost))
         const filteredPosts = canModerate
           ? normalizedItems
           : normalizedItems.filter((p: PostDto) => p.status === 0)
+        const sortedPosts = sortPosts(filteredPosts)
 
-        this.posts = sortPosts(filteredPosts)
-
-        const normalizedPinned = dedupeById(extractItems(pinnedResp).map(normalizePost))
-        const normalizedFeatured = dedupeById(extractItems(featuredResp).map(normalizePost))
-
-        this.pinned = normalizedPinned
-        this.featured = normalizedFeatured
-
+        // ✅ 刷新时始终替换数据，重置到第一页
+        this.posts = sortedPosts
         this.page = 1
         this.hasMore = rawItems.length === pageSize
         this.loaded = true
@@ -252,7 +267,7 @@ export const useHomeStore = defineStore('home', {
       if (!this.hasMore || this.loadingMore) return
       this.loadingMore = true
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20

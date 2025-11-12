@@ -317,7 +317,7 @@ const loadAnnouncements = async () => {
   console.log('开始加载公告列表', { filters: { ...filters } })
   loading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const apiMethodNames = Object.keys(api || {})
     console.log('[DEBUG] API methods available:', apiMethodNames)
     console.log('[DEBUG] Has listAnnouncementsAdmin?', typeof api?.listAnnouncementsAdmin)
@@ -422,7 +422,7 @@ onUnmounted(() => {
 const saveAnnouncement = async () => {
   saving.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     
     if (editModal.announcement) {
       // Update existing
@@ -474,7 +474,7 @@ const toggleStatus = async (announcement: AnnouncementDto) => {
   if (!confirmed) return
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.updateAnnouncement(announcement.id, {
       title: announcement.title,
       content: announcement.content,
@@ -503,7 +503,7 @@ const confirmDelete = async (announcement: AnnouncementDto) => {
 
   deleting.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deleteAnnouncement(announcement.id)
 
     // Remove from local list

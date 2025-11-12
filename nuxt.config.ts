@@ -1,4 +1,23 @@
 const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const API_BASE = process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8124/api'
+const RANDOM_IMAGE_API_URL = process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/'
+
+const resolveHost = (input?: string | null) => {
+  if (!input) return null
+  try {
+    return new URL(input).host
+  } catch {
+    return null
+  }
+}
+
+const imageDomains = [
+  resolveHost(API_BASE),
+  resolveHost(RANDOM_IMAGE_API_URL),
+  resolveHost(SITE_URL)
+].filter(Boolean) as string[]
+
+const uniqueImageDomains = Array.from(new Set(imageDomains))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -16,11 +35,7 @@ export default defineNuxtConfig({
 
   image: {
     provider: 'ipx',
-    domains: [
-      new URL(process.env.NUXT_PUBLIC_API_BASE ?? "http://localhost").host,
-      new URL(process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL ?? "http://localhost").host,
-      new URL(SITE_URL).host
-    ],
+    domains: uniqueImageDomains,
     formats: ['webp'],
     inject: true,
     presets: {
@@ -50,7 +65,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compressPublicAssets: true
   },
-
+  ssr: false,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },

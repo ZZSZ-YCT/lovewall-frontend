@@ -4,7 +4,7 @@ import PhotoUploadDialog from "~/components/popup/PhotoUploadDialog.vue";
 export function registerPostCommands() {
   const auth = useAuthStore()
   const {register} = useCli()
-  const api = useApi()
+  const api = useNuxtApp().$api
 
   register({
     name: 'post',
