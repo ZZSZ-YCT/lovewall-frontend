@@ -92,6 +92,8 @@
                 :src="assetUrl(post.images[0])"
                 :alt="`${post.author_name}对${post.target_name}的表白`"
                 class="w-24 h-24 object-cover rounded-lg"
+                :modifiers="{ fit: 'cover', quality: 60 }"
+                sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
               />
             </div>
 

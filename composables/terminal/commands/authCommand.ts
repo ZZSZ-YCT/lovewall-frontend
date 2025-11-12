@@ -83,8 +83,8 @@ export function registerAuthCommands() {
         })
 
         println("Read our Term of Services and Privacy Policy:")
-        println(`Term of Services: ${useRequestURL().origin}/tos_en`)
-        println(`Privacy Policy: ${useRequestURL().origin}/privacy_en`)
+        println(`Term of Services: ${useRequestURL().origin}/tos`)
+        println(`Privacy Policy: ${useRequestURL().origin}/privacy`)
         println()
 
         const choice = await promptInput('Agree? (Y/n):')

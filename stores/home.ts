@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import type { PostDto, Pagination } from '~/types'
+import {defineStore} from 'pinia'
+import type {Pagination, PostDto} from '~/types'
 
 const REFRESH_TTL = 30_000 // 30 seconds cache window
 
@@ -45,22 +45,22 @@ const mergeSortedPosts = (existing: PostDto[], incoming: PostDto[]) => {
   let j = 0
 
   while (i < existing.length && j < sortedIncoming.length) {
-    if (comparePosts(existing[i], sortedIncoming[j]) <= 0) {
-      merged.push(existing[i])
+    if (comparePosts(existing[i]!!, sortedIncoming[j]!!) <= 0) {
+      merged.push(existing[i]!!)
       i++
     } else {
-      merged.push(sortedIncoming[j])
+      merged.push(sortedIncoming[j]!!)
       j++
     }
   }
 
   while (i < existing.length) {
-    merged.push(existing[i])
+    merged.push(existing[i]!!)
     i++
   }
 
   while (j < sortedIncoming.length) {
-    merged.push(sortedIncoming[j])
+    merged.push(sortedIncoming[j]!!)
     j++
   }
 
@@ -164,6 +164,8 @@ const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
 
 interface HomeState {
   posts: PostDto[]
+  pinned: PostDto[]
+  featured: PostDto[]
   page: number
   pageSize: number
   hasMore: boolean
@@ -176,6 +178,8 @@ interface HomeState {
 export const useHomeStore = defineStore('home', {
   state: (): HomeState => ({
     posts: [],
+    pinned: [],
+    featured: [],
     page: 1,
     pageSize: +useRuntimeConfig().public.pageSize || 20,
     hasMore: true,
@@ -215,11 +219,11 @@ export const useHomeStore = defineStore('home', {
       if (this.loading) return
       this.loading = true
       try {
-        const api = useNuxtApp().$api
+        const api = useApi()
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
-
+        
         // Add timestamp to prevent caching
         const timestamp = Date.now()
         const params = {
@@ -247,7 +251,7 @@ export const useHomeStore = defineStore('home', {
 
       } catch (error) {
         console.error('HomeStore: Failed to refresh posts:', error)
-        // 显示友好的错误信息
+
         const toast = useToast()
         toast.error('刷新失败，请稍后重试')
       } finally {

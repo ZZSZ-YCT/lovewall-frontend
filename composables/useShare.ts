@@ -104,7 +104,7 @@ export const useShare = () => {
 
     const payloadSignature = JSON.stringify(debugPayload)
     if (lastLoggedCapabilities !== payloadSignature) {
-      console.log('[Share Debug] capability check', debugPayload)
+      // console.log('[Share Debug] capability check', debugPayload)
       lastLoggedCapabilities = payloadSignature
     }
 
@@ -118,7 +118,7 @@ export const useShare = () => {
 
     if (!isSecure || !isSupported) {
       if (!isSecure) {
-        console.warn('[Share Debug] Insecure context blocks Web Share API')
+        // console.warn('[Share Debug] Insecure context blocks Web Share API')
       }
       return false
     }
@@ -133,11 +133,11 @@ export const useShare = () => {
         }
         const result = nav.canShare(probeData)
         if (!result) {
-          console.warn('[Share Debug] navigator.canShare returned false for probe data', probeData)
+          // console.warn('[Share Debug] navigator.canShare returned false for probe data', probeData)
         }
         return result
       } catch (error) {
-        console.warn('[Share Debug] navigator.canShare check failed', error)
+        // console.warn('[Share Debug] navigator.canShare check failed', error)
         return false
       }
     }
@@ -165,11 +165,11 @@ export const useShare = () => {
     try {
       const result = nav.canShare(shareData)
       if (!result) {
-        console.warn('[Share Debug] navigator.canShare returned false for payload', shareData)
+        // console.warn('[Share Debug] navigator.canShare returned false for payload', shareData)
       }
       return result
     } catch (error) {
-      console.warn('[Share Debug] navigator.canShare threw for payload', shareData, error)
+      // console.warn('[Share Debug] navigator.canShare threw for payload', shareData, error)
       return false
     }
   }
@@ -366,23 +366,18 @@ export const useShare = () => {
     if (preferredMethod === 'native') {
       if (!canShare.value) {
         fallbackReason = 'native-unavailable'
-        console.warn('[Share Debug] Native share unavailable, falling back', {
-          platform: platform.value,
-          browser: browser.value,
-          isSecureContext: typeof window !== 'undefined' && window.isSecureContext
-        })
       } else {
         try {
           const success = await nativeShare(data)
           if (!success) {
-            console.info('[Share Debug] Native share cancelled by user')
+            // console.info('[Share Debug] Native share canceled by user')
             return
           }
           toast.success('分享成功')
           return
         } catch (error) {
           fallbackReason = 'native-failed'
-          console.warn('[Share Debug] Native share failed, attempting fallback', error)
+          // console.warn('[Share Debug] Native share failed, attempting fallback', error)
         }
       }
     }
@@ -396,7 +391,7 @@ ${data.url}`
         toast.success(fallbackReason ? '系统分享不可用，链接已复制到剪贴板' : '链接已复制到剪贴板')
         return
       }
-      console.warn('[Share Debug] Clipboard copy failed during fallback', { length: shareText.length })
+      // console.warn('[Share Debug] Clipboard copy failed during fallback', { length: shareText.length })
     }
 
     if (platformFallback.length > 0) {

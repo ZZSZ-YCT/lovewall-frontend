@@ -1,14 +1,14 @@
-import {unified} from "unified";
-import remarkParse from "remark-parse";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
-import rehypeStringify from "rehype-stringify";
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import remarkRehype from "remark-rehype";
-import rehypeRaw from "rehype-raw"
-
 async function render(markdown: string) {
+  const { unified } = await import('unified')
+  const remarkParse = (await import('remark-parse')).default
+  const remarkGfm = (await import('remark-gfm')).default
+  const rehypeHighlight = (await import('rehype-highlight')).default
+  const rehypeStringify = (await import('rehype-stringify')).default
+  const rehypeSlug = (await import('rehype-slug')).default
+  const rehypeAutolinkHeadings = (await import('rehype-autolink-headings')).default
+  const remarkRehype = (await import('remark-rehype')).default
+  const rehypeRaw = (await import('rehype-raw')).default
+
   const file = await unified()
     .use(remarkParse)
     .use(remarkGfm)

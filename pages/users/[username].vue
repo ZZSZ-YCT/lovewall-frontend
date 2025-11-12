@@ -8,7 +8,7 @@
     <!-- 错误状态 -->
     <div v-else-if="error" class="text-center py-12">
       <GlassCard class="p-8">
-        <h1 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h1>
+        <h2 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
         <GlassButton variant="secondary" @click="$router.back()">返回上页</GlassButton>
       </GlassCard>
@@ -115,6 +115,8 @@
                   :src="assetUrl(post.images[0])"
                   :alt="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? `${post.author_name}对${post.target_name}的表白` : `${post.author_name}的交流`"
                   class="w-20 h-20 object-cover rounded-lg"
+                  :modifiers="{ fit: 'cover', quality: 60 }"
+                  sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
                 />
               </div>
 

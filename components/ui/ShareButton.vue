@@ -6,6 +6,7 @@
       class="inline-flex items-center gap-1.5 text-gray-600 hover:text-brand-600 transition-colors font-medium"
       :class="[!hydrated ? 'text-sm' : (size === 'sm' ? 'text-xs' : 'text-sm')]"
       @click="handleMainShare"
+      :aria-label="shareText"
     >
       <LoaderIcon v-if="loading" class="w-4 h-4 animate-spin" />
       <ShareIcon v-else class="w-4 h-4" />

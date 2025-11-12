@@ -160,6 +160,7 @@ const { confirm } = useConfirm()
 const layoutMode = ref<'grid' | 'list'>('list')
 const effectiveLayout = computed(() => {
   if (isMobile.value) return 'list'
+  if (layoutMode.value === 'auto') return 'grid'
   return layoutMode.value
 })
 const gridClasses = computed(() => {
@@ -195,6 +196,7 @@ onMounted(() => {
   const saved = localStorage.getItem('love-wall-layout')
   if (saved && ['grid', 'list'].includes(saved)) layoutMode.value = saved as any
 })
+watch(layoutMode, (v) => !isMobile.value && localStorage.setItem('love-wall-layout', v))
 
 // --- 数据加载 (SSR 友好) ---
 const { data, pending, refresh, error } = await useAsyncData(
@@ -202,6 +204,8 @@ const { data, pending, refresh, error } = await useAsyncData(
   async () => {
     // ✅ 修复：只调用一次initialLoad，避免重复请求
     await home.initialLoad()
+    await home.forceRefresh()
+    console.log("loading data")
     return {
       posts: home.posts,
       hasMore: home.hasMore,
@@ -224,6 +228,7 @@ const handleRefresh = async () => {
 // 加载更多
 const loadMore = async () => {
   await home.loadMore()
+  data.value!!.posts = home.posts
 }
 
 // 无限滚动：观察loadMoreTrigger元素
@@ -358,6 +363,12 @@ useSeoMeta({
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!homepageStructuredData.value) return []
     return [
@@ -382,4 +393,8 @@ useHead({
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
+.posts > .card {
+  content-visibility: auto; contain-intrinsic-size: 1px 360px;
+}
+
 </style>

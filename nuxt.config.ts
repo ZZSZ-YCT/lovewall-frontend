@@ -31,13 +31,7 @@ export default defineNuxtConfig({
   },
   components: true,
   
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/image'
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration'],
 
   image: {
     provider: 'ipx',
@@ -50,7 +44,21 @@ export default defineNuxtConfig({
           format: 'webp'
         }
       }
+    },
+    screens: {
+      xxs: 32,
+      xs: 64,
+      s: 96,
+      sm: 320,
+      md: 640,
+      lg: 768,
+      xl: 1024,
+      '2xl': 1280,
     }
+  },
+
+  delayHydration: {
+    mode: 'init'
   },
 
   nitro: {
@@ -102,7 +110,11 @@ export default defineNuxtConfig({
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     },
     build: {
-      cssCodeSplit: true
+      cssCodeSplit: true,
+      minify: 'esbuild',
+      rollupOptions: {
+        output: { manualChunks: { vendor: ['vue', 'vue-router'] } }
+      }
     }
   },
   
@@ -142,6 +154,8 @@ export default defineNuxtConfig({
     '/debug': { ssr: false },
     '/test-**': { ssr: false },
     '/terminal': { ssr: false },
+    '/tos': { prerender: true },
+    '/privacy': { prerender: true },
 
     '/sitemap.xml': {
       headers: {
@@ -149,6 +163,9 @@ export default defineNuxtConfig({
         'cache-control': 'public, max-age=300',
       },
     },
+
+    '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/**/*.{css,js,woff2,png,jpg,webp,avif,svg}': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
   },
 
   // Some Experimental Optimizations
@@ -156,6 +173,7 @@ export default defineNuxtConfig({
     componentIslands: true,
     buildCache: true,
     viewTransition: true,
-    asyncContext: true
+    asyncContext: true,
+    renderJsonPayloads: true,
   }
 })
