@@ -76,70 +76,19 @@ const emit = defineEmits<{
   dismiss: []
 }>()
 
-// 渲染Markdown + LaTeX + HTML
+const { render } = useRenderMd()
+
 const renderedContent = ref('')
 
-// 客户端渲染markdown
 onMounted(async () => {
   if (!props.content) return
 
   try {
-    // 动态导入
-    const [MarkdownIt, markdownItKatex] = await Promise.all([
-      import('markdown-it'),
-      import('markdown-it-katex')
-    ])
-
-    const md = new MarkdownIt.default({
-      html: true,        // 允许HTML标签
-      linkify: true,     // 自动转换URL为链接
-      typographer: true, // 智能引号等
-      breaks: true,      // 转换\n为<br>
-    })
-
-    // 添加KaTeX支持
-    md.use(markdownItKatex.default, {
-      throwOnError: false,
-      errorColor: '#cc0000'
-    })
-
-    renderedContent.value = md.render(props.content)
+    renderedContent.value = await render(props.content)
   } catch (error) {
     console.error('Markdown rendering failed:', error)
-    // 渲染失败时显示原始内容
+
     renderedContent.value = props.content
-  }
-})
-
-// 当内容变化时重新渲染
-watch(() => props.content, async (newContent) => {
-  if (!newContent) {
-    renderedContent.value = ''
-    return
-  }
-
-  try {
-    const [MarkdownIt, markdownItKatex] = await Promise.all([
-      import('markdown-it'),
-      import('markdown-it-katex')
-    ])
-
-    const md = new MarkdownIt.default({
-      html: true,
-      linkify: true,
-      typographer: true,
-      breaks: true,
-    })
-
-    md.use(markdownItKatex.default, {
-      throwOnError: false,
-      errorColor: '#cc0000'
-    })
-
-    renderedContent.value = md.render(newContent)
-  } catch (error) {
-    console.error('Markdown rendering failed:', error)
-    renderedContent.value = newContent
   }
 })
 
@@ -151,14 +100,12 @@ const handleDismiss = () => {
   emit('dismiss')
 }
 
-// 阻止背景滚动
 watch(() => props.isOpen, (isOpen) => {
   if (typeof window !== 'undefined') {
     document.body.style.overflow = isOpen ? 'hidden' : ''
   }
 }, { immediate: true })
 
-// ESC 键关闭
 const handleEscape = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && props.isOpen) {
     handleClose()
