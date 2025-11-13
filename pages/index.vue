@@ -127,7 +127,7 @@
 
       <!-- 无限滚动加载指示器 -->
       <div
-        v-if="hasMore && !loading"
+        v-if="home.loaded && hasMore && !loading"
         ref="loadMoreTrigger"
         class="text-center py-8"
       >
@@ -204,7 +204,6 @@ const { data, pending, refresh, error } = await useAsyncData(
   async () => {
     // ✅ 修复：只调用一次initialLoad，避免重复请求
     await home.initialLoad()
-    await home.forceRefresh()
     console.log("loading data")
     return {
       posts: home.posts,

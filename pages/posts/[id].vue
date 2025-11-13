@@ -320,7 +320,7 @@
                       type="submit"
                       :loading="commentSubmitting"
                       :disabled="!commentForm.content.trim()"
-                      class="absolute right-3 bottom-3 rounded-full h-10 px-5"
+                      class="absolute right-3 bottom-3 rounded-full h-10 px-5 !bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
                     >
                       发布评论
                     </GlassButton>
@@ -471,9 +471,9 @@
           </GlassButton>
           <GlassButton
             type="submit"
-            variant="secondary"
             :loading="editSaving"
             :disabled="!editForm.content.trim()"
+            class="!bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
           >
             保存
           </GlassButton>
@@ -481,36 +481,6 @@
       </form>
     </GlassModal>
 
-    <!-- Delete Confirmation Modal -->
-    <GlassModal
-      :is-open="showDeleteModal"
-      title="确认删除"
-      max-width="max-w-md"
-      @close="closeDeleteModal"
-    >
-      <p class="text-gray-600 mb-6">确定要删除这条表白吗？删除后无法恢复。</p>
-      <div class="space-y-3">
-        <label class="text-sm text-gray-700">处理原因（可选）</label>
-        <GlassTextarea
-          v-model="deleteReason"
-          :rows="3"
-          placeholder="填写本次删除的原因"
-        />
-      </div>
-
-      <template #footer>
-        <div class="flex gap-3 justify-end">
-          <GlassButton variant="secondary" @click="closeDeleteModal">取消</GlassButton>
-          <GlassButton
-            :loading="actionLoading"
-            class="!bg-red-600 hover:!bg-red-700"
-            @click="deletePost"
-          >
-            确认删除
-          </GlassButton>
-        </div>
-      </template>
-    </GlassModal>
 
     <!-- AI Rejection Modal -->
     <GlassModal
@@ -603,8 +573,6 @@ const isEditingPost = ref(false)
 const editSaving = ref(false)
 const editForm = ref<PostEditFormState>({ author_name: '', target_name: '', content: '' })
 const pendingOpenEdit = ref(false)
-const showDeleteModal = ref(false)
-const deleteReason = ref('')
 const showAIRejectionModal = ref(false)
 const aiRejectionInfo = ref({ message: '', type: 'comment' as const, content: '' })
 const reviewRequesting = ref(false)
@@ -970,13 +938,21 @@ const toggleLock = async () => {
   if (!post.value || !lockStatus.value) return
 
   const shouldLock = !lockStatus.value.is_locked
+  const { confirm } = useAdminDialog()
 
   if (shouldLock) {
-    const { confirm } = useAdminDialog()
     const confirmed = await confirm({
       title: '确认锁定',
-      message: '锁定后普通用户将无法评论此帖子,确定要锁定吗？',
+      message: '锁定后普通用户将无法评论此帖子，确定要锁定吗？',
       confirmText: '确认锁定',
+      cancelText: '取消'
+    })
+    if (!confirmed) return
+  } else {
+    const confirmed = await confirm({
+      title: '确认解锁',
+      message: '解锁后普通用户将可以评论此帖子，确定要解锁吗？',
+      confirmText: '确认解锁',
       cancelText: '取消'
     })
     if (!confirmed) return
@@ -1001,31 +977,44 @@ const toggleLock = async () => {
   }
 }
 
-const confirmDelete = () => {
-  deleteReason.value = ''
-  showDeleteModal.value = true
-}
-
-const deletePost = async () => {
+const confirmDelete = async () => {
   if (!post.value) return
+
+  const { confirm, prompt } = useAdminDialog()
+
+  // 先确认是否删除
+  const confirmed = await confirm({
+    title: '确认删除',
+    message: '确定要删除这条表白吗？删除后无法恢复。',
+    confirmText: '确认删除',
+    cancelText: '取消'
+  })
+
+  if (!confirmed) return
+
+  // 询问删除原因（可选）
+  const reason = await prompt({
+    title: '删除原因',
+    message: '请填写删除原因（可选）',
+    placeholder: '填写本次删除的原因',
+    confirmText: '确认删除',
+    cancelText: '取消'
+  })
+
+  // 用户可以输入空原因或取消prompt
+  if (reason === null) return
 
   actionLoading.value = true
   try {
     const api = useNuxtApp().$api
-    await api.deletePost(post.value.id, deleteReason.value.trim() || undefined)
+    await api.deletePost(post.value.id, reason.trim() || undefined)
     toast.success('帖子已删除')
-    closeDeleteModal()
     await router.push('/')
   } catch (err) {
     toast.error('删除失败')
   } finally {
     actionLoading.value = false
   }
-}
-
-const closeDeleteModal = () => {
-  showDeleteModal.value = false
-  deleteReason.value = ''
 }
 
 // --- 复核请求与评论刷新 ---

@@ -180,9 +180,9 @@ export const useHomeStore = defineStore('home', {
     posts: [],
     pinned: [],
     featured: [],
-    page: 1,
+    page: 0,
     pageSize: +useRuntimeConfig().public.pageSize || 20,
-    hasMore: true,
+    hasMore: false,
     loading: false,
     loadingMore: false,
     loaded: false,
@@ -219,7 +219,7 @@ export const useHomeStore = defineStore('home', {
       if (this.loading) return
       this.loading = true
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
@@ -252,8 +252,11 @@ export const useHomeStore = defineStore('home', {
       } catch (error) {
         console.error('HomeStore: Failed to refresh posts:', error)
 
-        const toast = useToast()
-        toast.error('刷新失败，请稍后重试')
+        if (import.meta.client) {
+          const toast = useToast()
+          toast.error('刷新失败，请稍后重试')
+        }
+        throw error
       } finally {
         this.loading = false
       }
@@ -264,7 +267,7 @@ export const useHomeStore = defineStore('home', {
     },
 
     async loadMore() {
-      if (!this.hasMore || this.loadingMore) return
+      if (!this.loaded || !this.hasMore || this.loadingMore) return
       this.loadingMore = true
       try {
         const api = useNuxtApp().$api
@@ -302,8 +305,11 @@ export const useHomeStore = defineStore('home', {
         this.hasMore = itemsRaw.length === pageSize
       } catch (error) {
         console.error('Failed to load more posts:', error)
-        const toast = useToast()
-        toast.error('加载更多失败，请稍后重试')
+        if (import.meta.client) {
+          const toast = useToast()
+          toast.error('加载更多失败，请稍后重试')
+        }
+        throw error
       } finally {
         this.loadingMore = false
       }

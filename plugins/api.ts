@@ -77,12 +77,14 @@ export default defineNuxtPlugin(() => {
   
   // Decide whether to send credentials based on same-origin
   let withCredentials = true
-  try {
-    if (/^https?:\/\//i.test(baseURL) && typeof window !== 'undefined') {
-      const u = new URL(baseURL)
-      withCredentials = (u.origin === window.location.origin)
-    }
-  } catch {}
+  if (import.meta.client) {
+    try {
+      if (/^https?:\/\//i.test(baseURL)) {
+        const u = new URL(baseURL)
+        withCredentials = (u.origin === window.location.origin)
+      }
+    } catch {}
+  }
 
   // Normalize base: ensure single trailing slash so that 'posts' -> '/api/posts'
   const normBase = (() => {
@@ -109,7 +111,7 @@ export default defineNuxtPlugin(() => {
     }
     
     // 添加设备指纹识别头
-    if (typeof window !== 'undefined') {
+    if (import.meta.client) {
       // 尝试获取设备指纹ID
       const deviceId = cookies.deviceId?.value || generateDeviceId()
       if (deviceId) {
