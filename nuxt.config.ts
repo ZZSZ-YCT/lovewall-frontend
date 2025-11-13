@@ -65,7 +65,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compressPublicAssets: true
   },
-  ssr: false,
+  ssr: true,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -100,7 +100,9 @@ export default defineNuxtConfig({
         { rel: 'alternate', hreflang: 'zh-CN', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
         { rel: 'preconnect', href: 'https://static.geetest.com' },
-        { rel: 'dns-prefetch', href: 'https://static.geetest.com' }
+        { rel: 'dns-prefetch', href: 'https://static.geetest.com' },
+        // KaTeX CSS for LaTeX rendering in announcements
+        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css', crossorigin: 'anonymous' }
       ]
     }
   },

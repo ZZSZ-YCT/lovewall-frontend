@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="page-header">
       <h1 class="page-title">公告管理</h1>
-      <p class="text-gray-600 mt-2">创建、编辑和管理系统公告</p>
+      <p class="text-gray-600 mt-2">创建、编辑和管理按页面路径显示的公告</p>
     </div>
 
     <!-- Controls -->
@@ -30,7 +30,7 @@
             <PlusIcon class="w-4 h-4 mr-2" />
             新建公告
           </GlassButton>
-          
+
           <GlassButton
             :loading="loading"
             variant="secondary"
@@ -49,12 +49,12 @@
         <div class="text-2xl font-bold text-blue-600 mb-1">{{ announcements.length }}</div>
         <div class="text-sm text-gray-600">总公告数</div>
       </GlassCard>
-      
+
       <GlassCard class="p-4 text-center">
         <div class="text-2xl font-bold text-green-600 mb-1">{{ activeCount }}</div>
         <div class="text-sm text-gray-600">已启用</div>
       </GlassCard>
-      
+
       <GlassCard class="p-4 text-center">
         <div class="text-2xl font-bold text-gray-600 mb-1">{{ inactiveCount }}</div>
         <div class="text-sm text-gray-600">已停用</div>
@@ -69,7 +69,7 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="!announcements.length" class="text-center py-12">
+      <div v-else-if="!displayedAnnouncements.length" class="text-center py-12">
         <GlassCard class="p-12">
           <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <MegaphoneIcon class="w-8 h-8 text-white" />
@@ -82,7 +82,7 @@
       <!-- Announcements -->
       <div v-else>
         <div
-          v-for="announcement in announcements"
+          v-for="announcement in displayedAnnouncements"
           :key="announcement.id"
           class="group"
         >
@@ -90,7 +90,7 @@
             <div class="flex justify-between items-start">
               <div class="flex-1 pr-4">
                 <div class="flex items-center gap-3 mb-3">
-                  <h3 class="text-lg font-semibold text-gray-800">{{ announcement.title }}</h3>
+                  <code class="text-sm font-mono bg-gray-100 px-2 py-1 rounded text-gray-800">{{ announcement.path }}</code>
                   <span
                     :class="{
                       'bg-green-100 text-green-800': announcement.is_active,
@@ -102,7 +102,7 @@
                   </span>
                 </div>
 
-                <p class="text-gray-700 mb-4 line-clamp-3">{{ announcement.content }}</p>
+                <p class="text-gray-700 mb-4 line-clamp-3">{{ announcement.content.substring(0, 150) }}{{ announcement.content.length > 150 ? '...' : '' }}</p>
 
                 <div class="flex items-center gap-4 text-sm text-gray-500">
                   <div class="flex items-center gap-1">
@@ -121,12 +121,21 @@
                 <GlassButton
                   variant="secondary"
                   class="!p-2"
+                  title="预览公告"
+                  @click="previewAnnouncement(announcement)"
+                >
+                  <EyeIcon class="w-4 h-4" />
+                </GlassButton>
+
+                <GlassButton
+                  variant="secondary"
+                  class="!p-2"
                   title="编辑公告"
                   @click="editAnnouncement(announcement)"
                 >
                   <EditIcon class="w-4 h-4" />
                 </GlassButton>
-                
+
                 <GlassButton
                   variant="secondary"
                   class="!p-2"
@@ -135,7 +144,7 @@
                 >
                   <component :is="announcement.is_active ? PauseIcon : PlayIcon" class="w-4 h-4" />
                 </GlassButton>
-                
+
                 <GlassButton
                   variant="secondary"
                   class="!p-2 !text-red-600 hover:!bg-red-50"
@@ -160,7 +169,7 @@
         >
           <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeEditModal" />
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -179,24 +188,44 @@
             <div class="px-6 pb-6 space-y-6 overflow-y-auto">
               <form id="announcement-form" class="space-y-4" @submit.prevent="saveAnnouncement">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">标题</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    页面路径 <span class="text-red-500">*</span>
+                  </label>
                   <input
-                    v-model="form.title"
-                    placeholder="输入公告标题..."
+                    v-model="form.path"
+                    type="text"
+                    placeholder="/admin 或 / (首页)"
                     required
-                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent font-mono"
                   >
+                  <p class="mt-1 text-xs text-gray-500">
+                    例如: /admin, /posts/123, / (首页)
+                  </p>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                  <div class="flex items-center justify-between mb-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                      公告内容 <span class="text-red-500">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      class="text-sm text-pink-600 hover:text-pink-700 font-medium"
+                      @click="showPreview"
+                    >
+                      预览效果
+                    </button>
+                  </div>
                   <textarea
                     v-model="form.content"
-                    placeholder="输入公告内容..."
-                    :rows="6"
+                    rows="12"
+                    placeholder="支持 Markdown、LaTeX 和 HTML 标签...&#10;&#10;例如：&#10;# 标题&#10;**粗体** *斜体*&#10;&#10;LaTeX: $E = mc^2$&#10;&#10;HTML: <strong>粗体文本</strong>"
                     required
-                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent resize-none"
+                    class="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent font-mono text-sm resize-none"
                   />
+                  <p class="mt-1 text-xs text-gray-500">
+                    支持 Markdown 语法、LaTeX 数学公式（使用 $ 或 $$ 包裹）和 HTML 标签
+                  </p>
                 </div>
 
                 <div>
@@ -212,7 +241,7 @@
               </form>
             </div>
 
-            <div class="flex gap-3 justify-end px-6 pb-6">
+            <div class="flex gap-3 justify-end px-6 pb-6 border-t border-gray-200 pt-4">
               <button
                 type="button"
                 class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
@@ -223,7 +252,7 @@
               <button
                 type="submit"
                 form="announcement-form"
-                class="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                class="px-5 py-2.5 text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 :disabled="saving"
               >
                 <span v-if="saving" class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"/>
@@ -234,6 +263,14 @@
         </div>
       </Transition>
     </Teleport>
+
+    <!-- Preview Modal -->
+    <AnnouncementModal
+      :is-open="showPreviewModal"
+      :content="form.content"
+      @close="showPreviewModal = false"
+      @dismiss="showPreviewModal = false"
+    />
 
   </div>
 </template>
@@ -249,44 +286,31 @@ import {
   PlayIcon,
   PauseIcon,
   TrashIcon,
-  XIcon
+  XIcon,
+  EyeIcon
 } from 'lucide-vue-next'
+import GlassCard from "~/components/ui/GlassCard.vue"
+import GlassButton from "~/components/ui/GlassButton.vue"
+import LoadingSpinner from "~/components/ui/LoadingSpinner.vue"
+import AnnouncementModal from '~/components/AnnouncementModal.vue'
+import { normalizeAnnouncementPath, isValidAnnouncementPath } from '~/utils/announcement'
+
 import type { AnnouncementDto } from '~/types'
-import GlassCard from "~/components/ui/GlassCard.vue";
-import GlassButton from "~/components/ui/GlassButton.vue";
-import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
-console.log('[AnnouncementsAdmin] === SCRIPT ENTRY ===')
+definePageMeta({
+  middleware: ['admin', 'require-perms'],
+  requiredPerms: ['MANAGE_ANNOUNCEMENTS'],
+  ssr: false
+})
 
-try {
-  definePageMeta({
-    middleware: ['admin', 'require-perms'],
-    requiredPerms: ['MANAGE_ANNOUNCEMENTS'],
-    ssr: false
-  })
-  console.log('[AnnouncementsAdmin] definePageMeta succeeded')
-} catch (e) {
-  console.error('[AnnouncementsAdmin] definePageMeta FAILED:', e)
-}
-
-console.log('[AnnouncementsAdmin] Initializing stores...')
-let auth: ReturnType<typeof useAuthStore>
-let toast: ReturnType<typeof useToast>
-try {
-  auth = useAuthStore()
-  toast = useToast()
-  console.log('[AnnouncementsAdmin] Stores initialized', { auth: !!auth, toast: !!toast })
-} catch (e) {
-  console.error('[AnnouncementsAdmin] Store initialization FAILED:', e)
-  throw e
-}
-console.log('[AnnouncementsAdmin] Auth store snapshot ready', { hasUser: Boolean(auth?.currentUser) })
+const toast = useToast()
+const api = useNuxtApp().$api
 
 // State
 const announcements = ref<AnnouncementDto[]>([])
 const loading = ref(true)
 const saving = ref(false)
-const deleting = ref(false)
+const showPreviewModal = ref(false)
 
 const filters = reactive({
   is_active: ''
@@ -298,7 +322,7 @@ const editModal = reactive({
 })
 
 const form = reactive({
-  title: '',
+  path: '',
   content: '',
   is_active: true
 })
@@ -312,57 +336,26 @@ const inactiveCount = computed(() => {
   return announcements.value.filter(a => !a.is_active).length
 })
 
+const displayedAnnouncements = computed(() => {
+  if (filters.is_active === 'true') {
+    return announcements.value.filter(a => a.is_active)
+  } else if (filters.is_active === 'false') {
+    return announcements.value.filter(a => !a.is_active)
+  }
+  return announcements.value
+})
+
 // Methods
 const loadAnnouncements = async () => {
-  console.log('开始加载公告列表', { filters: { ...filters } })
   loading.value = true
   try {
-    const api = useNuxtApp().$api
-    const apiMethodNames = Object.keys(api || {})
-    console.log('[DEBUG] API methods available:', apiMethodNames)
-    console.log('[DEBUG] Has listAnnouncementsAdmin?', typeof api?.listAnnouncementsAdmin)
-    if (typeof api?.listAnnouncementsAdmin !== 'function') {
-      console.error('[FATAL] listAnnouncementsAdmin not found! Available methods:', apiMethodNames)
-      throw new Error('API method missing')
-    }
-    let data: AnnouncementDto[]
-
-    try {
-      console.log('调用管理员公告列表接口')
-      // 优先使用管理员接口,可以获取所有公告(包括停用的)
-      data = await api.listAnnouncementsAdmin()
-      console.log('管理员公告列表接口返回', { total: data.length })
-    } catch (adminError: any) {
-      console.warn('管理员公告列表接口调用失败,改用普通接口', adminError)
-      console.log('调用公共公告列表接口')
-      data = await api.listAnnouncements()
-      console.log('公共公告列表接口返回', { total: data.length })
-    }
-
+    const data = await api.listAnnouncementsAdmin()
     announcements.value = data
-
-    // 应用前端过滤
-    if (filters.is_active === 'true') {
-      announcements.value = announcements.value.filter(a => a.is_active)
-      console.log('应用过滤条件: 仅显示启用公告')
-    } else if (filters.is_active === 'false') {
-      announcements.value = announcements.value.filter(a => !a.is_active)
-      console.log('应用过滤条件: 仅显示停用公告')
-    }
-
-    console.log('公告列表加载完成', { total: announcements.value.length, filters: { ...filters } })
   } catch (error: any) {
     console.error('加载公告列表失败:', error)
-    if (error?.response) {
-      console.error('公告列表接口响应错误:', {
-        status: error.response.status,
-        data: error.response.data
-      })
-    }
-    toast.error(`加载公告列表失败: ${error.message || '未知错误'}`)
+    toast.error('加载公告列表失败')
   } finally {
     loading.value = false
-    console.log('公告列表加载流程结束')
   }
 }
 
@@ -371,11 +364,11 @@ const refresh = () => {
 }
 
 const applyFilters = () => {
-  loadAnnouncements()
+  // 使用计算属性 displayedAnnouncements 进行客户端过滤
 }
 
 const openCreateModal = () => {
-  form.title = ''
+  form.path = ''
   form.content = ''
   form.is_active = true
   editModal.announcement = null
@@ -383,7 +376,7 @@ const openCreateModal = () => {
 }
 
 const editAnnouncement = (announcement: AnnouncementDto) => {
-  form.title = announcement.title
+  form.path = announcement.path
   form.content = announcement.content
   form.is_active = announcement.is_active
   editModal.announcement = announcement
@@ -395,9 +388,29 @@ const closeEditModal = () => {
   editModal.announcement = null
 }
 
+const showPreview = () => {
+  if (!form.content.trim()) {
+    toast.warning('请先输入公告内容')
+    return
+  }
+  showPreviewModal.value = true
+}
+
+const previewAnnouncement = (announcement: AnnouncementDto) => {
+  form.path = announcement.path
+  form.content = announcement.content
+  form.is_active = announcement.is_active
+  showPreviewModal.value = true
+}
+
 const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && editModal.show) {
-    closeEditModal()
+  if (event.key === 'Escape') {
+    if (editModal.show) {
+      closeEditModal()
+    }
+    if (showPreviewModal.value) {
+      showPreviewModal.value = false
+    }
   }
 }
 
@@ -420,42 +433,36 @@ onUnmounted(() => {
 })
 
 const saveAnnouncement = async () => {
+  // 验证路径格式
+  if (!isValidAnnouncementPath(form.path)) {
+    toast.error('路径必须以 / 开头')
+    return
+  }
+
+  // 使用统一的路径规范化方法
+  const normalizedPath = normalizeAnnouncementPath(form.path)
+
   saving.value = true
   try {
-    const api = useNuxtApp().$api
-    
+    const payload = {
+      path: normalizedPath,
+      content: form.content,
+      is_active: form.is_active
+    }
+
     if (editModal.announcement) {
-      // Update existing
-      await api.updateAnnouncement(editModal.announcement.id, {
-        title: form.title,
-        content: form.content,
-        is_active: form.is_active
-      })
-      
-      // Update local state
-      Object.assign(editModal.announcement, {
-        title: form.title,
-        content: form.content,
-        is_active: form.is_active,
-        updated_at: new Date().toISOString()
-      })
-      
+      await api.updateAnnouncement(editModal.announcement.id, payload)
       toast.success('公告已更新')
     } else {
-      // Create new
-      const newAnnouncement = await api.createAnnouncement({
-        title: form.title,
-        content: form.content,
-        is_active: form.is_active
-      })
-      
-      announcements.value.unshift(newAnnouncement)
+      await api.createAnnouncement(payload)
       toast.success('公告已创建')
     }
-    
+
     closeEditModal()
+    await loadAnnouncements()
   } catch (error: any) {
-    toast.error('保存公告失败')
+    console.error('保存公告失败:', error)
+    toast.error(error?.data?.message || '保存失败')
   } finally {
     saving.value = false
   }
@@ -466,7 +473,7 @@ const toggleStatus = async (announcement: AnnouncementDto) => {
   const nextState = !announcement.is_active
   const confirmed = await confirm({
     title: nextState ? '确认启用' : '确认停用',
-    message: `确定要${nextState ? '启用' : '停用'}公告"${announcement.title}"吗?`,
+    message: `确定要${nextState ? '启用' : '停用'}路径 "${announcement.path}" 的公告吗?`,
     confirmText: nextState ? '确认启用' : '确认停用',
     cancelText: '取消'
   })
@@ -474,16 +481,13 @@ const toggleStatus = async (announcement: AnnouncementDto) => {
   if (!confirmed) return
 
   try {
-    const api = useNuxtApp().$api
     await api.updateAnnouncement(announcement.id, {
-      title: announcement.title,
+      path: announcement.path,
       content: announcement.content,
       is_active: nextState
     })
 
-    // 刷新列表以正确应用筛选
     await loadAnnouncements()
-
     toast.success(nextState ? '公告已启用' : '公告已停用')
   } catch (error) {
     toast.error('操作失败')
@@ -494,36 +498,34 @@ const confirmDelete = async (announcement: AnnouncementDto) => {
   const { confirm } = useAdminDialog()
   const confirmed = await confirm({
     title: '确认删除',
-    message: `确定要删除公告"${announcement.title}"吗？删除后无法恢复。`,
+    message: `确定要删除路径 "${announcement.path}" 的公告吗？删除后无法恢复。`,
     confirmText: '确认删除',
     cancelText: '取消'
   })
 
   if (!confirmed) return
 
-  deleting.value = true
   try {
-    const api = useNuxtApp().$api
     await api.deleteAnnouncement(announcement.id)
-
-    // Remove from local list
     announcements.value = announcements.value.filter(a => a.id !== announcement.id)
-
     toast.success('公告已删除')
   } catch (error) {
     toast.error('删除失败')
-  } finally {
-    deleting.value = false
   }
 }
 
 const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString('zh-CN')
+  return new Date(dateString).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 }
 
 // Initialize
 onMounted(() => {
-  console.log('[AnnouncementsAdmin] onMounted hook triggered')
   loadAnnouncements()
 })
 
@@ -531,7 +533,7 @@ onMounted(() => {
 useHead({
   title: '公告管理 - 郑州四中表白墙',
   meta: [
-    { name: 'description', content: '创建、编辑和管理系统公告' }
+    { name: 'description', content: '创建、编辑和管理按页面路径显示的公告' }
   ]
 })
 </script>

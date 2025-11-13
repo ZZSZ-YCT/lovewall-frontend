@@ -95,11 +95,6 @@
       <!-- 固定头部占位 -->
       <div class="pt-14" />
 
-      <!-- Announcements -->
-      <div>
-        <AnnouncementBar v-if="announcements.length > 0" :announcements="announcements" />
-      </div>
-
       <!-- Page Content -->
       <main class="flex-1 min-h-0 relative">
         <div class="h-full overflow-auto no-scrollbar">
@@ -142,28 +137,40 @@
 
     <!-- 统一使用AdminDialog -->
     <AdminDialog />
+
+    <!-- 公告弹窗（按页面路径） -->
+    <ClientOnly>
+      <AnnouncementModal
+        v-if="pageAnnouncement.announcement.value"
+        :is-open="pageAnnouncement.isOpen.value"
+        :content="pageAnnouncement.announcement.value.content"
+        @close="pageAnnouncement.close()"
+        @dismiss="pageAnnouncement.dismiss()"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { AnnouncementDto } from '~/types'
 import { UserIcon, ChevronDownIcon, BellIcon } from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
 import ToastContainer from '~/components/ui/ToastContainer.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
+import AnnouncementModal from '~/components/AnnouncementModal.vue'
 import '~/assets/css/default.css'
 
 // Stores
 const auth = useAuthStore()
+
+// 页面公告系统
+const pageAnnouncement = useAnnouncement()
 
 // Background image
 const bg = useRandomBg()
 const assetUrl = useAssetUrl()
 
 // State
-const announcements = ref<AnnouncementDto[]>([])
 const initializing = ref(true)
 const showUserMenu = ref(false)
 const userMenuRef = ref<HTMLElement>()
@@ -183,16 +190,12 @@ const goAdmin = async () => {
 const initializeApp = async () => {
   try {
     await auth.initAuth()
-    if (import.meta.client) {
-      try {
-        const api = useNuxtApp().$api
-        announcements.value = await api.listAnnouncements()
-      } catch {}
-    }
   } catch (error) {
     console.error('App initialization failed:', error)
   } finally {
     initializing.value = false
+    // 鉴权完成后检查公告
+    pageAnnouncement.checkAndShow()
   }
 }
 

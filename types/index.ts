@@ -124,10 +124,9 @@ export interface CommentDto {
 // Announcement Types
 export interface AnnouncementDto {
   id: string
-  title: string
+  path: string
   content: string
   is_active: boolean
-  metadata?: string | null
   created_at: string
   updated_at: string
 }
@@ -184,10 +183,9 @@ export interface CommentForm {
 }
 
 export interface AnnouncementForm {
-  title: string
+  path: string
   content: string
   is_active: boolean
-  metadata?: string
 }
 
 export interface TagForm {

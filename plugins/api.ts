@@ -168,6 +168,9 @@ export default defineNuxtPlugin(() => {
       const isActiveTagNotFound = status === 404 &&
         (error.config?.url?.includes('active-tag') || message === 'active tag not found')
 
+      const isAnnouncementNotFound = status === 404 &&
+        error.config?.url?.includes('announcements/by-path')
+
       const resolveFlag = (source: Record<string, unknown> | undefined, ...keys: string[]): boolean => {
         if (!source) return false
         for (const key of keys) {
@@ -201,7 +204,7 @@ export default defineNuxtPlugin(() => {
         }
       }
 
-      if (!isActiveTagNotFound) {
+      if (!isActiveTagNotFound && !isAnnouncementNotFound) {
         toast.error(`${message}${trace ? ` · ${trace}` : ''}`)
       }
 
@@ -545,6 +548,11 @@ export default defineNuxtPlugin(() => {
     },
     async listAnnouncementsAdmin(): Promise<AnnouncementDto[]> {
       const response = await instance.get<ApiResp<AnnouncementDto[]>>('/announcements/admin')
+      return unwrap(response)
+    },
+
+    async getAnnouncementByPath(path: string): Promise<AnnouncementDto> {
+      const response = await instance.get<ApiResp<AnnouncementDto>>(`/announcements/by-path${path}`)
       return unwrap(response)
     },
 
