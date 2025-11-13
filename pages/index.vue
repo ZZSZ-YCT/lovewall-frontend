@@ -156,11 +156,12 @@ const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
 const { confirm } = useConfirm()
 
-// 布局控制 - 默认列表布局
+// 布局控制 - 强制默认列表布局
 const layoutMode = ref<'grid' | 'list'>('list')
 const effectiveLayout = computed(() => {
+  // 移动端始终列表布局
   if (isMobile.value) return 'list'
-  if (layoutMode.value === 'auto') return 'grid'
+  // 桌面端也始终使用layoutMode的值（默认为list）
   return layoutMode.value
 })
 const gridClasses = computed(() => {
@@ -191,12 +192,24 @@ const switchLayout = async (mode: 'grid' | 'list') => {
   }
 }
 
-// 从 localStorage 读取布局偏好
+// 从 localStorage 读取布局偏好（仅限列表布局，忽略网格布局）
 onMounted(() => {
   const saved = localStorage.getItem('love-wall-layout')
-  if (saved && ['grid', 'list'].includes(saved)) layoutMode.value = saved as any
+  // 只接受'list'，忽略'grid'，确保默认始终为列表布局
+  if (saved === 'list') {
+    layoutMode.value = 'list'
+  } else {
+    // 清除旧的网格布局偏好
+    localStorage.removeItem('love-wall-layout')
+    layoutMode.value = 'list'
+  }
 })
-watch(layoutMode, (v) => !isMobile.value && localStorage.setItem('love-wall-layout', v))
+// 只在列表布局时保存
+watch(layoutMode, (v) => {
+  if (!isMobile.value && v === 'list') {
+    localStorage.setItem('love-wall-layout', v)
+  }
+})
 
 // --- 数据加载 (SSR 友好) ---
 const { data, pending, refresh, error } = await useAsyncData(

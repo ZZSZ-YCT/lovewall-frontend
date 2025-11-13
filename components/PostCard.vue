@@ -146,16 +146,21 @@
         <!-- Actions dropdown -->
         <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
           <button
+            ref="dropdownButtonRef"
             class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
-            @click="showDropdown = !showDropdown"
+            @click="toggleDropdown"
           >
             <MoreVerticalIcon class="w-4 h-4" />
           </button>
 
-          <div
-            v-if="showDropdown"
-            class="absolute right-0 mt-1 w-48 glass-card py-2 shadow-lg z-50"
-          >
+          <Teleport to="body">
+            <div
+              v-if="showDropdown"
+              ref="dropdownMenuRef"
+              :style="dropdownStyle"
+              class="fixed w-48 glass-card py-2 shadow-lg z-[9999]"
+              @click.stop
+            >
             <NuxtLink
               :to="`/posts/${post.id}`"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
@@ -206,7 +211,8 @@
                 删除
               </button>
             </template>
-          </div>
+            </div>
+          </Teleport>
         </div>
         <template #fallback>
           <div class="relative flex-shrink-0 invisible"></div>
@@ -341,11 +347,75 @@ const { renderTag } = useTagRenderer()
 const expanded = ref(false)
 const showDropdown = ref(false)
 const dropdownRef = ref<HTMLElement>()
+const dropdownButtonRef = ref<HTMLElement>()
+const dropdownMenuRef = ref<HTMLElement>()
 const avatarLoadFailed = ref(false)
 const postAuthorMeta = computed(() => props.post as PostDto & PostAuthorMeta)
 
 watch(() => postAuthorMeta.value.author_avatar_url, () => {
   avatarLoadFailed.value = false
+})
+
+// Dropdown位置计算
+const dropdownStyle = ref<{ top: string; left?: string; right?: string }>({ top: '0px', left: '0px' })
+
+const updateDropdownPosition = () => {
+  if (!dropdownButtonRef.value) return
+  const rect = dropdownButtonRef.value.getBoundingClientRect()
+  const menuWidth = 192 // w-48 = 12rem = 192px
+
+  // 计算是否右侧空间足够
+  const spaceOnRight = window.innerWidth - rect.right
+  const spaceOnLeft = rect.left
+
+  if (spaceOnRight >= menuWidth) {
+    // 右侧空间足够，右对齐按钮
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: `${rect.right - menuWidth}px`,
+      right: undefined
+    }
+  } else if (spaceOnLeft >= menuWidth) {
+    // 右侧不够，左侧对齐
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: `${rect.left}px`,
+      right: undefined
+    }
+  } else {
+    // 两侧都不够，贴右边
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: undefined,
+      right: '8px'
+    }
+  }
+}
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+  if (showDropdown.value) {
+    nextTick(() => {
+      updateDropdownPosition()
+    })
+  }
+}
+
+// 监听窗口变化和滚动，更新dropdown位置
+watch(showDropdown, (isOpen) => {
+  if (isOpen) {
+    window.addEventListener('resize', updateDropdownPosition)
+    window.addEventListener('scroll', updateDropdownPosition, true)
+  } else {
+    window.removeEventListener('resize', updateDropdownPosition)
+    window.removeEventListener('scroll', updateDropdownPosition, true)
+  }
+})
+
+// 组件卸载时清理
+onUnmounted(() => {
+  window.removeEventListener('resize', updateDropdownPosition)
+  window.removeEventListener('scroll', updateDropdownPosition, true)
 })
 
 // Close dropdown when clicking outside
@@ -413,11 +483,10 @@ const shareData = computed(() => {
     : `${props.post.author_name} 的交流`
   return {
     title,
-    text: props.post.content.length > 100 ? 
-      `${props.post.content.substring(0, 100)}...` : 
+    text: props.post.content.length > 100 ?
+      `${props.post.content.substring(0, 100)}...` :
       props.post.content,
-    url: `${origin}/posts/${props.post.id}`,
-    image: props.post.images?.[0] ? assetUrl(props.post.images[0]) : undefined
+    url: `${origin}/posts/${props.post.id}`
   }
 })
 

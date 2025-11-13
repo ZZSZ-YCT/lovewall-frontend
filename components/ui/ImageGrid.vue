@@ -5,7 +5,7 @@
     <div v-if="images?.length" class="space-y-3">
       <div ref="galleryRef" :class="gridWrapperClass">
         <a
-          v-for="(image, index) in thumbnails"
+          v-for="(image, index) in images"
           :key="`${image}-${index}`"
           :href="resolveOriginalImage(image)"
           :data-pswp-width="2400"
@@ -13,7 +13,7 @@
           target="_blank"
           rel="noreferrer"
           @click.prevent.stop="openGallery(index)"
-          class="relative"
+          :class="['relative', { 'hidden': index >= maxThumbs }]"
         >
           <NuxtPicture
             :src="resolveThumbnail(image)"
@@ -29,7 +29,7 @@
 
           <!-- Last visible tile: overlay +N if there are more images -->
           <div
-            v-if="hiddenCount > 0 && index === thumbnails.length - 1"
+            v-if="hiddenCount > 0 && index === maxThumbs - 1"
             class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold"
           >
             +{{ hiddenCount }}
@@ -72,7 +72,6 @@ const { stop } = useIntersectionObserver(
 const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
 
 const maxThumbs = 4
-const thumbnails = computed(() => props.images.slice(0, maxThumbs))
 const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))
 
 const assetUrl = useAssetUrl()
@@ -139,9 +138,10 @@ const gridWrapperClass = computed(() => {
   const count = images.value.length
   if (count <= 0) return ''
   if (count === 1) return 'grid gap-3 grid-cols-1'
-  if (count <= 3) return `grid gap-3 grid-cols-${count}`
-  if (count === 4) return 'grid gap-3 grid-cols-2'
-  return 'grid gap-3 grid-cols-3'
+  if (count === 2) return 'grid gap-3 grid-cols-2'
+  if (count === 3) return 'grid gap-3 grid-cols-3'
+  // 4+张图片：两排，每排两个 (2x2布局)
+  return 'grid gap-3 grid-cols-2'
 })
 
 const imageClass = computed(() => {
