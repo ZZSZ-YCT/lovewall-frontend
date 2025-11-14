@@ -7,7 +7,9 @@
         :src="bg.src.value"
         alt="Background"
         class="w-full h-full object-cover animate-fade-in"
-        loading="eager"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
       >
 
       <!-- Fallback gradient background -->
@@ -125,12 +127,19 @@
     </div>
 
     <!-- Loading Screen -->
-    <div v-if="initializing" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-      <div class="text-center">
-        <LoadingSpinner size="lg" />
-        <p class="mt-4 text-gray-600">加载中...</p>
+    <Transition name="fade">
+      <div
+        v-if="initializing"
+        class="fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-brand-600/95 text-white shadow-glow ring-1 ring-brand-300/60 pointer-events-none"
+        aria-live="polite"
+      >
+        <LoadingSpinner size="md" variant="white" />
+        <div class="flex flex-col">
+          <span class="text-xs uppercase tracking-[0.2em] text-white/70">Loading</span>
+          <span class="text-sm font-semibold">加载中...</span>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- Route announcer for accessibility -->
     <NuxtRouteAnnouncer />
