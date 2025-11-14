@@ -8,13 +8,11 @@ export const useRandomBg = () => {
 
   const fetchImage = async (retries = 3): Promise<void> => {
     try {
-      // Generate a unique URL to avoid caching
-      const timestamp = Date.now()
-      const imageUrl = `${url}${url.endsWith('/') ? '' : '/'}?t=${timestamp}`
-      
+      const imageUrl = url.endsWith('/') ? url : `${url}/`
+
       // Create a new image to test loading
       const img = new Image()
-      
+
       await new Promise((resolve, reject) => {
         img.onload = resolve
         img.onerror = reject
@@ -45,7 +43,21 @@ export const useRandomBg = () => {
 
   // Auto-fetch on mount
   onMounted(() => {
-    fetchImage()
+    if (!import.meta.client) {
+      return
+    }
+
+    const startFetch = () => {
+      error.value = null
+      loading.value = true
+      fetchImage()
+    }
+
+    if ('requestIdleCallback' in window) {
+      ;(window as Window & { requestIdleCallback: (cb: IdleRequestCallback) => number }).requestIdleCallback(() => startFetch())
+    } else {
+      window.setTimeout(startFetch, 0)
+    }
   })
 
   return {
