@@ -108,7 +108,7 @@ export function registerUserCommands() {
             throw Error('missing token')
           }
 
-          const avatarUrl = useAssetUrl()(auth.currentUser!!.avatar_url)
+          const avatarUrl = useAssetUrl().assetUrl(auth.currentUser!!.avatar_url)
 
           const { open } = usePopupPortal()
           try {

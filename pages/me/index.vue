@@ -265,7 +265,7 @@ definePageMeta({
 
 // Stores
 const auth = useAuthStore()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const loading = ref(true)

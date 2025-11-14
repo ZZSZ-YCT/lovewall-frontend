@@ -257,7 +257,7 @@ import { onClickOutside } from '@vueuse/core'
 
 const auth = useAuthStore()
 const api = useNuxtApp().$api
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const { isMobile } = useDeviceSafe()
 const showUserMenu = ref(false)
 const showMobileMenu = ref(false)

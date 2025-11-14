@@ -472,7 +472,7 @@ definePageMeta({
 const auth = useAuthStore()
 const permissions = usePermissions()
 const toast = useToast()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const router = useRouter()
 
 // State

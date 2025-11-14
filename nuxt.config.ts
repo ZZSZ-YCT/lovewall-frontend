@@ -31,7 +31,16 @@ export default defineNuxtConfig({
   },
   components: true,
   
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration', 'nuxt-security'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/eslint',
+    '@nuxt/image',
+    'nuxt-delay-hydration',
+    'nuxt-security',
+    '@nuxt/scripts'
+  ],
 
   security: {
     nonce: true,
@@ -41,9 +50,8 @@ export default defineNuxtConfig({
       hashStyles: true
     },
     headers: {
-      crossOriginEmbedderPolicy: 'require-corp',
       crossOriginOpenerPolicy: 'same-origin',
-      crossOriginResourcePolicy: 'same-origin',
+      crossOriginResourcePolicy: 'cross-origin',
       xContentTypeOptions: 'nosniff',
       xFrameOptions: 'SAMEORIGIN',
       xPermittedCrossDomainPolicies: 'none',
@@ -53,14 +61,16 @@ export default defineNuxtConfig({
         'font-src': ["'self'", 'https:', 'data:'],
         'form-action': ["'self'"],
         'frame-ancestors': ["'self'"],
-        'img-src': ["'self'", 'data:'],
+        'img-src': ["'self'", 'data:', ...imageDomains.map(host => `https://${host}`), 'https://static.geetest.com', 'https://static.geevisit.com'],
         'object-src': ["'none'"],
         'script-src-attr': ["'none'"],
         'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-        'script-src': ["'self'", 'https:', "'unsafe-inline'", "'strict-dynamic'", "'nonce-{{nonce}}'"],
+        'script-src': ["'self'", 'https:', "'unsafe-inline'", "'nonce-{{nonce}}'"],
         'upgrade-insecure-requests': true
       },
     },
+    rateLimiter: false,
+    requestSizeLimiter: false
   },
 
   image: {

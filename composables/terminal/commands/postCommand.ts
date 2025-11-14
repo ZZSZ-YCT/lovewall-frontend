@@ -37,15 +37,15 @@ export function registerPostCommands() {
 
           for (let i = 0; i < posts.total; i++) {
             const post = items[i]
-            const author_user_data = await api.getUser(post.author_id)
-            const name = post.author_name +
-              (post.author_tag ? `[${post.author_tag.title}]` : "") +
-              (author_user_data.display_name == post.author_name ? "" : "(custom)")
-            const target = (post.card_type == 'confession' ? ` -> ${post.target_name}` : "")
-            const content = post.content.slice(0, 10) + (post.content.length > 10 ? "..." : "")
+            const author_user_data = await api.getUser(post!!.author_id)
+            const name = post!!.author_name +
+              (post!!.author_tag ? `[${post!!.author_tag.title}]` : "") +
+              (author_user_data.display_name == post!!.author_name ? "" : "(custom)")
+            const target = (post!!.card_type == 'confession' ? ` -> ${post!!.target_name}` : "")
+            const content = post!!.content.slice(0, 10) + (post!!.content.length > 10 ? "..." : "")
             result.push(`${i} - ${name}${target} : ${content}`)
 
-            kv.set(`POST_LIST_ID_${i}`, post.id)
+            kv.set(`POST_LIST_ID_${i}`, post!!.id)
           }
 
           result.forEach((element) => {

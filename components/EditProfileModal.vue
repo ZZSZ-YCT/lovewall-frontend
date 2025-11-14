@@ -143,7 +143,7 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const loading = ref(false)

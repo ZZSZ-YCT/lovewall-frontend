@@ -170,7 +170,7 @@ import { HeartIcon } from 'lucide-vue-next'
 const route = useRoute()
 const username = computed(() => route.params.username as string)
 const api = useNuxtApp().$api
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // 用户基本信息 + 状态
 const { data: userData, pending, error: userError } = await useAsyncData(

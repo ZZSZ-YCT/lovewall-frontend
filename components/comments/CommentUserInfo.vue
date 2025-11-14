@@ -90,7 +90,7 @@ const emit = defineEmits<{
   'avatar-click': []
 }>()
 
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const { renderTag } = useTagRenderer()
 
 const avatarFailed = ref(false)

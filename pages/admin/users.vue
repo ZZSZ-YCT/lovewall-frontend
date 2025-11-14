@@ -1232,7 +1232,7 @@ definePageMeta({
 
 // Stores
 const auth = useAuthStore()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const toast = useToast()
 const { renderTag } = useTagRenderer()
 const canManageTags = computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS'))

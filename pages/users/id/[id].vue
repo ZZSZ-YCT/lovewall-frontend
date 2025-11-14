@@ -251,7 +251,7 @@ const postsLoading = computed(() => postsPending.value)
 const postsData = ref<Pagination<PostDto> | null>(null)
 
 // Composable
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const toast = useToast()
 
 // Computed

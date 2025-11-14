@@ -408,7 +408,7 @@ ${data.url}`
   const sharePost = async (post: any, options?: any) => {
     const baseUrl = window.location.origin
     const postUrl = `${baseUrl}/posts/${post.id}`
-    const assetUrl = useAssetUrl()
+    const { assetUrl } = useAssetUrl()
     
     const shareData: ShareData = {
       title: `${post.author_name} 对 ${post.target_name} 的表白`,

@@ -242,7 +242,7 @@ definePageMeta({
 const auth = useAuthStore()
 const toast = useToast()
 const router = useRouter()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const posts = ref<PostDto[]>([])

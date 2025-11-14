@@ -168,7 +168,7 @@ const pageAnnouncement = useAnnouncement()
 
 // Background image
 const bg = useRandomBg()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const initializing = ref(true)

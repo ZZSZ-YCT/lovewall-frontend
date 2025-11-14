@@ -557,7 +557,7 @@ const postId = computed(() => route.params.id as string)
 
 const auth = useAuthStore()
 const toast = useToast()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const home = useHomeStore()
 const api = useNuxtApp().$api
 const { renderTag } = useTagRenderer()

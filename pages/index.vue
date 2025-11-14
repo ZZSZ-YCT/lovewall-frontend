@@ -217,7 +217,6 @@ const { data, pending, refresh, error } = await useAsyncData(
   async () => {
     // ✅ 修复：只调用一次initialLoad，避免重复请求
     await home.initialLoad()
-    console.log("loading data")
     return {
       posts: home.posts,
       hasMore: home.hasMore,

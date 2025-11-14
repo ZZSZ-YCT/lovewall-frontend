@@ -7,7 +7,6 @@
         <a
           v-for="(image, index) in images"
           :key="`${image}-${index}`"
-          :href="resolveOriginalImage(image)"
           :data-pswp-width="2400"
           :data-pswp-height="2400"
           target="_blank"
@@ -74,10 +73,10 @@ const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
 const maxThumbs = 4
 const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))
 
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const galleryRef = ref<HTMLElement>()
 
-const lightbox = ref<PhotoSwipeLightbox | null>(null)
+const lightbox = ref<any>(null)
 
 const ensureLightbox = async () => {
   if (lightbox.value) return lightbox.value
