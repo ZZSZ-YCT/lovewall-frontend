@@ -130,11 +130,14 @@
     <Transition name="fade">
       <div
         v-if="initializing"
-        class="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 glass-card shadow-lg text-sm text-gray-700 pointer-events-none"
+        class="fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-brand-600/95 text-white shadow-glow ring-1 ring-brand-300/60 pointer-events-none"
         aria-live="polite"
       >
-        <LoadingSpinner size="sm" />
-        <span>加载中...</span>
+        <LoadingSpinner size="md" variant="white" />
+        <div class="flex flex-col">
+          <span class="text-xs uppercase tracking-[0.2em] text-white/70">Loading</span>
+          <span class="text-sm font-semibold">加载中...</span>
+        </div>
       </div>
     </Transition>
 
