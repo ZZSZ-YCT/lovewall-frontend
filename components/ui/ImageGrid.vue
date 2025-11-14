@@ -6,6 +6,7 @@
       <div ref="galleryRef" :class="gridWrapperClass">
         <a
           v-for="(image, index) in images"
+          :href="resolveOriginalImage(image)"
           :key="`${image}-${index}`"
           :data-pswp-width="2400"
           :data-pswp-height="2400"
