@@ -8,7 +8,9 @@ export const useRandomBg = () => {
 
   const fetchImage = async (retries = 3): Promise<void> => {
     try {
-      const imageUrl = url.endsWith('/') ? url : `${url}/`
+      // Generate a unique URL to avoid caching
+      const timestamp = Date.now()
+      const imageUrl = `${url}${url.endsWith('/') ? '' : '/'}?t=${timestamp}`
 
       // Create a new image to test loading
       const img = new Image()

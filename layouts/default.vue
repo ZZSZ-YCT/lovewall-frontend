@@ -134,7 +134,7 @@
         aria-live="polite"
       >
         <LoadingSpinner size="sm" />
-        <span>正在初始化...</span>
+        <span>加载中...</span>
       </div>
     </Transition>
 
