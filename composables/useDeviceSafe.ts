@@ -21,12 +21,18 @@ export const useDeviceSafe = () => {
         isDesktop: d.isDesktop.value
       }
       // 监听窗口变化（可选）
-      window.addEventListener('resize', () => {
+      const resizeHandler = () => {
         clientDevice.value = {
           isMobile: d.isMobile.value,
           isTablet: d.isTablet.value,
           isDesktop: d.isDesktop.value
         }
+      }
+      window.addEventListener('resize', resizeHandler)
+
+      // Clean up on unmount
+      onUnmounted(() => {
+        window.removeEventListener('resize', resizeHandler)
       })
     })
   }

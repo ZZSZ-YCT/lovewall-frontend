@@ -23,10 +23,9 @@ const uniqueImageDomains = Array.from(new Set(imageDomains))
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: {
-    enabled: true,
-
+    enabled: process.env.NODE_ENV === 'development',
     timeline: {
-      enabled: true
+      enabled: false  // Disable timeline to speed up dev server
     }
   },
   components: true,
@@ -61,7 +60,7 @@ export default defineNuxtConfig({
         'font-src': ["'self'", 'https:', 'data:'],
         'form-action': ["'self'"],
         'frame-ancestors': ["'self'"],
-        'img-src': ["'self'", 'data:', ...imageDomains.map(host => `https://${host}`), 'https://static.geetest.com', 'https://static.geevisit.com'],
+        'img-src': ["'self'", 'data:', ...imageDomains.map(host => `https://${host}`)],
         'object-src': ["'none'"],
         'script-src-attr': ["'none'"],
         'style-src': ["'self'", 'https:', "'unsafe-inline'"],
@@ -139,8 +138,6 @@ export default defineNuxtConfig({
         { rel: 'canonical', href: SITE_URL },
         { rel: 'alternate', hreflang: 'zh-CN', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
-        { rel: 'preconnect', href: 'https://static.geetest.com' },
-        { rel: 'dns-prefetch', href: 'https://static.geetest.com' },
         // KaTeX CSS for LaTeX rendering in announcements
         { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css', crossorigin: 'anonymous' }
       ]
@@ -150,6 +147,20 @@ export default defineNuxtConfig({
   vite: {
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
+    },
+    optimizeDeps: {
+      include: [
+        'vue',
+        'vue-router',
+        'pinia',
+        '@vueuse/core',
+        'lucide-vue-next',
+        'dompurify',
+        'axios',
+        'photoswipe/lightbox',
+        'photoswipe',
+        'zod'
+      ]
     },
     build: {
       cssCodeSplit: true,
@@ -161,17 +172,11 @@ export default defineNuxtConfig({
   },
   
   runtimeConfig: {
-    // Private runtime config (server only)
-    geeTestKey: process.env.NUXT_GEETEST_KEY,
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       siteUrl: SITE_URL,
       randomImageApiUrl: process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/',
       pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE,
-      // GeeTest Login ID
-      geeTestId: process.env.NUXT_PUBLIC_GEETEST_ID,
-      // GeeTest Register ID
-      geeTestRegisterId: process.env.NUXT_PUBLIC_GEETEST_REGISTER_ID,
       // Mainland-friendly jsDelivr origin (used when building CDN links)
       jsdelivrOrigin: process.env.NUXT_PUBLIC_JSDELIVR_ORIGIN || 'https://fastly.jsdelivr.net',
     }

@@ -2,10 +2,10 @@
   <div ref="root">
     <div v-if="!visible" class="h-40 bg-gray-100 rounded-lg"></div>
 
-    <div v-if="images?.length" class="space-y-3">
+    <div v-if="visible && images?.length" class="space-y-3">
       <div ref="galleryRef" :class="gridWrapperClass">
         <a
-          v-for="(image, index) in images"
+          v-for="(image, index) in images.slice(0, maxThumbs)"
           :href="resolveOriginalImage(image)"
           :key="`${image}-${index}`"
           :data-pswp-width="2400"
@@ -13,7 +13,7 @@
           target="_blank"
           rel="noreferrer"
           @click.prevent.stop="openGallery(index)"
-          :class="['relative', { 'hidden': index >= maxThumbs }]"
+          class="relative"
         >
           <NuxtPicture
             :src="resolveThumbnail(image)"

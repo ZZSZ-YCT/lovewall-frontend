@@ -158,16 +158,25 @@ export interface Pagination<T> {
 export interface LoginForm {
   username: string
   password: string
+  // 新验证码字段(可选,服务器配置验证码时必填)
+  captcha_id?: string
+  captcha_data?: {
+    dots?: Array<{ x: number; y: number }>
+    x?: number
+    angle?: number
+  }
 }
 
 export interface RegisterForm {
   username: string
   password: string
-  // 极验验证码字段(可选,服务器配置验证码时必填)
-  lot_number?: string
-  captcha_output?: string
-  pass_token?: string
-  gen_time?: string
+  // 新验证码字段(可选,服务器配置验证码时必填)
+  captcha_id?: string
+  captcha_data?: {
+    dots?: Array<{ x: number; y: number }>
+    x?: number
+    angle?: number
+  }
 }
 
 export interface PostForm {

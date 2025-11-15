@@ -20,28 +20,19 @@ export function registerAuthCommands() {
 
         const { open } = useCaptchaGate()
 
-        const tokens = await open({
-          title: 'GeeTest Verification',
-          product: 'popup',
-          riskType: 'login',
+        const result = await open({
+          title: 'Security Verification',
         })
 
         checkCancelled()
-
-        const verify = await $fetch<{ success: boolean; error?: string }>('\/geetest\/validate', {
-          method: 'POST',
-          body: tokens,
-        })
-
-        if (!verify.success) {
-          throw new Error(verify.error || 'failed with captcha')
-        }
 
         println(`Attempting login with ${username}`)
 
         await auth.login({
           username: username,
           password: password,
+          captcha_id: result.captcha_id,
+          captcha_data: result.captcha_data,
         })
 
         println(`Login successful, user: ${auth.currentUser?.username}`)
@@ -62,9 +53,6 @@ export function registerAuthCommands() {
       .min(6, 'At least 6 characters in password')
       .max(128, 'At most 128 characters in password'),
   })
-
-  const config = useRuntimeConfig()
-  const registerCaptchaId = (config.public as any).geeTestRegisterId as string | undefined
 
   register({
     name: 'register',
@@ -95,11 +83,8 @@ export function registerAuthCommands() {
 
         const { open } = useCaptchaGate()
 
-        const tokens = await open({
-          title: 'GeeTest Verification',
-          product: 'popup',
-          riskType: 'login',
-          captchaId: registerCaptchaId
+        const result = await open({
+          title: 'Security Verification',
         })
 
         checkCancelled()
@@ -109,10 +94,8 @@ export function registerAuthCommands() {
         await auth.register({
           username: username,
           password: password,
-          lot_number: tokens.lot_number,
-          captcha_output: tokens.captcha_output,
-          pass_token: tokens.pass_token,
-          gen_time: tokens.gen_time,
+          captcha_id: result.captcha_id,
+          captcha_data: result.captcha_data,
         })
 
         println(`Registered successful, user: ${username}`)

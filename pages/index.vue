@@ -98,10 +98,11 @@
         <!-- 网格布局 -->
         <div v-else-if="effectiveLayout === 'grid'" :class="gridClasses">
           <PostCard
-            v-for="post in posts"
+            v-for="(post, index) in posts"
             :key="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
+            :eager="index < 3"
             variant="grid"
             class="animate-fade-in-up"
             @refresh="handleRefresh"
@@ -114,10 +115,11 @@
           :class="['space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
         >
           <PostCard
-            v-for="post in posts"
+            v-for="(post, index) in posts"
             :key="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
+            :eager="index < 3"
             variant="list"
             class="w-full animate-fade-in-up"
             @refresh="handleRefresh"
@@ -251,7 +253,7 @@ onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       const target = entries[0]
-      if (target.isIntersecting && hasMore.value && !loadingMore.value) {
+      if (target && target.isIntersecting && hasMore.value && !loadingMore.value) {
         loadMore()
       }
     },

@@ -7,9 +7,13 @@ export default defineNuxtPlugin(() => {
       // When navigating back/forward to homepage, ensure data is fresh
       if (to.path === '/' && from.path !== to.path) {
         const home = useHomeStore()
-        // Defer to next tick to avoid racing with mount
+        // Only refresh if data is stale (respects TTL)
         setTimeout(async () => {
-          try { await home.refresh() } catch {}
+          try {
+            if (home.shouldRefresh()) {
+              await home.refreshIfStale()
+            }
+          } catch {}
         }, 0)
       }
     } catch {}

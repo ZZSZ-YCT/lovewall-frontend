@@ -3,70 +3,6 @@ import type {Pagination, PostDto} from '~/types'
 
 const REFRESH_TTL = 30_000 // 30 seconds cache window
 
-const scorePost = (p: PostDto) => {
-  if ((p as any).status === 2) return 5
-  if ((p as any).status === 1) return 4
-  if (p.is_pinned && p.is_featured) return 0
-  if (p.is_pinned) return 1
-  if (p.is_featured) return 2
-  return 3
-}
-
-const createdAtCache = new WeakMap<PostDto, number>()
-
-const getCreatedAt = (post: PostDto) => {
-  const cached = createdAtCache.get(post)
-  if (cached !== undefined) {
-    return cached
-  }
-  const value = new Date(post.created_at).getTime()
-  createdAtCache.set(post, value)
-  return value
-}
-
-const comparePosts = (a: PostDto, b: PostDto) => {
-  const sa = scorePost(a)
-  const sb = scorePost(b)
-  if (sa !== sb) return sa - sb
-  const at = getCreatedAt(a)
-  const bt = getCreatedAt(b)
-  return bt - at
-}
-
-const sortPosts = (posts: PostDto[]) => [...posts].sort(comparePosts)
-
-const mergeSortedPosts = (existing: PostDto[], incoming: PostDto[]) => {
-  if (!existing.length) return sortPosts(incoming)
-  if (!incoming.length) return existing.slice()
-
-  const sortedIncoming = sortPosts(incoming)
-  const merged: PostDto[] = []
-  let i = 0
-  let j = 0
-
-  while (i < existing.length && j < sortedIncoming.length) {
-    if (comparePosts(existing[i]!!, sortedIncoming[j]!!) <= 0) {
-      merged.push(existing[i]!!)
-      i++
-    } else {
-      merged.push(sortedIncoming[j]!!)
-      j++
-    }
-  }
-
-  while (i < existing.length) {
-    merged.push(existing[i]!!)
-    i++
-  }
-
-  while (j < sortedIncoming.length) {
-    merged.push(sortedIncoming[j]!!)
-    j++
-  }
-
-  return merged
-}
-
 const normalizeStatus = (s: any): 0 | 1 => {
   if (typeof s === 'number') return s === 1 ? 1 : 0
   if (typeof s === 'string' && s.toLowerCase().includes('hide')) return 1
@@ -110,7 +46,6 @@ const normalizePost = (p: any): PostDto => {
     author_last_heartbeat: p.author_last_heartbeat ?? null,
     author_is_deleted: p.author_is_deleted ?? p.author_deleted ?? false,
   }
-  createdAtCache.set(normalized, new Date(normalized.created_at).getTime())
   return normalized
 }
 
@@ -131,35 +66,6 @@ const dedupeById = (posts: PostDto[]) => {
     seen.add(post.id)
     return true
   })
-}
-
-const getPostFingerprint = (post: PostDto) => [
-  post.id,
-  post.updated_at,
-  post.status,
-  Number(post.is_pinned),
-  Number(post.is_featured),
-  post.view_count ?? '',
-  post.comment_count ?? '',
-  post.moderation_reason ?? '',
-  post.audit_status ?? '',
-  post.audit_msg ?? '',
-  Number(post.manual_review_requested ?? 0),
-  Number(post.is_author_admin ?? 0),
-  (post as any).author_avatar_url ?? '',
-  (post as any).author_display_name ?? '',
-  Number((post as any).author_is_online ?? 0),
-].join('|')
-
-const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
-  if (a === b) return true
-  if (a.length !== b.length) return false
-  for (let i = 0; i < a.length; i++) {
-    if (getPostFingerprint(a[i]) !== getPostFingerprint(b[i])) {
-      return false
-    }
-  }
-  return true
 }
 
 interface HomeState {
@@ -190,8 +96,6 @@ export const useHomeStore = defineStore('home', {
   }),
   getters: {
     hasData: (s) => s.loaded && s.posts.length > 0,
-    // 全局排序优先级: 置顶+精华 > 置顶 > 精华 > 普通 > 隐藏
-    sortedPosts: (s) => sortPosts(s.posts),
   },
   actions: {
     shouldRefresh(maxAge = REFRESH_TTL) {
@@ -223,13 +127,10 @@ export const useHomeStore = defineStore('home', {
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
-        
-        // Add timestamp to prevent caching
-        const timestamp = Date.now()
+
         const params = {
           page: 1,
           page_size: pageSize,
-          _t: timestamp,
         }
 
         // ✅ 优化：只发起一个请求，帖子数据已包含is_pinned和is_featured信息
@@ -240,10 +141,9 @@ export const useHomeStore = defineStore('home', {
         const filteredPosts = canModerate
           ? normalizedItems
           : normalizedItems.filter((p: PostDto) => p.status === 0)
-        const sortedPosts = sortPosts(filteredPosts)
 
-        // ✅ 刷新时始终替换数据，重置到第一页
-        this.posts = sortedPosts
+        // ✅ 刷新时始终替换数据，重置到第一页 (后端已排序,前端不再排序)
+        this.posts = filteredPosts
         this.page = 1
         this.hasMore = rawItems.length === pageSize
         this.loaded = true
@@ -275,13 +175,10 @@ export const useHomeStore = defineStore('home', {
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
         const next = this.page + 1
-        
-        // Add timestamp to prevent caching
-        const timestamp = Date.now()
-        const params = { 
-          page: next, 
+
+        const params = {
+          page: next,
           page_size: pageSize,
-          _t: timestamp 
         }
 
         const listResp: Pagination<PostDto> = await api.listPosts(params)
@@ -295,11 +192,9 @@ export const useHomeStore = defineStore('home', {
         const existingIds = new Set(this.posts.map((post) => post.id))
         const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
 
+        // 后端已排序,直接追加新帖子
         if (uniqueNewPosts.length > 0) {
-          const merged = mergeSortedPosts(this.posts, uniqueNewPosts)
-          if (!postsAreIdentical(this.posts, merged)) {
-            this.posts = merged
-          }
+          this.posts = [...this.posts, ...uniqueNewPosts]
         }
         this.page = next
         this.hasMore = itemsRaw.length === pageSize
