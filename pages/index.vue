@@ -3,21 +3,21 @@
     <!-- Header -->
     <section>
       <div class="page-header">
-        <h1 class="page-title">郑州市第四高级中学表白墙</h1>
+        <h1 class="page-title">郑州四中表白墙</h1>
         <p class="text-gray-600 max-w-2xl mx-auto">
-          校园信息交流平台。在这里发布你的想法、分享校园生活，与同学建立联系。
+          校园信息交流平台，在这里发布心里话、分享校园趣事，与同学保持联系。
         </p>
       </div>
 
       <ClientOnly>
-        <!-- 快捷操作 -->
+        <!-- 发帖入口 -->
         <div v-if="auth.isAuthenticated" class="flex justify-center">
           <NuxtLink
             to="/posts/new"
             class="glass-button-secondary inline-flex items-center gap-2 rounded-full"
           >
             <PlusIcon class="w-5 h-5" />
-            发布表白
+            发表表白
           </NuxtLink>
         </div>
       </ClientOnly>
@@ -43,7 +43,7 @@
                   ? 'bg-white text-brand-600 shadow-sm'
                   : 'text-gray-600 hover:text-brand-600'
               ]"
-              title="网格布局"
+              title="宫格布局"
               @click="switchLayout('grid')"
             >
               <GridIcon class="w-4 h-4" />
@@ -74,16 +74,22 @@
         </div>
       </div>
 
-      <!-- 内容区域 -->
+      <!-- 数据区域 -->
       <div class="space-y-4">
-        <!-- 加载中 -->
-        <div v-if="loading && posts.length === 0" class="text-center py-12">
+        <!-- 加载中（首屏或刷新中） -->
+        <div
+          v-if="loading && posts.length === 0"
+          class="text-center py-12"
+        >
           <LoadingSpinner size="lg" />
-          <p class="mt-4 text-gray-600">加载表白中...</p>
+          <p class="mt-4 text-gray-600">正在加载表白...</p>
         </div>
 
         <!-- 空状态 -->
-        <div v-else-if="!loading && posts.length === 0" class="text-center py-12">
+        <div
+          v-else-if="!loading && posts.length === 0"
+          class="text-center py-12"
+        >
           <HeartIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p class="text-gray-600 mb-4">还没有表白哦</p>
           <NuxtLink
@@ -95,8 +101,11 @@
           </NuxtLink>
         </div>
 
-        <!-- 网格布局 -->
-        <div v-else-if="effectiveLayout === 'grid'" :class="gridClasses">
+        <!-- 宫格布局 -->
+        <div
+          v-else-if="effectiveLayout === 'grid'"
+          :class="['posts', gridClasses]"
+        >
           <PostCard
             v-for="(post, index) in posts"
             :key="post.id"
@@ -112,7 +121,7 @@
         <!-- 列表布局 -->
         <div
           v-else
-          :class="['space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
+          :class="['posts', 'space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
         >
           <PostCard
             v-for="(post, index) in posts"
@@ -127,7 +136,7 @@
         </div>
       </div>
 
-      <!-- 无限滚动加载指示器 -->
+      <!-- 触底加载更多 -->
       <div
         v-if="home.loaded && hasMore && !loading"
         ref="loadMoreTrigger"
@@ -138,7 +147,7 @@
           <span>加载中...</span>
         </div>
         <div v-else class="text-gray-400 text-sm">
-          向下滚动加载更多
+          下拉浏览更多内容
         </div>
       </div>
     </section>
@@ -158,12 +167,10 @@ const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
 const { confirm } = useConfirm()
 
-// 布局控制 - 强制默认列表布局
+// 布局状态 - 强制默认列表模式
 const layoutMode = ref<'grid' | 'list'>('list')
 const effectiveLayout = computed(() => {
-  // 移动端始终列表布局
   if (isMobile.value) return 'list'
-  // 桌面端也始终使用layoutMode的值（默认为list）
   return layoutMode.value
 })
 const gridClasses = computed(() => {
@@ -177,12 +184,11 @@ const gridClasses = computed(() => {
 const switchLayout = async (mode: 'grid' | 'list') => {
   if (mode === layoutMode.value) return
 
-  // 切换到网格布局时警告
   if (mode === 'grid') {
     const confirmed = await confirm({
       title: '切换布局',
-      message: '网格布局可能存在视觉和显示问题，建议使用列表布局以获得更好的体验。确定要切换吗？',
-      confirmText: '确定切换',
+      message: '宫格布局可能在部分设备上滚动较多，推荐使用列表布局以获得更好的阅读体验。确定要切换吗？',
+      confirmText: '确认切换',
       cancelText: '取消'
     })
     if (!confirmed) return
@@ -194,57 +200,58 @@ const switchLayout = async (mode: 'grid' | 'list') => {
   }
 }
 
-// 从 localStorage 读取布局偏好（仅限列表布局，忽略网格布局）
+// 从 localStorage 读取布局偏好；如果不是 list，就重置为 list
 onMounted(() => {
   const saved = localStorage.getItem('love-wall-layout')
-  // 只接受'list'，忽略'grid'，确保默认始终为列表布局
   if (saved === 'list') {
     layoutMode.value = 'list'
   } else {
-    // 清除旧的网格布局偏好
     localStorage.removeItem('love-wall-layout')
     layoutMode.value = 'list'
   }
 })
-// 只在列表布局时保存
+
+// 仅在列表模式时持久化
 watch(layoutMode, (v) => {
   if (!isMobile.value && v === 'list') {
     localStorage.setItem('love-wall-layout', v)
   }
 })
 
-// --- 数据加载 (SSR 友好) ---
-const { data, pending, refresh, error } = await useAsyncData(
-  'home-posts',
-  async () => {
-    // ✅ 修复：只调用一次initialLoad，避免重复请求
-    await home.initialLoad()
-    return {
-      posts: home.posts,
-      hasMore: home.hasMore,
-    }
-  },
-  { server: true, lazy: false }
-)
-
-// ✅ 直接使用store的响应式数据
-const posts = computed(() => home.posts)
+// --- 数据加载（仅在客户端首屏加载，避免阻塞 SSR） ---
+const posts = computed<PostDto[]>(() => home.posts)
 const hasMore = computed(() => home.hasMore)
 const loadingMore = computed(() => home.loadingMore)
 const loading = computed(() => home.loading)
 
+// 首次进入首页时，在客户端触发初始加载
+onMounted(() => {
+  if (!home.loaded && !home.loading) {
+    home.initialLoad().catch((error) => {
+      console.error('Index: initial home load failed', error)
+    })
+  }
+})
+
 // 刷新按钮
 const handleRefresh = async () => {
-  await home.forceRefresh()
+  try {
+    await home.forceRefresh()
+  } catch (error) {
+    console.error('Index: manual refresh failed', error)
+  }
 }
 
 // 加载更多
 const loadMore = async () => {
-  await home.loadMore()
-  data.value!!.posts = home.posts
+  try {
+    await home.loadMore()
+  } catch (error) {
+    console.error('Index: load more failed', error)
+  }
 }
 
-// 无限滚动：观察loadMoreTrigger元素
+// 触底监听
 const loadMoreTrigger = ref<HTMLElement>()
 
 onMounted(() => {
@@ -259,7 +266,7 @@ onMounted(() => {
     },
     {
       root: null,
-      rootMargin: '200px', // 提前200px开始加载
+      rootMargin: '200px',
       threshold: 0.1,
     }
   )
@@ -271,7 +278,7 @@ onMounted(() => {
   })
 })
 
-// Use Vue Router 4 composition guard signature (no next)
+// 返回本页时尝试做一次轻量刷新（不依赖 TTL）
 onBeforeRouteUpdate((to, from) => {
   if (to.fullPath === from.fullPath) {
     return
@@ -282,7 +289,6 @@ onBeforeRouteUpdate((to, from) => {
   })
 })
 
-// When returning to this page via in-app navigation, refresh to ensure data is shown
 onActivated(async () => {
   try {
     await home.refreshIfStale()
@@ -291,11 +297,12 @@ onActivated(async () => {
   }
 })
 
-// Set page meta
+// --- SEO 与结构化数据 ---
 const homepageMetaTitle = '郑州四中表白墙'
 const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
-const homepageDescription = '郑州四中官方校园信息交流平台，帮助同学匿名分享心声、表白与校园资讯，营造温暖真实的互动社区。'
-const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生互动,校园社区'
+const homepageDescription =
+  '郑州四中官方校园信息交流平台，帮助同学们安全、温暖地表达心声，分享校园生活。'
+const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生表白,校园交流'
 const siteName = '郑州四中表白墙'
 
 const runtimeConfig = useRuntimeConfig()
@@ -360,7 +367,7 @@ useSeoMeta({
   description: homepageDescription,
   keywords: homepageKeywords,
 
-  // --- Open Graph ---
+  // Open Graph
   ogTitle: homepageTitle,
   ogDescription: homepageDescription,
   ogType: 'website',
@@ -368,7 +375,7 @@ useSeoMeta({
   ogImage: computed(() => homepageOgImage.value),
   ogSiteName: siteName,
 
-  // --- Twitter ---
+  // Twitter
   twitterCard: 'summary_large_image',
   twitterTitle: homepageTitle,
   twitterDescription: homepageDescription,
@@ -406,8 +413,10 @@ useHead({
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
-.posts > .card {
-  content-visibility: auto; contain-intrinsic-size: 1px 360px;
-}
 
+:deep(.posts > .card) {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 360px;
+}
 </style>
+

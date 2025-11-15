@@ -1,7 +1,5 @@
-import {defineStore} from 'pinia'
-import type {Pagination, PostDto} from '~/types'
-
-const REFRESH_TTL = 30_000 // 30 seconds cache window
+import { defineStore } from 'pinia'
+import type { Pagination, PostDto } from '~/types'
 
 const normalizeStatus = (s: any): 0 | 1 => {
   if (typeof s === 'number') return s === 1 ? 1 : 0
@@ -29,6 +27,7 @@ const normalizePost = (p: any): PostDto => {
     status: normalizeStatus(p.status),
     is_pinned: !!p.is_pinned,
     is_featured: !!p.is_featured,
+    is_locked: !!p.is_locked,
     created_at: createdAt,
     updated_at: p.updated_at ?? createdAt,
     author_tag: p.author_tag,
@@ -39,12 +38,11 @@ const normalizePost = (p: any): PostDto => {
     audit_status: p.audit_status,
     audit_msg: p.audit_msg,
     manual_review_requested: p.manual_review_requested,
-    // 保留作者扩展信息（v3.2新增字段）
+    // 扩展作者在线状态信息
     author_display_name: p.author_display_name ?? null,
     author_avatar_url: p.author_avatar_url ?? null,
     author_is_online: p.author_is_online ?? false,
     author_last_heartbeat: p.author_last_heartbeat ?? null,
-    author_is_deleted: p.author_is_deleted ?? p.author_deleted ?? false,
   }
   return normalized
 }
@@ -78,7 +76,7 @@ interface HomeState {
   loading: boolean
   loadingMore: boolean
   loaded: boolean
-  lastLoadedAt: number | null
+  error: string | null
 }
 
 export const useHomeStore = defineStore('home', {
@@ -92,36 +90,28 @@ export const useHomeStore = defineStore('home', {
     loading: false,
     loadingMore: false,
     loaded: false,
-    lastLoadedAt: null,
+    error: null,
   }),
   getters: {
     hasData: (s) => s.loaded && s.posts.length > 0,
   },
   actions: {
-    shouldRefresh(maxAge = REFRESH_TTL) {
-      if (!this.loaded || !this.lastLoadedAt) return true
-      return Date.now() - this.lastLoadedAt > maxAge
-    },
-
-    async refreshIfStale(maxAge = REFRESH_TTL) {
-      if (this.loading || !this.shouldRefresh(maxAge)) {
-        return
-      }
+    async initialLoad() {
+      // 首次进入首页时加载数据（不做 TTL 缓存，只避免并发）
+      if (this.loaded || this.loading) return
       await this.forceRefresh()
     },
 
-    async initialLoad() {
+    async refreshIfStale() {
+      // 现在不再按时间判断“是否陈旧”，而是简单地防止并发刷新
       if (this.loading) return
-      if (!this.loaded) {
-        await this.forceRefresh()
-        return
-      }
-      await this.refreshIfStale()
+      await this.forceRefresh()
     },
 
     async forceRefresh() {
       if (this.loading) return
       this.loading = true
+      this.error = null
       try {
         const api = useNuxtApp().$api
         const auth = useAuthStore()
@@ -133,7 +123,6 @@ export const useHomeStore = defineStore('home', {
           page_size: pageSize,
         }
 
-        // ✅ 优化：只发起一个请求，帖子数据已包含is_pinned和is_featured信息
         const listResp = await api.listPosts(params)
 
         const rawItems = extractItems(listResp)
@@ -142,20 +131,22 @@ export const useHomeStore = defineStore('home', {
           ? normalizedItems
           : normalizedItems.filter((p: PostDto) => p.status === 0)
 
-        // ✅ 刷新时始终替换数据，重置到第一页 (后端已排序,前端不再排序)
+        // 刷新时整体替换为第一页数据（后续通过 loadMore 追加）
         this.posts = filteredPosts
         this.page = 1
         this.hasMore = rawItems.length === pageSize
         this.loaded = true
-        this.lastLoadedAt = Date.now()
-
-      } catch (error) {
+      } catch (error: any) {
         console.error('HomeStore: Failed to refresh posts:', error)
+
+        const message = error?.message || '刷新失败，请稍后重试'
+        this.error = message
 
         if (import.meta.client) {
           const toast = useToast()
-          toast.error('刷新失败，请稍后重试')
+          toast.error(message)
         }
+
         throw error
       } finally {
         this.loading = false
@@ -169,6 +160,7 @@ export const useHomeStore = defineStore('home', {
     async loadMore() {
       if (!this.loaded || !this.hasMore || this.loadingMore) return
       this.loadingMore = true
+      this.error = null
       try {
         const api = useNuxtApp().$api
         const auth = useAuthStore()
@@ -192,22 +184,26 @@ export const useHomeStore = defineStore('home', {
         const existingIds = new Set(this.posts.map((post) => post.id))
         const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
 
-        // 后端已排序,直接追加新帖子
+        // 追加去重后的新数据
         if (uniqueNewPosts.length > 0) {
           this.posts = [...this.posts, ...uniqueNewPosts]
         }
         this.page = next
         this.hasMore = itemsRaw.length === pageSize
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load more posts:', error)
+        const message = error?.message || '加载更多失败，请稍后重试'
+        this.error = message
+
         if (import.meta.client) {
           const toast = useToast()
-          toast.error('加载更多失败，请稍后重试')
+          toast.error(message)
         }
         throw error
       } finally {
         this.loadingMore = false
       }
     },
-  }
+  },
 })
+

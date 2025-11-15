@@ -51,6 +51,11 @@
                 :alt="post.author_name"
                 class="relative z-10 w-full h-full rounded-full object-cover"
                 :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+                width="96"
+                height="96"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
               <div
                 v-else
@@ -97,6 +102,11 @@
                       :alt="post.author_name"
                       class="relative z-10 w-full h-full rounded-full object-cover"
                       :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                      fetchpriority="auto"
+                      decoding="async"
                     />
                     <div
                       v-else

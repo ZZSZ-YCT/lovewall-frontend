@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import 'photoswipe/style.css'
-
 interface Props {
   images: string[]
   altPrefix?: string
@@ -81,6 +79,10 @@ const lightbox = ref<any>(null)
 
 const ensureLightbox = async () => {
   if (lightbox.value) return lightbox.value
+
+  if (import.meta.client) {
+    await import('photoswipe/style.css')
+  }
 
   const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
 

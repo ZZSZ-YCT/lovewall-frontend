@@ -138,8 +138,14 @@ export default defineNuxtConfig({
         { rel: 'canonical', href: SITE_URL },
         { rel: 'alternate', hreflang: 'zh-CN', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
-        // KaTeX CSS for LaTeX rendering in announcements
-        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css', crossorigin: 'anonymous' }
+        // KaTeX CSS for LaTeX rendering in announcements（使用非阻塞加载）
+        {
+          rel: 'stylesheet',
+          href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
+          crossorigin: 'anonymous',
+          media: 'print',
+          onload: "this.media='all'"
+        }
       ]
     }
   },

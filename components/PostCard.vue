@@ -1,6 +1,7 @@
 <template>
   <GlassCard 
     :class="[
+      'card',
       variant === 'list' ? 'post-card-list' : 'post-card',
       'cursor-pointer group relative overflow-hidden',
       'transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg',
@@ -42,6 +43,11 @@
             format="webp"
             class="author-avatar"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+            :width="isMobile ? 40 : 48"
+            :height="isMobile ? 40 : 48"
+            :loading="eager ? 'eager' : 'lazy'"
+            :fetchpriority="eager ? 'high' : 'auto'"
+            decoding="async"
             @error="handleAuthorAvatarError"
           />
 
