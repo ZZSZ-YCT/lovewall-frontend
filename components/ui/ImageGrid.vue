@@ -22,8 +22,7 @@
             class="relative w-full h-full rounded-lg overflow-hidden"
             fit="inside"
             sizes="100vw sm:50vw md:400px"
-            :width="400"
-            :height="400"
+            :modifiers="{width: 400,height: 400,fit: 'cover',quality: 70}"
             :imgAttrs="{ class: 'w-full h-full object-cover', fetchpriority: fetchPriority }"
             :loading="loadingMode"
             decoding="async"
@@ -60,7 +59,7 @@ if (props.eager) {
   // 首屏或需要优先展示的图片：直接可见，不走懒加载占位
   visible.value = true
 } else {
-  const { stop } = useIntersectionObserver(
+  const {stop} = useIntersectionObserver(
     root,
     ([entry]) => {
       if (entry && entry.isIntersecting) {
@@ -82,7 +81,7 @@ const fetchPriority = computed(() => (props.eager ? 'high' : 'auto'))
 const maxThumbs = 4
 const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))
 
-const { assetUrl } = useAssetUrl()
+const {assetUrl} = useAssetUrl()
 const galleryRef = ref<HTMLElement>()
 
 const lightbox = ref<any>(null)
@@ -169,11 +168,7 @@ const resolveImage = (image: string) => {
 }
 
 const resolveThumbnail = (image: string) => {
-  const base = resolveImage(image)
-  if (!base) return ''
-
-  const separator = base.includes('?') ? '&' : '?'
-  return `${base}${separator}w=400&h=400&fit=cover&q=70&format=webp`
+  return resolveImage(image)
 }
 
 const resolveOriginalImage = resolveImage
@@ -223,7 +218,7 @@ onUnmounted(() => {
 
 /* 顶部工具栏 */
 .pswp__top-bar {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
   padding: 16px 20px !important;
 }
 
