@@ -29,5 +29,6 @@ registerPostCommands()
     <Terminal placeholder='Type "help" to begin…' />
     <CaptchaGate />
     <PopupPortal />
+    <CaptchaDialog />
   </main>
 </template>

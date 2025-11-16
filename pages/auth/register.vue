@@ -111,6 +111,8 @@
       </div>
     </div>
   </div>
+
+  <CaptchaDialog />
 </template>
 
 <script setup lang="ts">
