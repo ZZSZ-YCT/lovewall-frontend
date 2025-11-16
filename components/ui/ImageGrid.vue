@@ -22,7 +22,9 @@
             class="relative w-full h-full rounded-lg overflow-hidden"
             fit="inside"
             sizes="100vw sm:50vw md:400px"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }"
+            :width="400"
+            :height="400"
+            :imgAttrs="{ class: 'w-full h-full object-cover', fetchpriority: fetchPriority }"
             :loading="loadingMode"
             decoding="async"
           />
@@ -54,20 +56,28 @@ const props = withDefaults(defineProps<Props>(), {
 const root = ref<HTMLElement | null>(null)
 const visible = ref(false)
 
-const { stop } = useIntersectionObserver(
-  root,
-  ([entry]) => {
-    if (entry!!.isIntersecting) {
-      visible.value = true
-      stop() // only trigger once
-    }
-  },
-  {
-    rootMargin: '200px 0px', // start loading a bit before it enters viewport
-  },
-)
+if (props.eager) {
+  // 首屏或需要优先展示的图片：直接可见，不走懒加载占位
+  visible.value = true
+} else {
+  const { stop } = useIntersectionObserver(
+    root,
+    ([entry]) => {
+      if (entry && entry.isIntersecting) {
+        visible.value = true
+        stop() // only trigger once
+      }
+    },
+    {
+      // 提前 600px 触发加载，避免滑到时还在白屏等待
+      rootMargin: '600px 0px',
+      threshold: 0,
+    },
+  )
+}
 
 const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
+const fetchPriority = computed(() => (props.eager ? 'high' : 'auto'))
 
 const maxThumbs = 4
 const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))

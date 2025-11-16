@@ -24,6 +24,7 @@
             <button
               type="button"
               class="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="关闭公告"
               @click="handleClose"
             >
               <svg class="w-5 h-5" stroke="currentColor" viewBox="0 0 24 24">

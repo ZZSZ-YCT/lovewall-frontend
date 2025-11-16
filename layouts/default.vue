@@ -30,10 +30,15 @@
               src="/badge.png"
               alt="郑州四中表白墙"
               class="w-8 h-8 rounded-lg"
-              :modifiers="{ fit: 'cover' }"
+              :modifiers="{ fit: 'cover', quality: 70 }"
               sizes="32px"
               format="webp"
               densities="x1 x2"
+              width="32"
+              height="32"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
             <span class="font-bold text-lg hidden sm:block">郑州四中表白墙</span>
           </NuxtLink>

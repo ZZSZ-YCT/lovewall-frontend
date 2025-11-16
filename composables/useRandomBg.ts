@@ -22,9 +22,10 @@ export const useRandomBg = () => {
         }
       }
 
-      // Generate a unique URL to get a new random image
+      // Generate a unique URL to get a new random image（限制尺寸与质量，减小体积）
       const timestamp = Date.now()
-      const imageUrl = `${url}${url.endsWith('/') ? '' : '/'}?t=${timestamp}`
+      const base = `${url}${url.endsWith('/') ? '' : '/'}`
+      const imageUrl = `${base}?w=1600&h=900&q=70&fit=cover&t=${timestamp}`
 
       // Create a new image to test loading
       const img = new Image()

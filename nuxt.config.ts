@@ -2,6 +2,15 @@ const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const API_BASE = process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8124/api'
 const RANDOM_IMAGE_API_URL = process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/'
 
+const resolveOrigin = (input?: string | null) => {
+  if (!input) return null
+  try {
+    return new URL(input).origin
+  } catch {
+    return null
+  }
+}
+
 const resolveHost = (input?: string | null) => {
   if (!input) return null
   try {
@@ -18,6 +27,9 @@ const imageDomains = [
 ].filter(Boolean) as string[]
 
 const uniqueImageDomains = Array.from(new Set(imageDomains))
+
+const apiOrigin = resolveOrigin(API_BASE)
+const randomImageOrigin = resolveOrigin(RANDOM_IMAGE_API_URL)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -145,8 +157,10 @@ export default defineNuxtConfig({
           crossorigin: 'anonymous',
           media: 'print',
           onload: "this.media='all'"
-        }
-      ]
+        },
+        ...(apiOrigin ? [{ rel: 'preconnect', href: apiOrigin, crossorigin: 'anonymous' as const }] : []),
+        ...(randomImageOrigin ? [{ rel: 'preconnect', href: randomImageOrigin, crossorigin: 'anonymous' as const }] : []),
+      ] as any
     }
   },
 

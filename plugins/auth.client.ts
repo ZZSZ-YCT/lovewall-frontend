@@ -1,11 +1,11 @@
-export default defineNuxtPlugin(async () => {
-  // 初始化认证状态
+export default defineNuxtPlugin(() => {
+  // 不阻塞应用启动，后台恢复认证状态
   const auth = useAuthStore()
-  
-  try {
-    // 在客户端初始化时恢复用户认证状态
-    await auth.initAuth()
-  } catch (error) {
+
+  if (!import.meta.client) return
+
+  // fire-and-forget 方式异步初始化，不影响首屏交互和路由跳转
+  auth.initAuth().catch((error) => {
     console.warn('Auth initialization failed:', error)
-  }
+  })
 })
