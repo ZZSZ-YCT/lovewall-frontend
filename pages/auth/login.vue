@@ -89,6 +89,7 @@ import GlassButton from '~/components/ui/GlassButton.vue'
 import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import type { LoginForm } from '~/types'
+import CaptchaDialog from '~/components/popup/CaptchaDialog.vue'
 
 // Form schema
 const loginSchema = z.object({
