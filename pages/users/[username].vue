@@ -436,13 +436,16 @@ useSeoMeta({
   // --- Profile-specific OG fields ---
   profileUsername: computed(() => user.value?.username || ''),
   profileFirstName: computed(() => userDisplayName.value),
-
-  // --- Canonical ---
-  canonical: computed(() => canonicalUrl.value),
 })
 
 // --- JSON-LD 结构化数据 ---
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!profileStructuredData.value) return []
     return [

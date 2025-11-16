@@ -619,7 +619,7 @@ onMounted(async () => {
       const adminPost = await api.getPostForAdmin(postId.value)
       postData.value = {
         authorAvatar: postData.value?.authorAvatar ?? '',
-        lockStatus: postData.value?.lockStatus,
+        lockStatus: postData.value?.lockStatus ?? { id: adminPost.id, is_locked: (adminPost as any).is_locked ?? false },
         post: adminPost
       }
     } catch (err) {
@@ -632,6 +632,9 @@ onMounted(async () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0]
+        if (!target) {
+          return
+        }
         const hasMoreComments = commentsData.value &&
           commentsData.value.page * commentsData.value.page_size < commentsData.value.total
 
@@ -930,11 +933,11 @@ const toggleHide = async () => {
     const api = useNuxtApp().$api
     if (post.value.status === 1) {
       const res = await api.hidePost(post.value.id, false, reasonInput || undefined)
-      post.value.status = res.status
+      post.value.status = res.status as 0 | 1
       toast.success('帖子已恢复')
     } else if (post.value.status === 0) {
       const res = await api.hidePost(post.value.id, true, reasonInput || undefined)
-      post.value.status = res.status
+      post.value.status = res.status as 0 | 1
       toast.success('帖子已隐藏')
     }
   } catch (err) {

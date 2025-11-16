@@ -236,7 +236,7 @@ const startRotate = (event: MouseEvent | TouchEvent) => {
     event.preventDefault()
   }
 
-  const startY = 'touches' in event ? event.touches[0].clientY : event.clientY
+  const startY = 'touches' in event && event.touches.length > 0 ? event.touches[0]!.clientY : (event as MouseEvent).clientY
   let lastY = startY
 
   const moveHandler = (e: MouseEvent | TouchEvent) => {
@@ -245,7 +245,7 @@ const startRotate = (event: MouseEvent | TouchEvent) => {
       e.preventDefault()
     }
 
-    const currentY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    const currentY = 'touches' in e && e.touches.length > 0 ? e.touches[0]!.clientY : (e as MouseEvent).clientY
     const deltaY = lastY - currentY
     rotateAngle.value = (rotateAngle.value + deltaY + 360) % 360
     lastY = currentY

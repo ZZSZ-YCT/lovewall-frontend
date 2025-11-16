@@ -391,24 +391,23 @@ function buildHelp(cmd: CommandSpec, lineage: CommandSpec[]) {
     }
   }
 
-  const common = [{
+  const common: OptionSpec[] = [{
     name: 'help',
     short: 'h',
     description: 'Show help for this command',
     type: 'boolean'
-  } satisfies OptionSpec]
-  const opts = [...(cmd.options ?? []), ...common]
+  }]
+  const opts: OptionSpec[] = [...(cmd.options ?? []), ...common]
   if (opts.length) {
     lines.push('\nOptions:')
     const pad = Math.max(...opts.map(o => `${o.short ? '-' + o.short + ', ' : '    '}--${o.name}`.length)) + 2
     for (const o of opts) {
       const left = `${o.short ? '-' + o.short + ', ' : '    '}--${o.name}`
-      // @ts-ignore
       const right = [
         o.description ?? '',
-        o.required ? '(required)' : '',
+        o.required === true ? '(required)' : '',
         o.default !== undefined ? `(default: ${Array.isArray(o.default) ? o.default.join(',') : String(o.default)})` : '',
-        o.choices?.length ? `(choices: ${o.choices.join('|')})` : ''
+        o.choices && o.choices.length > 0 ? `(choices: ${o.choices.join('|')})` : ''
       ].filter(Boolean).join(' ')
       lines.push(`  ${left.padEnd(pad)}${right}`)
     }

@@ -122,7 +122,7 @@
               <GlassTextarea
                 v-model="editForm.content"
                 :error="editErrors.content"
-                rows="3"
+                :rows="3"
                 class="w-full"
                 placeholder="编辑你的评论..."
               />

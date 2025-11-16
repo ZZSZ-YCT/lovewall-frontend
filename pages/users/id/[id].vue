@@ -229,7 +229,17 @@ const {
   refresh: refreshPosts
 } = await useAsyncData(
   () => `user-posts-${userId.value}`,
-  () => user.value ? useNuxtApp().$api.getUserPosts(user.value.id, { page: 1, page_size: 10 }) : [],
+  () => {
+    if (!user.value) {
+      return Promise.resolve<Pagination<PostDto>>({
+        total: 0,
+        items: [],
+        page: 1,
+        page_size: 10
+      })
+    }
+    return useNuxtApp().$api.getUserPosts(user.value.id, { page: 1, page_size: 10 })
+  },
   { watch: [user] } // 👈 当 user 加载成功时自动加载帖子
 )
 
@@ -465,12 +475,15 @@ useSeoMeta({
   // --- Profile-specific OG fields ---
   profileUsername: computed(() => user.value?.username || ''),
   profileFirstName: computed(() => userDisplayName.value),
-
-  // --- Canonical ---
-  canonical: computed(() => canonicalUrl.value),
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!profileStructuredData.value) return []
     return [

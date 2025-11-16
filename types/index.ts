@@ -28,6 +28,7 @@ export interface User {
   last_ip?: string | null
   metadata?: string | Record<string, unknown> | null
   permissions?: string[] // 仅在用户列表接口返回
+  active_tag?: Pick<TagDto, 'id' | 'name' | 'title' | 'background_color' | 'text_color' | 'description' | 'css_styles' | 'tag_type'> | null
   created_at: string
   updated_at: string
   is_deleted?: boolean
@@ -200,10 +201,17 @@ export interface AnnouncementForm {
 export interface TagForm {
   name: string
   title: string
-  background_color: string
-  text_color: string
-  description?: string
+  background_color?: string
+  backgroundColor?: string
+  text_color?: string
+  textColor?: string
+  description?: string | null
+  css_styles?: string | null
+  cssStyles?: string | null
+  tag_type?: 'personal' | 'collective'
+  tagType?: 'personal' | 'collective'
   is_active?: boolean
+  isActive?: boolean
 }
 
 export interface GenerateCodesForm {
@@ -365,6 +373,7 @@ export interface LogFilters {
 export interface HeartbeatResponse {
   online: boolean
   timestamp: string
+  unread_notifications?: number
 }
 
 export interface UserOnlineStatus {

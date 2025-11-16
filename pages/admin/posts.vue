@@ -676,7 +676,7 @@ const confirmActionReason = async () => {
       toast.success(actionReasonModal.enable ? '已设为精华' : '已取消精华')
     } else if (actionReasonModal.action === 'hide') {
       const res = await api.hidePost(actionReasonModal.post.id, actionReasonModal.enable, reason)
-      actionReasonModal.post.status = res.status
+      actionReasonModal.post.status = res.status as 0 | 1
       toast.success(actionReasonModal.enable ? '表白已隐藏' : '表白已恢复')
     }
   } catch (error) {

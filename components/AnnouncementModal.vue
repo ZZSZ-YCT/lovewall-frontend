@@ -3,7 +3,7 @@
     <Transition name="announcement-fade">
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-[10000] flex items-center justify-center p-4"
+        class="announcement-modal fixed inset-0 z-[10000] flex items-center justify-center p-4"
       >
         <!-- 背景遮罩 -->
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="handleClose" />
@@ -126,14 +126,28 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.announcement-modal {
+  position: fixed;
+  inset: 0;
+  contain: layout paint;
+}
+
 .announcement-fade-enter-active,
 .announcement-fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: transform, opacity;
 }
 
 .announcement-fade-enter-from,
 .announcement-fade-leave-to {
   opacity: 0;
+  transform: translate3d(0, -12px, 0) scale(0.98);
+}
+
+.announcement-fade-enter-to,
+.announcement-fade-leave-from {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 @keyframes dialog-in {

@@ -272,9 +272,43 @@
       ]"
       @click.stop
     >
+      <div v-if="useEagerImageGrid" class="space-y-3">
+        <div ref="eagerGalleryRef" :class="eagerGridWrapperClass">
+          <a
+            v-for="(image, index) in eagerPreviewImages"
+            :key="`${image}-${index}`"
+            :href="resolvePostImage(image)"
+            :data-pswp-width="2400"
+            :data-pswp-height="2400"
+            target="_blank"
+            rel="noreferrer"
+            @click.prevent.stop="openEagerGallery(index)"
+            class="relative block"
+          >
+            <NuxtImg
+              :src="resolvePostImage(image)"
+              :alt="`${postImageAltPrefix} ${index + 1}`"
+              :sizes="eagerImageSizes"
+              format="webp"
+              :modifiers="{ fit: 'cover' }"
+              class="w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl aspect-square object-cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div
+              v-if="eagerHiddenCount > 0 && index === eagerPreviewImages.length - 1"
+              class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold rounded-lg md:rounded-xl"
+            >
+              +{{ eagerHiddenCount }}
+            </div>
+          </a>
+        </div>
+      </div>
       <ImageGrid
+        v-else
         :images="post.images"
-        :alt-prefix="(post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name) ? (post.author_name + ' 的表白图片') : (post.author_name + ' 的交流图片')"
+        :alt-prefix="postImageAltPrefix"
         :eager="eager"
       />
     </div>
@@ -359,6 +393,93 @@ const dropdownButtonRef = ref<HTMLElement>()
 const dropdownMenuRef = ref<HTMLElement>()
 const avatarLoadFailed = ref(false)
 const postAuthorMeta = computed(() => props.post as PostDto & PostAuthorMeta)
+const postImages = computed(() => props.post.images ?? [])
+const maxPreviewImages = 4
+const useEagerImageGrid = computed(() => props.eager && postImages.value.length > 0)
+const eagerPreviewImages = computed(() => postImages.value.slice(0, maxPreviewImages))
+const eagerHiddenCount = computed(() => Math.max(postImages.value.length - maxPreviewImages, 0))
+const postImageAltPrefix = computed(() => {
+  const { card_type, target_name, author_name } = props.post
+  if (card_type !== 'communication' && card_type !== 'social' && target_name) {
+    return `${author_name} 的表白图片`
+  }
+  return `${author_name} 的交流图片`
+})
+const eagerGridWrapperClass = computed(() => {
+  const count = Math.min(postImages.value.length, maxPreviewImages)
+  if (count <= 0) return ''
+  if (count === 1) return 'grid gap-3 grid-cols-1'
+  if (count === 2) return 'grid gap-3 grid-cols-2'
+  if (count === 3) return 'grid gap-3 grid-cols-3'
+  return 'grid gap-3 grid-cols-2'
+})
+const eagerImageSizes = '100vw sm:70vw lg:600px'
+const eagerGalleryRef = ref<HTMLElement | null>(null)
+const eagerLightbox = ref<any | null>(null)
+
+const resolvePostImage = (image: string) => {
+  if (!image) return ''
+  return image.startsWith('http') ? image : assetUrl(image)
+}
+
+const destroyEagerLightbox = () => {
+  if (eagerLightbox.value) {
+    eagerLightbox.value.destroy()
+    eagerLightbox.value = null
+  }
+}
+
+const ensureEagerLightbox = async () => {
+  if (!import.meta.client || !useEagerImageGrid.value) {
+    return null
+  }
+  if (eagerLightbox.value) {
+    return eagerLightbox.value
+  }
+
+  await nextTick()
+  if (!eagerGalleryRef.value) {
+    return null
+  }
+
+  await import('photoswipe/style.css')
+  const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
+
+  eagerLightbox.value = new PhotoSwipeLightbox({
+    gallery: eagerGalleryRef.value,
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+    preload: [1, 2],
+    zoom: true,
+    maxZoomLevel: 4,
+    initialZoomLevel: 'fit',
+    secondaryZoomLevel: 2,
+    pinchToClose: true,
+    closeOnVerticalDrag: true,
+    bgOpacity: 0.98,
+    showHideAnimationType: 'zoom',
+    padding: {
+      top: 60,
+      bottom: 60,
+      left: 20,
+      right: 20
+    }
+  })
+  eagerLightbox.value.init()
+  return eagerLightbox.value
+}
+
+const openEagerGallery = async (index: number) => {
+  const lb = await ensureEagerLightbox()
+  if (!lb) return
+  lb.loadAndOpen(index)
+}
+
+watch(useEagerImageGrid, (active) => {
+  if (!active) {
+    destroyEagerLightbox()
+  }
+})
 
 watch(() => postAuthorMeta.value.author_avatar_url, () => {
   avatarLoadFailed.value = false
@@ -424,6 +545,7 @@ watch(showDropdown, (isOpen) => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateDropdownPosition)
   window.removeEventListener('scroll', updateDropdownPosition, true)
+  destroyEagerLightbox()
 })
 
 // Close dropdown when clicking outside

@@ -25,7 +25,7 @@ export const useRandomBg = () => {
       // Generate a unique URL to get a new random image（限制尺寸与质量，减小体积）
       const timestamp = Date.now()
       const base = `${url}${url.endsWith('/') ? '' : '/'}`
-      const imageUrl = `${base}?w=1600&h=900&q=70&fit=cover&t=${timestamp}`
+      const imageUrl = `${base}?w=1200&h=675&q=50&fit=cover&t=${timestamp}`
 
       // Create a new image to test loading
       const img = new Image()
@@ -48,7 +48,7 @@ export const useRandomBg = () => {
     } catch (err) {
       if (retries > 0) {
         // Wait a bit before retrying
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise<void>(resolve => window.setTimeout(resolve, 1000))
         return fetchImage(retries - 1)
       }
 
@@ -76,10 +76,12 @@ export const useRandomBg = () => {
       fetchImage()
     }
 
-    if ('requestIdleCallback' in window) {
-      ;(window as Window & { requestIdleCallback: (cb: IdleRequestCallback) => number }).requestIdleCallback(() => startFetch())
-    } else {
-      window.setTimeout(startFetch, 0)
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        (window as any).requestIdleCallback(() => startFetch())
+      } else {
+        (window as any).setTimeout(startFetch, 0)
+      }
     }
   })
 

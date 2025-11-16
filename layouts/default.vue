@@ -25,12 +25,12 @@
       <header class="fixed top-0 left-0 right-0 z-50">
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
-          <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
+            <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
             <NuxtImg
               src="/badge.png"
               alt="郑州四中表白墙"
               class="w-8 h-8 rounded-lg"
-              :modifiers="{ fit: 'cover', quality: 70 }"
+              :modifiers="{ fit: 'cover', quality: 50 }"
               sizes="32px"
               format="webp"
               densities="x1 x2"

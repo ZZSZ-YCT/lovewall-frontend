@@ -158,8 +158,15 @@ export default defineNuxtConfig({
           media: 'print',
           onload: "this.media='all'"
         },
-        ...(apiOrigin ? [{ rel: 'preconnect', href: apiOrigin, crossorigin: 'anonymous' as const }] : []),
-        ...(randomImageOrigin ? [{ rel: 'preconnect', href: randomImageOrigin, crossorigin: 'anonymous' as const }] : []),
+        // Preconnect to API and image origins for faster resource loading
+        ...(apiOrigin ? [
+          { rel: 'dns-prefetch', href: apiOrigin },
+          { rel: 'preconnect', href: apiOrigin, crossorigin: 'anonymous' as const }
+        ] : []),
+        ...(randomImageOrigin ? [
+          { rel: 'dns-prefetch', href: randomImageOrigin },
+          { rel: 'preconnect', href: randomImageOrigin, crossorigin: 'anonymous' as const }
+        ] : []),
       ] as any
     }
   },
@@ -184,11 +191,12 @@ export default defineNuxtConfig({
     },
     build: {
       cssCodeSplit: true,
+      inlineCssModuleChunks: true,
       minify: 'esbuild',
       rollupOptions: {
         output: { manualChunks: { vendor: ['vue', 'vue-router'] } }
       }
-    }
+    } as Record<string, any>
   },
   
   runtimeConfig: {
@@ -242,5 +250,6 @@ export default defineNuxtConfig({
     viewTransition: true,
     asyncContext: true,
     renderJsonPayloads: true,
-  }
+    inlineSSRStyles: true,
+  } as Record<string, any>
 })
