@@ -155,8 +155,6 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
           crossorigin: 'anonymous',
-          media: 'print',
-          onload: "this.media='all'"
         },
         // Preconnect to API and image origins for faster resource loading
         ...(apiOrigin ? [
