@@ -1,8 +1,6 @@
 <template>
-  <div ref="root">
-    <div v-if="!visible" class="h-40 bg-gray-100 rounded-lg"></div>
-
-    <div v-if="visible && images?.length" class="space-y-3">
+  <div>
+    <div v-if="images?.length" class="space-y-3">
       <div ref="galleryRef" :class="gridWrapperClass">
         <a
           v-for="(image, index) in images.slice(0, maxThumbs)"
@@ -19,11 +17,11 @@
             :src="resolveThumbnail(image)"
             :alt="`${altPrefix} ${index + 1}`"
             :class="imageClass"
-            class="relative w-full h-full rounded-lg overflow-hidden"
+            class="relative w-full h-full rounded-lg md:rounded-xl overflow-hidden"
             fit="inside"
             sizes="100vw sm:50vw md:400px"
             :modifiers="{width: 400,height: 400,fit: 'cover',quality: 70}"
-            :imgAttrs="{ class: 'w-full h-full object-cover', fetchpriority: fetchPriority }"
+            :imgAttrs="{ class: 'w-full h-full object-cover rounded-lg md:rounded-xl', fetchpriority: fetchPriority }"
             :loading="loadingMode"
             decoding="async"
           />
@@ -52,28 +50,6 @@ const props = withDefaults(defineProps<Props>(), {
   altPrefix: '图片'
 })
 
-const root = ref<HTMLElement | null>(null)
-const visible = ref(false)
-
-if (props.eager) {
-  // 首屏或需要优先展示的图片：直接可见，不走懒加载占位
-  visible.value = true
-} else {
-  const {stop} = useIntersectionObserver(
-    root,
-    ([entry]) => {
-      if (entry && entry.isIntersecting) {
-        visible.value = true
-        stop() // only trigger once
-      }
-    },
-    {
-      // 提前 600px 触发加载，避免滑到时还在白屏等待
-      rootMargin: '600px 0px',
-      threshold: 0,
-    },
-  )
-}
 
 const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
 const fetchPriority = computed(() => (props.eager ? 'high' : 'auto'))
@@ -280,3 +256,5 @@ onUnmounted(() => {
   }
 }
 </style>
+
+

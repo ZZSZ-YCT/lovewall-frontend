@@ -66,6 +66,8 @@ const dedupeById = (posts: PostDto[]) => {
   })
 }
 
+let refreshPromise: Promise<void> | null = null
+
 interface HomeState {
   posts: PostDto[]
   pinned: PostDto[]
@@ -104,8 +106,23 @@ export const useHomeStore = defineStore('home', {
 
     async refreshIfStale() {
       // 现在不再按时间判断“是否陈旧”，而是简单地防止并发刷新
-      if (this.loading) return
-      await this.forceRefresh()
+      if (this.loading && this.loaded) return
+
+      if (refreshPromise) {
+        return refreshPromise
+      }
+
+      refreshPromise = (async () => {
+        // 阻止重复拉取：在已有刷新标记期间不再追加 forceRefresh 调用，数据保留
+        if (this.loading) return
+        await this.forceRefresh()
+      })()
+
+      try {
+        await refreshPromise
+      } finally {
+        refreshPromise = null
+      }
     },
 
     async forceRefresh() {
@@ -206,4 +223,3 @@ export const useHomeStore = defineStore('home', {
     },
   },
 })
-
