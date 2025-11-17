@@ -167,8 +167,8 @@ const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
 const { confirm } = useConfirm()
 
-// 布局状态 - 强制默认列表模式
-const layoutMode = ref<'grid' | 'list'>('list')
+// fuck u shit changes
+const layoutMode = ref<'grid' | 'list'>('grid')
 const effectiveLayout = computed(() => {
   if (isMobile.value) return 'list'
   return layoutMode.value
@@ -184,39 +184,11 @@ const gridClasses = computed(() => {
 const switchLayout = async (mode: 'grid' | 'list') => {
   if (mode === layoutMode.value) return
 
-  if (mode === 'grid') {
-    const confirmed = await confirm({
-      title: '切换布局',
-      message: '宫格布局可能在部分设备上滚动较多，推荐使用列表布局以获得更好的阅读体验。确定要切换吗？',
-      confirmText: '确认切换',
-      cancelText: '取消'
-    })
-    if (!confirmed) return
-  }
-
   layoutMode.value = mode
   if (!isMobile.value) {
     localStorage.setItem('love-wall-layout', mode)
   }
 }
-
-// 从 localStorage 读取布局偏好；如果不是 list，就重置为 list
-onMounted(() => {
-  const saved = localStorage.getItem('love-wall-layout')
-  if (saved === 'list') {
-    layoutMode.value = 'list'
-  } else {
-    localStorage.removeItem('love-wall-layout')
-    layoutMode.value = 'list'
-  }
-})
-
-// 仅在列表模式时持久化
-watch(layoutMode, (v) => {
-  if (!isMobile.value && v === 'list') {
-    localStorage.setItem('love-wall-layout', v)
-  }
-})
 
 // --- 数据加载（仅在客户端首屏加载，避免阻塞 SSR） ---
 const posts = computed<PostDto[]>(() => home.posts)
