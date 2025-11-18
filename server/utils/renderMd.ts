@@ -8,7 +8,6 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 
 const safeSchema = {
@@ -34,7 +33,6 @@ const processor = unified()
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
   .use(rehypeSanitize, safeSchema as any)
-  .use(rehypeKatex)
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
   .use(rehypeHighlight)

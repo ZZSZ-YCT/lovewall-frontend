@@ -266,15 +266,4 @@ onUnmounted(() => {
   background-color: #f9fafb;
   font-weight: 600;
 }
-
-/* KaTeX样式 */
-:deep(.katex) {
-  font-size: 1.1em;
-}
-
-:deep(.katex-display) {
-  margin: 1rem 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
 </style>
