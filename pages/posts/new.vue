@@ -120,6 +120,7 @@
             v-model="form.author_name"
             type="text"
             :placeholder="form.card_type === 'communication' ? '请输入您的昵称（可以是真名或匿名）' : '请输入您的昵称（可以是真名或匿名）'"
+            autocomplete="nickname"
             :error="errors.author_name"
             :required="form.confessor_mode === 'custom'"
           />

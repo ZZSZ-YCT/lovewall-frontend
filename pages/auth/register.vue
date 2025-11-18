@@ -22,6 +22,7 @@
               v-model="form.username"
               type="text"
               placeholder="请输入用户名"
+              autocomplete="username"
               :error="errors.username"
               required
             />
@@ -35,6 +36,7 @@
               v-model="form.password"
               type="password"
               placeholder="请输入密码"
+              autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.password"
               required
@@ -49,6 +51,7 @@
               v-model="confirmPassword"
               type="password"
               placeholder="请再次输入密码"
+              autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.confirmPassword"
               required

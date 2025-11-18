@@ -51,6 +51,7 @@
               id="display_name"
               v-model="form.display_name"
               placeholder="请输入显示名称（可选）"
+              autocomplete="nickname"
               :error="errors.display_name"
             />
           </div>
@@ -65,6 +66,7 @@
               v-model="form.email"
               type="email"
               placeholder="请输入邮箱地址（可选）"
+              autocomplete="email"
               :error="errors.email"
             />
           </div>
@@ -78,6 +80,7 @@
               id="phone"
               v-model="form.phone"
               placeholder="请输入手机号（可选）"
+              autocomplete="tel"
               :error="errors.phone"
             />
           </div>

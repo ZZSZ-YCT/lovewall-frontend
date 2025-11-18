@@ -23,6 +23,7 @@
             :modifiers="{width: 400,height: 400,fit: 'cover',quality: 70}"
             :imgAttrs="{ class: 'w-full h-full object-cover rounded-lg md:rounded-xl', fetchpriority: fetchPriority }"
             :loading="loadingMode"
+            :preload="{ fetchPriority: fetchPriority }"
             decoding="async"
           />
 
