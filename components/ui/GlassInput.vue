@@ -13,6 +13,7 @@
         :disabled="disabled"
         :required="required"
         :value="modelValue"
+        :autocomplete="autoComplete"
         :class="[
           'glass-input w-full py-3 text-sm',
           {
@@ -66,7 +67,8 @@ interface Props {
   modelValue?: string | number | null
   error?: string
   showPasswordToggle?: boolean
-  inputClass?: string
+  inputClass?: string,
+  autocomplete?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {

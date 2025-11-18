@@ -452,7 +452,7 @@
       <form class="space-y-4" @submit.prevent="savePostEdit">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">作者名称</label>
-          <GlassInput v-model="editForm.author_name" required />
+          <GlassInput v-model="editForm.author_name" autocomplete="nickname" required />
         </div>
 
         <div>

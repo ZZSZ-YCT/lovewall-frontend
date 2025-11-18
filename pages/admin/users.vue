@@ -638,6 +638,7 @@
                     v-model="passwordForm.new_password"
                     type="password"
                     placeholder="请输入新密码（至少6位）"
+                    autocomplete="new-password"
                     :error="passwordErrors.new_password"
                     required
                   />
@@ -651,6 +652,7 @@
                     v-model="passwordForm.confirm_password"
                     type="password"
                     placeholder="请再次输入新密码"
+                    autocomplete="new-password"
                     :error="passwordErrors.confirm_password"
                     required
                   />
@@ -736,6 +738,7 @@
                       <GlassInput
                         v-model="editForm.username"
                         placeholder="请输入用户名"
+                        autocomplete="username"
                         :error="editErrors.username"
                         required
                       />
@@ -748,6 +751,7 @@
                       <GlassInput
                         v-model="editForm.display_name"
                         placeholder="请输入显示名称（可选）"
+                        autocomplete="nickname"
                         :error="editErrors.display_name"
                       />
                     </div>
@@ -762,6 +766,7 @@
                         v-model="editForm.email"
                         type="email"
                         placeholder="请输入邮箱（可选）"
+                        autocomplete="email"
                         :error="editErrors.email"
                       />
                     </div>
@@ -773,6 +778,7 @@
                       <GlassInput
                         v-model="editForm.phone"
                         placeholder="请输入手机号（可选）"
+                        autocomplete="tel"
                         :error="editErrors.phone"
                       />
                     </div>
