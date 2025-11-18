@@ -10,7 +10,7 @@
       </div>
 
       <ClientOnly>
-        <!-- 快捷操作 -->
+        <!-- 发帖入口 -->
         <div v-if="auth.isAuthenticated" class="flex justify-center">
           <NuxtLink
             to="/posts/new"
@@ -44,7 +44,7 @@
                   : 'text-gray-600 hover:text-brand-600'
               ]"
               :title="t('common.layouts.grid')"
-              @click="layoutMode = 'grid'"
+              @click="switchLayout('grid')"
             >
               <GridIcon class="w-4 h-4" />
             </button>
@@ -56,34 +56,40 @@
                   : 'text-gray-600 hover:text-brand-600'
               ]"
               :title="t('common.layouts.list')"
-              @click="layoutMode = 'list'"
+              @click="switchLayout('list')"
             >
               <ListIcon class="w-4 h-4" />
             </button>
           </div>
 
           <GlassButton
-            :disabled="pending"
+            :disabled="loading"
             variant="secondary"
             class="!px-3 !py-1.5 text-sm"
-            @click="() => refresh"
+            @click="handleRefresh"
           >
-            <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': pending }]" />
+            <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
             {{ t('common.refresh') }}
           </GlassButton>
         </div>
       </div>
 
-      <!-- 内容区域 -->
+      <!-- 数据区域 -->
       <div class="space-y-4">
-        <!-- 加载中 -->
-        <div v-if="pending && posts.length === 0" class="text-center py-12">
+        <!-- 加载中（首屏或刷新中） -->
+        <div
+          v-if="loading && posts.length === 0"
+          class="text-center py-12"
+        >
           <LoadingSpinner size="lg" />
           <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
         </div>
 
         <!-- 空状态 -->
-        <div v-else-if="!pending && posts.length === 0" class="text-center py-12">
+        <div
+          v-else-if="!loading && posts.length === 0"
+          class="text-center py-12"
+        >
           <HeartIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p class="text-gray-600 mb-4">{{ t('posts.empty') }}</p>
           <NuxtLink
@@ -95,18 +101,20 @@
           </NuxtLink>
         </div>
 
-        <!-- 网格布局 -->
-        <div v-else-if="effectiveLayout === 'grid'" :class="gridClasses">
+        <!-- 宫格布局 -->
+        <div
+          v-else-if="effectiveLayout === 'grid'"
+          :class="['posts', gridClasses]"
+        >
           <PostCard
-            v-for="post in posts"
+            v-for="(post, index) in posts"
             :key="post.id"
-            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
+            :eager="index < 3"
             variant="grid"
-            class="animate-fade-in-up card"
-            @refresh="refresh"
-            :image-grid-eager="post.is_pinned || post.is_featured"
+            class="animate-fade-in-up"
+            @refresh="handleRefresh"
           />
         </div>
 
@@ -116,29 +124,31 @@
           :class="['posts', 'space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
         >
           <PostCard
-            v-for="post in posts"
+            v-for="(post, index) in posts"
             :key="post.id"
-            v-memo="post.id"
             :post="post"
             :show-actions="auth.isAuthenticated"
+            :eager="index < 3"
             variant="list"
-            class="w-full animate-fade-in-up card"
-            @refresh="refresh"
-            :image-grid-eager="post.is_pinned || post.is_featured"
+            class="w-full animate-fade-in-up"
+            @refresh="handleRefresh"
           />
         </div>
       </div>
 
-      <!-- 加载更多 -->
-      <div v-if="hasMore && !pending" class="text-center">
-        <GlassButton
-          :disabled="loadingMore"
-          variant="secondary"
-          @click="loadMore"
-        >
-          <LoadingSpinner v-if="loadingMore" size="sm" variant="white" />
-          <span>{{ loadingMore ? t('common.loading') : t('common.loadMore') }}</span>
-        </GlassButton>
+      <!-- 触底加载更多 -->
+      <div
+        v-if="home.loaded && hasMore && !loading"
+        ref="loadMoreTrigger"
+        class="text-center py-8"
+      >
+        <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-600">
+          <LoadingSpinner size="sm" />
+          <span>加载中...</span>
+        </div>
+        <div v-else class="text-gray-400 text-sm">
+          下拉浏览更多内容
+        </div>
       </div>
     </section>
   </div>
@@ -148,8 +158,10 @@
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
+import PostCard from '~/components/PostCard.vue'
 import type { PostDto } from '~/types'
 
+// composables
 const { t } = useI18n()
 
 const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
@@ -157,49 +169,92 @@ const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 const auth = useAuthStore()
 const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
+const { confirm } = useConfirm()
 
-const layoutMode = ref<'grid' | 'list' | 'auto'>('auto')
+// fuck u shit changes
+const layoutMode = ref<'grid' | 'list'>('grid')
 const effectiveLayout = computed(() => {
   if (isMobile.value) return 'list'
-  if (layoutMode.value === 'auto') return 'grid'
   return layoutMode.value
 })
 const gridClasses = computed(() => {
-  const base = 'posts grid gap-4 md:gap-6'
+  const base = 'grid gap-4 md:gap-6'
   if (isMobile.value) return `${base} grid-cols-1`
   if (isTablet.value) return `${base} grid-cols-1 sm:grid-cols-2`
   return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`
 })
 
-onMounted(() => {
-  const saved = localStorage.getItem('love-wall-layout')
-  if (saved && ['grid', 'list', 'auto'].includes(saved)) layoutMode.value = saved as any
-})
-watch(layoutMode, (v) => !isMobile.value && localStorage.setItem('love-wall-layout', v))
+// 切换布局模式
+const switchLayout = async (mode: 'grid' | 'list') => {
+  if (mode === layoutMode.value) return
 
-const { data, pending, refresh, error } = await useAsyncData(
-  'home-posts',
-  async () => {
-    await home.initialLoad()
-    await home.forceRefresh()
-    return {
-      posts: home.posts,
-      hasMore: home.hasMore,
-    }
-  },
-  { server: true, lazy: false }
-)
-
-const posts = computed(() => (data.value?.posts ?? []) as PostDto[])
-const hasMore = computed(() => data.value?.hasMore ?? false)
-const loadingMore = computed(() => home.loadingMore)
-
-const loadMore = async () => {
-  await home.loadMore()
-  data.value!!.posts = home.posts
+  layoutMode.value = mode
+  if (!isMobile.value) {
+    localStorage.setItem('love-wall-layout', mode)
+  }
 }
 
-// Use Vue Router 4 composition guard signature (no next)
+// --- 数据加载（仅在客户端首屏加载，避免阻塞 SSR） ---
+const posts = computed<PostDto[]>(() => home.posts)
+const hasMore = computed(() => home.hasMore)
+const loadingMore = computed(() => home.loadingMore)
+const loading = computed(() => home.loading)
+
+// 首次进入首页时，在客户端触发初始加载
+onMounted(() => {
+  if (!home.loaded && !home.loading) {
+    home.initialLoad().catch((error) => {
+      console.error('Index: initial home load failed', error)
+    })
+  }
+})
+
+// 刷新按钮
+const handleRefresh = async () => {
+  try {
+    await home.forceRefresh()
+  } catch (error) {
+    console.error('Index: manual refresh failed', error)
+  }
+}
+
+// 加载更多
+const loadMore = async () => {
+  try {
+    await home.loadMore()
+  } catch (error) {
+    console.error('Index: load more failed', error)
+  }
+}
+
+// 触底监听
+const loadMoreTrigger = ref<HTMLElement>()
+
+onMounted(() => {
+  if (!loadMoreTrigger.value) return
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const target = entries[0]
+      if (target && target.isIntersecting && hasMore.value && !loadingMore.value) {
+        loadMore()
+      }
+    },
+    {
+      root: null,
+      rootMargin: '200px',
+      threshold: 0.1,
+    }
+  )
+
+  observer.observe(loadMoreTrigger.value)
+
+  onBeforeUnmount(() => {
+    observer.disconnect()
+  })
+})
+
+// 返回本页时尝试做一次轻量刷新（不依赖 TTL）
 onBeforeRouteUpdate((to, from) => {
   if (to.fullPath === from.fullPath) {
     return
@@ -210,7 +265,6 @@ onBeforeRouteUpdate((to, from) => {
   })
 })
 
-// When returning to this page via in-app navigation, refresh to ensure data is shown
 onActivated(async () => {
   try {
     await home.refreshIfStale()
@@ -219,10 +273,12 @@ onActivated(async () => {
   }
 })
 
+// --- SEO 与结构化数据 ---
 const homepageMetaTitle = '郑州四中表白墙'
 const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
-const homepageDescription = '郑州四中官方校园信息交流平台，帮助同学匿名分享心声、表白与校园资讯，营造温暖真实的互动社区。'
-const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生互动,校园社区'
+const homepageDescription =
+  '郑州四中官方校园信息交流平台，帮助同学们安全、温暖地表达心声，分享校园生活。'
+const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生表白,校园交流'
 const siteName = '郑州四中表白墙'
 
 const runtimeConfig = useRuntimeConfig()
@@ -287,7 +343,7 @@ useSeoMeta({
   description: homepageDescription,
   keywords: homepageKeywords,
 
-  // --- Open Graph ---
+  // Open Graph
   ogTitle: homepageTitle,
   ogDescription: homepageDescription,
   ogType: 'website',
@@ -295,7 +351,7 @@ useSeoMeta({
   ogImage: computed(() => homepageOgImage.value),
   ogSiteName: siteName,
 
-  // --- Twitter ---
+  // Twitter
   twitterCard: 'summary_large_image',
   twitterTitle: homepageTitle,
   twitterDescription: homepageDescription,
@@ -333,8 +389,10 @@ useHead({
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
-.posts > .card {
-  content-visibility: auto; contain-intrinsic-size: 1px 360px;
-}
 
+:deep(.posts > .card) {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 360px;
+}
 </style>
+

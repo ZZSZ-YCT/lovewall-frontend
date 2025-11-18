@@ -22,6 +22,7 @@
               v-model="form.username"
               type="text"
               placeholder="请输入用户名"
+              autocomplete="username"
               :error="errors.username"
               required
             />
@@ -35,6 +36,7 @@
               v-model="form.password"
               type="password"
               placeholder="请输入密码"
+              autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.password"
               required
@@ -49,6 +51,7 @@
               v-model="confirmPassword"
               type="password"
               placeholder="请再次输入密码"
+              autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.confirmPassword"
               required
@@ -71,17 +74,6 @@
             </label>
           </div>
 
-          <!-- GeeTest Captcha -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">安全验证</label>
-            <GeeTestV4
-              ref="captchaRef"
-              :captcha-id="registerCaptchaId"
-              @verified="onCaptchaVerified"
-              @error="onCaptchaError"
-            />
-          </div>
-
           <!-- Error Message -->
           <div v-if="error" class="p-3 rounded-lg bg-red-50/50 border border-red-200">
             <p class="text-sm text-red-600">{{ error }}</p>
@@ -92,7 +84,7 @@
             type="submit"
             variant="secondary"
             class="w-full"
-            :disabled="!isFormValid || !captchaOk || loading"
+            :disabled="!isFormValid || loading"
             @click="handleSubmit"
           >
             {{ loading ? '注册中...' : '创建账户' }}
@@ -122,6 +114,8 @@
       </div>
     </div>
   </div>
+
+  <CaptchaDialog />
 </template>
 
 <script setup lang="ts">
@@ -130,8 +124,6 @@ import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import type { RegisterForm } from '~/types'
-import type GeeTestV4Type from '~/components/security/GeeTestV4.vue'
-import GeeTestV4 from '~/components/security/GeeTestV4.vue'
 
 // Form schema
 const registerSchema = z.object({
@@ -155,22 +147,14 @@ const acceptTerms = ref(false)
 const errors = reactive<Partial<Record<keyof RegisterForm | 'confirmPassword', string>>>({})
 const loading = ref(false)
 const error = ref('')
-const captchaOk = ref(false)
-const captchaTokens = ref<any | null>(null)
-const captchaRef = ref<InstanceType<typeof GeeTestV4Type> | null>(null)
-
-// 获取注册专用验证码ID
-const config = useRuntimeConfig()
-const registerCaptchaId = (config.public as any).geeTestRegisterId as string | undefined
 
 // Stores
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
+const captchaDialog = useCaptchaDialog()
 
-// Computed（放宽启用条件，避免按钮不可点）
-// 仅在必填项非空且已勾选条款时启用按钮；
-// 具体格式校验放在 handleSubmit -> validateForm 中进行
+// Computed
 const isFormValid = computed(() => !!(
   form.username &&
   form.password &&
@@ -184,16 +168,16 @@ const validateForm = () => {
     // Clear previous errors
     Object.keys(errors).forEach(key => delete errors[key as keyof typeof errors])
     error.value = ''
-    
+
     // Validate basic fields
     registerSchema.parse(form)
-    
+
     // Validate password confirmation
     if (form.password !== confirmPassword.value) {
       errors.confirmPassword = '两次输入的密码不匹配'
       return false
     }
-    
+
     return true
   } catch (err: any) {
     // Set field errors
@@ -210,29 +194,35 @@ const validateForm = () => {
 const handleSubmit = async () => {
   console.log('[Register] submit clicked')
   if (!validateForm() || loading.value) return
-  
+
   if (!acceptTerms.value) {
     error.value = '请先同意服务条款和隐私政策'
     return
   }
-  
+
   loading.value = true
   error.value = ''
-  
+
   try {
-    // 检查是否完成极验验证
-    if (!captchaOk.value || !captchaTokens.value) {
-      throw new Error('请先完成安全验证')
+    console.log('[Register] opening captcha dialog')
+
+    // 打开验证码弹窗
+    const captchaResult = await captchaDialog.open({ title: '注册安全验证' })
+
+    // 用户取消了验证码
+    if (!captchaResult) {
+      console.log('[Register] captcha cancelled by user')
+      loading.value = false
+      return
     }
 
     console.log('[Register] sending register request', { username: form.username })
-    // 将极验4个字段与表单数据一起传给后端
+
+    // 提交注册请求,包含验证码数据
     await auth.register({
       ...form,
-      lot_number: captchaTokens.value.lot_number,
-      captcha_output: captchaTokens.value.captcha_output,
-      pass_token: captchaTokens.value.pass_token,
-      gen_time: captchaTokens.value.gen_time,
+      captcha_id: captchaResult.captcha_id,
+      captcha_data: captchaResult.captcha_data,
     })
 
     // Redirect to intended destination or home
@@ -241,12 +231,6 @@ const handleSubmit = async () => {
   } catch (err: any) {
     console.error('[Register] error', err)
     error.value = err.message || '注册失败，请稍后重试'
-
-    // 如果是验证码错误,重置验证码
-    if (err.message?.includes('验证码') || err.message?.includes('captcha')) {
-      captchaOk.value = false
-      captchaRef.value?.reset?.()
-    }
 
     // Also show toast notification for registration errors
     const toast = useToast()
@@ -262,17 +246,6 @@ watch([() => form.username, () => form.password, confirmPassword], () => {
     validateForm()
   }
 })
-
-// Captcha handlers
-const onCaptchaVerified = (tokens: any) => {
-  captchaTokens.value = tokens
-  captchaOk.value = true
-}
-const onCaptchaError = (msg: string) => {
-  const toast = useToast()
-  toast.error(msg || '验证码出错')
-  captchaOk.value = false
-}
 
 // Redirect if already logged in
 watch(

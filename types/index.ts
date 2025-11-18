@@ -28,6 +28,7 @@ export interface User {
   last_ip?: string | null
   metadata?: string | Record<string, unknown> | null
   permissions?: string[] // 仅在用户列表接口返回
+  active_tag?: Pick<TagDto, 'id' | 'name' | 'title' | 'background_color' | 'text_color' | 'description' | 'css_styles' | 'tag_type'> | null
   created_at: string
   updated_at: string
   is_deleted?: boolean
@@ -43,9 +44,11 @@ export interface TagDto {
   id: string
   name: string
   title: string
+  tag_type?: 'personal' | 'collective'
   background_color: string
   text_color: string
   description?: string | null
+  css_styles?: string | null
   is_active: boolean
   created_at: string
   updated_at: string
@@ -56,14 +59,7 @@ export interface UserTagDto {
   is_active: boolean
   obtained_at: string
   status: string // 新字段
-  tag?: {
-    id: string
-    name: string
-    title: string
-    background_color: string
-    text_color: string
-    is_active: boolean
-  }
+  tag?: Pick<TagDto, 'id' | 'name' | 'title' | 'background_color' | 'text_color' | 'description' | 'is_active' | 'created_at' | 'updated_at' | 'css_styles' | 'tag_type'>
 }
 
 // Post Types
@@ -81,7 +77,7 @@ export interface PostDto {
   is_locked: boolean // 帖子是否被锁定 (默认 false)
   created_at: string
   updated_at: string
-  author_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color'>
+  author_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color' | 'css_styles'>
   is_author_admin?: boolean // 帖子作者是否是管理员
   moderation_reason?: string | null
   // Optional stats fields when available from certain endpoints
@@ -92,6 +88,11 @@ export interface PostDto {
   is_pending_review?: boolean // 快速判断是否待审核
   audit_msg?: string | null // 审核相关消息
   manual_review_requested?: boolean // 是否已申请人工复核
+  // 作者扩展信息（API v3.3新增）
+  author_avatar_url?: string | null
+  author_display_name?: string | null
+  author_is_online?: boolean
+  author_last_heartbeat?: string | null
 }
 
 // Post stats (public)
@@ -111,21 +112,22 @@ export interface CommentDto {
   user_display_name?: string | null
   user_avatar_url?: string | null
   is_user_admin?: boolean // 评论作者是否是管理员
+  user_is_online?: boolean
+  user_last_heartbeat?: string | null
   content: string
   status: 0 | 1 // 0=normal, 1=hidden
   is_pinned: boolean // 评论是否被置顶 (默认 false)
   created_at: string
   updated_at?: string
-  user_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color'>
+  user_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color' | 'css_styles'>
 }
 
 // Announcement Types
 export interface AnnouncementDto {
   id: string
-  title: string
+  path: string
   content: string
   is_active: boolean
-  metadata?: string | null
   created_at: string
   updated_at: string
 }
@@ -157,16 +159,25 @@ export interface Pagination<T> {
 export interface LoginForm {
   username: string
   password: string
+  // 新验证码字段(可选,服务器配置验证码时必填)
+  captcha_id?: string
+  captcha_data?: {
+    dots?: Array<{ x: number; y: number }>
+    x?: number
+    angle?: number
+  }
 }
 
 export interface RegisterForm {
   username: string
   password: string
-  // 极验验证码字段(可选,服务器配置验证码时必填)
-  lot_number?: string
-  captcha_output?: string
-  pass_token?: string
-  gen_time?: string
+  // 新验证码字段(可选,服务器配置验证码时必填)
+  captcha_id?: string
+  captcha_data?: {
+    dots?: Array<{ x: number; y: number }>
+    x?: number
+    angle?: number
+  }
 }
 
 export interface PostForm {
@@ -182,19 +193,25 @@ export interface CommentForm {
 }
 
 export interface AnnouncementForm {
-  title: string
+  path: string
   content: string
   is_active: boolean
-  metadata?: string
 }
 
 export interface TagForm {
   name: string
   title: string
-  background_color: string
-  text_color: string
-  description?: string
+  background_color?: string
+  backgroundColor?: string
+  text_color?: string
+  textColor?: string
+  description?: string | null
+  css_styles?: string | null
+  cssStyles?: string | null
+  tag_type?: 'personal' | 'collective'
+  tagType?: 'personal' | 'collective'
   is_active?: boolean
+  isActive?: boolean
 }
 
 export interface GenerateCodesForm {
@@ -356,6 +373,7 @@ export interface LogFilters {
 export interface HeartbeatResponse {
   online: boolean
   timestamp: string
+  unread_notifications?: number
 }
 
 export interface UserOnlineStatus {

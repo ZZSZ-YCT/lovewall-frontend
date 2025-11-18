@@ -301,7 +301,7 @@ const loadDashboardData = async () => {
   loading.value = true
   
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     
     // Load platform metrics (if it has permission)
     let gotMetrics = false

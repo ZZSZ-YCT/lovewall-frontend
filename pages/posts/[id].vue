@@ -51,6 +51,11 @@
                 :alt="post.author_name"
                 class="relative z-10 w-full h-full rounded-full object-cover"
                 :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+                width="96"
+                height="96"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
               <div
                 v-else
@@ -59,6 +64,13 @@
               >
                 {{ post.author_name.slice(0, 2) }}
               </div>
+
+              <!-- 在线状态指示器：总是显示，在线绿色/离线灰色，部分盖住头像右下角 -->
+              <div
+                class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
+                :class="post.author_is_online ? 'bg-emerald-400' : 'bg-gray-400'"
+                :title="post.author_is_online ? '在线' : '离线'"
+              />
             </div>
           </div>
 
@@ -90,6 +102,11 @@
                       :alt="post.author_name"
                       class="relative z-10 w-full h-full rounded-full object-cover"
                       :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                      fetchpriority="auto"
+                      decoding="async"
                     />
                     <div
                       v-else
@@ -98,6 +115,13 @@
                     >
                       {{ post.author_name.slice(0, 2) }}
                     </div>
+
+                    <!-- 在线状态指示器：总是显示，在线绿色/离线灰色，部分盖住头像右下角 -->
+                    <div
+                      class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
+                      :class="post.author_is_online ? 'bg-emerald-400' : 'bg-gray-400'"
+                      :title="post.author_is_online ? '在线' : '离线'"
+                    />
                   </div>
 
                   <h1 class="text-2xl font-bold text-gray-800">
@@ -106,18 +130,21 @@
                       → {{ post.target_name }}
                     </template>
                   </h1>
-                  <!-- 新增: 在线状态徽章 -->
-                  <OnlineBadge
-                    v-if="post.author_id"
-                    :user-id="post.author_id"
-                  />
-                  <!-- Author Active Tag -->
-                  <TagBadge
-                    v-if="post.author_tag"
-                    :title="post.author_tag.title"
-                    :background="post.author_tag.background_color"
-                    :text="post.author_tag.text_color"
-                  />
+                  <!-- Author Active Tag：比作者名小一号 -->
+                  <span
+                    v-if="post.author_tag && renderTag(post.author_tag)?.useCssMode"
+                    :class="renderTag(post.author_tag)?.className"
+                    class="inline-block text-lg leading-tight px-2 py-0.5 rounded"
+                  >
+                    {{ renderTag(post.author_tag)?.title }}
+                  </span>
+                  <span
+                    v-else-if="post.author_tag && renderTag(post.author_tag)"
+                    class="inline-block text-lg leading-tight px-2 py-0.5 rounded font-medium"
+                    :style="renderTag(post.author_tag)?.inlineStyles"
+                  >
+                    {{ renderTag(post.author_tag)?.title }}
+                  </span>
                 </div>
               </div>
 
@@ -277,8 +304,18 @@
         <template v-else>
           <ClientOnly>
             <template #default>
-              <!-- Comment Form (if authenticated) -->
-              <div v-if="auth.isAuthenticated" class="mb-6">
+              <!-- Locked post notice (only for non-admin users) -->
+              <div v-if="isLockedForCurrentUser" class="mb-6 text-center py-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span>该帖子已被锁定，暂时无法评论</span>
+                </div>
+              </div>
+
+              <!-- Comment Form (if authenticated and allowed to comment) -->
+              <div v-else-if="auth.isAuthenticated" class="mb-6">
                 <form class="space-y-4" @submit.prevent="submitComment">
                   <div class="relative">
                     <GlassTextarea
@@ -293,7 +330,7 @@
                       type="submit"
                       :loading="commentSubmitting"
                       :disabled="!commentForm.content.trim()"
-                      class="absolute right-3 bottom-3 rounded-full h-10 px-5"
+                      class="absolute right-3 bottom-3 rounded-full h-10 px-5 !bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
                     >
                       发布评论
                     </GlassButton>
@@ -337,9 +374,9 @@
                   class="relative"
                 >
                   <hr
-                    v-if="index > 0 && !comment.is_pinned && comments[index - 1] && comments[index - 1]!!.is_pinned"
+                    v-if="index > 0 && !comment.is_pinned && comments[index - 1] && comments[index - 1]!.is_pinned"
                     class="my-6 border-white/20"
-                  >
+                  />
                   <div
                     :class="[
                     'rounded-xl border border-white/10',
@@ -353,95 +390,49 @@
                       <PinIcon class="w-4 h-4 text-brand-600" />
                       <span class="text-sm font-medium text-brand-600">置顶评论</span>
                     </div>
-                    <div class="flex items-start gap-3">
-                      <!-- User Avatar -->
-                      <div
-                        class="relative w-10 h-10 flex-shrink-0 transition-transform hover:scale-110 cursor-pointer"
-                        @click="navigateToUser(comment)"
-                      >
-                        <!-- 管理员光圈效果 -->
-                        <template v-if="comment.is_user_admin">
-                          <div
-                            class="absolute -inset-[3px] rounded-full border-[3px] border-sky-400/95 pointer-events-none"
-                          />
-                          <div
-                            class="absolute -inset-[7px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-                          />
-                        </template>
-
-                        <!-- 头像容器 -->
-                        <NuxtImg
-                          v-if="comment.user_avatar_url"
-                          :src="assetUrl(comment.user_avatar_url)"
-                          :alt="commentDisplayName(comment)"
-                          class="relative z-10 w-full h-full rounded-full object-cover"
-                          :class="comment.is_user_admin ? 'border-0' : 'border-2 border-white/20'"
-                          @error="() => { comment.user_avatar_url = null }"
-                        />
-                        <div
-                          v-else
-                          class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium"
-                          :class="comment.is_user_admin ? 'border-0' : 'border-2 border-white/20'"
+                    <div class="flex flex-wrap items-start gap-3">
+                      <CommentUserInfo
+                        class="flex-1 min-w-0"
+                        :comment="comment"
+                        clickable
+                        @avatar-click="navigateToUser(comment)"
+                      />
+                      <div class="ml-auto flex items-center gap-2 text-xs text-gray-500 whitespace-nowrap">
+                        <span>{{ formatDate(comment.created_at) }}</span>
+                        <button
+                          v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
+                          type="button"
+                          class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
+                          @click="toggleCommentPin(comment)"
                         >
-                          {{ commentDisplayName(comment).slice(0, 2) }}
-                        </div>
-                      </div>
-
-                      <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-2">
-                      <span class="text-sm font-medium text-gray-700">
-                        {{ commentDisplayName(comment) }}
-                      </span>
-                          <!-- 新增: 在线状态徽章 -->
-                          <OnlineBadge
-                            v-if="comment.user_id"
-                            :user-id="comment.user_id"
-                          />
-                          <TagBadge
-                            v-if="comment.user_tag"
-                            :title="comment.user_tag.title"
-                            :background="comment.user_tag.background_color"
-                            :text="comment.user_tag.text_color"
-                          />
-                          <div class="ml-auto flex items-center gap-2">
-                        <span class="text-xs text-gray-500">
-                          {{ formatDate(comment.created_at) }}
-                        </span>
-                            <button
-                              v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
-                              type="button"
-                              class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
-                              @click="toggleCommentPin(comment)"
-                            >
-                              {{ comment.is_pinned ? '取消置顶' : '置顶' }}
-                            </button>
-                            <button
-                              v-if="canManageComment(comment)"
-                              class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
-                              @click="hideComment(comment)"
-                            >
-                              {{ comment.status === 0 ? '隐藏' : '恢复' }}
-                            </button>
-                          </div>
-                        </div>
-
-                        <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ comment.content }}</p>
-
-
+                          {{ comment.is_pinned ? '取消置顶' : '置顶' }}
+                        </button>
+                        <button
+                          v-if="canManageComment(comment)"
+                          class="px-2 py-1 text-xs text-gray-600 hover:text-brand-600 border border-gray-300 hover:border-brand-400 rounded transition-colors"
+                          @click="hideComment(comment)"
+                        >
+                          {{ comment.status === 0 ? '隐藏' : '恢复' }}
+                        </button>
                       </div>
                     </div>
+                    <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ comment.content }}</p>
                   </div>
                 </div>
 
-                <!-- Load more comments -->
-                <div v-if="commentsData && commentsData.page * commentsData.page_size < commentsData.total" class="text-center pt-4">
-                  <GlassButton
-                    :loading="commentsLoading"
-                    variant="secondary"
-                    @click="loadMoreComments"
-                  >
-                    加载更多评论
-                  </GlassButton>
+                <!-- 无限滚动加载指示器 -->
+                <div
+                  v-if="commentsData && commentsData.page * commentsData.page_size < commentsData.total"
+                  ref="commentsLoadMoreTrigger"
+                  class="text-center pt-6 pb-4"
+                >
+                  <div v-if="commentsLoading" class="flex items-center justify-center gap-2 text-gray-600">
+                    <LoadingSpinner size="sm" />
+                    <span>加载更多评论...</span>
+                  </div>
+                  <div v-else class="text-gray-400 text-sm">
+                    向下滚动加载更多评论
+                  </div>
                 </div>
               </div>
             </div>
@@ -461,7 +452,7 @@
       <form class="space-y-4" @submit.prevent="savePostEdit">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">作者名称</label>
-          <GlassInput v-model="editForm.author_name" required />
+          <GlassInput v-model="editForm.author_name" autocomplete="nickname" required />
         </div>
 
         <div>
@@ -490,9 +481,9 @@
           </GlassButton>
           <GlassButton
             type="submit"
-            variant="secondary"
             :loading="editSaving"
             :disabled="!editForm.content.trim()"
+            class="!bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
           >
             保存
           </GlassButton>
@@ -500,36 +491,6 @@
       </form>
     </GlassModal>
 
-    <!-- Delete Confirmation Modal -->
-    <GlassModal
-      :is-open="showDeleteModal"
-      title="确认删除"
-      max-width="max-w-md"
-      @close="closeDeleteModal"
-    >
-      <p class="text-gray-600 mb-6">确定要删除这条表白吗？删除后无法恢复。</p>
-      <div class="space-y-3">
-        <label class="text-sm text-gray-700">处理原因（可选）</label>
-        <GlassTextarea
-          v-model="deleteReason"
-          :rows="3"
-          placeholder="填写本次删除的原因"
-        />
-      </div>
-
-      <template #footer>
-        <div class="flex gap-3 justify-end">
-          <GlassButton variant="secondary" @click="closeDeleteModal">取消</GlassButton>
-          <GlassButton
-            :loading="actionLoading"
-            class="!bg-red-600 hover:!bg-red-700"
-            @click="deletePost"
-          >
-            确认删除
-          </GlassButton>
-        </div>
-      </template>
-    </GlassModal>
 
     <!-- AI Rejection Modal -->
     <GlassModal
@@ -587,11 +548,10 @@ import GlassButton from '~/components/ui/GlassButton.vue'
 import GlassTextarea from '~/components/ui/GlassTextarea.vue'
 import GlassModal from '~/components/ui/GlassModal.vue'
 import GlassInput from '~/components/ui/GlassInput.vue'
-import TagBadge from '~/components/ui/TagBadge.vue'
-import OnlineBadge from '~/components/ui/OnlineBadge.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import GlassCard from '~/components/ui/GlassCard.vue'
 import ImageGrid from '~/components/ui/ImageGrid.vue'
+import CommentUserInfo from '~/components/comments/CommentUserInfo.vue'
 import type { PostDto, CommentDto, Pagination, CommentForm } from '~/types'
 
 interface PostEditFormState {
@@ -607,11 +567,10 @@ const postId = computed(() => route.params.id as string)
 
 const auth = useAuthStore()
 const toast = useToast()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const home = useHomeStore()
-const { confirm: confirmDialog } = useConfirm()
-const { prompt: promptDialog } = usePrompt()
-const api = useApi()
+const api = useNuxtApp().$api
+const { renderTag } = useTagRenderer()
 
 // --- 表单状态与局部UI ---
 const comments = ref<CommentDto[]>([])
@@ -624,16 +583,14 @@ const isEditingPost = ref(false)
 const editSaving = ref(false)
 const editForm = ref<PostEditFormState>({ author_name: '', target_name: '', content: '' })
 const pendingOpenEdit = ref(false)
-const showDeleteModal = ref(false)
-const deleteReason = ref('')
 const showAIRejectionModal = ref(false)
 const aiRejectionInfo = ref({ message: '', type: 'comment' as const, content: '' })
 const reviewRequesting = ref(false)
 const authorAvatar = ref<string | null>(null)
-const userAvatarCache = ref<Map<string, string | null>>(new Map())
 const myActiveTagPreview = ref<{ name: string; title: string; background_color: string; text_color: string } | null>(null)
 const commentForm = reactive<CommentForm>({ content: '' })
 const commentErrors = ref<Partial<CommentForm>>({})
+const commentsLoadMoreTrigger = ref<HTMLElement>()
 
 const {
   data: postData,
@@ -645,17 +602,12 @@ const {
   async () => {
     const post = await api.getPost(postId.value)
 
-    const [user, lock] = await Promise.allSettled([
-      post.author_id ? api.getUser(post.author_id) : Promise.resolve(null),
-      api.getPostLockStatus(postId.value)
-    ])
-
+    // ✅ 修复N+1问题：直接使用API响应中的数据，不再额外请求
+    // API响应已包含：author_avatar_url, author_display_name, author_is_online, is_locked等
     return {
       post,
-      authorAvatar: (user.status === 'fulfilled' && user.value?.avatar_url
-        ? assetUrl(user.value.avatar_url)
-        : null) as string | null,
-      lockStatus: lock.status === 'fulfilled' ? lock.value : { id: postId.value, is_locked: false }
+      authorAvatar: (post as any).author_avatar_url ? assetUrl((post as any).author_avatar_url) : null,
+      lockStatus: { id: post.id, is_locked: (post as any).is_locked ?? false }
     }
   },
   { watch: [postId] }
@@ -667,12 +619,41 @@ onMounted(async () => {
       const adminPost = await api.getPostForAdmin(postId.value)
       postData.value = {
         authorAvatar: postData.value?.authorAvatar ?? '',
-        lockStatus: postData.value?.lockStatus,
+        lockStatus: postData.value?.lockStatus ?? { id: adminPost.id, is_locked: (adminPost as any).is_locked ?? false },
         post: adminPost
       }
     } catch (err) {
       console.warn('Client-side admin post fetch failed:', err)
     }
+  }
+
+  // 评论区无限滚动
+  if (commentsLoadMoreTrigger.value) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0]
+        if (!target) {
+          return
+        }
+        const hasMoreComments = commentsData.value &&
+          commentsData.value.page * commentsData.value.page_size < commentsData.value.total
+
+        if (target.isIntersecting && hasMoreComments && !commentsLoading.value) {
+          loadMoreComments()
+        }
+      },
+      {
+        root: null,
+        rootMargin: '200px', // 提前200px开始加载
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(commentsLoadMoreTrigger.value)
+
+    onBeforeUnmount(() => {
+      observer.disconnect()
+    })
   }
 })
 
@@ -715,25 +696,17 @@ const errorMsg = computed(() => error.value?.message || null)
 const showAdminActions = computed(() => auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])))
 const canEditPost = computed(() => auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS']))
 
+// ✅ 判断当前用户是否因帖子锁定而无法评论
+// 拥有 MANAGE_POSTS 权限的管理员即使帖子被锁定也可以评论
+const isLockedForCurrentUser = computed(() => {
+  if (!lockStatus.value?.is_locked) return false
+  // 管理员不受锁定限制
+  if (auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) return false
+  return true
+})
+
 async function fetchComments(page = 1) {
-  const data = await api.listComments(postId.value, { page, page_size: 20 })
-  const userIds = [...new Set(data.items.map(c => c.user_id))] as string[]
-  const uncached = userIds.filter(id => !userAvatarCache.value.has(id))
-  if (uncached.length > 0) {
-    await Promise.all(uncached.map(async (id) => {
-      try {
-        const u = await api.getUser(id)
-        userAvatarCache.value.set(id, u.avatar_url || null)
-      } catch {
-        userAvatarCache.value.set(id, null)
-      }
-    }))
-  }
-  const enriched = data.items.map(c => ({
-    ...c,
-    user_avatar_url: userAvatarCache.value.get(c.user_id) ?? null,
-  }))
-  return { ...data, items: enriched }
+  return await api.listComments(postId.value, { page, page_size: 20 })
 }
 
 // --- 方法（保留原逻辑） ---
@@ -757,7 +730,7 @@ const savePostEdit = async () => {
 
   editSaving.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const payload = {
       author_name: editForm.value.author_name,
       target_name: editForm.value.target_name,
@@ -798,7 +771,9 @@ const submitComment = async () => {
       user_display_name: (newComment as any).user_display_name || auth.userDisplayName,
       user_avatar_url: auth.currentUser?.avatar_url || null,
       user_username: auth.currentUser?.username || null,
-      user_tag: myActiveTagPreview.value ? { ...myActiveTagPreview.value } : undefined
+      user_tag: myActiveTagPreview.value ? { ...myActiveTagPreview.value } : undefined,
+      user_is_online: true,
+      user_last_heartbeat: new Date().toISOString()
     }
     comments.value.unshift(enriched as any)
     commentForm.content = ''
@@ -845,7 +820,7 @@ const closeEditPost = () => {
 
 const toggleCommentPin = async (comment: CommentDto) => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     let result: { is_pinned: boolean }
     if (comment.is_pinned) {
       result = await api.unpinComment(comment.id)
@@ -871,7 +846,7 @@ const canManageComment = (comment: CommentDto) => {
 
 const hideComment = async (comment: CommentDto) => {
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.hideComment(comment.id, comment.status === 0)
 
     // Update local state
@@ -905,7 +880,7 @@ const togglePin = async () => {
 
   actionLoading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const res = await api.pinPost(post.value.id, nextState, reasonInput || undefined)
     post.value.is_pinned = res.is_pinned
     toast.success(post.value.is_pinned ? '已置顶' : '已取消置顶')
@@ -925,7 +900,7 @@ const toggleFeature = async () => {
 
   actionLoading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const res = await api.featurePost(post.value.id, nextState, reasonInput || undefined)
     post.value.is_featured = res.is_featured
     toast.success(post.value.is_featured ? '已设为精华' : '已取消精华')
@@ -955,14 +930,14 @@ const toggleHide = async () => {
 
   actionLoading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     if (post.value.status === 1) {
       const res = await api.hidePost(post.value.id, false, reasonInput || undefined)
-      post.value.status = res.status
+      post.value.status = res.status as 0 | 1
       toast.success('帖子已恢复')
     } else if (post.value.status === 0) {
       const res = await api.hidePost(post.value.id, true, reasonInput || undefined)
-      post.value.status = res.status
+      post.value.status = res.status as 0 | 1
       toast.success('帖子已隐藏')
     }
   } catch (err) {
@@ -976,13 +951,21 @@ const toggleLock = async () => {
   if (!post.value || !lockStatus.value) return
 
   const shouldLock = !lockStatus.value.is_locked
+  const { confirm } = useAdminDialog()
 
   if (shouldLock) {
-    const { confirm } = useAdminDialog()
     const confirmed = await confirm({
       title: '确认锁定',
-      message: '锁定后普通用户将无法评论此帖子,确定要锁定吗？',
+      message: '锁定后普通用户将无法评论此帖子，确定要锁定吗？',
       confirmText: '确认锁定',
+      cancelText: '取消'
+    })
+    if (!confirmed) return
+  } else {
+    const confirmed = await confirm({
+      title: '确认解锁',
+      message: '解锁后普通用户将可以评论此帖子，确定要解锁吗？',
+      confirmText: '确认解锁',
       cancelText: '取消'
     })
     if (!confirmed) return
@@ -990,7 +973,7 @@ const toggleLock = async () => {
 
   actionLoading.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     if (shouldLock) {
       const result = await api.lockPost(post.value.id)
       lockStatus.value = result
@@ -1007,31 +990,44 @@ const toggleLock = async () => {
   }
 }
 
-const confirmDelete = () => {
-  deleteReason.value = ''
-  showDeleteModal.value = true
-}
-
-const deletePost = async () => {
+const confirmDelete = async () => {
   if (!post.value) return
+
+  const { confirm, prompt } = useAdminDialog()
+
+  // 先确认是否删除
+  const confirmed = await confirm({
+    title: '确认删除',
+    message: '确定要删除这条表白吗？删除后无法恢复。',
+    confirmText: '确认删除',
+    cancelText: '取消'
+  })
+
+  if (!confirmed) return
+
+  // 询问删除原因（可选）
+  const reason = await prompt({
+    title: '删除原因',
+    message: '请填写删除原因（可选）',
+    placeholder: '填写本次删除的原因',
+    confirmText: '确认删除',
+    cancelText: '取消'
+  })
+
+  // 用户可以输入空原因或取消prompt
+  if (reason === null) return
 
   actionLoading.value = true
   try {
-    const api = useApi()
-    await api.deletePost(post.value.id, deleteReason.value.trim() || undefined)
+    const api = useNuxtApp().$api
+    await api.deletePost(post.value.id, reason.trim() || undefined)
     toast.success('帖子已删除')
-    closeDeleteModal()
     await router.push('/')
   } catch (err) {
     toast.error('删除失败')
   } finally {
     actionLoading.value = false
   }
-}
-
-const closeDeleteModal = () => {
-  showDeleteModal.value = false
-  deleteReason.value = ''
 }
 
 // --- 复核请求与评论刷新 ---
@@ -1052,7 +1048,6 @@ const requestReview = async () => {
 
 // --- 工具函数 ---
 const formatDate = (d: string) => new Date(d).toLocaleString('zh-CN')
-const commentDisplayName = (c: CommentDto) => c.user_display_name || c.user_username || `用户${c.user_id?.slice(0, 6)}`
 const navigateToUser = (x: any) => {
   if (x.author_id) navigateTo(`/users/id/${x.author_id}`)
   else if (x.user_id) navigateTo(`/users/id/${x.user_id}`)

@@ -1,17 +1,89 @@
 const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const API_BASE = process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8124/api'
+const RANDOM_IMAGE_API_URL = process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/'
+
+const resolveOrigin = (input?: string | null) => {
+  if (!input) return null
+  try {
+    return new URL(input).origin
+  } catch {
+    return null
+  }
+}
+
+const resolveHost = (input?: string | null) => {
+  if (!input) return null
+  try {
+    return new URL(input).host
+  } catch {
+    return null
+  }
+}
+
+const imageDomains = [
+  resolveHost(API_BASE),
+  resolveHost(RANDOM_IMAGE_API_URL),
+  resolveHost(SITE_URL)
+].filter(Boolean) as string[]
+
+const uniqueImageDomains = Array.from(new Set(imageDomains))
+
+const apiOrigin = resolveOrigin(API_BASE)
+const randomImageOrigin = resolveOrigin(RANDOM_IMAGE_API_URL)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: {
-    enabled: true,
-
+    enabled: process.env.NODE_ENV === 'development',
     timeline: {
       enabled: true
     }
   },
   components: true,
   
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/eslint',
+    '@nuxt/image',
+    'nuxt-delay-hydration',
+    'nuxt-security',
+    '@nuxt/scripts',
+    '@nuxtjs/i18n'
+  ],
+
+  security: {
+    nonce: true,
+    ssg: {
+      meta: true,
+      hashScripts: true,
+      hashStyles: true
+    },
+    headers: {
+      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'cross-origin',
+      xContentTypeOptions: 'nosniff',
+      xFrameOptions: 'SAMEORIGIN',
+      xPermittedCrossDomainPolicies: 'none',
+      referrerPolicy: 'no-referrer-when-downgrade',
+      contentSecurityPolicy: {
+        'base-uri': ["'none'"],
+        'font-src': ["'self'", 'https:', 'data:'],
+        'form-action': ["'self'"],
+        'frame-ancestors': ["'self'"],
+        'img-src': ["'self'", 'data:', ...imageDomains.map(host => `https://${host}`)],
+        'object-src': ["'none'"],
+        'script-src-attr': ["'none'"],
+        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
+        'script-src': ["'self'", 'https:', "'unsafe-inline'", "'nonce-{{nonce}}'"],
+        'upgrade-insecure-requests': true
+      },
+    },
+    rateLimiter: false,
+    requestSizeLimiter: false
+  },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration', '@nuxtjs/i18n'],
 
   i18n: {
@@ -28,11 +100,7 @@ export default defineNuxtConfig({
 
   image: {
     provider: 'ipx',
-    domains: [
-      new URL(process.env.NUXT_PUBLIC_API_BASE ?? "http://localhost").host,
-      new URL(process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL ?? "http://localhost").host,
-      new URL(SITE_URL).host
-    ],
+    domains: uniqueImageDomains,
     formats: ['webp'],
     inject: true,
     presets: {
@@ -62,7 +130,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compressPublicAssets: true
   },
-
+  ssr: true,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -96,9 +164,16 @@ export default defineNuxtConfig({
         { rel: 'canonical', href: SITE_URL },
         { rel: 'alternate', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
-        { rel: 'preconnect', href: 'https://static.geetest.com' },
-        { rel: 'dns-prefetch', href: 'https://static.geetest.com' }
-      ]
+        // Preconnect to API and image origins for faster resource loading
+        ...(apiOrigin ? [
+          { rel: 'dns-prefetch', href: apiOrigin },
+          { rel: 'preconnect', href: apiOrigin, crossorigin: 'anonymous' as const }
+        ] : []),
+        ...(randomImageOrigin ? [
+          { rel: 'dns-prefetch', href: randomImageOrigin },
+          { rel: 'preconnect', href: randomImageOrigin, crossorigin: 'anonymous' as const }
+        ] : []),
+      ] as any
     }
   },
 
@@ -106,27 +181,36 @@ export default defineNuxtConfig({
     define: {
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     },
+    optimizeDeps: {
+      include: [
+        'vue',
+        'vue-router',
+        'pinia',
+        '@vueuse/core',
+        'lucide-vue-next',
+        'dompurify',
+        'axios',
+        'photoswipe/lightbox',
+        'photoswipe',
+        'zod'
+      ]
+    },
     build: {
       cssCodeSplit: true,
+      inlineCssModuleChunks: true,
       minify: 'esbuild',
       rollupOptions: {
         output: { manualChunks: { vendor: ['vue', 'vue-router'] } }
       }
-    }
+    } as Record<string, any>
   },
   
   runtimeConfig: {
-    // Private runtime config (server only)
-    geeTestKey: process.env.NUXT_GEETEST_KEY,
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       siteUrl: SITE_URL,
       randomImageApiUrl: process.env.NUXT_PUBLIC_RANDOM_IMAGE_API_URL || 'https://pic.zz4th.space/',
       pageSize: process.env.NUXT_PUBLIC_PAGE_SIZE,
-      // GeeTest Login ID
-      geeTestId: process.env.NUXT_PUBLIC_GEETEST_ID,
-      // GeeTest Register ID
-      geeTestRegisterId: process.env.NUXT_PUBLIC_GEETEST_REGISTER_ID,
       // Mainland-friendly jsDelivr origin (used when building CDN links)
       jsdelivrOrigin: process.env.NUXT_PUBLIC_JSDELIVR_ORIGIN || 'https://fastly.jsdelivr.net',
     }
@@ -172,5 +256,6 @@ export default defineNuxtConfig({
     viewTransition: true,
     asyncContext: true,
     renderJsonPayloads: true,
-  }
+    inlineSSRStyles: true,
+  } as Record<string, any>
 })

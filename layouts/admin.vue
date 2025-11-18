@@ -64,21 +64,38 @@
         <slot />
       </main>
     </div>
+
+    <!-- 公告弹窗（按页面路径） -->
+    <ClientOnly>
+      <AnnouncementModal
+        v-if="pageAnnouncement.announcement.value"
+        :is-open="pageAnnouncement.isOpen.value"
+        :content="pageAnnouncement.announcement.value.content"
+        @close="pageAnnouncement.close()"
+        @dismiss="pageAnnouncement.dismiss()"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
 import { MenuIcon, ChevronRightIcon, HomeIcon, UserIcon } from 'lucide-vue-next'
+import AnnouncementModal from '~/components/AnnouncementModal.vue'
 
 const auth = useAuthStore()
 const route = useRoute()
 const sidebarOpen = ref(false)
+
+// 页面公告系统
+const pageAnnouncement = useAnnouncement()
 
 // 桌面端默认打开侧边栏
 onMounted(() => {
   if (import.meta.client && window.innerWidth >= 1024) {
     sidebarOpen.value = true
   }
+  // Admin页面已经过鉴权，可以直接检查公告
+  pageAnnouncement.checkAndShow()
 })
 
 // 背景图片

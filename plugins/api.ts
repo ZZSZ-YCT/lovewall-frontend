@@ -40,45 +40,51 @@ export default defineNuxtPlugin(() => {
   
   // 生成设备指纹ID的简单函数
   const generateDeviceId = (): string => {
-    if (typeof window === 'undefined') return ''
-    
-    // 基于浏览器特征生成简单的设备指纹
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    if (ctx) {
-      ctx.textBaseline = 'top'
-      ctx.font = '14px Arial'
-      ctx.fillText('Device fingerprint', 2, 2)
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return ''
     }
     
-    const fingerprint = [
-      navigator.userAgent,
-      navigator.language,
-      screen.width,
-      screen.height,
-      new Date().getTimezoneOffset(),
-      canvas.toDataURL()
-    ].join('|')
-    
-    // 简单哈希生成设备ID
-    let hash = 0
-    for (let i = 0; i < fingerprint.length; i++) {
-      const char = fingerprint.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
-      hash = hash & hash // 转换为32位整数
+    try {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (ctx) {
+        ctx.textBaseline = 'top'
+        ctx.font = '14px Arial'
+        ctx.fillText('Device fingerprint', 2, 2)
+      }
+      
+      const fingerprint = [
+        navigator.userAgent,
+        navigator.language,
+        screen.width,
+        screen.height,
+        new Date().getTimezoneOffset(),
+        canvas.toDataURL()
+      ].join('|')
+      
+      let hash = 0
+      for (let i = 0; i < fingerprint.length; i++) {
+        const char = fingerprint.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash // 转换为32位整数
+      }
+      
+      return Math.abs(hash).toString(16).padStart(8, '0')
+    } catch (error) {
+      return Math.random().toString(16).slice(2, 10)
     }
-    
-    return Math.abs(hash).toString(16).padStart(8, '0')
   }
   
   // Decide whether to send credentials based on same-origin
   let withCredentials = true
-  try {
-    if (/^https?:\/\//i.test(baseURL) && typeof window !== 'undefined') {
-      const u = new URL(baseURL)
-      withCredentials = (u.origin === window.location.origin)
-    }
-  } catch {}
+  if (import.meta.client) {
+    try {
+      if (/^https?:\/\//i.test(baseURL)) {
+        const u = new URL(baseURL)
+        withCredentials = (u.origin === window.location.origin)
+      }
+    } catch {}
+  }
 
   // Normalize base: ensure single trailing slash so that 'posts' -> '/api/posts'
   const normBase = (() => {
@@ -105,7 +111,7 @@ export default defineNuxtPlugin(() => {
     }
     
     // 添加设备指纹识别头
-    if (typeof window !== 'undefined') {
+    if (import.meta.client) {
       // 尝试获取设备指纹ID
       const deviceId = cookies.deviceId?.value || generateDeviceId()
       if (deviceId) {
@@ -162,6 +168,9 @@ export default defineNuxtPlugin(() => {
       const isActiveTagNotFound = status === 404 &&
         (error.config?.url?.includes('active-tag') || message === 'active tag not found')
 
+      const isAnnouncementNotFound = status === 404 &&
+        error.config?.url?.includes('announcements/by-path')
+
       const resolveFlag = (source: Record<string, unknown> | undefined, ...keys: string[]): boolean => {
         if (!source) return false
         for (const key of keys) {
@@ -195,7 +204,7 @@ export default defineNuxtPlugin(() => {
         }
       }
 
-      if (!isActiveTagNotFound) {
+      if (!isActiveTagNotFound && !isAnnouncementNotFound) {
         toast.error(`${message}${trace ? ` · ${trace}` : ''}`)
       }
 
@@ -213,6 +222,27 @@ export default defineNuxtPlugin(() => {
     if ((body as any)?.success) return (body as any).data as T
     const msg = (body as any)?.error?.message || '请求失败'
     throw new Error(msg)
+  }
+
+  // 辅助函数：转换评论对象（兼容camelCase和snake_case）
+  // ✅ 后端API v3.3已返回snake_case，此函数主要用于向后兼容
+  const normalizeComment = (comment: any): any => {
+    // 如果已经是snake_case格式，直接返回
+    if (comment.user_avatar_url !== undefined || comment.user_display_name !== undefined) {
+      return comment
+    }
+
+    // 否则转换camelCase为snake_case（向后兼容）
+    return {
+      ...comment,
+      user_display_name: comment.userDisplayName ?? null,
+      user_avatar_url: comment.userAvatarUrl ?? null,
+      user_username: comment.userUsername ?? null,
+      is_user_admin: comment.isUserAdmin ?? false,
+      user_is_online: comment.userIsOnline ?? false,
+      user_last_heartbeat: comment.userLastHeartbeat ?? null,
+      user_tag: comment.userTag ?? null
+    }
   }
 
   // API methods
@@ -439,21 +469,15 @@ export default defineNuxtPlugin(() => {
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
       const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
-      return unwrap(response)
-      /*const res = await $fetch<ApiResp<Pagination<CommentDto>>>(`/__proxy/posts/${postId}/comments`, {
-        method: 'GET',
-        params,
-      })
-
-      if (res.success) {
-        return res.data
-      }
-      throw new Error(`${res.error.code}: ${res.error.message} (trace ${res.trace_id})`)*/
+      const data = unwrap(response)
+      data.items = data.items.map(normalizeComment)
+      return data
     },
 
     async createComment(postId: string, data: CommentForm): Promise<CommentDto> {
       const response = await instance.post<ApiResp<CommentDto>>(`/posts/${postId}/comments`, data)
-      return unwrap(response)
+      const comment = unwrap(response)
+      return normalizeComment(comment)
     },
 
     async updateComment(id: string, data: CommentForm): Promise<CommentDto> {
@@ -485,7 +509,9 @@ export default defineNuxtPlugin(() => {
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
       const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/my/comments', { params })
-      return unwrap(response)
+      const data = unwrap(response)
+      data.items = data.items.map(normalizeComment)
+      return data
     },
 
     // Admin: list comments (alias used by pages)
@@ -497,7 +523,9 @@ export default defineNuxtPlugin(() => {
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
       const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/comments', { params })
-      return unwrap(response)
+      const data = unwrap(response)
+      data.items = data.items.map(normalizeComment)
+      return data
     },
 
     async adminComments(params: {
@@ -508,7 +536,9 @@ export default defineNuxtPlugin(() => {
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
       const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/comments', { params })
-      return unwrap(response)
+      const data = unwrap(response)
+      data.items = data.items.map(normalizeComment)
+      return data
     },
 
     // Announcements
@@ -518,6 +548,11 @@ export default defineNuxtPlugin(() => {
     },
     async listAnnouncementsAdmin(): Promise<AnnouncementDto[]> {
       const response = await instance.get<ApiResp<AnnouncementDto[]>>('/announcements/admin')
+      return unwrap(response)
+    },
+
+    async getAnnouncementByPath(path: string): Promise<AnnouncementDto> {
+      const response = await instance.get<ApiResp<AnnouncementDto>>(`/announcements/by-path${path}`)
       return unwrap(response)
     },
 
@@ -751,10 +786,6 @@ export default defineNuxtPlugin(() => {
     },
     async markNotificationRead(id: string): Promise<void> {
       await instance.post(`/notifications/${id}/read`)
-    },
-    async getUnreadNotificationCount(): Promise<{ count: number }> {
-      const response = await instance.get<ApiResp<{ count: number }>>('/notifications/unread-count')
-      return unwrap(response)
     },
 
     // Admin moderation for posts

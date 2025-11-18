@@ -21,6 +21,7 @@
             v-model="form.old_password"
             type="password"
             placeholder="请输入当前密码"
+            autocomplete="current-password"
             :error="errors.old_password"
             required
           />
@@ -36,6 +37,7 @@
             v-model="form.new_password"
             type="password"
             placeholder="请输入新密码（至少6位）"
+            autocomplete="new-password"
             :error="errors.new_password"
             required
           />
@@ -54,6 +56,7 @@
             v-model="form.confirm_password"
             type="password"
             placeholder="请再次输入新密码"
+            autocomplete="new-password"
             :error="errors.confirm_password"
             required
           />
@@ -153,7 +156,7 @@ const errors = reactive<Partial<Record<keyof ChangePasswordForm, string>>>({})
 const loading = ref(false)
 
 // Stores
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
 const router = useRouter()
 

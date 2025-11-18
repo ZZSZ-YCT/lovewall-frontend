@@ -7,7 +7,9 @@
         :src="bg.src.value"
         alt="Background"
         class="w-full h-full object-cover animate-fade-in"
-        loading="eager"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
       >
 
       <!-- Fallback gradient background -->
@@ -23,15 +25,20 @@
       <header class="fixed top-0 left-0 right-0 z-50">
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
-          <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
+            <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
             <NuxtImg
               src="/badge.png"
               :alt="t('home.title')"
               class="w-8 h-8 rounded-lg"
-              :modifiers="{ fit: 'cover' }"
+              :modifiers="{ fit: 'cover', quality: 50 }"
               sizes="32px"
               format="webp"
               densities="x1 x2"
+              width="32"
+              height="32"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
             <span class="font-bold text-lg hidden sm:block">{{ t('home.title') }}</span>
           </NuxtLink>
@@ -95,11 +102,6 @@
       <!-- 固定头部占位 -->
       <div class="pt-14" />
 
-      <!-- Announcements -->
-      <div>
-        <AnnouncementBar v-if="announcements.length > 0" :announcements="announcements" />
-      </div>
-
       <!-- Page Content -->
       <main class="flex-1 min-h-0 relative">
         <div class="h-full overflow-auto no-scrollbar">
@@ -108,7 +110,9 @@
           </div>
         </div>
         <!-- Toast Notifications -->
-        <ToastContainer />
+        <ClientOnly>
+          <ToastContainer />
+        </ClientOnly>
       </main>
 
       <!-- Footer -->
@@ -140,32 +144,46 @@
     </div>
 
     <!-- Loading Screen -->
-    <div v-if="initializing" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-      <div class="text-center">
-        <LoadingSpinner size="lg" />
-        <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
+    <Transition name="fade">
+      <div
+        v-if="initializing"
+        class="fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-brand-600/95 text-white shadow-glow ring-1 ring-brand-300/60 pointer-events-none"
+        aria-live="polite"
+      >
+        <LoadingSpinner size="md" variant="white" />
+        <div class="flex flex-col">
+          <span class="text-xs uppercase tracking-[0.2em] text-white/70">Loading</span>
+          <span class="text-sm font-semibold">加载中...</span>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <!-- Route announcer for accessibility -->
     <NuxtRouteAnnouncer />
 
-    <ConfirmDialog />
-    <PromptDialog />
+    <!-- 统一使用AdminDialog -->
     <AdminDialog />
+
+    <!-- 公告弹窗（按页面路径） -->
+    <ClientOnly>
+      <AnnouncementModal
+        v-if="pageAnnouncement.announcement.value"
+        :is-open="pageAnnouncement.isOpen.value"
+        :content="pageAnnouncement.announcement.value.content"
+        @close="pageAnnouncement.close()"
+        @dismiss="pageAnnouncement.dismiss()"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { AnnouncementDto } from '~/types'
 import { UserIcon, ChevronDownIcon, BellIcon } from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
 import ToastContainer from '~/components/ui/ToastContainer.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import AnnouncementBar from '~/components/layout/AnnouncementBar.vue'
-import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
-import PromptDialog from '~/components/ui/PromptDialog.vue'
 import AdminDialog from '~/components/ui/AdminDialog.vue'
+import AnnouncementModal from '~/components/AnnouncementModal.vue'
 import '~/assets/css/default.css'
 import LocaleSwitcher from "~/components/ui/LocaleSwitcher.vue";
 
@@ -174,12 +192,14 @@ const { t } = useI18n()
 // Stores
 const auth = useAuthStore()
 
+// 页面公告系统
+const pageAnnouncement = useAnnouncement()
+
 // Background image
 const bg = useRandomBg()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
-const announcements = ref<AnnouncementDto[]>([])
 const initializing = ref(true)
 const showUserMenu = ref(false)
 const userMenuRef = ref<HTMLElement>()
@@ -199,16 +219,12 @@ const goAdmin = async () => {
 const initializeApp = async () => {
   try {
     await auth.initAuth()
-    if (import.meta.client) {
-      try {
-        const api = useApi()
-        announcements.value = await api.listAnnouncements()
-      } catch {}
-    }
   } catch (error) {
     console.error('App initialization failed:', error)
   } finally {
     initializing.value = false
+    // 鉴权完成后检查公告
+    pageAnnouncement.checkAndShow()
   }
 }
 
@@ -216,46 +232,32 @@ onMounted(() => {
   initializeApp()
 })
 
-// 通知红点：未读计数和轮询刷新
-const api = useApi()
-const unreadCount = ref(0)
-
-const loadUnreadCount = async () => {
-  if (!auth.isAuthenticated) return
-  try {
-    const res = await api.getUnreadNotificationCount()
-    unreadCount.value = res.count || 0
-  } catch {}
-}
-
-let unreadInterval: ReturnType<typeof setInterval> | null = null
+// 通知红点：使用heartbeat合并后的unread_notifications
+const { unreadNotifications, startHeartbeat, stopHeartbeat } = useHeartbeat()
+const unreadCount = unreadNotifications
 
 onMounted(() => {
   if (import.meta.client && auth.isAuthenticated) {
-    loadUnreadCount()
-    unreadInterval = setInterval(loadUnreadCount, 30000)
+    startHeartbeat()
   }
 })
 
 onUnmounted(() => {
-  if (unreadInterval) clearInterval(unreadInterval)
+  stopHeartbeat()
 })
 
 watch(() => auth.isAuthenticated, (v) => {
   if (v) {
-    loadUnreadCount()
-    if (!unreadInterval) unreadInterval = setInterval(loadUnreadCount, 30000)
+    startHeartbeat()
   } else {
-    unreadCount.value = 0
-    if (unreadInterval) { clearInterval(unreadInterval); unreadInterval = null }
+    stopHeartbeat()
   }
 })
 
-// 路由变化时刷新一次（进入通知页读完后尽快清红点）
+// 路由变化时关闭菜单
 const route = useRoute()
 watch(() => route.path, () => {
   showUserMenu.value = false
-  if (import.meta.client) setTimeout(loadUnreadCount, 500)
 })
 </script>
 

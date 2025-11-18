@@ -265,7 +265,7 @@ definePageMeta({
 
 // Stores
 const auth = useAuthStore()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const loading = ref(true)
@@ -300,7 +300,7 @@ const loadUserData = async () => {
   activityLoading.value = true
   
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     
     // Load user tags and find active one
     const userTagsResp = await api.getMyTags()
@@ -339,7 +339,7 @@ const loadUserData = async () => {
 const handleProfileUpdated = async (updatedUser: User) => {
   // Refresh user tags in case they changed
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const userTagsResp = await api.getMyTags()
     const items = userTagsResp.items
     activeTag.value = items.find((tag: UserTagDto) => tag.is_active) || null

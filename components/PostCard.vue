@@ -1,12 +1,13 @@
 <template>
-  <GlassCard
+  <GlassCard 
     :class="[
+      'card',
       variant === 'list' ? 'post-card-list' : 'post-card',
       'cursor-pointer group relative overflow-hidden',
       'transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg',
       'rounded-3xl',
       isMobile && 'rounded-2xl sm:rounded-3xl',
-    ]"
+    ]" 
     @click="goDetail"
   >
     <!-- Header -->
@@ -19,8 +20,8 @@
         <!-- Author Avatar -->
         <div
           :class="[
-            'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer',
-            isMobile ? 'w-8 h-8' : 'w-10 h-10'
+            'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer avatar-wrapper',
+            isMobile ? 'w-10 h-10' : 'w-12 h-12'
           ]"
           @click.stop="navigateToAuthor"
         >
@@ -35,45 +36,46 @@
           </template>
 
           <!-- 头像容器 -->
-          <NuxtPicture
-            v-if="authorHasAvatar === true && authorAvatar"
-            :src="authorAvatar"
-            :alt="post.author_name"
-            sizes="(max-width: 640px) 25vw, (max-width: 1024px) 12vw, 48px"
+          <NuxtImg
+            v-if="authorAvatarUrl"
+            :src="authorAvatarUrl"
+            :alt="authorDisplayName"
             format="webp"
-            :modifiers="{ fit: 'cover', quality: 60 }"
-            class="relative z-10 w-full h-full rounded-full object-cover block box-border"
+            class="author-avatar"
             :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
-            :imgAttrs="{
-              class: 'w-full h-full rounded-full object-cover block align-middle'
-            }"
+            :width="isMobile ? 40 : 48"
+            :height="isMobile ? 40 : 48"
+            :loading="eager ? 'eager' : 'lazy'"
+            :fetchpriority="eager ? 'high' : 'auto'"
+            decoding="async"
             @error="handleAuthorAvatarError"
           />
 
-          <!-- Transparent placeholder while loading/unknown -->
-          <div
-            v-else-if="authorHasAvatar === null"
-            class="relative z-10 w-full h-full rounded-full bg-white/10"
-            :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
-          />
-
-          <!-- Default initials only when user has no avatar -->
+          <!-- Default initials when no avatar -->
           <div
             v-else
-            class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-medium"
+            class="avatar-placeholder"
             :class="[
               isMobile ? 'text-xs' : 'text-sm',
               post.is_author_admin ? 'border-0' : 'border-2 border-white/20'
             ]"
           >
-            {{ post.author_name.slice(0, 2) }}
+            {{ authorInitials }}
           </div>
-        </div>
 
+          <!-- 在线状态指示器：总是显示，在线绿色/离线灰色 -->
+          <span
+            class="online-indicator"
+            :class="authorIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
+            :title="authorIsOnline ? (authorOnlineTitle || '在线') : '离线'"
+          />
+        </div>
+        
         <div class="flex-1 min-w-0">
+          <!-- 用户名、徽章、标签在同一行 -->
           <div
 :class="[
-            'flex items-center gap-2',
+            'flex items-center gap-2 flex-wrap',
             isMobile ? 'mb-0.5' : 'mb-1'
           ]">
             <h3
@@ -81,7 +83,7 @@
               'font-semibold text-gray-900 cursor-pointer hover:text-brand-600 transition-colors truncate',
               isMobile ? 'text-sm' : 'text-base'
             ]" @click.stop="navigateToAuthor">
-              {{ post.author_name }}
+              {{ authorDisplayName }}
             </h3>
             <span
               v-if="authorDeleted"
@@ -89,56 +91,59 @@
             >
               已注销
             </span>
-            <!-- Author Active Tag -->
-            <TagBadge
-              v-if="activeTag && activeTag.title"
-              :title="activeTag.title"
-              :background="activeTag.background_color"
-              :text="activeTag.text_color"
-            />
-            <span
-              v-if="activeTag?.user_deleted"
-              class="px-1.5 py-0.5 text-[10px] bg-red-100 text-red-600 rounded-full"
-            >
-              标签所属用户已注销
-            </span>
-          </div>
 
-          <!-- Status badges -->
-          <div class="flex items-center gap-1.5">
+            <!-- 用户标签：比用户名小一号 -->
+            <span
+              v-if="authorTag && authorTag.useCssMode"
+              :class="authorTag.className"
+              class="inline-block text-xs leading-tight px-2 py-0.5 rounded"
+            >
+              {{ authorTag.title }}
+            </span>
+            <span
+              v-else-if="authorTag"
+              class="inline-block text-xs leading-tight px-2 py-0.5 rounded font-medium"
+              :style="authorTag.inlineStyles"
+            >
+              {{ authorTag.title }}
+            </span>
+
+            <!-- 置顶精华徽章 -->
             <span
               v-if="post.status !== 1 && post.is_pinned"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-red-500/80 text-white"
             >
-              <PinIcon class="w-3 h-3" />
+              <PinIcon class="w-2.5 h-2.5" />
               置顶
             </span>
 
             <span
               v-if="post.status !== 1 && post.is_featured"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-500/80 text-white"
             >
-              <StarIcon class="w-3 h-3" />
+              <StarIcon class="w-2.5 h-2.5" />
               精华
             </span>
 
-            <!-- Hidden badge for moderators -->
+            <!-- 已隐藏徽章（仅管理员可见） -->
             <span
               v-if="isModerator && post.status === 1"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/80 text-white"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-500/80 text-white"
             >
               已隐藏
             </span>
+          </div>
 
+          <!-- 第二行：时间和锁定状态 -->
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span>{{ formatDate(post.created_at) }}</span>
             <div
               v-if="post.is_locked"
-              class="inline-flex items-center gap-1 text-sm text-gray-500"
+              class="inline-flex items-center gap-1"
             >
-              <LockIcon class="w-4 h-4" />
+              <LockIcon class="w-3 h-3" />
               <span>已锁定</span>
             </div>
-
-            <span class="text-xs text-gray-500 ml-auto">{{ formatDate(post.created_at) }}</span>
           </div>
         </div>
       </div>
@@ -147,16 +152,21 @@
         <!-- Actions dropdown -->
         <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
           <button
+            ref="dropdownButtonRef"
             class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
-            @click="showDropdown = !showDropdown"
+            @click="toggleDropdown"
           >
             <MoreVerticalIcon class="w-4 h-4" />
           </button>
 
-          <div
-            v-if="showDropdown"
-            class="absolute right-0 mt-1 w-48 glass-card py-2 shadow-lg z-50"
-          >
+          <Teleport to="body">
+            <div
+              v-if="showDropdown"
+              ref="dropdownMenuRef"
+              :style="dropdownStyle"
+              class="fixed w-48 glass-card py-2 shadow-lg z-[9999]"
+              @click.stop
+            >
             <NuxtLink
               :to="`/posts/${post.id}`"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
@@ -207,7 +217,8 @@
                 删除
               </button>
             </template>
-          </div>
+            </div>
+          </Teleport>
         </div>
         <template #fallback>
           <div class="relative flex-shrink-0 invisible"></div>
@@ -241,7 +252,7 @@
         ]">
           {{ post.content }}
         </p>
-
+        
         <button
           v-if="post.content.length > 150"
           class="mt-2 text-sm text-brand-600 hover:text-brand-700 transition-colors"
@@ -261,10 +272,44 @@
       ]"
       @click.stop
     >
+      <div v-if="useEagerImageGrid" class="space-y-3">
+        <div ref="eagerGalleryRef" :class="eagerGridWrapperClass">
+          <a
+            v-for="(image, index) in eagerPreviewImages"
+            :key="`${image}-${index}`"
+            :href="resolvePostImage(image)"
+            :data-pswp-width="2400"
+            :data-pswp-height="2400"
+            target="_blank"
+            rel="noreferrer"
+            @click.prevent.stop="openEagerGallery(index)"
+            class="relative block"
+          >
+            <NuxtImg
+              :src="resolvePostImage(image)"
+              :alt="`${postImageAltPrefix} ${index + 1}`"
+              :sizes="eagerImageSizes"
+              format="webp"
+              :modifiers="{ fit: 'cover' }"
+              class="w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl aspect-square object-cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div
+              v-if="eagerHiddenCount > 0 && index === eagerPreviewImages.length - 1"
+              class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold rounded-lg md:rounded-xl"
+            >
+              +{{ eagerHiddenCount }}
+            </div>
+          </a>
+        </div>
+      </div>
       <ImageGrid
+        v-else
         :images="post.images"
-        :alt-prefix="(post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name) ? (post.author_name + ' 的表白图片') : (post.author_name + ' 的交流图片')"
-        :eager="imageGridEager"
+        :alt-prefix="postImageAltPrefix"
+        :eager="eager"
       />
     </div>
 
@@ -283,7 +328,7 @@
           @click.stop
         />
       </div>
-
+      
       <div
 :class="[
         'text-gray-400',
@@ -300,10 +345,8 @@
 import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
-import TagBadge from '~/components/ui/TagBadge.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
 import type {PostDto} from '~/types'
-import type {ActiveTagDto} from '~/types/extra'
 
 const ImageGrid = defineAsyncComponent(() => import('~/components/ui/ImageGrid.vue'))
 
@@ -311,12 +354,22 @@ interface Props {
   post: PostDto
   showActions?: boolean
   variant?: 'grid' | 'list'
-  imageGridEager?: boolean
+  eager?: boolean
+}
+
+type PostAuthorMeta = {
+  author_display_name?: string | null
+  author_avatar_url?: string | null
+  author_is_online?: boolean
+  author_last_heartbeat?: string | null
+  author_is_deleted?: boolean
+  author_deleted?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showActions: false,
-  variant: 'grid'
+  variant: 'grid',
+  eager: false
 })
 
 const emit = defineEmits<{
@@ -325,72 +378,216 @@ const emit = defineEmits<{
 
 // Stores
 const auth = useAuthStore()
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
-const assetUrl = useAssetUrl()
-const router = useRouter()
+const { assetUrl } = useAssetUrl()
 const { isMobile } = useDeviceSafe()
-const { confirm: confirmDialog } = useAdminDialog()
-const { prompt: promptDialog } = useAdminDialog()
+const { confirm: confirmDialog, prompt: promptDialog } = useAdminDialog()
+const { renderTag } = useTagRenderer()
 
 // State
 const expanded = ref(false)
 const showDropdown = ref(false)
 const dropdownRef = ref<HTMLElement>()
-const authorProfile = ref<any>(null)
-const authorDeleted = ref(false)
-const activeTag = ref<ActiveTagDto | null>(null)
-const authorAvatar = ref<string | null>(null)
-const authorHasAvatar = ref<boolean | null>(null)
+const dropdownButtonRef = ref<HTMLElement>()
+const dropdownMenuRef = ref<HTMLElement>()
+const avatarLoadFailed = ref(false)
+const postAuthorMeta = computed(() => props.post as PostDto & PostAuthorMeta)
+const postImages = computed(() => props.post.images ?? [])
+const maxPreviewImages = 4
+const useEagerImageGrid = computed(() => props.eager && postImages.value.length > 0)
+const eagerPreviewImages = computed(() => postImages.value.slice(0, maxPreviewImages))
+const eagerHiddenCount = computed(() => Math.max(postImages.value.length - maxPreviewImages, 0))
+const postImageAltPrefix = computed(() => {
+  const { card_type, target_name, author_name } = props.post
+  if (card_type !== 'communication' && card_type !== 'social' && target_name) {
+    return `${author_name} 的表白图片`
+  }
+  return `${author_name} 的交流图片`
+})
+const eagerGridWrapperClass = computed(() => {
+  const count = Math.min(postImages.value.length, maxPreviewImages)
+  if (count <= 0) return ''
+  if (count === 1) return 'grid gap-3 grid-cols-1'
+  if (count === 2) return 'grid gap-3 grid-cols-2'
+  if (count === 3) return 'grid gap-3 grid-cols-3'
+  return 'grid gap-3 grid-cols-2'
+})
+const eagerImageSizes = '100vw sm:70vw lg:600px'
+const eagerGalleryRef = ref<HTMLElement | null>(null)
+const eagerLightbox = ref<any | null>(null)
+
+const resolvePostImage = (image: string) => {
+  if (!image) return ''
+  return image.startsWith('http') ? image : assetUrl(image)
+}
+
+const destroyEagerLightbox = () => {
+  if (eagerLightbox.value) {
+    eagerLightbox.value.destroy()
+    eagerLightbox.value = null
+  }
+}
+
+const ensureEagerLightbox = async () => {
+  if (!import.meta.client || !useEagerImageGrid.value) {
+    return null
+  }
+  if (eagerLightbox.value) {
+    return eagerLightbox.value
+  }
+
+  await nextTick()
+  if (!eagerGalleryRef.value) {
+    return null
+  }
+
+  await import('photoswipe/style.css')
+  const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
+
+  eagerLightbox.value = new PhotoSwipeLightbox({
+    gallery: eagerGalleryRef.value,
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+    preload: [1, 2],
+    zoom: true,
+    maxZoomLevel: 4,
+    initialZoomLevel: 'fit',
+    secondaryZoomLevel: 2,
+    pinchToClose: true,
+    closeOnVerticalDrag: true,
+    bgOpacity: 0.98,
+    showHideAnimationType: 'zoom',
+    padding: {
+      top: 60,
+      bottom: 60,
+      left: 20,
+      right: 20
+    }
+  })
+  eagerLightbox.value.init()
+  return eagerLightbox.value
+}
+
+const openEagerGallery = async (index: number) => {
+  const lb = await ensureEagerLightbox()
+  if (!lb) return
+  lb.loadAndOpen(index)
+}
+
+watch(useEagerImageGrid, (active) => {
+  if (!active) {
+    destroyEagerLightbox()
+  }
+})
+
+watch(() => postAuthorMeta.value.author_avatar_url, () => {
+  avatarLoadFailed.value = false
+})
+
+// Dropdown位置计算
+const dropdownStyle = ref<{ top: string; left?: string; right?: string }>({ top: '0px', left: '0px' })
+
+const updateDropdownPosition = () => {
+  if (!dropdownButtonRef.value) return
+  const rect = dropdownButtonRef.value.getBoundingClientRect()
+  const menuWidth = 192 // w-48 = 12rem = 192px
+
+  // 计算是否右侧空间足够
+  const spaceOnRight = window.innerWidth - rect.right
+  const spaceOnLeft = rect.left
+
+  if (spaceOnRight >= menuWidth) {
+    // 右侧空间足够，右对齐按钮
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: `${rect.right - menuWidth}px`,
+      right: undefined
+    }
+  } else if (spaceOnLeft >= menuWidth) {
+    // 右侧不够，左侧对齐
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: `${rect.left}px`,
+      right: undefined
+    }
+  } else {
+    // 两侧都不够，贴右边
+    dropdownStyle.value = {
+      top: `${rect.bottom + 4}px`,
+      left: undefined,
+      right: '8px'
+    }
+  }
+}
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+  if (showDropdown.value) {
+    nextTick(() => {
+      updateDropdownPosition()
+    })
+  }
+}
+
+// 监听窗口变化和滚动，更新dropdown位置
+watch(showDropdown, (isOpen) => {
+  if (isOpen) {
+    window.addEventListener('resize', updateDropdownPosition)
+    window.addEventListener('scroll', updateDropdownPosition, true)
+  } else {
+    window.removeEventListener('resize', updateDropdownPosition)
+    window.removeEventListener('scroll', updateDropdownPosition, true)
+  }
+})
+
+// 组件卸载时清理
+onUnmounted(() => {
+  window.removeEventListener('resize', updateDropdownPosition)
+  window.removeEventListener('scroll', updateDropdownPosition, true)
+  destroyEagerLightbox()
+})
 
 // Close dropdown when clicking outside
 onClickOutside(dropdownRef, () => {
   showDropdown.value = false
 })
 
-// Fetch author info
-const fetchAuthorInfo = async () => {
-  try {
-    if (props.post.author_id) {
-      // 获取用户详细信息
-      try {
-        const userRes = await api.getUser(props.post.author_id)
-        authorProfile.value = userRes
-        authorDeleted.value = !!userRes.is_deleted
-        if (userRes.avatar_url) {
-          authorAvatar.value = assetUrl(userRes.avatar_url)
-          authorHasAvatar.value = true
-        } else {
-          authorHasAvatar.value = false
-        }
-      } catch (error) {
-        console.warn('Failed to fetch user profile:', error)
-        // 拉取失败时保持未知态，避免误显示默认头像
-        authorHasAvatar.value = null
-      }
-
-      // 获取用户活跃标签
-      try {
-        activeTag.value = await api.getUserActiveTag(props.post.author_id)
-      } catch (error: any) {
-        // 没有活跃标签是正常情况，不需要报错或显示错误
-        activeTag.value = null
-      }
-    }
-  } catch (error) {
-    console.error('Failed to fetch author info:', error)
-  }
-}
-
-// 组件挂载时获取作者信息
-onMounted(() => {
-  fetchAuthorInfo()
+const authorDisplayName = computed(() => {
+  const displayName = postAuthorMeta.value.author_display_name?.trim()
+  return displayName && displayName.length > 0 ? displayName : props.post.author_name
 })
 
-// Avatar load error handler
+const authorInitials = computed(() => {
+  const source = authorDisplayName.value || props.post.author_name || ''
+  const trimmed = source.trim()
+  if (!trimmed) return '匿'
+  return trimmed.slice(0, 2).toUpperCase()
+})
+
+const authorAvatarUrl = computed(() => {
+  if (avatarLoadFailed.value) return null
+  const avatar = postAuthorMeta.value.author_avatar_url
+  return avatar ? assetUrl(avatar) : null
+})
+
+const authorIsOnline = computed(() => postAuthorMeta.value.author_is_online ?? false)
+const authorLastHeartbeat = computed(() => postAuthorMeta.value.author_last_heartbeat ?? null)
+
+const authorOnlineTitle = computed(() => {
+  if (!authorIsOnline.value) return ''
+  if (!authorLastHeartbeat.value) return '在线'
+  return `在线 · ${formatTimeAgo(authorLastHeartbeat.value)}`
+})
+
+const authorTag = computed(() => renderTag(postAuthorMeta.value.author_tag))
+
+const authorDeleted = computed(() =>
+  Boolean(postAuthorMeta.value.author_is_deleted ?? postAuthorMeta.value.author_deleted)
+)
+
 const handleAuthorAvatarError = () => {
-  authorHasAvatar.value = false
-  authorAvatar.value = null
+  avatarLoadFailed.value = true
 }
 
 // Computed
@@ -419,8 +616,7 @@ const shareData = computed(() => {
     text: props.post.content.length > 100 ?
       `${props.post.content.substring(0, 100)}...` :
       props.post.content,
-    url: `${origin}/posts/${props.post.id}`,
-    image: props.post.images?.[0] ? assetUrl(props.post.images[0]) : undefined
+    url: `${origin}/posts/${props.post.id}`
   }
 })
 
@@ -506,7 +702,7 @@ const handleDelete = async () => {
     cancelText: '取消'
   })
   if (!confirmed) return
-
+  
   try {
     const reason = await promptModerationReason('删除')
     if (reason === null) return
@@ -539,17 +735,17 @@ const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-
+  
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
+  
   if (minutes < 1) return '刚刚'
   if (minutes < 5) return '几分钟前'
   if (minutes < 60) return `${minutes}分钟前`
   if (hours < 24) return `${hours}小时前`
   if (days < 7) return `${days}天前`
-
+  
   return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
 }
 
@@ -572,6 +768,31 @@ const formatDate = (dateString: string) => {
 }
 </script>
 
+<style scoped>
+.author-avatar {
+  @apply relative z-10 w-full h-full rounded-full object-cover;
+}
+
+.avatar-placeholder {
+  @apply relative z-10 w-full h-full rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-semibold uppercase;
+}
+
+.avatar-wrapper {
+  @apply relative;
+}
+
+.online-indicator {
+  @apply absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20;
+}
+
+.tag-badge {
+  @apply inline-block text-xs px-2 py-1 rounded font-medium leading-none;
+}
+
+.admin-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-sky-100 text-sky-700 font-medium;
+}
+</style>
 
 
 

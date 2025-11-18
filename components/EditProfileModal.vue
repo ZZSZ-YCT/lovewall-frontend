@@ -51,6 +51,7 @@
               id="display_name"
               v-model="form.display_name"
               placeholder="请输入显示名称（可选）"
+              autocomplete="nickname"
               :error="errors.display_name"
             />
           </div>
@@ -65,6 +66,7 @@
               v-model="form.email"
               type="email"
               placeholder="请输入邮箱地址（可选）"
+              autocomplete="email"
               :error="errors.email"
             />
           </div>
@@ -78,6 +80,7 @@
               id="phone"
               v-model="form.phone"
               placeholder="请输入手机号（可选）"
+              autocomplete="tel"
               :error="errors.phone"
             />
           </div>
@@ -143,7 +146,7 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 
 // State
 const loading = ref(false)
@@ -246,7 +249,7 @@ const handleSubmit = async () => {
   loading.value = true
   
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const auth = useAuthStore()
     
     // Prepare update data

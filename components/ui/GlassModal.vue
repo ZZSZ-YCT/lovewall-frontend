@@ -5,18 +5,18 @@
       class="fixed inset-0 z-[9000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       @click.self="handleClose"
     >
-      <div 
+      <div
         :class="[
-          'bg-white/90 backdrop-blur-xl rounded-2xl border border-white/30 shadow-2xl max-h-[95vh] overflow-y-auto w-full',
+          'bg-white rounded-2xl shadow-2xl max-h-[95vh] overflow-y-auto w-full',
           maxWidth
         ]"
       >
         <!-- Header -->
-        <div v-if="showHeader" class="flex items-center justify-between p-6 border-b border-white/20">
-          <h2 class="text-xl font-bold text-gray-800">{{ title }}</h2>
+        <div v-if="showHeader" class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 class="text-xl font-bold text-gray-900">{{ title }}</h2>
           <button
             type="button"
-            class="p-2 text-gray-600 hover:text-gray-800 transition-colors rounded-lg hover:bg-white/20"
+            class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
             @click="handleClose"
           >
             <XIcon class="w-5 h-5" />
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="p-6 pt-0 border-t border-white/20">
+        <div v-if="$slots.footer" class="p-6 pt-0">
           <slot name="footer" />
         </div>
       </div>

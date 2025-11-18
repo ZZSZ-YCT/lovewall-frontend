@@ -1,71 +1,5 @@
-import {defineStore} from 'pinia'
-import type {Pagination, PostDto} from '~/types'
-
-const REFRESH_TTL = 30_000 // 30 seconds cache window
-
-const scorePost = (p: PostDto) => {
-  if ((p as any).status === 2) return 5
-  if ((p as any).status === 1) return 4
-  if (p.is_pinned && p.is_featured) return 0
-  if (p.is_pinned) return 1
-  if (p.is_featured) return 2
-  return 3
-}
-
-const createdAtCache = new WeakMap<PostDto, number>()
-
-const getCreatedAt = (post: PostDto) => {
-  const cached = createdAtCache.get(post)
-  if (cached !== undefined) {
-    return cached
-  }
-  const value = new Date(post.created_at).getTime()
-  createdAtCache.set(post, value)
-  return value
-}
-
-const comparePosts = (a: PostDto, b: PostDto) => {
-  const sa = scorePost(a)
-  const sb = scorePost(b)
-  if (sa !== sb) return sa - sb
-  const at = getCreatedAt(a)
-  const bt = getCreatedAt(b)
-  return bt - at
-}
-
-const sortPosts = (posts: PostDto[]) => [...posts].sort(comparePosts)
-
-const mergeSortedPosts = (existing: PostDto[], incoming: PostDto[]) => {
-  if (!existing.length) return sortPosts(incoming)
-  if (!incoming.length) return existing.slice()
-
-  const sortedIncoming = sortPosts(incoming)
-  const merged: PostDto[] = []
-  let i = 0
-  let j = 0
-
-  while (i < existing.length && j < sortedIncoming.length) {
-    if (comparePosts(existing[i]!!, sortedIncoming[j]!!) <= 0) {
-      merged.push(existing[i]!!)
-      i++
-    } else {
-      merged.push(sortedIncoming[j]!!)
-      j++
-    }
-  }
-
-  while (i < existing.length) {
-    merged.push(existing[i]!!)
-    i++
-  }
-
-  while (j < sortedIncoming.length) {
-    merged.push(sortedIncoming[j]!!)
-    j++
-  }
-
-  return merged
-}
+import { defineStore } from 'pinia'
+import type { Pagination, PostDto } from '~/types'
 
 const normalizeStatus = (s: any): 0 | 1 => {
   if (typeof s === 'number') return s === 1 ? 1 : 0
@@ -91,8 +25,9 @@ const normalizePost = (p: any): PostDto => {
     content: String(p.content ?? ''),
     images: normalizeImages(p),
     status: normalizeStatus(p.status),
-    is_pinned: p.is_pinned,
-    is_featured: p.is_featured,
+    is_pinned: !!p.is_pinned,
+    is_featured: !!p.is_featured,
+    is_locked: !!p.is_locked,
     created_at: createdAt,
     updated_at: p.updated_at ?? createdAt,
     author_tag: p.author_tag,
@@ -103,9 +38,12 @@ const normalizePost = (p: any): PostDto => {
     audit_status: p.audit_status,
     audit_msg: p.audit_msg,
     manual_review_requested: p.manual_review_requested,
-    is_locked: p.is_locked
+    // 扩展作者在线状态信息
+    author_display_name: p.author_display_name ?? null,
+    author_avatar_url: p.author_avatar_url ?? null,
+    author_is_online: p.author_is_online ?? false,
+    author_last_heartbeat: p.author_last_heartbeat ?? null,
   }
-  createdAtCache.set(normalized, new Date(normalized.created_at).getTime())
   return normalized
 }
 
@@ -128,17 +66,6 @@ const dedupeById = (posts: PostDto[]) => {
   })
 }
 
-const postsAreIdentical = (a: PostDto[], b: PostDto[]) => {
-  if (a === b) return true
-  if (a.length !== b.length) return false
-  for (let i = 0; i < a.length; i++) {
-    if (a[i]!!.id !== b[i]!!.id || a[i]!!.updated_at !== b[i]!!.updated_at) {
-      return false
-    }
-  }
-  return true
-}
-
 interface HomeState {
   posts: PostDto[]
   pinned: PostDto[]
@@ -149,7 +76,7 @@ interface HomeState {
   loading: boolean
   loadingMore: boolean
   loaded: boolean
-  lastLoadedAt: number | null
+  error: string | null
 }
 
 export const useHomeStore = defineStore('home', {
@@ -157,88 +84,70 @@ export const useHomeStore = defineStore('home', {
     posts: [],
     pinned: [],
     featured: [],
-    page: 1,
+    page: 0,
     pageSize: +useRuntimeConfig().public.pageSize || 20,
-    hasMore: true,
+    hasMore: false,
     loading: false,
     loadingMore: false,
     loaded: false,
-    lastLoadedAt: null,
+    error: null,
   }),
   getters: {
-    hasData: (s) => s.loaded && (s.posts.length > 0 || s.pinned.length > 0 || s.featured.length > 0),
-
-    sortedPosts: (s) => s.posts,
+    hasData: (s) => s.loaded && s.posts.length > 0,
   },
   actions: {
-    shouldRefresh(maxAge = REFRESH_TTL) {
-      if (!this.loaded || !this.lastLoadedAt) return true
-      return Date.now() - this.lastLoadedAt > maxAge
-    },
-
-    async refreshIfStale(maxAge = REFRESH_TTL) {
-      if (this.loading || !this.shouldRefresh(maxAge)) {
-        return
-      }
+    async initialLoad() {
+      // 首次进入首页时加载数据（不做 TTL 缓存，只避免并发）
+      if (this.loaded || this.loading) return
       await this.forceRefresh()
     },
 
-    async initialLoad() {
+    async refreshIfStale() {
+      // 现在不再按时间判断“是否陈旧”，而是简单地防止并发刷新
       if (this.loading) return
-      if (!this.loaded) {
-        await this.forceRefresh()
-        return
-      }
-      await this.refreshIfStale()
+      await this.forceRefresh()
     },
 
     async forceRefresh() {
       if (this.loading) return
       this.loading = true
+      this.error = null
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
-        
-        // Add timestamp to prevent caching
-        const timestamp = Date.now()
+
         const params = {
           page: 1,
           page_size: pageSize,
-          _t: timestamp,
         }
 
-        const [listResp, pinnedResp, featuredResp] = await Promise.all([
-          api.listPosts(params),
-          api.listPosts({ pinned: true, page_size: 6, _t: timestamp }),
-          api.listPosts({ featured: true, page_size: 6, _t: timestamp }),
-        ])
-        
+        const listResp = await api.listPosts(params)
+
         const rawItems = extractItems(listResp)
         const normalizedItems = dedupeById(rawItems.map(normalizePost))
         const filteredPosts = canModerate
           ? normalizedItems
           : normalizedItems.filter((p: PostDto) => p.status === 0)
 
-        this.posts = sortPosts(filteredPosts)
-
-        const normalizedPinned = dedupeById(extractItems(pinnedResp).map(normalizePost))
-        const normalizedFeatured = dedupeById(extractItems(featuredResp).map(normalizePost))
-
-        this.pinned = normalizedPinned
-        this.featured = normalizedFeatured
-
+        // 刷新时整体替换为第一页数据（后续通过 loadMore 追加）
+        this.posts = filteredPosts
         this.page = 1
         this.hasMore = rawItems.length === pageSize
         this.loaded = true
-        this.lastLoadedAt = Date.now()
-
-      } catch (error) {
+      } catch (error: any) {
         console.error('HomeStore: Failed to refresh posts:', error)
 
-        const toast = useToast()
-        toast.error('刷新失败，请稍后重试')
+        const message = error?.message || '刷新失败，请稍后重试'
+        this.error = message
+
+        if (import.meta.client) {
+          const toast = useToast()
+          toast.error(message)
+        }
+
+        throw error
       } finally {
         this.loading = false
       }
@@ -249,21 +158,19 @@ export const useHomeStore = defineStore('home', {
     },
 
     async loadMore() {
-      if (!this.hasMore || this.loadingMore) return
+      if (!this.loaded || !this.hasMore || this.loadingMore) return
       this.loadingMore = true
+      this.error = null
       try {
-        const api = useApi()
+        const api = useNuxtApp().$api
         const auth = useAuthStore()
         const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
         const pageSize = this.pageSize || 20
         const next = this.page + 1
-        
-        // Add timestamp to prevent caching
-        const timestamp = Date.now()
-        const params = { 
-          page: next, 
+
+        const params = {
+          page: next,
           page_size: pageSize,
-          _t: timestamp 
         }
 
         const listResp: Pagination<PostDto> = await api.listPosts(params)
@@ -277,21 +184,26 @@ export const useHomeStore = defineStore('home', {
         const existingIds = new Set(this.posts.map((post) => post.id))
         const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
 
+        // 追加去重后的新数据
         if (uniqueNewPosts.length > 0) {
-          const merged = mergeSortedPosts(this.posts, uniqueNewPosts)
-          if (!postsAreIdentical(this.posts, merged)) {
-            this.posts = merged
-          }
+          this.posts = [...this.posts, ...uniqueNewPosts]
         }
         this.page = next
         this.hasMore = itemsRaw.length === pageSize
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load more posts:', error)
-        const toast = useToast()
-        toast.error('加载更多失败，请稍后重试')
+        const message = error?.message || '加载更多失败，请稍后重试'
+        this.error = message
+
+        if (import.meta.client) {
+          const toast = useToast()
+          toast.error(message)
+        }
+        throw error
       } finally {
         this.loadingMore = false
       }
     },
-  }
+  },
 })
+

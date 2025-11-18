@@ -1,3 +1,8 @@
+/**
+ * 统一对话框系统 - 桥接到useAdminDialog
+ * 所有对话框使用AdminDialog的样式和实现
+ */
+
 interface ConfirmOptions {
   title?: string
   message: string
@@ -14,139 +19,76 @@ interface PromptOptions {
   cancelText?: string
 }
 
-type ConfirmResolver = ((value: boolean) => void) | null
-
-type PromptResolver = ((value: string | null) => void) | null
-
-interface ConfirmState {
-  isOpen: boolean
-  title: string
-  message: string
-  confirmText: string
-  cancelText: string
-}
-
-interface PromptState {
-  isOpen: boolean
-  title: string
-  message: string
-  placeholder: string
-  inputValue: string
-  confirmText: string
-  cancelText: string
-}
-
-const createDefaultConfirmState = (): ConfirmState => ({
-  isOpen: false,
-  title: '',
-  message: '',
-  confirmText: '确定',
-  cancelText: '取消'
-})
-
-const createDefaultPromptState = (): PromptState => ({
-  isOpen: false,
-  title: '',
-  message: '',
-  placeholder: '',
-  inputValue: '',
-  confirmText: '确定',
-  cancelText: '取消'
-})
-
+/**
+ * useConfirm - 统一使用AdminDialog样式的确认对话框
+ * 为了保持向后兼容，这里桥接到useAdminDialog
+ */
 export const useConfirm = () => {
-  const state = useState<ConfirmState>('app-confirm-dialog', createDefaultConfirmState)
-  const resolver = useState<ConfirmResolver>('app-confirm-dialog-resolver', () => null)
-
-  const finalize = (result: boolean) => {
-    const resolveFn = resolver.value
-    resolver.value = null
-    state.value = createDefaultConfirmState()
-    resolveFn?.(result)
-  }
+  const adminDialog = useAdminDialog()
 
   const confirm = (options: string | ConfirmOptions) => {
-    if (!import.meta.client) {
-      return Promise.resolve(false)
-    }
-
-    if (state.value.isOpen) {
-      finalize(false)
-    }
-
     const normalized: ConfirmOptions = typeof options === 'string'
       ? { message: options }
       : options
 
-    return new Promise<boolean>((resolve) => {
-      state.value = {
-        isOpen: true,
-        title: normalized.title ?? '',
-        message: normalized.message,
-        confirmText: normalized.confirmText ?? '确定',
-        cancelText: normalized.cancelText ?? '取消'
-      }
-      resolver.value = (decision: boolean) => {
-        resolve(decision)
-      }
+    return adminDialog.confirm({
+      title: normalized.title || '确认',
+      message: normalized.message,
+      confirmText: normalized.confirmText,
+      cancelText: normalized.cancelText
     })
   }
 
+  // 包装respond以保持向后兼容 - 旧API接受boolean，新API需要AdminDialogResult
+  const respond = (result: boolean) => {
+    adminDialog.respond({ confirmed: result, inputValue: '' })
+  }
+
   return {
-    state,
+    state: adminDialog.state,
     confirm,
-    respond: finalize
+    respond
   }
 }
 
+/**
+ * usePrompt - 统一使用AdminDialog样式的输入对话框
+ * 为了保持向后兼容，这里桥接到useAdminDialog
+ */
 export const usePrompt = () => {
-  const state = useState<PromptState>('app-prompt-dialog', createDefaultPromptState)
-  const resolver = useState<PromptResolver>('app-prompt-dialog-resolver', () => null)
-
-  const finalize = (value: string | null) => {
-    const resolveFn = resolver.value
-    resolver.value = null
-    state.value = createDefaultPromptState()
-    resolveFn?.(value)
-  }
+  const adminDialog = useAdminDialog()
 
   const prompt = (messageOrOptions: string | PromptOptions, defaultValue?: string) => {
-    if (!import.meta.client) {
-      return Promise.resolve(null)
-    }
-
-    if (state.value.isOpen) {
-      finalize(null)
-    }
-
     const normalized: PromptOptions = typeof messageOrOptions === 'string'
       ? { message: messageOrOptions, defaultValue }
       : messageOrOptions
 
-    return new Promise<string | null>((resolve) => {
-      state.value = {
-        isOpen: true,
-        title: normalized.title ?? '',
-        message: normalized.message ?? '',
-        placeholder: normalized.placeholder ?? '',
-        inputValue: normalized.defaultValue ?? '',
-        confirmText: normalized.confirmText ?? '确定',
-        cancelText: normalized.cancelText ?? '取消'
-      }
-      resolver.value = (input: string | null) => {
-        resolve(input)
-      }
+    return adminDialog.prompt({
+      title: normalized.title || '输入',
+      message: normalized.message,
+      placeholder: normalized.placeholder,
+      defaultValue: normalized.defaultValue,
+      confirmText: normalized.confirmText,
+      cancelText: normalized.cancelText
     })
   }
 
   const setValue = (value: string) => {
-    state.value.inputValue = value
+    adminDialog.state.value.inputValue = value
+  }
+
+  // 包装respond以保持向后兼容 - 旧API接受string|null，新API需要AdminDialogResult
+  const respond = (value: string | null) => {
+    adminDialog.respond({
+      confirmed: value !== null,
+      inputValue: value || ''
+    })
   }
 
   return {
-    state,
+    state: adminDialog.state,
     prompt,
-    respond: finalize,
+    respond,
     setValue
   }
 }

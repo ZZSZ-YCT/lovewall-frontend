@@ -74,7 +74,7 @@ definePageMeta({
   ssr: false
 })
 
-const api = useApi()
+const api = useNuxtApp().$api
 const toast = useToast()
 const permissions = usePermissions()
 

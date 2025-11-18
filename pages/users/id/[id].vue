@@ -51,6 +51,13 @@
                   {{ userDisplayName.slice(0, 2) }}
                 </div>
               </div>
+
+              <!-- 在线状态指示器：总是显示，在线绿色/离线灰色，部分盖住头像右下角 -->
+              <div
+                class="absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
+                :class="userIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
+                :title="userIsOnline ? (formatOnlineStatus(onlineStatusData?.last_heartbeat)) : '离线'"
+              />
             </div>
           </div>
 
@@ -59,10 +66,7 @@
             <div class="mb-4">
               <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <h1 class="text-3xl font-bold text-gray-800">{{ userDisplayName }}</h1>
-                <OnlineBadge
-                  v-if="!isDeleted && user?.id"
-                  :user-id="user.id"
-                />                <span
+                <span
                   v-if="isDeleted"
                   class="px-2 py-0.5 text-xs bg-gray-200 text-gray-700 rounded-full"
                 >
@@ -201,7 +205,6 @@ import GlassCard from '~/components/ui/GlassCard.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
-import OnlineBadge from '~/components/ui/OnlineBadge.vue'
 import { HeartIcon } from 'lucide-vue-next'
 import type { User, PostDto, Pagination } from '~/types'
 import type { ActiveTagDto } from '~/types/extra'
@@ -213,7 +216,7 @@ const userId = computed(() => route.params.id as string)
 // State
 const { data: userData, error: userError, pending } = await useAsyncData(
   `user-${userId.value}`,
-  () => useApi().getUser(userId.value)
+  () => useNuxtApp().$api.getUser(userId.value)
 )
 
 const user = computed(() => userData.value)
@@ -226,12 +229,31 @@ const {
   refresh: refreshPosts
 } = await useAsyncData(
   () => `user-posts-${userId.value}`,
-  () => user.value ? useApi().getUserPosts(user.value.id, { page: 1, page_size: 10 }) : [],
+  () => {
+    if (!user.value) {
+      return Promise.resolve<Pagination<PostDto>>({
+        total: 0,
+        items: [],
+        page: 1,
+        page_size: 10
+      })
+    }
+    return useNuxtApp().$api.getUserPosts(user.value.id, { page: 1, page_size: 10 })
+  },
   { watch: [user] } // 👈 当 user 加载成功时自动加载帖子
 )
 
 const activeTag = ref<ActiveTagDto | null>(null)
 const userStatus = ref<{ exists: boolean; is_deleted: boolean; is_banned: boolean; ban_reason?: string | null } | null>(null)
+
+// 获取用户在线状态
+const { data: onlineStatusData } = await useAsyncData(
+  `user-online-${userId.value}`,
+  () => useNuxtApp().$api.getUserOnlineStatus(userId.value),
+  { watch: [userId] }
+)
+
+const userIsOnline = computed(() => onlineStatusData.value?.online ?? false)
 
 const userPosts = computed(() => userPostsData.value?.items ?? [])
 const postsLoading = computed(() => postsPending.value)
@@ -239,7 +261,7 @@ const postsLoading = computed(() => postsPending.value)
 const postsData = ref<Pagination<PostDto> | null>(null)
 
 // Composable
-const assetUrl = useAssetUrl()
+const { assetUrl } = useAssetUrl()
 const toast = useToast()
 
 // Computed
@@ -255,7 +277,7 @@ const isDeleted = computed(() => {
 const loadMorePosts = async () => {
   if (postsData.value && user.value) {
     const nextPage = postsData.value.page + 1
-    const data = await useApi().getUserPosts(user.value.id, { page: nextPage, page_size: 10 })
+    const data = await useNuxtApp().$api.getUserPosts(user.value.id, { page: nextPage, page_size: 10 })
     postsData.value.items.push(...data.items)
     postsData.value.page = nextPage
   }
@@ -263,6 +285,28 @@ const loadMorePosts = async () => {
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN')
+}
+
+// 格式化在线状态：在线显示"在线"，离线显示最后心跳时间（GMT+8）
+const formatOnlineStatus = (lastHeartbeat?: string | null) => {
+  if (!lastHeartbeat) return '在线'
+
+  try {
+    const date = new Date(lastHeartbeat)
+    // 格式化为 GMT+8 可读时间：2025-01-12 14:30:25
+    return `离线 · 最后在线: ${date.toLocaleString('zh-CN', {
+      timeZone: 'Asia/Shanghai',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    })}`
+  } catch {
+    return '在线'
+  }
 }
 
 definePageMeta({
@@ -431,12 +475,15 @@ useSeoMeta({
   // --- Profile-specific OG fields ---
   profileUsername: computed(() => user.value?.username || ''),
   profileFirstName: computed(() => userDisplayName.value),
-
-  // --- Canonical ---
-  canonical: computed(() => canonicalUrl.value),
 })
 
 useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: computed(() => canonicalUrl.value)
+    }
+  ],
   script: computed(() => {
     if (!profileStructuredData.value) return []
     return [

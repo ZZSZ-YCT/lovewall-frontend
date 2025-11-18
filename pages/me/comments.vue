@@ -73,59 +73,19 @@
         <GlassCard class="p-6 hover:shadow-glow-lg transition-all">
           <div class="space-y-4">
             <!-- Comment Header -->
-            <div class="flex items-start justify-between">
-              <div class="flex items-center gap-3">
-                <div
-                  class="relative w-8 h-8 flex-shrink-0 transition-transform hover:scale-110"
-                >
-                  <!-- 管理员光圈效果 -->
-                  <template v-if="auth.currentUser?.is_admin">
-                    <div
-                      class="absolute -inset-[3px] rounded-full border-[3px] border-sky-400/95 pointer-events-none"
-                    />
-                    <div
-                      class="absolute -inset-[7px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-                    />
-                  </template>
-
-                  <!-- 头像容器 -->
-                  <NuxtImg
-                    v-if="auth.currentUser?.avatar_url"
-                    :src="assetUrl(auth.currentUser.avatar_url)"
-                    :alt="auth.userDisplayName"
-                    class="relative z-10 w-full h-full rounded-full object-cover"
-                    :class="auth.currentUser?.is_admin ? 'border-0' : 'border border-white/20'"
-                  />
-                  <div
-                    v-else
-                    class="relative z-10 w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-medium"
-                    :class="auth.currentUser?.is_admin ? 'border-0' : 'border border-white/20'"
-                  >
-                    {{ auth.userDisplayName.slice(0, 2) }}
-                  </div>
-                </div>
-                
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-medium text-gray-800">
-                      {{ auth.userDisplayName }}
-                    </span>
-                    <span
-                      v-if="comment.status === 1"
-                      class="px-2 py-0.5 text-xs bg-gray-100 text-gray-800 rounded-full"
-                    >
-                      已隐藏
-                    </span>
-                  </div>
-                  <div class="text-sm text-gray-500">
-                    {{ formatDate(comment.created_at) }}
-                    <span v-if="comment.updated_at && comment.updated_at !== comment.created_at">
-                      · 已编辑
-                    </span>
-                  </div>
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+              <div class="flex-1 min-w-0 space-y-1">
+                <CommentUserInfo
+                  :comment="comment"
+                  :show-status-badge="true"
+                />
+                <div class="text-sm text-gray-500">
+                  {{ formatDate(comment.created_at) }}
+                  <span v-if="comment.updated_at && comment.updated_at !== comment.created_at">
+                    · 已编辑
+                  </span>
                 </div>
               </div>
-
               <!-- Actions -->
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <NuxtLink
@@ -162,7 +122,7 @@
               <GlassTextarea
                 v-model="editForm.content"
                 :error="editErrors.content"
-                rows="3"
+                :rows="3"
                 class="w-full"
                 placeholder="编辑你的评论..."
               />
@@ -271,7 +231,6 @@ definePageMeta({
 // Stores
 const auth = useAuthStore()
 const toast = useToast()
-const assetUrl = useAssetUrl()
 
 // State
 const comments = ref<CommentDto[]>([])
@@ -314,7 +273,7 @@ const loadComments = async (page = 1, reset = false) => {
   }
 
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const params: any = {
       page,
       page_size: 20
@@ -393,7 +352,7 @@ const saveEdit = async () => {
   
   editing.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     const updatedComment = await api.updateComment(editingComment.value.id, editForm)
     
     // Update local comment
@@ -421,7 +380,7 @@ const deleteComment = async () => {
   
   deleting.value = true
   try {
-    const api = useApi()
+    const api = useNuxtApp().$api
     await api.deleteComment(deleteModal.comment.id)
     
     // Remove from local list or mark as hidden

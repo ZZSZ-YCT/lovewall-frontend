@@ -74,11 +74,16 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-## GeeTest 验证接入
+## 验证码系统
 
-- 环境变量（见 `.env` 示例）：
-  - `NUXT_PUBLIC_GEETEST_ID`：极验验证 ID（前端使用）
-  - `NUXT_GEETEST_KEY`：极验验证 KEY（仅服务端使用）
-  - 可选：`NUXT_PUBLIC_JSDELIVR_ORIGIN` 用于在需要拼接 jsDelivr 链接时使用中国大陆镜像，默认 `https://fastly.jsdelivr.net`
-- 验证后端：`server/api/geetest/validate.post.ts`（Nuxt Server API）负责向极验官方验证。
-- 前端：`components/security/GeeTestV4.vue` 渲染验证框；登录/注册页已接入并在提交前校验。
+- 前端组件：`components/security/CaptchaWidget.vue` - 通用验证码组件,支持三种类型:
+  - `click` - 点选验证(按顺序点击指定字符)
+  - `slide` - 滑块验证(拖动拼图到正确位置)
+  - `rotate` - 旋转验证(旋转图片到正确角度)
+- API 接口：后端提供 `GET /api/captcha/generate` 接口生成验证码
+- 集成位置：登录/注册页面和 Terminal 命令行界面均已集成
+- 特性：
+  - 60 秒有效期,过期自动刷新
+  - 一次性验证,失败后自动重新生成
+  - 支持触摸和鼠标操作
+  - Base64 图片编码,无需额外资源请求

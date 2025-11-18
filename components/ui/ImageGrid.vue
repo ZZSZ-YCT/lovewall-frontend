@@ -2,12 +2,12 @@
   <div ref="root">
     <div v-if="!visible" class="h-40 bg-gray-100 rounded-lg"></div>
 
-    <div v-if="images?.length" class="space-y-3">
+    <div v-if="visible && images?.length" class="space-y-3">
       <div ref="galleryRef" :class="gridWrapperClass">
         <a
-          v-for="(image, index) in thumbnails"
-          :key="`${image}-${index}`"
+          v-for="(image, index) in images.slice(0, maxThumbs)"
           :href="resolveOriginalImage(image)"
+          :key="`${image}-${index}`"
           :data-pswp-width="2400"
           :data-pswp-height="2400"
           target="_blank"
@@ -22,14 +22,16 @@
             class="relative w-full h-full rounded-lg overflow-hidden"
             fit="inside"
             sizes="100vw sm:50vw md:400px"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }"
+            :modifiers="{width: 400,height: 400,fit: 'cover',quality: 70}"
+            :imgAttrs="{ class: 'w-full h-full object-cover', fetchpriority: fetchPriority }"
             :loading="loadingMode"
+            :preload="{ fetchPriority: fetchPriority }"
             decoding="async"
           />
 
           <!-- Last visible tile: overlay +N if there are more images -->
           <div
-            v-if="hiddenCount > 0 && index === thumbnails.length - 1"
+            v-if="hiddenCount > 0 && index === maxThumbs - 1"
             class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold"
           >
             +{{ hiddenCount }}
@@ -41,8 +43,6 @@
 </template>
 
 <script setup lang="ts">
-import 'photoswipe/style.css'
-
 interface Props {
   images: string[]
   altPrefix?: string
@@ -56,32 +56,43 @@ const props = withDefaults(defineProps<Props>(), {
 const root = ref<HTMLElement | null>(null)
 const visible = ref(false)
 
-const { stop } = useIntersectionObserver(
-  root,
-  ([entry]) => {
-    if (entry!!.isIntersecting) {
-      visible.value = true
-      stop() // only trigger once
-    }
-  },
-  {
-    rootMargin: '200px 0px', // start loading a bit before it enters viewport
-  },
-)
+if (props.eager) {
+  // 首屏或需要优先展示的图片：直接可见，不走懒加载占位
+  visible.value = true
+} else {
+  const {stop} = useIntersectionObserver(
+    root,
+    ([entry]) => {
+      if (entry && entry.isIntersecting) {
+        visible.value = true
+        stop() // only trigger once
+      }
+    },
+    {
+      // 提前 600px 触发加载，避免滑到时还在白屏等待
+      rootMargin: '600px 0px',
+      threshold: 0,
+    },
+  )
+}
 
 const loadingMode = computed(() => (props.eager ? 'eager' : 'lazy'))
+const fetchPriority = computed(() => (props.eager ? 'high' : 'auto'))
 
 const maxThumbs = 4
-const thumbnails = computed(() => props.images.slice(0, maxThumbs))
 const hiddenCount = computed(() => Math.max(props.images.length - maxThumbs, 0))
 
-const assetUrl = useAssetUrl()
+const {assetUrl} = useAssetUrl()
 const galleryRef = ref<HTMLElement>()
 
-const lightbox = ref<PhotoSwipeLightbox | null>(null)
+const lightbox = ref<any>(null)
 
 const ensureLightbox = async () => {
   if (lightbox.value) return lightbox.value
+
+  if (import.meta.client) {
+    await import('photoswipe/style.css')
+  }
 
   const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
 
@@ -139,9 +150,10 @@ const gridWrapperClass = computed(() => {
   const count = images.value.length
   if (count <= 0) return ''
   if (count === 1) return 'grid gap-3 grid-cols-1'
-  if (count <= 3) return `grid gap-3 grid-cols-${count}`
-  if (count === 4) return 'grid gap-3 grid-cols-2'
-  return 'grid gap-3 grid-cols-3'
+  if (count === 2) return 'grid gap-3 grid-cols-2'
+  if (count === 3) return 'grid gap-3 grid-cols-3'
+  // 4+张图片：两排，每排两个 (2x2布局)
+  return 'grid gap-3 grid-cols-2'
 })
 
 const imageClass = computed(() => {
@@ -157,11 +169,7 @@ const resolveImage = (image: string) => {
 }
 
 const resolveThumbnail = (image: string) => {
-  const base = resolveImage(image)
-  if (!base) return ''
-
-  const separator = base.includes('?') ? '&' : '?'
-  return `${base}${separator}w=400&h=400&fit=cover&q=70&format=webp`
+  return resolveImage(image)
 }
 
 const resolveOriginalImage = resolveImage
@@ -211,7 +219,7 @@ onUnmounted(() => {
 
 /* 顶部工具栏 */
 .pswp__top-bar {
-  background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
   padding: 16px 20px !important;
 }
 

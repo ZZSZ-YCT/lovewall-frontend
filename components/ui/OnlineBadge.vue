@@ -1,34 +1,46 @@
 <template>
   <div
-    v-if="status !== null"
+    v-if="displayStatus !== null"
     class="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors"
-    :class="status ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'"
+    :class="displayStatus ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'"
     :title="statusText"
   >
     <span
       class="w-1.5 h-1.5 rounded-full"
-      :class="status ? 'bg-green-500' : 'bg-gray-400'"
+      :class="displayStatus ? 'bg-green-500' : 'bg-gray-400'"
     />
-    <span>{{ status ? '在线' : '离线' }}</span>
+    <span>{{ displayStatus ? '在线' : '离线' }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { computed } from 'vue'
 
-const props = defineProps<{
-  userId: string
-}>()
+const props = withDefaults(defineProps<{
+  userId?: string
+  isOnline?: boolean
+  lastHeartbeat?: string | null
+}>(), {
+  isOnline: false,
+  lastHeartbeat: null
+})
 
-const status = ref<boolean | null>(null)
-const lastHeartbeat = ref<string | null>(null)
-let pollingTimer: ReturnType<typeof setInterval> | null = null
+// ✅ 修复：移除轮询逻辑，直接使用传入的props
+// 在线状态数据应该由父组件（如帖子详情、评论列表）从API响应中传入
+// 避免每个OnlineBadge实例都单独轮询，减少不必要的API请求
+const displayStatus = computed(() => {
+  // 如果没有提供在线状态信息，不显示徽章
+  if (props.isOnline === undefined && !props.lastHeartbeat) {
+    return null
+  }
+  return props.isOnline ?? false
+})
 
 const statusText = computed(() => {
-  if (status.value === null) return '加载中...'
-  if (status.value) return '用户在线'
-  if (lastHeartbeat.value) {
-    return `最后活跃: ${formatTime(lastHeartbeat.value)}`
+  if (displayStatus.value === null) return ''
+  if (displayStatus.value) return '用户在线'
+  if (props.lastHeartbeat) {
+    return `最后活跃: ${formatTime(props.lastHeartbeat)}`
   }
   return '用户离线'
 })
@@ -48,59 +60,4 @@ const formatTime = (isoTime: string): string => {
   const diffDays = Math.floor(diffHours / 24)
   return `${diffDays} 天前`
 }
-
-const fetchOnlineStatus = async () => {
-  if (!props.userId) {
-    status.value = null
-    lastHeartbeat.value = null
-    return
-  }
-
-  try {
-    const api = useApi()
-    const data = await api.getUserOnlineStatus(props.userId)
-    status.value = data.online ?? false
-    lastHeartbeat.value = data.last_heartbeat ?? null
-  } catch (error) {
-    // 静默失败，保持徽章隐藏
-    status.value = null
-    lastHeartbeat.value = null
-  }
-}
-
-const stopPolling = () => {
-  if (pollingTimer) {
-    clearInterval(pollingTimer)
-    pollingTimer = null
-  }
-}
-
-const startPolling = () => {
-  stopPolling()
-  fetchOnlineStatus()
-  pollingTimer = setInterval(() => {
-    fetchOnlineStatus()
-  }, 60000)
-}
-
-onMounted(() => {
-  if (props.userId) {
-    startPolling()
-  }
-})
-
-onUnmounted(() => {
-  stopPolling()
-})
-
-watch(() => props.userId, (newUserId, oldUserId) => {
-  if (newUserId === oldUserId) return
-  status.value = null
-  lastHeartbeat.value = null
-  if (!newUserId) {
-    stopPolling()
-    return
-  }
-  startPolling()
-})
 </script>
