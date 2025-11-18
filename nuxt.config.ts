@@ -84,7 +84,6 @@ export default defineNuxtConfig({
     rateLimiter: false,
     requestSizeLimiter: false
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint', '@nuxt/image', 'nuxt-delay-hydration', '@nuxtjs/i18n'],
 
   i18n: {
     locales: [
