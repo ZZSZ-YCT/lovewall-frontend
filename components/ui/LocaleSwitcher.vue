@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Globe2 } from 'lucide-vue-next'
-import { useI18n, navigateTo } from '#imports'
-import { useSwitchLocalePath } from '#i18n'
-
-const isOpen = ref(false)
 
 const { locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+
+const isOpen = ref(false)
 
 const triggerRef = ref<HTMLElement | null>(null)
 const dropdownStyles = ref<Record<string, string>>({})

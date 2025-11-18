@@ -18,8 +18,8 @@
 
     <div v-else-if="!items.length" class="text-center py-12">
       <GlassCard class="p-12">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无通知</h3>
-        <p class="text-gray-600">稍后再来看看。</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('notifications.empty') }}</h3>
+        <p class="text-gray-600">{{ t('notifications.checkLater') }}</p>
       </GlassCard>
     </div>
 
@@ -37,7 +37,7 @@
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-1">
               <h3 class="text-lg font-bold text-gray-900">{{ n.title }}</h3>
-              <span v-if="!n.is_read" class="px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">未读</span>
+              <span v-if="!n.is_read" class="px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">{{ t('notifications.unread') }}</span>
             </div>
 
             <div
@@ -52,7 +52,7 @@
       </GlassCard>
 
       <div v-if="data && data.page * data.page_size < data.total" class="text-center pt-2">
-        <GlassButton variant="secondary" :loading="loadingMore" @click="loadMore">加载更多</GlassButton>
+        <GlassButton variant="secondary" :loading="loadingMore" @click="loadMore">{{ t('common.loadMore') }}</GlassButton>
       </div>
     </div>
   </div>
@@ -157,7 +157,7 @@ const load = async (page = 1) => {
       newItems.forEach(attachHandlers)
     }
   } catch (e) {
-    toast.error('加载通知失败')
+    toast.error(t('notifications.failed'))
   } finally {
     loading.value = false
     loadingMore.value = false
@@ -176,7 +176,7 @@ const markRead = async (n: NotificationDto) => {
     await api.markNotificationRead(n.id)
     n.is_read = true
     cleanupObserver(n.id)
-  } catch { toast.error('���ʧ��') }
+  } catch { toast.error(t('notifications.failedMark')) }
 }
 
 const formatDate = (s: string) => new Date(s).toLocaleString('zh-CN')

@@ -1,4 +1,21 @@
 <template>
+  <div>
+    <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
+    <Head>
+      <Title>{{ title }}</Title>
+      <template v-for="link in head.link" :key="link.key">
+        <Link :id="link.key" :rel="link.rel" :href="link.href" :hreflang="link.hreflang" />
+      </template>
+      <template v-for="meta in head.meta" :key="meta.key">
+        <Meta :id="meta.key" :property="meta.property" :content="meta.content" />
+      </template>
+    </Head>
+    <Body>
+    <slot />
+    </Body>
+    </Html>
+  </div>
+
   <div class="h-screen overflow-hidden relative">
     <!-- Background Image -->
     <div class="fixed inset-0 z-0">
@@ -153,7 +170,7 @@
         <LoadingSpinner size="md" variant="white" />
         <div class="flex flex-col">
           <span class="text-xs uppercase tracking-[0.2em] text-white/70">Loading</span>
-          <span class="text-sm font-semibold">加载中...</span>
+          <span class="text-sm font-semibold">{{ t('common.loading') }}</span>
         </div>
       </div>
     </Transition>
@@ -186,8 +203,72 @@ import AdminDialog from '~/components/ui/AdminDialog.vue'
 import AnnouncementModal from '~/components/AnnouncementModal.vue'
 import '~/assets/css/default.css'
 import LocaleSwitcher from "~/components/ui/LocaleSwitcher.vue";
+import { computed } from "vue";
 
-const { t } = useI18n()
+const { t, locale, locales } = useI18n()
+const head = useLocaleHead()
+const route = useRoute()
+
+const currentLocale = computed(() =>
+  locales.value.find((l: any) => l.code === locale.value) || null,
+)
+
+const title = computed(() => {
+  const meta = route.meta
+
+  if(!meta.title) {
+    return t('home.title')
+  }
+
+  if(typeof meta.title === 'string') {
+    return meta.title
+  }
+
+  if('raw' in meta.title) {
+    return meta.title.raw
+  }
+
+  const { k, p } = meta.title
+  return t(k, p as any)
+});
+
+useHead(() => ({
+  title: title,
+  meta: [
+    {
+      name: 'description',
+      content: t('seo.description'),
+    },
+    {
+      name: 'keywords',
+      content: t('seo.keywords'),
+    },
+    {
+      name: 'og:title',
+      content: t('seo.title'),
+    },
+    {
+      name: 'og:locale',
+      content: (currentLocale.value?.language ?? "zh-CN").replaceAll('-', '_'),
+    },
+    {
+      name: 'og:description',
+      content: t('seo.description')
+    },
+    {
+      name: 'og:site_name',
+      content: t('seo.title'),
+    },
+    {
+      name: 'twitter:title',
+      content: t('seo.title'),
+    },
+    {
+      name: 'twitter:description',
+      content: t('seo.description'),
+    }
+  ]
+}))
 
 // Stores
 const auth = useAuthStore()
@@ -255,7 +336,6 @@ watch(() => auth.isAuthenticated, (v) => {
 })
 
 // 路由变化时关闭菜单
-const route = useRoute()
 watch(() => route.path, () => {
   showUserMenu.value = false
 })

@@ -554,6 +554,8 @@ import ImageGrid from '~/components/ui/ImageGrid.vue'
 import CommentUserInfo from '~/components/comments/CommentUserInfo.vue'
 import type { PostDto, CommentDto, Pagination, CommentForm } from '~/types'
 
+const { t } = useI18n()
+
 interface PostEditFormState {
   author_name: string
   target_name: string
@@ -1060,8 +1062,8 @@ definePageMeta({
 })
 
 // SEO
-const siteName = '\u90d1\u5dde\u56db\u4e2d\u8868\u767d\u5899'
-const defaultPostDescription = '\u90d1\u5dde\u56db\u4e2d\u5b98\u65b9\u6821\u56ed\u4fe1\u606f\u4ea4\u6d41\u5e73\u53f0\uff0c\u5e2e\u52a9\u540c\u5b66\u533f\u540d\u5206\u4eab\u5fc3\u58f0\u3001\u8868\u767d\u4e0e\u6821\u56ed\u8d44\u8baf\uff0c\u8425\u9020\u6e29\u6696\u771f\u5b9e\u7684\u4e92\u52a8\u793e\u533a\u3002'
+const siteName = t('seo.title')
+const defaultPostDescription = t('seo.description')
 const runtimeConfig = useRuntimeConfig()
 
 const normalizedSiteOrigin = computed(() => {
@@ -1095,18 +1097,18 @@ const defaultOgImage = computed(() => {
 
 const postHeadline = computed(() => {
   if (!post.value) {
-    return '\u5e16\u5b50\u4e0d\u5b58\u5728'
+    return t('posts.404')
   }
   const confession = post.value.card_type !== 'communication' && post.value.card_type !== 'social'
   if (confession && post.value.target_name) {
-    return `${post.value.author_name}\u5bf9${post.value.target_name}\u7684\u8868\u767d`
+    return t('posts.confessionTo', { author: post.value.author_name, target: post.value.target_name })
   }
-  return `${post.value.author_name}\u7684\u6295\u7a3f`
+  return t('posts.socialFrom', { author: post.value.author_name })
 })
 
 const postSeoTitle = computed(() => {
   if (!post.value) {
-    return `\u5e16\u5b50\u4e0d\u5b58\u5728 - ${siteName}`
+    return `${t('posts.404')} - ${siteName}`
   }
   return `${postHeadline.value} - ${siteName}`
 })

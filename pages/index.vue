@@ -144,10 +144,10 @@
       >
         <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-600">
           <LoadingSpinner size="sm" />
-          <span>加载中...</span>
+          <span>{{ t('common.loading') }}</span>
         </div>
         <div v-else class="text-gray-400 text-sm">
-          下拉浏览更多内容
+          {{ t('common.pullDownLoading') }}
         </div>
       </div>
     </section>
@@ -158,10 +158,8 @@
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import PostCard from '~/components/PostCard.vue'
 import type { PostDto } from '~/types'
 
-// composables
 const { t } = useI18n()
 
 const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
@@ -169,7 +167,6 @@ const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 const auth = useAuthStore()
 const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
-const { confirm } = useConfirm()
 
 // fuck u shit changes
 const layoutMode = ref<'grid' | 'list'>('grid')
@@ -274,12 +271,11 @@ onActivated(async () => {
 })
 
 // --- SEO 与结构化数据 ---
-const homepageMetaTitle = '郑州四中表白墙'
-const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
-const homepageDescription =
-  '郑州四中官方校园信息交流平台，帮助同学们安全、温暖地表达心声，分享校园生活。'
-const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生表白,校园交流'
-const siteName = '郑州四中表白墙'
+const homepageMetaTitle = t('seo.title')
+const homepageTitle = t('seo.title')
+const homepageDescription = t('seo.description')
+const homepageKeywords = t('seo.keywords')
+const siteName = t('seo.title')
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()

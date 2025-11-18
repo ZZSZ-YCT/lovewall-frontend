@@ -209,6 +209,8 @@ import { HeartIcon } from 'lucide-vue-next'
 import type { User, PostDto, Pagination } from '~/types'
 import type { ActiveTagDto } from '~/types/extra'
 
+const { t } = useI18n()
+
 // Get route params
 const route = useRoute()
 const userId = computed(() => route.params.id as string)
@@ -314,8 +316,8 @@ definePageMeta({
 })
 
 // SEO
-const siteName = '郑州四中表白墙'
-const defaultProfileDescription = '郑州四中表白墙用户个人主页，集中当前公开发布的表白与校园信息。'
+const siteName = t('seo.title')
+const defaultProfileDescription = t('seo.description')
 const runtimeConfig = useRuntimeConfig()
 
 const normalizedSiteOrigin = computed(() => {
@@ -365,7 +367,7 @@ const profileDescription = computed(() => {
   if (user.value.bio) {
     return sanitizeContent(user.value.bio)
   }
-  return `${userDisplayName.value}在${siteName}的个人主页，展示公开的表白与交流记录。`
+  return t('user.description', { nickname: userDisplayName.value, siteName: siteName })
 })
 
 const profileOgImage = computed(() => {
@@ -399,7 +401,7 @@ const toIsoString = (value?: string | null) => {
 
 const profileTitle = computed(() => {
   if (!user.value) {
-    return `用户资料 - ${siteName}`
+    return `${t('user.center')} - ${siteName}`
   }
   const uname = user.value.username ? `(@${user.value.username})` : ''
   return `${userDisplayName.value} ${uname} - ${siteName}`.trim()

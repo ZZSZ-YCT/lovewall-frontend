@@ -9,7 +9,25 @@
     },
     "loadMore": "Load more",
     "loading": "Loading...",
+    "pullDownLoading": "Pull down to see more",
     "refresh": "Refresh"
+  },
+  "error": {
+    "messages": {
+      "401": "Please sign in before visiting this page.",
+      "403": "You do not have permission to access this page. Please contact your administrator.",
+      "404": "Sorry, the page you visited does not exist or has been deleted.",
+      "500": "There are some problems with the server. Please try again later.",
+      "unknown": "An unexpected error has occurred. Please try again later."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Middle School Confession Wall",
+    "titles": {
+      "401": "Sign in Required",
+      "403": "Access denied",
+      "404": "Page not Found",
+      "500": "Internal Server Error",
+      "unknown": "Something went wrong"
+    }
   },
   "home": {
     "contact": "Contact Us",
@@ -25,16 +43,29 @@
     "amount": "{number} in total",
     "checkLater": "Come back later.",
     "description": "Get notifications here",
-    "index": "Notifications"
+    "empty": "No notifications yet",
+    "failed": "Failed to load notifications.",
+    "failedMark": "Failed to mark as read.",
+    "index": "Notifications",
+    "unread": "Unread"
   },
   "posts": {
+    "404": "Post not found",
     "beFirst": "Be the first one",
+    "confessionTo": "Confession from {author} to {target}",
     "empty": "No posts here yet",
     "post": "Post",
-    "recently": "Recent Posts"
+    "recently": "Recent Posts",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "A wall to contact each other.",
+    "keywords": "Zhengzhou No.4 High School,Zhengzhou No.4 Middle School,Zhengzhou No.4 Junior High School,School Community,Students Communication,Students Discussion",
+    "title": "Zhengzhou No.4 Middle School Confession Wall"
   },
   "user": {
     "center": "Personal Center",
+    "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
     "myComments": "My Comments",
     "myTags": "My Badges"
   }

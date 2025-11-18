@@ -389,11 +389,7 @@ onMounted(() => {
   loadDashboardData()
 })
 
-// SEO
-useHead({
-  title: '管理后台 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '郑州四中表白墙管理后台，系统管理和内容审核' }
-  ]
+definePageMeta({
+  title: '管理后台 - 郑州四中表白墙'
 })
 </script>

@@ -87,14 +87,20 @@ export default defineNuxtConfig({
 
   i18n: {
     locales: [
-      { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'jp', name: '日本語', file: 'jp.json' },
-      { code: 'zh_cn', name: '中文（简体）', file: 'zh_cn.json' },
-      { code: 'zh_tw', name: '中文（繁體）', file: 'zh_tw.json' },
+      { code: 'en', name: 'English', file: 'en.json', language: 'en' },
+      { code: 'jp', name: '日本語', file: 'jp.json', language: 'ja' },
+      { code: 'zh_cn', name: '中文（简体）', file: 'zh_cn.json', language: 'zh-CN' },
+      { code: 'zh_tw', name: '中文（繁體）', file: 'zh_tw.json', language: 'zh-TW' },
     ],
 
     defaultLocale: 'zh_cn',
     strategy: 'prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    },
+    baseUrl: SITE_URL
   },
 
   image: {
@@ -140,28 +146,19 @@ export default defineNuxtConfig({
       },
       meta: [
         { charset: 'utf-8' },
-        { name: 'description', content: '郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区' },
-        { name: 'keywords', content: '郑州四中,郑州市第四高级中学,表白墙,校园社区,学生交流' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
         { name: 'format-detection', content: 'telephone=no, email=no, address=no' },
         { name: 'theme-color', content: '#ffffff' },
-        { property: 'og:locale', content: 'zh_CN' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: '郑州四中表白墙' },
-        { property: 'og:description', content: '郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区' },
-        { property: 'og:site_name', content: '郑州四中表白墙' },
         { property: 'og:url', content: SITE_URL },
         { property: 'og:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: '郑州四中表白墙' },
-        { name: 'twitter:description', content: '郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区' },
         { name: 'twitter:image', content: `${SITE_URL.replace(/\/+$/, '')}/badge.png` }
       ],
       link: [
         { rel: 'canonical', href: SITE_URL },
-        { rel: 'alternate', href: SITE_URL },
         { rel: 'icon', type: 'image/png', href: '/badge.png' },
         // Preconnect to API and image origins for faster resource loading
         ...(apiOrigin ? [

@@ -9,7 +9,25 @@
     },
     "loadMore": "加载更多",
     "loading": "加载中...",
+    "pullDownLoading": "下拉查看更多",
     "refresh": "刷新"
+  },
+  "error": {
+    "messages": {
+      "401": "请先登录后再访问此页面。",
+      "403": "您没有权限访问此页面，请联系管理员。",
+      "404": "抱歉，您访问的页面不存在或已被删除。",
+      "500": "服务器出现了一些问题，请稍后重试。",
+      "unknown": "出现了意外的错误，请稍后重试。"
+    },
+    "title": "{code} - {message} - 郑州市第四高级中学表白墙",
+    "titles": {
+      "401": "需要登录",
+      "403": "访问被拒绝",
+      "404": "页面未找到",
+      "500": "服务器错误",
+      "unknown": "出错了"
+    }
   },
   "home": {
     "contact": "联系我们",
@@ -25,16 +43,29 @@
     "amount": "共 {number} 条",
     "checkLater": "稍后再来看看。",
     "description": "这里显示各项通知",
-    "index": "通知"
+    "empty": "暂无通知",
+    "failed": "通知加载失败。",
+    "failedMark": "标记已读失败。",
+    "index": "通知",
+    "unread": "未讀"
   },
   "posts": {
+    "404": "帖子不存在",
     "beFirst": "成为第一个",
+    "confessionTo": "{author} 对 {target} 的表白",
     "empty": "还没有帖子哦",
     "post": "发布帖子",
-    "recently": "最近帖子"
+    "recently": "最近帖子",
+    "socialFrom": "{author} 的投稿"
+  },
+  "seo": {
+    "description": "郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区",
+    "keywords": "郑州四中,郑州市第四高级中学,表白墙,校园社区,学生交流",
+    "title": "郑州市第四高级中学表白墙"
   },
   "user": {
     "center": "个人中心",
+    "description": "{nickname} 在 {siteName} 的个人主页，展示公开的表白与交流记录。",
     "myComments": "我的评论",
     "myTags": "我的标签"
   }

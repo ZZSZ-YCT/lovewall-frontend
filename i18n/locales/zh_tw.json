@@ -9,7 +9,25 @@
     },
     "loadMore": "加載更多",
     "loading": "載入中...",
+    "pullDownLoading": "下拉查看更多",
     "refresh": "刷新"
+  },
+  "error": {
+    "messages": {
+      "401": "請先登入再造訪此頁面。",
+      "403": "您沒有權限存取此頁面。請聯絡您的管理員。",
+      "404": "抱歉，您造訪的頁面不存在或已被刪除。",
+      "500": "伺服器出現故障，請稍後再試。",
+      "unknown": "發生意外錯誤，請稍後重試。"
+    },
+    "title": "{code} - {message} - 郑州市第四高級中學表白牆",
+    "titles": {
+      "401": "需要登入",
+      "403": "拒絕訪問",
+      "404": "頁面未找到",
+      "500": "伺服器錯誤",
+      "unknown": "出問題了"
+    }
   },
   "home": {
     "contact": "聯絡我們",
@@ -25,16 +43,29 @@
     "amount": "共 {number} 條",
     "checkLater": "請稍後再來。",
     "description": "這裡顯示各項通知",
-    "index": "通知"
+    "empty": "暫無通知",
+    "failed": "通知載入失敗。",
+    "failedMark": "標記為已讀失敗。",
+    "index": "通知",
+    "unread": "未读"
   },
   "posts": {
+    "404": "貼文未找到",
     "beFirst": "成為第一個",
+    "confessionTo": "來自 {author} 的表白給 {target}",
     "empty": "這裡還沒有帖子",
     "post": "發布貼文",
-    "recently": "最近貼文"
+    "recently": "最近貼文",
+    "socialFrom": "{author} 的帖子"
+  },
+  "seo": {
+    "description": "校园信息交流平台",
+    "keywords": "鄭州第四中學,鄭州第四初中,鄭州第四初級中學,學校社區,學生交流,學生討論",
+    "title": "郑州市第四高級中學表白牆"
   },
   "user": {
     "center": "個人中心",
+    "description": "{nickname} 在 {siteName} 上的主頁，顯示公開表白和社交貼文。",
     "myComments": "我的評論",
     "myTags": "我的標籤"
   }
