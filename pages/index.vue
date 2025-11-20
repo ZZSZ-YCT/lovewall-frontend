@@ -155,12 +155,12 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { PostDto } from '~/types'
-
-const { t } = useI18n()
 
 const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 
@@ -271,7 +271,6 @@ onActivated(async () => {
 })
 
 // --- SEO 与结构化数据 ---
-const homepageMetaTitle = t('seo.title')
 const homepageTitle = t('seo.title')
 const homepageDescription = t('seo.description')
 const homepageKeywords = t('seo.keywords')
@@ -329,8 +328,7 @@ const homepageStructuredData = computed(() => {
 })
 
 definePageMeta({
-  title: homepageMetaTitle,
-  description: homepageDescription,
+  title: { k: 'seo.title' },
   key: (route: any) => `index-${(route as any).fullPath || '/'}`
 })
 

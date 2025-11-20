@@ -2,15 +2,102 @@
   "admin": {
     "index": "管理後台"
   },
+  "auth": {
+    "changePassword": {
+      "description": "保護您的帳戶",
+      "forms": {
+        "confirmPassword": "確認密碼",
+        "confirmPasswordPlaceholder": "請再次輸入您的密碼",
+        "currentPassword": "目前密碼",
+        "currentPasswordPlaceholder": "輸入目前密碼",
+        "incorrectPassword": "舊密碼錯誤",
+        "newPassword": "新密碼",
+        "newPasswordDescription": "至少 6 個字符，建議包含數字、大小寫字母和特殊字符",
+        "newPasswordPlaceholder": "請輸入新密碼（至少 6 個字元）",
+        "repeatPasswordNotMatch": "輸入了兩個不同的密碼"
+      },
+      "index": "更改密碼",
+      "success": "更改成功，請重新登入。",
+      "tips": {
+        "0": "不要使用與個人資料相關的密碼",
+        "1": "請定期更改密碼",
+        "2": "不要在不同的網站上使用相同的密碼",
+        "3": "妥善保管密碼，不要告訴別人。",
+        "index": "密碼安全建議"
+      },
+      "title": "更改密碼 - 鄭州市第四高級中學表白牆"
+    },
+    "login": {
+      "description": "登入您的帳戶",
+      "invalidCredentials": "登入失敗，請檢查您的使用者名稱和密碼",
+      "passwordPlaceholder": "輸入密碼",
+      "passwordTooShort": "至少 6 個字符",
+      "registerNow": "立即註冊",
+      "registerSuggestion": "還沒有帳號？",
+      "title": "登入 - 鄭州市第四高級中學表白牆",
+      "usernamePlaceholder": "請輸入使用者名稱",
+      "welcome": "歡迎回來"
+    },
+    "register": {
+      "agreeWithTerms": "我已閱讀並同意條款：",
+      "description": "分享、探索，並與我們連結。",
+      "index": "建立帳戶",
+      "loginSuggestion": "已有帳號？",
+      "notAgreeWithTerms": "請先同意我們的條款",
+      "passwordTooLong": "密碼最多可包含 128 個字元。",
+      "title": "注冊 - 鄭州市第四高級中學表白牆",
+      "usernameCharset": "只能包含字母、數字和底線",
+      "usernameLimit": "長度為 3 到 20 個字符，只能包含字母、數字和底線。",
+      "usernameTooLong": "使用者名稱最多 20 個字符",
+      "usernameTooShort": "使用者名稱至少包含 3 個字符"
+    }
+  },
+  "comment": {
+    "commentOversize": "評論字數不得超過 500 個字符",
+    "loginRequired": "需要登入才能發表評論",
+    "noComments": "暫無評論。",
+    "placeholder": "留下你的想法...",
+    "send": "發表評論"
+  },
+  "comments": {
+    "recently": "最新評論"
+  },
   "common": {
+    "browse": "瀏覽貼文",
+    "cancel": "取消",
+    "captcha": "讓我們知道你是人類",
+    "comment": "評論",
+    "content": "內容",
+    "current": "目前",
+    "delete": "刪除",
+    "detail": "查看詳情",
+    "disabled": "已停用",
+    "edited": "已編輯",
+    "email": "電子郵件",
+    "enabled": "已啟用",
+    "feature": "精選",
+    "hide": "隱藏",
+    "joinTime": "加入時間為 {time}",
+    "known": "了解",
     "layouts": {
       "grid": "網格佈局",
       "list": "清單佈局"
     },
     "loadMore": "加載更多",
     "loading": "載入中...",
+    "nickname": "暱稱",
+    "ok": "好",
+    "password": "密碼",
+    "pin": "置頂",
+    "preview": "預覽",
+    "previous": "回上頁",
     "pullDownLoading": "下拉查看更多",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "save": "保存",
+    "success": "成功",
+    "superAdmin": "超管理員",
+    "unknown": "未知",
+    "username": "使用者名稱"
   },
   "error": {
     "messages": {
@@ -20,7 +107,7 @@
       "500": "伺服器出現故障，請稍後再試。",
       "unknown": "發生意外錯誤，請稍後重試。"
     },
-    "title": "{code} - {message} - 郑州市第四高級中學表白牆",
+    "title": "{code} - {message} - 鄭州市第四高級中學表白牆",
     "titles": {
       "401": "需要登入",
       "403": "拒絕訪問",
@@ -30,13 +117,14 @@
     }
   },
   "home": {
+    "backHome": "回首頁",
     "contact": "聯絡我們",
     "description": "校园信息交流平台",
     "login": "登入",
     "logout": "登出",
     "privacy": "隱私權條款",
     "register": "注冊",
-    "title": "郑州市第四高級中學表白牆",
+    "title": "鄭州市第四高級中學表白牆",
     "tos": "服務條款"
   },
   "notifications": {
@@ -47,26 +135,138 @@
     "failed": "通知載入失敗。",
     "failedMark": "標記為已讀失敗。",
     "index": "通知",
+    "title": "通知 - 鄭州市第四高級中學表白牆",
     "unread": "未读"
   },
   "posts": {
     "404": "貼文未找到",
     "beFirst": "成為第一個",
     "confessionTo": "來自 {author} 的表白給 {target}",
+    "contentPlaceholder": "輸入貼文內容",
+    "deniedAudit": "審計未通過",
+    "description_review": "請求復核：​​如果您認為這是一個錯誤，您可以請求人工複核。",
     "empty": "這裡還沒有帖子",
+    "pendingAudit": "待審核",
     "post": "發布貼文",
+    "publish": {
+      "addPhoto0": "把照片拖到這裡，或者",
+      "addPhoto1": "添加照片",
+      "anonymousRole": "自訂名稱",
+      "cantEmpty": "不能為空",
+      "cantOversize": "不能超過 2000 個字符",
+      "cardType": "卡片類型 *",
+      "chooseRole": "選擇角色",
+      "confessionCard": "表白卡",
+      "description_anonymousRole": "匿名或使用其他暱稱",
+      "description_confessional": "發表你的表白貼文。",
+      "description_social": "分享你的聯絡方式或其他資訊。",
+      "edit": "編輯貼文",
+      "error": {
+        "imageOversize": "照片過大",
+        "imageTooMany": "上傳的照片太多",
+        "unsupportedImageFormat": "不支援的圖像格式"
+      },
+      "imageTotal": "已上傳 {number} / 9 張",
+      "index": "發布貼文",
+      "limits": "支援 JPG、PNG、WebP 和 GIF 格式，最多可上傳 9 張照片，每張照片最大 5MB。",
+      "nameOversize": "暱稱不能超過50個字元。",
+      "namePlaceholder": "輸入你的暱稱",
+      "publishing": "發布中…",
+      "selfRole": "用我的暱稱",
+      "socialCard": "交流卡",
+      "targetName": "表白目標 *",
+      "targetNamePlaceholder": "請輸入TA的暱稱",
+      "tip": {
+        "0": "保持平和與真誠",
+        "1": "上傳照片能為你的貼文增添更多價值。",
+        "index": "ヒント"
+      },
+      "toasts": {
+        "sent": "已發布，等待審核"
+      },
+      "uploadImage": "上傳照片（可選）",
+      "uploadMore": "繼續添加照片"
+    },
     "recently": "最近貼文",
+    "requestReview": "請求人工審核",
+    "review": "已請求人工審核",
+    "reviewRequired": "需要人工審核",
     "socialFrom": "{author} 的帖子"
   },
   "seo": {
     "description": "校园信息交流平台",
     "keywords": "鄭州第四中學,鄭州第四初中,鄭州第四初級中學,學校社區,學生交流,學生討論",
-    "title": "郑州市第四高級中學表白牆"
+    "title": "鄭州市第四高級中學表白牆"
   },
   "user": {
     "center": "個人中心",
+    "centerTitle": "個人中心 - 鄭州市第四高級中學表白牆",
+    "centers": {
+      "description": "管理您的個人資料和內容",
+      "editProfile": "編輯個人資料",
+      "joinedDays": "加入天數",
+      "lastLogin": "上次登入時間",
+      "registerTime": "註冊於"
+    },
+    "commentedOn": "發表評論",
+    "comments": {
+      "delete_description": "確定要刪除這則評論嗎？刪除後無法恢復。",
+      "description": "在這裡管理您的評論",
+      "edit": "編輯評論",
+      "edit_placeholder": "在這裡編輯您的評論…",
+      "empty": "暫無評論",
+      "source": "評論於",
+      "totalComments": "評論總數"
+    },
     "description": "{nickname} 在 {siteName} 上的主頁，顯示公開表白和社交貼文。",
     "myComments": "我的評論",
-    "myTags": "我的標籤"
+    "myCommentsTitle": "我的評論 - 鄭州市第四高級中學表白牆",
+    "myPosts": "我的貼文",
+    "myPostsTitle": "我的貼文 - 鄭州市第四高級中學表白牆",
+    "myTags": "我的標籤",
+    "myTagsTitle": "我的標籤 - 鄭州市第四高級中學表白牆",
+    "noActivity": "暫無活動",
+    "noPosts": "{nickname} 尚未發布任何帖子",
+    "offline": "離線",
+    "offlineAndTime": "離線 - 最後在線：{time}",
+    "online": "在線",
+    "posts": {
+      "allState": "所有狀態",
+      "common": "普通",
+      "confirmDeletion": "確認刪除",
+      "description": "在這裡管理您的帖子",
+      "hidden": "已隱藏",
+      "noPosts": "暫無貼文",
+      "published": "已發布",
+      "totalFeatured": "精選貼文總數",
+      "totalPinned": "置頂貼文總數",
+      "totalPosts": "總帖子數"
+    },
+    "postsFrom": "{nickname} 的貼文",
+    "publish": {
+      "description": "分享你的愛"
+    },
+    "recently": "近期活動",
+    "tags": {
+      "acquireTime": "取得時間：{time}",
+      "description": "在這裡管理您的標籤",
+      "disabled": "標籤已停用，無法應用。",
+      "empty": "暫無標籤",
+      "getOne": "兌換即可獲得新標籤",
+      "notSet": "未設定",
+      "owns": "擁有標籤數",
+      "redeem": {
+        "activateCode": "兌換碼",
+        "description": "輸入啟動碼兌換新標籤",
+        "index": "兌換標籤",
+        "recently": "最近取得的",
+        "redeemed": "恭喜！標籤 {title} 已兌換並自動啟動。\n您可以在帖子和評論中看到它。",
+        "redeemed_short": "兌換成功並自動啟動。",
+        "wrongPattern": "兌換碼格式錯誤"
+      },
+      "set": "將“{title}”設定為目前標籤",
+      "unset": "取消設定目前標籤",
+      "useThis": "設定為目前"
+    }
   }
 }

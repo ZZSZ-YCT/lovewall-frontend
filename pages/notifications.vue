@@ -60,6 +60,8 @@
 
 <!--suppress JSUnusedGlobalSymbols -->
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { nextTick } from 'vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import GlassCard from '~/components/ui/GlassCard.vue'
@@ -67,11 +69,10 @@ import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { Pagination } from '~/types'
 import type { NotificationDto } from '~/types/extra'
 
-const { t } = useI18n()
-
 definePageMeta({
   middleware: ['auth'],
-  ssr: false
+  ssr: false,
+  title: { k: 'notifications.title' }
 })
 
 const api = useNuxtApp().$api
@@ -357,7 +358,7 @@ const sanitizeUrl = (value?: string | null): string | undefined => {
 // 处理管理员审核操作
 const handleModerationAction = async (notification: NotificationDto, action: 'approve' | 'reject') => {
   if (!permissions.canManagePosts.value) {
-    toast.error('没有权限执行此操作')
+    toast.error(t('error.titles.403'))
     return
   }
   const meta = parseMeta(notification)
@@ -385,7 +386,7 @@ const handleModerationAction = async (notification: NotificationDto, action: 'ap
     // 刷新通知列表
     await refresh()
   } catch (e: any) {
-    toast.error(e?.message || '操作失败')
+    toast.error(e?.message || t('error.titles.unknown'))
   }
 }
 
@@ -398,15 +399,13 @@ const parseMeta = (n: NotificationDto): any => {
 const requestReview = async (postId: string) => {
   try {
     await api.requestPostReview(postId)
-    toast.success('已申请人工复核')
+    toast.success(t('posts.review'))
   } catch (e: any) {
-    toast.error(e?.message || '申请失败')
+    toast.error(e?.message || t('error.titles.unknown'))
   }
 }
 
 onUnmounted(() => cleanupObservers())
 
 onMounted(() => load(1))
-
-useHead({ title: '系统通知 - 郑州四中表白墙' })
 </script>

@@ -271,7 +271,8 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'admin',
-  ssr: false
+  ssr: false,
+  title: '管理后台 - 郑州四中表白墙'
 })
 
 // Stores
@@ -387,9 +388,5 @@ const formatDate = (dateString: string) => {
 // Initialize
 onMounted(() => {
   loadDashboardData()
-})
-
-definePageMeta({
-  title: '管理后台 - 郑州四中表白墙'
 })
 </script>

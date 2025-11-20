@@ -15,10 +15,10 @@
           <GlassButton class="flex-1" @click="handleError">
             {{ error.statusCode === 404 ? '返回首页' : '重试' }}
           </GlassButton>
-          <GlassButton 
+          <GlassButton
             v-if="error.statusCode !== 404"
-            variant="secondary" 
-            class="flex-1" 
+            variant="secondary"
+            class="flex-1"
             @click="goHome"
           >
             返回首页
@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { AlertTriangleIcon } from 'lucide-vue-next'
 import GlassCard from "~/components/ui/GlassCard.vue";
 import GlassButton from "~/components/ui/GlassButton.vue";
-
-const { t } = useI18n()
 
 const props = defineProps<{
   error: {
@@ -56,11 +56,11 @@ const getErrorTitle = (statusCode: number) => {
 
 const getErrorMessage = (statusCode: number) => {
   switch (statusCode) {
-    case 404: return t('error.message.404')
-    case 403: return t('error.message.403')
-    case 401: return t('error.message.401')
-    case 500: return t('error.message.500')
-    default: return t('error.message.unknown')
+    case 404: return t('error.messages.404')
+    case 403: return t('error.messages.403')
+    case 401: return t('error.messages.401')
+    case 500: return t('error.messages.500')
+    default: return t('error.messages.unknown')
   }
 }
 

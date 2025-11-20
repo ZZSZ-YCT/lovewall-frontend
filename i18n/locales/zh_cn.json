@@ -2,15 +2,102 @@
   "admin": {
     "index": "管理后台"
   },
+  "auth": {
+    "changePassword": {
+      "description": "保护账户",
+      "forms": {
+        "confirmPassword": "确认新密码",
+        "confirmPasswordPlaceholder": "请再次输入密码",
+        "currentPassword": "当前密码",
+        "currentPasswordPlaceholder": "请输入当前密码",
+        "incorrectPassword": "旧密码不正确",
+        "newPassword": "新密码",
+        "newPasswordDescription": "密码长度至少 6 位，建议包含数字，字母和特殊字符",
+        "newPasswordPlaceholder": "请输入新密码（至少6位）",
+        "repeatPasswordNotMatch": "两次输入的密码不一致"
+      },
+      "index": "修改密码",
+      "success": "修改成功，请重新登陆。",
+      "tips": {
+        "0": "不要使用和个人信息有关的密码",
+        "1": "定期更换你的密码",
+        "2": "不要在多个网站使用相同密码",
+        "3": "妥善保管密码，不要告诉他人",
+        "index": "密码安全建议"
+      },
+      "title": "修改密码 - 郑州四中表白墙"
+    },
+    "login": {
+      "description": "登入您的账户",
+      "invalidCredentials": "登陆失败，请检查用户名与密码",
+      "passwordPlaceholder": "请输入密码",
+      "passwordTooShort": "至少 6 个字符",
+      "registerNow": "立即注册",
+      "registerSuggestion": "还没有账户？",
+      "title": "登录 - 郑州四中表白墙",
+      "usernamePlaceholder": "请输入用户名",
+      "welcome": "欢迎回来"
+    },
+    "register": {
+      "agreeWithTerms": "我已阅读并同意条款：",
+      "description": "创建您的账户，开始记录美好的表白时刻。",
+      "index": "加入郑州四中表白墙",
+      "loginSuggestion": "已有账户？",
+      "notAgreeWithTerms": "请先同意服务条款和隐私政策",
+      "passwordTooLong": "密码不能超过128个字符",
+      "title": "注册 - 郑州四中表白墙",
+      "usernameCharset": "用户名只能包含字母、数字和下划线",
+      "usernameLimit": "3-20个字符，只能包含字母、数字与下划线",
+      "usernameTooLong": "用户名不能超过20个字符",
+      "usernameTooShort": "用户名至少3个字符"
+    }
+  },
+  "comment": {
+    "commentOversize": "评论内容不能超过500字符",
+    "loginRequired": "登录后可发表评论",
+    "noComments": "还没有评论。",
+    "placeholder": "写下你的看法...",
+    "send": "发布评论"
+  },
+  "comments": {
+    "recently": "最近评论"
+  },
   "common": {
+    "browse": "浏览帖子",
+    "cancel": "取消",
+    "captcha": "让我们知道你是人类",
+    "comment": "评论",
+    "content": "内容",
+    "current": "当前",
+    "delete": "删除",
+    "detail": "查看详情",
+    "disabled": "已停用",
+    "edited": "已编辑",
+    "email": "电子邮箱",
+    "enabled": "已启用",
+    "feature": "精选",
+    "hide": "隐藏",
+    "joinTime": "加入于 {time}",
+    "known": "知道了",
     "layouts": {
       "grid": "网格布局",
       "list": "列表布局"
     },
     "loadMore": "加载更多",
     "loading": "加载中...",
+    "nickname": "昵称",
+    "ok": "好",
+    "password": "密码",
+    "pin": "置顶",
+    "preview": "预览",
+    "previous": "返回上页",
     "pullDownLoading": "下拉查看更多",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "save": "保存",
+    "success": "操作成功完成",
+    "superAdmin": "超级管理员",
+    "unknown": "未知",
+    "username": "用户名"
   },
   "error": {
     "messages": {
@@ -30,6 +117,7 @@
     }
   },
   "home": {
+    "backHome": "返回首页",
     "contact": "联系我们",
     "description": "校园信息交流平台。在这里发布你的想法、分享校园生活，与同学建立联系。",
     "login": "登录",
@@ -47,15 +135,62 @@
     "failed": "通知加载失败。",
     "failedMark": "标记已读失败。",
     "index": "通知",
+    "title": "通知 - 郑州四中表白墙",
     "unread": "未讀"
   },
   "posts": {
     "404": "帖子不存在",
     "beFirst": "成为第一个",
     "confessionTo": "{author} 对 {target} 的表白",
+    "contentPlaceholder": "输入帖子内容",
+    "deniedAudit": "审核未通过",
+    "description_review": "申请人工复核：如果您认为这是误判，可以申请人工复核。",
     "empty": "还没有帖子哦",
+    "pendingAudit": "待审核",
     "post": "发布帖子",
+    "publish": {
+      "addPhoto0": "拖拽图片到此处，或",
+      "addPhoto1": "点击选择",
+      "anonymousRole": "自定义名称",
+      "cantEmpty": "内容不能为空",
+      "cantOversize": "内容不能超过2000个字符",
+      "cardType": "卡片类型 *",
+      "chooseRole": "身份选择",
+      "confessionCard": "表白卡",
+      "description_anonymousRole": "匿名或使用其他名称",
+      "description_confessional": "发布你的表白信息。",
+      "description_social": "分享你的联系方式，寻找志同道合的同学",
+      "edit": "编辑帖子",
+      "error": {
+        "imageOversize": "单张图片大小过大",
+        "imageTooMany": "图片上传超过上限",
+        "unsupportedImageFormat": "不支持的图片格式"
+      },
+      "imageTotal": "已上传 {number} / 9 张",
+      "index": "发布帖子",
+      "limits": "支持 JPG、PNG、WebP、GIF 格式，最多 9 张，单张 ≤ 5MB",
+      "nameOversize": "昵称不能超过50个字符",
+      "namePlaceholder": "请输入您的昵称",
+      "publishing": "发布中...",
+      "selfRole": "使用我的名称",
+      "socialCard": "交流卡",
+      "targetName": "表白对象 *",
+      "targetNamePlaceholder": "请输入TA的昵称",
+      "tip": {
+        "0": "请使用真诚的语言。",
+        "1": "可以上传一张特别的照片来增加表白的意义",
+        "index": "发布小贴士"
+      },
+      "toasts": {
+        "sent": "帖子已发布，等待审核"
+      },
+      "uploadImage": "上传图片（可选）",
+      "uploadMore": "继续添加图片"
+    },
     "recently": "最近帖子",
+    "requestReview": "申请人工复核",
+    "review": "已申请人工复核",
+    "reviewRequired": "需要人工审核",
     "socialFrom": "{author} 的投稿"
   },
   "seo": {
@@ -65,8 +200,73 @@
   },
   "user": {
     "center": "个人中心",
+    "centerTitle": "个人中心 - 郑州四中表白墙",
+    "centers": {
+      "description": "管理你的个人信息和内容",
+      "editProfile": "编辑资料",
+      "joinedDays": "加入天数",
+      "lastLogin": "上次登录",
+      "registerTime": "注册时间"
+    },
+    "commentedOn": "评论了一条帖子",
+    "comments": {
+      "delete_description": "确定要删除这条评论吗？删除后无法恢复。",
+      "description": "在这里管理你的评论",
+      "edit": "编辑评论",
+      "edit_placeholder": "编辑你的评论...",
+      "empty": "还没有发布评论",
+      "source": "评论于",
+      "totalComments": "总评论数"
+    },
     "description": "{nickname} 在 {siteName} 的个人主页，展示公开的表白与交流记录。",
     "myComments": "我的评论",
-    "myTags": "我的标签"
+    "myCommentsTitle": "我的评论 - 郑州四中表白墙",
+    "myPosts": "我的帖子",
+    "myPostsTitle": "我的帖子 - 郑州四中表白墙",
+    "myTags": "我的标签",
+    "myTagsTitle": "我的标签 - 郑州四中表白墙",
+    "noActivity": "还没有任何活动。",
+    "noPosts": "{nickname} 还未发表过帖子",
+    "offline": "离线",
+    "offlineAndTime": "离线 - 最后在线：{time}",
+    "online": "在线",
+    "posts": {
+      "allState": "全部状态",
+      "common": "普通",
+      "confirmDeletion": "确认删除",
+      "description": "在这里管理你的帖子",
+      "hidden": "已隐藏",
+      "noPosts": "还没有发布表白",
+      "published": "已发布",
+      "totalFeatured": "总精华数",
+      "totalPinned": "总置顶数",
+      "totalPosts": "总表白数"
+    },
+    "postsFrom": "{nickname} 的帖子",
+    "publish": {
+      "description": "分享你的爱意"
+    },
+    "recently": "最近活动",
+    "tags": {
+      "acquireTime": "获得时间：{time}",
+      "description": "在这里管理你的标签",
+      "disabled": "该标签已被停用，无法使用",
+      "empty": "还没有任何标签",
+      "getOne": "通过兑换码获取你的第一个专属标签吧",
+      "notSet": "未设置",
+      "owns": "拥有标签数",
+      "redeem": {
+        "activateCode": "兑换码",
+        "description": "输入兑换码以兑换新的标签",
+        "index": "兑换标签",
+        "recently": "最近兑换的标签",
+        "redeemed": "恭喜你获得了新标签 {title}。\n新标签已自动设为当前标签，你可以在帖子和评论中看到他的显示效果。",
+        "redeemed_short": "兑换成功！新标签已自动设为当前标签。",
+        "wrongPattern": "兑换码格式不正确"
+      },
+      "set": "已设置 \"{title}\" 为当前标签",
+      "unset": "已取消设置当前标签。",
+      "useThis": "设为当前标签"
+    }
   }
 }

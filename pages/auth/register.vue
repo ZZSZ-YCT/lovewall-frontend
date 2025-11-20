@@ -9,48 +9,48 @@
               <UserPlusIcon class="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 class="text-2xl font-bold text-gray-900 mb-2">加入郑州四中表白墙</h1>
-          <p class="text-gray-600">创建您的账户，开始记录美好的表白时刻</p>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ t('auth.register.index') }}</h1>
+          <p class="text-gray-600">{{ t('auth.register.description') }}</p>
         </div>
 
         <!-- Registration Form -->
         <form class="space-y-6" @submit.prevent="handleSubmit">
           <div>
-            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">用户名 *</label>
+            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.username') }} *</label>
             <GlassInput
               id="username"
               v-model="form.username"
               type="text"
-              placeholder="请输入用户名"
+              :placeholder="t('auth.login.usernamePlaceholder')"
               autocomplete="username"
               :error="errors.username"
               required
             />
-            <p class="mt-1 text-xs text-gray-500">3-20个字符，只能包含字母、数字和下划线</p>
+            <p class="mt-1 text-xs text-gray-500">{{ t('auth.register.usernameLimit') }}</p>
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">密码 *</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.password') }} *</label>
             <GlassInput
               id="password"
               v-model="form.password"
               type="password"
-              placeholder="请输入密码"
+              :placeholder="t('auth.login.passwordPlaceholder')"
               autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.password"
               required
             />
-            <p class="mt-1 text-xs text-gray-500">至少6个字符</p>
+            <p class="mt-1 text-xs text-gray-500">{{ t('auth.login.passwordTooShort') }}</p>
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">确认密码 *</label>
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">{{ t('auth.changePassword.forms.confirmPassword') }} *</label>
             <GlassInput
               id="confirmPassword"
               v-model="confirmPassword"
               type="password"
-              placeholder="请再次输入密码"
+              :placeholder="t('auth.changePassword.forms.confirmPasswordPlaceholder')"
               autocomplete="new-password"
               :show-password-toggle="true"
               :error="errors.confirmPassword"
@@ -67,10 +67,9 @@
               class="mt-1 w-4 h-4 text-brand-600 bg-white/30 border border-white/20 rounded focus:ring-brand-500 focus:ring-2"
             >
             <label for="acceptTerms" class="text-sm text-gray-600">
-              我已阅读并同意
-              <a href="#" class="text-brand-600 hover:text-brand-700">服务条款</a>
-              和
-              <a href="#" class="text-brand-600 hover:text-brand-700">隐私政策</a>
+              {{ t('auth.register.agreeWithTerms') }}
+              <a href="#" class="text-brand-600 hover:text-brand-700">{{ t('home.tos') }}</a>
+              <a href="#" class="text-brand-600 hover:text-brand-700">{{ t('home.privacy') }}</a>
             </label>
           </div>
 
@@ -87,19 +86,19 @@
             :disabled="!isFormValid || loading"
             @click="handleSubmit"
           >
-            {{ loading ? '注册中...' : '创建账户' }}
+            {{ t('home.register') }}
           </GlassButton>
         </form>
 
         <!-- Footer -->
         <div class="mt-8 text-center space-y-4">
           <p class="text-sm text-gray-600">
-            已有账户？
+            {{ t('auth.register.loginSuggestion') }}
             <NuxtLink 
               to="/auth/login" 
               class="text-brand-600 hover:text-brand-700 hover:underline ml-1 font-medium"
             >
-              立即登录
+              {{ t('home.login') }}
             </NuxtLink>
           </p>
           
@@ -108,7 +107,7 @@
             class="glass-button-secondary text-sm px-3 py-1 inline-flex items-center gap-1"
           >
             <ArrowLeftIcon class="w-4 h-4" />
-            返回首页
+            {{ t('home.backHome') }}
           </NuxtLink>
         </div>
       </div>
@@ -119,6 +118,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { UserPlusIcon, ArrowLeftIcon } from 'lucide-vue-next'
 import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
@@ -128,12 +129,12 @@ import type { RegisterForm } from '~/types'
 // Form schema
 const registerSchema = z.object({
   username: z.string()
-    .min(3, '用户名至少3个字符')
-    .max(20, '用户名不能超过20个字符')
-    .regex(/^[a-zA-Z0-9_]+$/, '用户名只能包含字母、数字和下划线'),
+    .min(3, t('auth.register.usernameTooShort'))
+    .max(20, t('auth.register.usernameTooLong'))
+    .regex(/^[a-zA-Z0-9_]+$/, t('auth.register.usernameCharset')),
   password: z.string()
-    .min(6, '密码至少6个字符')
-    .max(128, '密码不能超过128个字符'),
+    .min(6, t('auth.login.passwordTooShort'))
+    .max(128, t('auth.register.passwordTooLong')),
 })
 
 // State
@@ -174,7 +175,7 @@ const validateForm = () => {
 
     // Validate password confirmation
     if (form.password !== confirmPassword.value) {
-      errors.confirmPassword = '两次输入的密码不匹配'
+      errors.confirmPassword = t('auth.changePassword.forms.repeatPasswordNotMatch')
       return false
     }
 
@@ -196,7 +197,7 @@ const handleSubmit = async () => {
   if (!validateForm() || loading.value) return
 
   if (!acceptTerms.value) {
-    error.value = '请先同意服务条款和隐私政策'
+    error.value = t('auth.register.notAgreeWithTerms')
     return
   }
 
@@ -207,7 +208,7 @@ const handleSubmit = async () => {
     console.log('[Register] opening captcha dialog')
 
     // 打开验证码弹窗
-    const captchaResult = await captchaDialog.open({ title: '注册安全验证' })
+    const captchaResult = await captchaDialog.open({ title: t('common.captcha') })
 
     // 用户取消了验证码
     if (!captchaResult) {
@@ -230,11 +231,11 @@ const handleSubmit = async () => {
     await router.push(redirect || '/')
   } catch (err: any) {
     console.error('[Register] error', err)
-    error.value = err.message || '注册失败，请稍后重试'
+    error.value = err.message || t('error.messages.unknown')
 
     // Also show toast notification for registration errors
     const toast = useToast()
-    toast.error(err.message || '注册失败，请稍后重试')
+    toast.error(err.message || t('error.messages.unknown'))
   } finally {
     loading.value = false
   }
@@ -261,8 +262,7 @@ watch(
 
 // Page meta
 definePageMeta({
-  title: '注册 - 郑州四中表白墙',
-  description: '创建您的郑州四中表白墙账户',
+  title: { k: 'auth.register.title' },
   ssr: false
 })
 </script>

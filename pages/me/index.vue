@@ -2,8 +2,8 @@
   <div class="max-w-6xl mx-auto space-y-8">
     <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">个人中心</h1>
-      <p class="text-gray-600 mt-2">管理你的个人信息和内容</p>
+      <h1 class="page-title">{{ t('user.center') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('user.centers.description') }}</p>
     </div>
 
     <!-- Loading State -->
@@ -50,7 +50,7 @@
               v-if="auth.isSuperadmin"
               class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full"
             >
-              超级管理员
+              {{ t('common.superAdmin') }}
             </span>
           </div>
           
@@ -58,13 +58,13 @@
           <UserPermissionDisplay />
           
           <div class="space-y-1 text-sm text-gray-600 mt-4">
-            <p><span class="font-medium">用户名:</span> {{ auth.currentUser?.username }}</p>
+            <p><span class="font-medium">{{ t('common.username') }}:</span> {{ auth.currentUser?.username }}</p>
             <p v-if="auth.currentUser?.email">
-              <span class="font-medium">邮箱:</span> {{ auth.currentUser.email }}
+              <span class="font-medium">{{ t('common.email') }}:</span> {{ auth.currentUser.email }}
             </p>
-            <p><span class="font-medium">注册时间:</span> {{ formatDate(auth.currentUser?.created_at) }}</p>
+            <p><span class="font-medium">{{ t('user.centers.registerTime') }}:</span> {{ formatDate(auth.currentUser?.created_at) }}</p>
             <p v-if="auth.currentUser?.last_login_at">
-              <span class="font-medium">上次登录:</span> {{ formatDate(auth.currentUser.last_login_at) }}
+              <span class="font-medium">{{ t('user.centers.lastLogin') }}:</span> {{ formatDate(auth.currentUser.last_login_at) }}
             </p>
           </div>
 
@@ -82,7 +82,7 @@
             class="glass-button"
             @click="showEditModal = true"
           >
-            编辑资料
+            {{ t('user.centers.editProfile') }}
           </GlassButton>
           <GlassButton
             v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
@@ -99,22 +99,22 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <GlassCard class="p-6 text-center">
         <div class="text-3xl font-bold text-brand-600 mb-2">{{ stats.posts }}</div>
-        <div class="text-sm text-gray-600">发表的表白</div>
+        <div class="text-sm text-gray-600">{{ t('user.myPosts') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-3xl font-bold text-green-600 mb-2">{{ stats.comments }}</div>
-        <div class="text-sm text-gray-600">发表的评论</div>
+        <div class="text-sm text-gray-600">{{ t('user.myComments') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-3xl font-bold text-purple-600 mb-2">{{ stats.tags }}</div>
-        <div class="text-sm text-gray-600">拥有的标签</div>
+        <div class="text-sm text-gray-600">{{ t('user.myTags') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-3xl font-bold text-blue-600 mb-2">{{ daysSinceJoined }}</div>
-        <div class="text-sm text-gray-600">加入天数</div>
+        <div class="text-sm text-gray-600">{{ t('user.centers.joinedDays') }}</div>
       </GlassCard>
     </div>
 
@@ -125,8 +125,8 @@
           <div class="w-12 h-12 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <PlusIcon class="w-6 h-6 text-white" />
           </div>
-          <h3 class="font-semibold text-gray-800 mb-2">发布表白</h3>
-          <p class="text-sm text-gray-600">分享你的爱意</p>
+          <h3 class="font-semibold text-gray-800 mb-2">{{ t('posts.publish.index') }}</h3>
+          <p class="text-sm text-gray-600">{{ t('user.publish.description') }}</p>
         </GlassCard>
       </NuxtLink>
 
@@ -135,8 +135,8 @@
           <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <FileTextIcon class="w-6 h-6 text-white" />
           </div>
-          <h3 class="font-semibold text-gray-800 mb-2">我的表白</h3>
-          <p class="text-sm text-gray-600">查看已发布内容</p>
+          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myPosts') }}</h3>
+          <p class="text-sm text-gray-600">{{ t('user.posts.description') }}</p>
         </GlassCard>
       </NuxtLink>
 
@@ -145,8 +145,8 @@
           <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <MessageSquareIcon class="w-6 h-6 text-white" />
           </div>
-          <h3 class="font-semibold text-gray-800 mb-2">我的评论</h3>
-          <p class="text-sm text-gray-600">管理评论记录</p>
+          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myComments') }}</h3>
+          <p class="text-sm text-gray-600">{{ t('user.comments.description') }}</p>
         </GlassCard>
       </NuxtLink>
 
@@ -155,8 +155,8 @@
           <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <TagIcon class="w-6 h-6 text-white" />
           </div>
-          <h3 class="font-semibold text-gray-800 mb-2">我的标签</h3>
-          <p class="text-sm text-gray-600">标签管理与激活</p>
+          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myTags') }}</h3>
+          <p class="text-sm text-gray-600">{{ t('user.tags.description') }}</p>
         </GlassCard>
       </NuxtLink>
       
@@ -165,15 +165,15 @@
           <div class="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <ShieldIcon class="w-6 h-6 text-white" />
           </div>
-          <h3 class="font-semibold text-gray-800 mb-2">修改密码</h3>
-          <p class="text-sm text-gray-600">保护账户安全</p>
+          <h3 class="font-semibold text-gray-800 mb-2">{{ t('auth.changePassword.index') }}</h3>
+          <p class="text-sm text-gray-600">{{ t('auth.changePassword.description') }}</p>
         </GlassCard>
       </NuxtLink>
     </div>
 
     <!-- Recent Activity -->
     <GlassCard class="p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">最近活动</h3>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ t('user.recently') }}</h3>
       
       <!-- Loading recent activity -->
       <div v-if="activityLoading" class="flex justify-center py-8">
@@ -182,14 +182,14 @@
       
       <!-- No activity -->
       <div v-else-if="!recentPosts.length && !recentComments.length" class="text-center py-8 text-gray-500">
-        还没有任何活动，快去发布你的第一条表白吧！
+        {{ t('user.noActivity') }}
       </div>
       
       <!-- Activity list -->
       <div v-else class="space-y-4">
         <!-- Recent posts -->
         <div v-if="recentPosts.length" class="space-y-3">
-          <h4 class="font-medium text-gray-700">最近发布的表白</h4>
+          <h4 class="font-medium text-gray-700">{{ t('posts.recently') }}</h4>
           <div
             v-for="post in recentPosts"
             :key="post.id"
@@ -207,7 +207,7 @@
                 :to="`/posts/${post.id}`"
                 class="glass-button-secondary text-xs px-2 py-1 inline-block"
               >
-                查看详情 →
+                {{ t('common.detail') }} →
               </NuxtLink>
             </div>
           </div>
@@ -215,14 +215,14 @@
 
         <!-- Recent comments -->
         <div v-if="recentComments.length" class="space-y-3">
-          <h4 class="font-medium text-gray-700">最近发表的评论</h4>
+          <h4 class="font-medium text-gray-700">{{ t('comments.recently') }}</h4>
           <div
             v-for="comment in recentComments"
             :key="comment.id"
             class="p-4 bg-white/10 rounded-xl border border-white/10"
           >
             <div class="flex items-center justify-between mb-2">
-              <h5 class="font-medium text-gray-800">评论了一条表白</h5>
+              <h5 class="font-medium text-gray-800">{{ t('user.commentedOn') }}</h5>
               <span class="text-xs text-gray-500">{{ formatDate(comment.created_at) }}</span>
             </div>
             <p class="text-sm text-gray-600 line-clamp-2">{{ comment.content }}</p>
@@ -231,7 +231,7 @@
                 :to="`/posts/${comment.post_id}`"
                 class="glass-button-secondary text-xs px-2 py-1 inline-block"
               >
-                查看表白 →
+                {{ t('common.detail') }} →
               </NuxtLink>
             </div>
           </div>
@@ -250,6 +250,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import {FileTextIcon, MessageSquareIcon, PlusIcon, ShieldIcon, TagIcon} from 'lucide-vue-next'
 import type {CommentDto, PostDto, User, UserTagDto} from '~/types'
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
@@ -260,7 +262,8 @@ import TagBadge from "~/components/ui/TagBadge.vue";
 
 definePageMeta({
   middleware: 'auth',
-  ssr: false
+  ssr: false,
+  title: { k: 'user.centerTitle' }
 })
 
 // Stores
@@ -291,7 +294,7 @@ const daysSinceJoined = computed(() => {
 
 // Methods
 const formatDate = (dateString?: string | null) => {
-  if (!dateString) return '未知'
+  if (!dateString) return t('common.unknown')
   return new Date(dateString).toLocaleString('zh-CN')
 }
 
@@ -329,7 +332,7 @@ const loadUserData = async () => {
     
   } catch (error: any) {
     // 降级为控制台提示，避免在部分子请求失败但页面仍可正常显示时打扰用户
-    console.warn('加载用户数据出现非致命错误：', error)
+    console.warn('Occurred error while loading data:', error)
   } finally {
     loading.value = false
     activityLoading.value = false
@@ -351,13 +354,5 @@ const handleProfileUpdated = async (updatedUser: User) => {
 // Initialize
 onMounted(() => {
   loadUserData()
-})
-
-// SEO
-useHead({
-  title: '个人中心 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '管理你的个人信息和表白内容' }
-  ]
 })
 </script>

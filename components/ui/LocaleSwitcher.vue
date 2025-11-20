@@ -1,8 +1,9 @@
 <script setup lang="ts">
+const { locale, locales } = useI18n()
+
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Globe2 } from 'lucide-vue-next'
 
-const { locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 
 const isOpen = ref(false)

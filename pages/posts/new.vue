@@ -4,9 +4,9 @@
       <GlassCard class="p-8">
         <!-- Header -->
         <div class="mb-8">
-          <h1 class="page-title">发布表白</h1>
+          <h1 class="page-title">{{ t('posts.publish.index') }}</h1>
           <p class="text-gray-600 text-center">
-            {{ form.card_type === 'communication' ? '分享你的联系方式，寻找志同道合的同学' : '发布你的表白信息' }}
+            {{ form.card_type === 'communication' ? t('posts.publish.description_social') : t('posts.publish.description_confessional') }}
           </p>
         </div>
 
@@ -15,7 +15,7 @@
         <!-- Card Type Selection -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-3">
-            卡片类型 *
+            {{ t('posts.publish.cardType' )}}
           </label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label
@@ -33,8 +33,8 @@
                 class="w-5 h-5 text-brand-600"
               >
               <div>
-                <div class="font-medium text-gray-900">表白卡</div>
-                <div class="text-sm text-gray-500">表达你对TA的心意</div>
+                <div class="font-medium text-gray-900">{{ t('posts.publish.confessionCard') }}</div>
+                <div class="text-sm text-gray-500">{{ t('posts.publish.description_confessional') }}</div>
               </div>
             </label>
 
@@ -53,8 +53,8 @@
                 class="w-5 h-5 text-brand-600"
               >
               <div>
-                <div class="font-medium text-gray-900">交流卡</div>
-                <div class="text-sm text-gray-500">分享联系方式,寻找同好</div>
+                <div class="font-medium text-gray-900">{{ t('posts.publish.socialCard') }}</div>
+                <div class="text-sm text-gray-500">{{ t('posts.publish.description_social') }}</div>
               </div>
             </label>
           </div>
@@ -63,7 +63,7 @@
         <!-- Confessor Mode Selection -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-3">
-            {{ form.card_type === 'communication' ? '交流者身份选择 *' : '表白者身份选择 *' }}
+            {{ t('posts.publish.chooseRole') }}
           </label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label
@@ -81,9 +81,9 @@
                 class="w-5 h-5 text-brand-600"
               >
               <div>
-                <div class="font-medium text-gray-900">使用我的昵称</div>
+                <div class="font-medium text-gray-900">{{ t('posts.publish.selfRole') }}</div>
                 <div class="text-sm text-gray-500">
-                  {{ auth.userDisplayName || auth.currentUser?.username || '用户' }}
+                  {{ auth.userDisplayName || auth.currentUser?.username || '-' }}
                 </div>
               </div>
             </label>
@@ -103,8 +103,8 @@
                 class="w-5 h-5 text-brand-600"
               >
               <div>
-                <div class="font-medium text-gray-900">自定义昵称</div>
-                <div class="text-sm text-gray-500">匿名或使用其他名称</div>
+                <div class="font-medium text-gray-900">{{ t('posts.publish.anonymousRole') }}</div>
+                <div class="text-sm text-gray-500">{{ t('posts.publish.description_anonymousRole') }}</div>
               </div>
             </label>
           </div>
@@ -113,13 +113,13 @@
         <!-- Author Name (only show when custom mode) -->
         <div v-show="form.confessor_mode === 'custom'">
           <label for="authorName" class="block text-sm font-medium text-gray-700 mb-2">
-            {{ form.card_type === 'communication' ? '交流者昵称 *' : '表白者昵称 *' }}
+            {{ t('common.nickname') }}
           </label>
           <GlassInput
             id="authorName"
             v-model="form.author_name"
             type="text"
-            :placeholder="form.card_type === 'communication' ? '请输入您的昵称（可以是真名或匿名）' : '请输入您的昵称（可以是真名或匿名）'"
+            :placeholder="t('posts.publish.namePlaceholder')"
             autocomplete="nickname"
             :error="errors.author_name"
             :required="form.confessor_mode === 'custom'"
@@ -129,13 +129,13 @@
         <!-- Target Name (only show for confession card) -->
         <div v-show="form.card_type === 'confession'">
           <label for="targetName" class="block text-sm font-medium text-gray-700 mb-2">
-            表白对象 *
+            {{ t('posts.publish.targetName') }}
           </label>
           <GlassInput
             id="targetName"
             v-model="form.target_name"
             type="text"
-            placeholder="请输入TA的昵称"
+            :placeholder="t('posts.publish.targetNamePlaceholder')"
             :error="errors.target_name"
             :required="form.card_type === 'confession'"
           />
@@ -144,14 +144,14 @@
         <!-- Content -->
         <div>
           <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
-            {{ form.card_type === 'communication' ? '交流内容 *' : '表白内容 *' }}
+            {{ t('common.content') }}
           </label>
           <GlassTextarea
             id="content"
             v-model="form.content"
             :rows="8"
             :max-length="2000"
-            :placeholder="form.card_type === 'communication' ? '分享你的兴趣爱好、联系方式等...' : '写下你想对TA说的话...'"
+            :placeholder="form.card_type === 'communication' ? t('posts.publish.description_social') : t('posts.publish.description_confessional')"
             :error="errors.content"
             required
           />
@@ -160,7 +160,7 @@
         <!-- Image Upload -->
         <div>
           <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-            上传图片（可选）
+            {{ t('posts.publish.uploadImage') }}
           </label>
           
           <!-- Upload Area -->
@@ -183,7 +183,7 @@
                 >
                   <NuxtImg
                     :src="preview"
-                    alt="预览图片"
+                    :alt="t('common.preview')"
                     class="w-full h-40 object-cover rounded-lg border border-white/20"
                   />
                   <button
@@ -201,9 +201,9 @@
                   class="text-brand-600 hover:text-brand-700 hover:underline font-medium"
                   @click="fileInput?.click()"
                 >
-                  继续添加图片
+                  {{ t('posts.publish.uploadMore') }}
                 </button>
-                <p class="text-xs text-gray-500">已选择 {{ form.images.length }} / 9 张</p>
+                <p class="text-xs text-gray-500">{{ t('posts.publish.imageTotal', { number: form.images.length }) }}</p>
               </div>
             </div>
 
@@ -212,17 +212,17 @@
               <ImageIcon class="w-12 h-12 text-gray-400 mx-auto" />
               <div>
                 <p class="text-sm text-gray-600">
-                  拖拽图片到此处，或
+                  {{ t('posts.publish.addPhoto0') }}
                   <button
                     type="button"
                     class="text-brand-600 hover:text-brand-700 hover:underline font-medium ml-1"
                     @click="fileInput?.click()"
                   >
-                    点击选择
+                    {{ t('posts.publish.addPhoto1') }}
                   </button>
                 </p>
                 <p class="text-xs text-gray-500 mt-1">
-                  支持 JPG、PNG、WebP、GIF 格式，最多 9 张，单张 ≤ 5MB
+                  {{ t('posts.publish.limits') }}
                 </p>
               </div>
             </div>
@@ -251,7 +251,7 @@
             class="flex-1 h-11 text-base rounded-full inline-flex items-center justify-center gap-2 glass-button-secondary"
             @click="$router.back()"
           >
-            取消
+            {{ t('common.cancel') }}
           </GlassButton>
           
           <GlassButton
@@ -262,7 +262,7 @@
             @click="handleSubmit"
           >
             <PlusIcon class="w-5 h-5" />
-            {{ loading ? '发布中...' : (form.card_type === 'communication' ? '发布交流' : '发布表白') }}
+            {{ loading ? '发布中...' : t('posts.post') }}
           </GlassButton>
         </div>
       </form>
@@ -279,14 +279,11 @@
             </div>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">发布小贴士</h3>
+            <h3 class="font-medium text-gray-900 mb-2">{{ t('posts.publish.tip.index') }}</h3>
             <ul class="text-sm text-gray-600 space-y-1">
-              <li>• 请使用真诚的语言，让表白更加感人</li>
-              <li>• 可以上传一张特别的照片来增加表白的意义</li>
-              <li>• 发布后的内容会公开显示，请注意隐私保护</li>
-              <li>• 不当内容可能会被管理员隐藏或删除</li>
+              <li>• {{ t('posts.publish.tip.0') }}</li>
+              <li>• {{ t('posts.publish.tip.1') }}</li>
             </ul>
-            <h3 class="font-medium text-gray-900 mb-2">注：由于缓存原因，帖子可能需要一段时间才能完成更新</h3>
           </div>
         </div>
       </GlassCard>
@@ -295,6 +292,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { ImageIcon, XIcon, LightbulbIcon, PlusIcon } from 'lucide-vue-next'
 import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
@@ -309,7 +308,7 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const postSchema = z.object({
   author_name: z.string().optional(),
   target_name: z.string().optional(),
-  content: z.string().min(1, '内容不能为空').max(2000, '内容不能超过2000个字符'),
+  content: z.string().min(1, t('posts.publish.cantEmpty')).max(2000, t('posts.publish.cantOversize')),
   card_type: z.enum(['confession', 'communication']).optional(),
   confessor_mode: z.enum(['self', 'custom']).default('custom'),
 }).superRefine((data, ctx) => {
@@ -317,7 +316,7 @@ const postSchema = z.object({
   if (data.confessor_mode === 'custom' && (!data.author_name || data.author_name.trim().length === 0)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: '请输入发布者昵称',
+      message: t('posts.publish.namePlaceholder'),
       path: ['author_name']
     })
   }
@@ -325,7 +324,7 @@ const postSchema = z.object({
   if (data.confessor_mode === 'custom' && data.author_name && data.author_name.length > 50) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: '昵称不能超过50个字符',
+      message: t('posts.publish.nameOversize'),
       path: ['author_name']
     })
   }
@@ -333,7 +332,7 @@ const postSchema = z.object({
   if (data.card_type === 'confession' && (!data.target_name || data.target_name.trim().length === 0)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: '目标昵称不能为空',
+      message: t('posts.publish.cantEmpty'),
       path: ['target_name']
     })
   }
@@ -341,7 +340,7 @@ const postSchema = z.object({
   if (data.card_type === 'confession' && data.target_name && data.target_name.length > 50) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: '昵称不能超过50个字符',
+      message: t('posts.publish.nameOversize'),
       path: ['target_name']
     })
   }
@@ -454,7 +453,7 @@ const processFiles = async (files: FileList | File[]) => {
   const incoming = Array.from(files)
 
   if (form.images.length >= maxImages) {
-    showImageError(`最多只能上传 ${maxImages} 张图片`)
+    showImageError(t('posts.publish.error.imageTooMany'))
     return
   }
 
@@ -463,11 +462,11 @@ const processFiles = async (files: FileList | File[]) => {
 
   for (const file of filesToProcess) {
     if (!allowedTypes.includes(file.type)) {
-      showImageError('不支持的图片格式，请选择 JPG、PNG、WebP 或 GIF 格式')
+      showImageError(t('posts.publish.error.unsupportedImageFormat'))
       continue
     }
     if (file.size > maxFileSize) {
-      showImageError('单张图片大小不能超过 5MB')
+      showImageError(t('posts.publish.error.imageOversize'))
       continue
     }
 
@@ -477,7 +476,7 @@ const processFiles = async (files: FileList | File[]) => {
   }
 
   if (incoming.length > filesToProcess.length) {
-    showImageError(`最多只能上传 ${maxImages} 张图片`)
+    showImageError(t('posts.publish.error.imageTooMany'))
   }
 }
 
@@ -485,7 +484,7 @@ const fileToDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = (e) => resolve(e.target?.result as string)
-    reader.onerror = () => reject(new Error('图片预览生成失败'))
+    reader.onerror = () => reject(new Error(t('error.messages.unknown')))
     reader.readAsDataURL(file)
   })
 }
@@ -535,13 +534,13 @@ const handleSubmit = async () => {
     // Submit post
     const newPost = await api.createPost(formData)
 
-    toast.success('帖子已发布，等待审核')
+    toast.success(t('posts.publish.toasts.sent'))
 
     // Redirect to home page
     await router.push('/')
   } catch (err: any) {
     console.error('Failed to create post:', err)
-    toast.error(err.message || '发布失败，请稍后重试')
+    toast.error(err.message || t('error.messages.unknown'))
   } finally {
     loading.value = false
   }
@@ -556,14 +555,9 @@ watch(form, () => {
 
 // Page meta
 definePageMeta({
-  title: '发布信息 - 郑州四中表白墙',
-  description: '发布您的表白内容',
+  title: { k: 'posts.publish.title' },
   middleware: ['auth'],
   ssr: false
-})
-
-useHead({
-  title: '发布信息 - 郑州四中表白墙'
 })
 </script>
 

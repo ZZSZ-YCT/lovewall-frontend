@@ -8,9 +8,9 @@
     <!-- 错误状态 -->
     <div v-else-if="error" class="text-center py-12">
       <GlassCard class="p-8">
-        <h2 class="text-2xl font-bold text-red-600 mb-4">用户不存在</h2>
+        <h2 class="text-2xl font-bold text-red-600 mb-4">{{ t('error.messages.404') }}</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
-        <GlassButton variant="secondary" @click="$router.back()">返回上页</GlassButton>
+        <GlassButton variant="secondary" @click="$router.back()">{{ t('common.previous') }}</GlassButton>
       </GlassCard>
     </div>
 
@@ -49,7 +49,7 @@
               <div
                 class="absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
                 :class="userIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
-                :title="userIsOnline ? (formatOnlineStatus(onlineStatusData?.last_heartbeat)) : '离线'"
+                :title="userIsOnline ? (formatOnlineStatus(onlineStatusData?.last_heartbeat)) : t('user.offline')"
               />
             </div>
           </div>
@@ -59,7 +59,7 @@
             <div class="mb-4">
               <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <h1 class="text-3xl font-bold text-gray-800">{{ userDisplayName }}</h1>
-                <span v-if="isDeleted" class="px-2 py-0.5 text-xs bg-gray-200 text-gray-700 rounded-full">已注销不可访问</span>
+                <span v-if="isDeleted" class="px-2 py-0.5 text-xs bg-gray-200 text-gray-700 rounded-full">{{ t('error.messages.404') }}</span>
                 <TagBadge
                   v-if="activeTag"
                   :title="activeTag.title"
@@ -67,7 +67,7 @@
                   :text="activeTag.text_color"
                 />
                 <span v-if="activeTag?.user_deleted" class="px-2 py-0.5 text-xs bg-red-100 text-red-600 rounded-full">
-                  标签所属用户已注销
+                  {{ t('error.messages.404') }}
                 </span>
               </div>
               <p class="text-gray-600">@{{ user.username }}</p>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="flex justify-center md:justify-start gap-6 text-sm text-gray-600">
-              <span>加入于 {{ formatDate(user.created_at) }}</span>
+              <span>{{ t('common.joinTime', { time: formatDate(user.created_at) }) }}</span>
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@
       <!-- 用户表白列表 -->
       <GlassCard class="p-6">
         <div class="border-b border-white/20 pb-4 mb-6">
-          <h2 class="text-xl font-semibold text-gray-800">{{ userDisplayName }} 的表白</h2>
+          <h2 class="text-xl font-semibold text-gray-800">{{ t('user.postsFrom', { nickname: userDisplayName }) }}</h2>
         </div>
 
         <!-- 帖子加载中 -->
@@ -98,7 +98,7 @@
         <!-- 无帖子 -->
         <div v-else-if="!userPosts.length" class="text-center py-12 text-gray-500">
           <HeartIcon class="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <p>{{ userDisplayName }} 还没有发表过表白</p>
+          <p>{{ t('user.noPosts', { nickname: userDisplayName }) }}</p>
         </div>
 
         <!-- 帖子列表 -->
@@ -113,7 +113,7 @@
               <div v-if="post.images?.length" class="flex-shrink-0">
                 <NuxtPicture
                   :src="assetUrl(post.images[0])"
-                  :alt="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? `${post.author_name}对${post.target_name}的表白` : `${post.author_name}的交流`"
+                  :alt="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? t('posts.confessionTo', { author: post.author_name, target: post.target_name }) : t('posts.socialFrom', { author: post.author_name })"
                   class="w-20 h-20 object-cover rounded-lg"
                   :modifiers="{ fit: 'cover', quality: 60 }"
                   sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
@@ -126,7 +126,7 @@
                     <template v-if="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name">
                       {{ post.author_name }} → {{ post.target_name }}
                     </template>
-                    <template v-else>{{ post.author_name }} 的交流</template>
+                    <template v-else>{{ t('posts.socialFrom', { author: post.author_name }) }}</template>
                   </h3>
                   <TagBadge
                     v-if="post.author_tag"
@@ -135,8 +135,8 @@
                     :text="post.author_tag.text_color"
                   />
                   <div class="flex gap-1 ml-auto">
-                    <span v-if="post.is_featured" class="px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded-full">精选</span>
-                    <span v-if="post.is_pinned" class="px-2 py-1 text-xs bg-sky-100 text-sky-800 rounded-full">置顶</span>
+                    <span v-if="post.is_featured" class="px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded-full">{{ t('common.feature') }}</span>
+                    <span v-if="post.is_pinned" class="px-2 py-1 text-xs bg-sky-100 text-sky-800 rounded-full">{{ t('common.pin') }}</span>
                   </div>
                 </div>
 
@@ -150,7 +150,7 @@
 
           <div v-if="postsData && postsData.page * postsData.page_size < postsData.total" class="text-center pt-4">
             <GlassButton :loading="postsLoading" variant="secondary" @click="loadMorePosts">
-              加载更多表白
+              {{ t('common.loadMore') }}
             </GlassButton>
           </div>
         </div>
@@ -160,13 +160,13 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import GlassCard from '~/components/ui/GlassCard.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import { HeartIcon } from 'lucide-vue-next'
-
-const { t } = useI18n()
 
 // 路由参数
 const route = useRoute()
@@ -179,7 +179,7 @@ const { data: userData, pending, error: userError } = await useAsyncData(
   () => `user-${username.value}`,
   async () => {
     const status = await api.getUserStatusByUsername(username.value)
-    if (!status.exists) throw new Error('用户不存在或已注销')
+    if (!status.exists) throw new Error(t('error.messages.404'))
     const user = await api.getUserByUsername(username.value)
     const activeTag = await api.getUserActiveTagByUsername(username.value)
     return { user, activeTag, status }
@@ -192,7 +192,7 @@ const userDisplayName = computed(() => user.value?.display_name || user.value?.u
 const activeTag = computed(() => userData.value?.activeTag ?? null)
 const userStatus = computed(() => userData.value?.status ?? null)
 const loading = computed(() => pending.value)
-const error = computed(() => userError.value ? userError.value.message || '用户不存在或已注销' : null)
+const error = computed(() => userError.value ? userError.value.message || t('error.messages.404') : null)
 const isDeleted = computed(() => !!userStatus.value?.is_deleted)
 const userInitials = computed(() => (userDisplayName.value || '').slice(0, 2))
 
@@ -236,23 +236,23 @@ const formatDate = (dateString: string) => new Date(dateString).toLocaleDateStri
 
 // 格式化在线状态：在线显示"在线"，离线显示最后心跳时间（GMT+8）
 const formatOnlineStatus = (lastHeartbeat?: string | null) => {
-  if (!lastHeartbeat) return '在线'
+  if (!lastHeartbeat) return t('user.online')
 
   try {
     const date = new Date(lastHeartbeat)
     // 格式化为 GMT+8 可读时间：2025-01-12 14:30:25
-    return `离线 · 最后在线: ${date.toLocaleString('zh-CN', {
-      timeZone: 'Asia/Shanghai',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    })}`
+    return t('user.offlineAndTime', { time: date.toLocaleString('zh-CN', {
+        timeZone: 'Asia/Shanghai',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      })})
   } catch {
-    return '在线'
+    return t('user.online')
   }
 }
 
@@ -401,7 +401,7 @@ const profileStructuredData = computed(() => {
 
 useSeoMeta({
   title: computed(() =>
-    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
   ),
   description: computed(() =>
     user.value ? profileDescription.value : defaultProfileDescription
@@ -409,7 +409,7 @@ useSeoMeta({
 
   // --- Open Graph ---
   ogTitle: computed(() =>
-    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
   ),
   ogDescription: computed(() =>
     user.value ? profileDescription.value : defaultProfileDescription
@@ -426,7 +426,7 @@ useSeoMeta({
     user.value?.avatar_url ? 'summary_large_image' : 'summary'
   ),
   twitterTitle: computed(() =>
-    user.value ? profileTitle.value : `用户资料 - ${siteName}`
+    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
   ),
   twitterDescription: computed(() =>
     user.value ? profileDescription.value : defaultProfileDescription

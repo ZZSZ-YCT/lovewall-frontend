@@ -9,19 +9,19 @@
               <HeartIcon class="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 class="text-2xl font-bold text-gray-900 mb-2">欢迎回来</h1>
-          <p class="text-gray-600">登录您的账户</p>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ t('auth.login.welcome') }}</h1>
+          <p class="text-gray-600">{{ t('auth.login.description') }}</p>
         </div>
 
         <!-- Login Form -->
         <form class="space-y-6" @submit.prevent="handleSubmit">
           <div>
-            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.username') }}</label>
             <GlassInput
               id="username"
               v-model="form.username"
               type="text"
-              placeholder="请输入用户名"
+              :placeholder="t('auth.login.usernamePlaceholder')"
               autocomplete="username"
               :error="errors.username"
               required
@@ -29,12 +29,12 @@
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.password') }}</label>
             <GlassInput
               id="password"
               v-model="form.password"
               type="password"
-              placeholder="请输入密码"
+              :placeholder="t('auth.login.passwordPlaceholder')"
               autocomplete="current-password"
               :show-password-toggle="true"
               :error="errors.password"
@@ -54,28 +54,28 @@
             class="w-full"
             :disabled="!isFormValid || loading"
           >
-            {{ loading ? '登录中...' : '登录' }}
+            {{ t('home.login') }}
           </GlassButton>
         </form>
 
         <!-- Footer -->
         <div class="mt-8 text-center space-y-4">
           <p class="text-sm text-gray-600">
-            还没有账户？
-            <NuxtLink 
-              to="/auth/register" 
+            {{ t('auth.login.registerSuggestion') }}
+            <NuxtLink
+              to="/auth/register"
               class="text-brand-600 hover:text-brand-700 hover:underline ml-1 font-medium"
             >
-              立即注册
+              {{ t('auth.login.registerNow') }}
             </NuxtLink>
           </p>
-          
+
           <NuxtLink
             to="/"
             class="glass-button-secondary text-sm px-3 py-1 inline-flex items-center gap-1"
           >
             <ArrowLeftIcon class="w-4 h-4" />
-            返回首页
+            {{ t('home.backHome') }}
           </NuxtLink>
         </div>
       </div>
@@ -86,6 +86,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { HeartIcon, ArrowLeftIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import { z } from 'zod'
@@ -95,8 +97,8 @@ import CaptchaDialog from '~/components/popup/CaptchaDialog.vue'
 
 // Form schema
 const loginSchema = z.object({
-  username: z.string().min(1, '请输入用户名').max(50, '用户名不能超过50个字符'),
-  password: z.string().min(1, '请输入密码').min(6, '密码至少6个字符'),
+  username: z.string().min(1, t('auth.login.usernamePlaceholder')).max(50, t('posts.publish.nameOversize')),
+  password: z.string().min(1, t('auth.login.passwordPlaceholder')).min(6, t('auth.login.passwordTooShort')),
 })
 
 // State
@@ -152,7 +154,7 @@ const handleSubmit = async () => {
     console.log('Opening captcha dialog...')
 
     // 打开验证码弹窗
-    const captchaResult = await captchaDialog.open({ title: '登录安全验证' })
+    const captchaResult = await captchaDialog.open({ title: t('common.captcha') })
 
     // 用户取消了验证码
     if (!captchaResult) {
@@ -178,11 +180,11 @@ const handleSubmit = async () => {
     await router.push(redirect || '/')
   } catch (err: any) {
     console.error('Login error:', err)
-    error.value = err.message || '登录失败，请检查用户名和密码'
+    error.value = err.message || t('auth.login.invalidCredentials')
 
     // Also show toast notification for login errors
     const toast = useToast()
-    toast.error(err.message || '登录失败，请检查用户名和密码')
+    toast.error(err.message || t('auth.login.invalidCredentials'))
   } finally {
     loading.value = false
   }
@@ -209,8 +211,7 @@ watch(
 
 // Page meta
 definePageMeta({
-  title: '登录 - 郑州四中表白墙',
-  description: '登录郑州四中表白墙账户',
+  title: { k: 'auth.login.title' },
   ssr: false
 })
 </script>
