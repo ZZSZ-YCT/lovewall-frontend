@@ -24,6 +24,8 @@ interface PromptOptions {
  * 为了保持向后兼容，这里桥接到useAdminDialog
  */
 export const useConfirm = () => {
+  const { t } = useI18n()
+
   const adminDialog = useAdminDialog()
 
   const confirm = (options: string | ConfirmOptions) => {
@@ -32,7 +34,7 @@ export const useConfirm = () => {
       : options
 
     return adminDialog.confirm({
-      title: normalized.title || '确认',
+      title: normalized.title || t('common.confirm'),
       message: normalized.message,
       confirmText: normalized.confirmText,
       cancelText: normalized.cancelText
@@ -64,7 +66,7 @@ export const usePrompt = () => {
       : messageOrOptions
 
     return adminDialog.prompt({
-      title: normalized.title || '输入',
+      title: normalized.title || '', // shit code to use a hard-coded, special meaning fallback.
       message: normalized.message,
       placeholder: normalized.placeholder,
       defaultValue: normalized.defaultValue,

@@ -67,6 +67,7 @@
     "cancel": "取消",
     "captcha": "让我们知道你是人类",
     "comment": "评论",
+    "confirm": "确认",
     "content": "内容",
     "current": "当前",
     "delete": "删除",
@@ -138,6 +139,16 @@
     "title": "通知 - 郑州四中表白墙",
     "unread": "未讀"
   },
+  "permission": {
+    "manage_announcements": "公告管理",
+    "manage_announcements_group": "社区管理",
+    "manage_content": "内容管理",
+    "manage_featured": "精选管理",
+    "manage_posts": "帖子/评论管理",
+    "manage_tags": "标签管理",
+    "manage_tags_group": "系统管理",
+    "manage_users": "用户管理"
+  },
   "posts": {
     "404": "帖子不存在",
     "beFirst": "成为第一个",
@@ -197,6 +208,16 @@
     "description": "郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区",
     "keywords": "郑州四中,郑州市第四高级中学,表白墙,校园社区,学生交流",
     "title": "郑州市第四高级中学表白墙"
+  },
+  "share": {
+    "copied": "链接已复制到剪贴板",
+    "success": "分享成功"
+  },
+  "time": {
+    "expireHour": "{hour} 小时 {minutes} 分钟后过期",
+    "expireMinutes": "{minutes} 分钟后过期",
+    "expireSoon": "即将过期",
+    "expired": "已过期"
   },
   "user": {
     "center": "个人中心",

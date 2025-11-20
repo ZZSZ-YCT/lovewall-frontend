@@ -67,6 +67,7 @@
     "cancel": "取消",
     "captcha": "讓我們知道你是人類",
     "comment": "評論",
+    "confirm": "確認",
     "content": "內容",
     "current": "目前",
     "delete": "刪除",
@@ -138,6 +139,16 @@
     "title": "通知 - 鄭州市第四高級中學表白牆",
     "unread": "未读"
   },
+  "permission": {
+    "manage_announcements": "管理公告",
+    "manage_announcements_group": "管理社區",
+    "manage_content": "管理內容",
+    "manage_featured": "管理精選",
+    "manage_posts": "管理貼文/評論",
+    "manage_tags": "管理標籤",
+    "manage_tags_group": "管理系統",
+    "manage_users": "管理用戶"
+  },
   "posts": {
     "404": "貼文未找到",
     "beFirst": "成為第一個",
@@ -197,6 +208,16 @@
     "description": "校园信息交流平台",
     "keywords": "鄭州第四中學,鄭州第四初中,鄭州第四初級中學,學校社區,學生交流,學生討論",
     "title": "鄭州市第四高級中學表白牆"
+  },
+  "share": {
+    "copied": "已複製到剪貼簿",
+    "success": "分享成功"
+  },
+  "time": {
+    "expireHour": "將在 {hour} 小時 {minutes} 分鐘後過期",
+    "expireMinutes": "將在 {minutes} 分鐘后過期",
+    "expireSoon": "即將過期",
+    "expired": "已到期"
   },
   "user": {
     "center": "個人中心",

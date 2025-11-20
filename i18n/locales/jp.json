@@ -67,6 +67,7 @@
     "cancel": "キャンセル",
     "captcha": "人間であることを教えてください",
     "comment": "コメント",
+    "confirm": "確認",
     "content": "コンテンツ",
     "current": "現在",
     "delete": "消去",
@@ -138,6 +139,16 @@
     "title": "通知 - 鄭州第四高校告白壁",
     "unread": "未読"
   },
+  "permission": {
+    "manage_announcements": "アナウンスの管理",
+    "manage_announcements_group": "コミュニティの管理",
+    "manage_content": "コンテンツの管理",
+    "manage_featured": "注目の管理",
+    "manage_posts": "投稿/コメントの管理",
+    "manage_tags": "タグの管理",
+    "manage_tags_group": "システムの管理",
+    "manage_users": "ユーザーの管理"
+  },
   "posts": {
     "404": "投稿が見つかりません",
     "beFirst": "最初になりましょう",
@@ -197,6 +208,16 @@
     "description": "生徒同士が連絡を取り合う壁",
     "keywords": "鄭州第四高等学校,鄭州第四中学校、鄭州第四中学校,学校コミュニティ,生徒コミュニケーション,学生のディスカッション",
     "title": "鄭州第四高校告白壁"
+  },
+  "share": {
+    "copied": "クリップボードにコピーされました",
+    "success": "共有に成功しました"
+  },
+  "time": {
+    "expireHour": "{hour}時間{minutes}分後に期限切れになります",
+    "expireMinutes": "{minutes} 分後に期限切れになります",
+    "expireSoon": "まもなく期限切れ",
+    "expired": "期限切れ"
   },
   "user": {
     "center": "パーソナルセンター",

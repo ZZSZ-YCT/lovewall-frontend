@@ -12,6 +12,9 @@ const BASE_ADMIN_PERMS: PermissionType[] = [
 export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
+  const { $i18n } = useNuxtApp()
+  const t = $i18n?.t?.bind($i18n)
+
   const auth = useAuthStore()
   const routePath = to.fullPath
 
@@ -29,7 +32,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const goBack = (reason: string) => {
     const toast = useToast()
-    toast.error('无权限访问')
+    toast.error(t('error.messages.403'))
     if (import.meta.client && window.history.length > 1) {
       log(reason, { action: 'navigate back', historyLength: window.history.length })
       window.history.back()

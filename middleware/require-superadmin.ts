@@ -2,6 +2,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // Run only on client
   if (import.meta.server) return
 
+  const { $i18n } = useNuxtApp()
+  const t = $i18n?.t?.bind($i18n)
+
   const auth = useAuthStore()
   
   // Ensure auth state is initialized
@@ -25,7 +28,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // Only superadmin can access
   if (!auth.isSuperadmin) {
     const toast = useToast()
-    toast.error('无权限访问：需要超级管理员权限')
+    toast.error(t('error.messages.403'))
     if (import.meta.client && window.history.length > 1) {
       window.history.back()
       return

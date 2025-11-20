@@ -67,6 +67,7 @@
     "cancel": "Cancel",
     "captcha": "Let us know you're human",
     "comment": "Comment",
+    "confirm": "Confirm",
     "content": "Content",
     "current": "Current",
     "delete": "Delete",
@@ -138,6 +139,16 @@
     "title": "Notifications - Zhengzhou No.4 Middle School Confession Wall",
     "unread": "Unread"
   },
+  "permission": {
+    "manage_announcements": "Manage Announcements",
+    "manage_announcements_group": "Manage Community",
+    "manage_content": "Manage Content",
+    "manage_featured": "Manage Featured",
+    "manage_posts": "Manage Posts/Comments",
+    "manage_tags": "Manage Tags",
+    "manage_tags_group": "Manage System",
+    "manage_users": "Manage User"
+  },
   "posts": {
     "404": "Post not found",
     "beFirst": "Be the first one",
@@ -197,6 +208,16 @@
     "description": "A wall to contact each other.",
     "keywords": "Zhengzhou No.4 High School,Zhengzhou No.4 Middle School,Zhengzhou No.4 Junior High School,School Community,Students Communication,Students Discussion",
     "title": "Zhengzhou No.4 Middle School Confession Wall"
+  },
+  "share": {
+    "copied": "Copied to the clipboard",
+    "success": "Shared successfully"
+  },
+  "time": {
+    "expireHour": "Expires after {hour} hours and {minutes} minutes",
+    "expireMinutes": "Expires after {minutes} minutes",
+    "expireSoon": "Expires soon",
+    "expired": "Expired"
   },
   "user": {
     "center": "Personal Center",

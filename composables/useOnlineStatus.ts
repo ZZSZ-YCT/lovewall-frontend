@@ -1,4 +1,6 @@
 export const useOnlineStatus = () => {
+  const { t } = useI18n()
+
   const isOnline = ref(false)
   const expiresAt = ref<string | null>(null)
   const loading = ref(false)
@@ -14,7 +16,7 @@ export const useOnlineStatus = () => {
       isOnline.value = response.online
       expiresAt.value = response.expires_at || null
     } catch (err: any) {
-      error.value = err.message || '检查在线状态失败'
+      error.value = err.message || t('error.messages.unknown')
       isOnline.value = false
       expiresAt.value = null
     } finally {
@@ -30,17 +32,17 @@ export const useOnlineStatus = () => {
     const expiry = new Date(expiresAt.value)
     const diff = expiry.getTime() - now.getTime()
     
-    if (diff <= 0) return '已过期'
+    if (diff <= 0) return t('time.expired')
     
     const hours = Math.floor(diff / (1000 * 60 * 60))
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
     
     if (hours > 0) {
-      return `${hours}小时${minutes}分钟后过期`
+      return t('time.expireHour', { hours: hours, minutes: minutes })
     } else if (minutes > 0) {
-      return `${minutes}分钟后过期`
+      return t('time.expireMinutes', { minutes: minutes })
     } else {
-      return '即将过期'
+      return t('time.expireSoon')
     }
   })
 

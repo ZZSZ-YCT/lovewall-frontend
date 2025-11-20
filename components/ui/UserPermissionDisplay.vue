@@ -81,6 +81,8 @@ import {
   ShieldCheckIcon
 } from 'lucide-vue-next'
 
+const { getPermissionDisplayName, getPermissionGroups} = usePermissions()
+
 const auth = useAuthStore()
 const permissions = usePermissions()
 
