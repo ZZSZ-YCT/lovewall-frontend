@@ -8,11 +8,11 @@ export default defineNuxtPlugin(() => {
       if (to.path === '/' && from.path !== to.path) {
         const home = useHomeStore()
         // 轻量刷新：不再做 TTL 缓存判断，只避免并发
-        setTimeout(async () => {
+        ;(async () => {
           try {
             await home.refreshIfStale()
           } catch {}
-        }, 0)
+        })()
       }
     } catch {}
   })
