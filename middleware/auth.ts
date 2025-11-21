@@ -1,6 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   // Ensure we're on client side for SPA mode
   if (import.meta.server) return
+
+  const localePath = useLocalePath()
   
   const auth = useAuthStore()
   
@@ -22,7 +24,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const redirect = to.fullPath !== '/' ? to.fullPath : undefined
     
     return navigateTo({
-      path: '/auth/login',
+      path: localePath('/auth/login'),
       query: redirect ? { redirect } : undefined
     })
   }

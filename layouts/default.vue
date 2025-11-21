@@ -36,7 +36,7 @@
       <header class="fixed top-0 left-0 right-0 z-50">
         <div class="glass-bar rounded-none h-14 px-3 sm:px-4 flex items-center justify-between">
           <!-- Site name / logo -->
-          <NuxtLink to="/" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
+          <NuxtLink :to="localePath('/')" class="flex items-center gap-2 text-brand-600 hover:text-brand-700">
             <NuxtImg
               src="/badge.png"
               :alt="t('home.title')"
@@ -59,10 +59,10 @@
             <div ref="userMenuRef" class="relative flex items-center gap-2 overflow-visible z-50">
               <!-- 未登录：登录/注册 -->
               <template v-if="!auth.isAuthenticated">
-                <NuxtLink to="/auth/login" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">
+                <NuxtLink :to="localePath('/auth/login')" class="glass-button-secondary px-3 py-1.5 text-sm font-medium">
                   {{ t('home.login') }}
                 </NuxtLink>
-                <NuxtLink to="/auth/register" class="glass-button px-3 py-1.5 text-sm font-medium">
+                <NuxtLink :to="localePath('/auth/register')" class="glass-button px-3 py-1.5 text-sm font-medium">
                   {{ t('home.register') }}
                 </NuxtLink>
               </template>
@@ -71,7 +71,7 @@
               <template v-else>
                 <!-- 通知按钮（在头像左侧） -->
                 <NuxtLink
-                  to="/notifications"
+                  :to="localePath('/notifications')"
                   class="relative inline-flex items-center justify-center rounded-lg h-9 w-9 text-gray-700 hover:text-brand-600 hover:bg-white/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
                   :title="t('notifications.index')"
                   :aria-label="t('notifications.index')"
@@ -99,13 +99,13 @@
                 <!-- Dropdown menu -->
                 <div v-if="showUserMenu"
                      class="absolute right-0 top-full mt-2 w-56 glass-card backdrop-blur-ultra py-2 shadow-lg z-50">
-                  <NuxtLink to="/me" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                  <NuxtLink :to="localePath('/me')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                             @click="showUserMenu = false">{{ t('user.center') }}
                   </NuxtLink>
-                  <NuxtLink to="/me/comments" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                  <NuxtLink :to="localePath('/me/comments')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                             @click="showUserMenu = false">{{ t('user.myComments') }}
                   </NuxtLink>
-                  <NuxtLink to="/me/tags" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
+                  <NuxtLink :to="localePath('/me/tags')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                             @click="showUserMenu = false">{{ t('user.myTags') }}
                   </NuxtLink>
                   <button
@@ -207,6 +207,7 @@
 
 <script setup lang="ts">
 const {t, locale, locales} = useI18n()
+const localePath = useLocalePath()
 
 import {UserIcon, ChevronDownIcon, BellIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
@@ -307,7 +308,7 @@ const handleLogout = async () => {
 
 const goAdmin = async () => {
   showUserMenu.value = false
-  await navigateTo('/admin')
+  await navigateTo(localePath('/admin'))
 }
 
 // Initialize app

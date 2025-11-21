@@ -128,7 +128,7 @@
             v-for="post in userPosts"
             :key="post.id"
             class="p-4 bg-white/10 rounded-xl border border-white/10 hover:bg-white/20 transition-all cursor-pointer"
-            @click="navigateTo(`/posts/${post.id}`)"
+            @click="navigateTo(localePath(`/posts/${post.id}`))"
           >
             <div class="flex gap-4">
               <!-- Post Image Thumbnail -->
@@ -202,6 +202,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import GlassCard from '~/components/ui/GlassCard.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'

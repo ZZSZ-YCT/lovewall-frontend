@@ -63,7 +63,7 @@
           <p class="text-sm text-gray-600">
             {{ t('auth.login.registerSuggestion') }}
             <NuxtLink
-              to="/auth/register"
+              :to="localePath('/auth/register')"
               class="text-brand-600 hover:text-brand-700 hover:underline ml-1 font-medium"
             >
               {{ t('auth.login.registerNow') }}
@@ -71,7 +71,7 @@
           </p>
 
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             class="glass-button-secondary text-sm px-3 py-1 inline-flex items-center gap-1"
           >
             <ArrowLeftIcon class="w-4 h-4" />
@@ -87,6 +87,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import { HeartIcon, ArrowLeftIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'

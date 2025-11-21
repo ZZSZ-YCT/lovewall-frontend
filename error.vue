@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import { AlertTriangleIcon } from 'lucide-vue-next'
 import GlassCard from "~/components/ui/GlassCard.vue";
@@ -74,7 +75,7 @@ const handleError = () => {
 }
 
 const goHome = () => {
-  navigateTo('/')
+  navigateTo(localePath('/'))
 }
 
 // Set page title

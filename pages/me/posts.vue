@@ -28,7 +28,7 @@
     <GlassCard class="p-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="flex gap-3">
-          <NuxtLink to="/posts/new" class="glass-button">
+          <NuxtLink :to="localePath('/posts/new')" class="glass-button">
             <PlusIcon class="w-4 h-4 mr-2" />
             {{ t('posts.publish.index') }}
           </NuxtLink>
@@ -219,6 +219,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import {
   PlusIcon,

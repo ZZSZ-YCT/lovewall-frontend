@@ -39,7 +39,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return
     }
     log(reason, { action: 'fallback home' })
-    return navigateTo('/')
+    return navigateTo(localePath('/'))
   }
 
   if (!auth.initialized) {
@@ -57,7 +57,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!auth.isAuthenticated) {
     const redirect = to.fullPath !== '/' ? to.fullPath : undefined
     log('redirect: login required', { redirect })
-    return navigateTo({ path: '/auth/login', query: redirect ? { redirect } : undefined })
+    return navigateTo({ path: localePath('/auth/login'), query: redirect ? { redirect } : undefined })
   }
 
   if (auth.isSuperadmin) {

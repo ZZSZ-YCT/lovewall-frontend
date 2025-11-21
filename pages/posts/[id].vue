@@ -340,7 +340,7 @@
 
               <div v-else class="mb-6 text-center py-8">
                 <p class="text-gray-600 mb-4">{{ t('comment.loginRequired') }}</p>
-                <NuxtLink to="/auth/login" class="glass-button">
+                <NuxtLink :to="localePath('/auth/login')" class="glass-button">
                   {{ t('home.login') }}
                 </NuxtLink>
               </div>
@@ -541,6 +541,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import { CalendarIcon, EditIcon, PinIcon } from 'lucide-vue-next'
 import {type LocationQueryRaw, type LocationQueryValue} from 'vue-router'
@@ -1031,9 +1032,9 @@ const requestReview = async () => {
 // --- 工具函数 ---
 const formatDate = (d: string) => new Date(d).toLocaleString('zh-CN')
 const navigateToUser = (x: any) => {
-  if (x.author_id) navigateTo(`/users/id/${x.author_id}`)
-  else if (x.user_id) navigateTo(`/users/id/${x.user_id}`)
-  else if (x.user_username) navigateTo(`/users/${x.user_username}`)
+  if (x.author_id) navigateTo(localePath(`/users/id/${x.author_id}`))
+  else if (x.user_id) navigateTo(localePath(`/users/id/${x.user_id}`))
+  else if (x.user_username) navigateTo(localePath(`/users/${x.user_username}`))
 }
 
 // Force remount when param changes (extra safety in addition to watch)

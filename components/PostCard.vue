@@ -168,7 +168,7 @@
               @click.stop
             >
             <NuxtLink
-              :to="`/posts/${post.id}`"
+              :to="localePath(`/posts/${post.id}`)"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
               @click="showDropdown = false"
             >
@@ -343,6 +343,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
@@ -623,12 +624,12 @@ const shareData = computed(() => {
 })
 
 const goDetail = async () => {
-  await navigateTo(`/posts/${props.post.id}`)
+  await navigateTo(localePath(`/posts/${props.post.id}`))
 }
 
 const handleEdit = async () => {
   showDropdown.value = false
-  await navigateTo(`/posts/${props.post.id}?edit=1`)
+  await navigateTo(localePath(`/posts/${props.post.id}?edit=1`))
 }
 
 // Navigate to author profile
@@ -639,10 +640,10 @@ const navigateToAuthor = () => {
   }
   // 如果有author_id，使用ID路由，否则使用用户名（临时方案）
   if (props.post.author_id) {
-    navigateTo(`/users/id/${props.post.author_id}`)
+    navigateTo(localePath(`/users/id/${props.post.author_id}`))
   } else {
     // 备用方案：通过作者名称导航（不推荐，因为名称可能重复）
-    navigateTo(`/users/${encodeURIComponent(props.post.author_name)}`)
+    navigateTo(localePath(`/users/${encodeURIComponent(props.post.author_name)}`))
   }
 }
 

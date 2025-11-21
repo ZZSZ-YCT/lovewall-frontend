@@ -87,7 +87,7 @@
           <GlassButton
             v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
             class="glass-button"
-            @click="navigateTo('/admin')"
+            @click="navigateTo(localePath('/admin'))"
           >
             进入后台
           </GlassButton>
@@ -120,7 +120,7 @@
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <NuxtLink to="/posts/new" class="block">
+      <NuxtLink :to="localePath('/posts/new')" class="block">
         <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
           <div class="w-12 h-12 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <PlusIcon class="w-6 h-6 text-white" />
@@ -130,7 +130,7 @@
         </GlassCard>
       </NuxtLink>
 
-      <NuxtLink to="/me/posts" class="block">
+      <NuxtLink :to="localePath('/me/posts')" class="block">
         <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
           <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <FileTextIcon class="w-6 h-6 text-white" />
@@ -140,7 +140,7 @@
         </GlassCard>
       </NuxtLink>
 
-      <NuxtLink to="/me/comments" class="block">
+      <NuxtLink :to="localePath('/me/comments')" class="block">
         <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
           <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <MessageSquareIcon class="w-6 h-6 text-white" />
@@ -150,7 +150,7 @@
         </GlassCard>
       </NuxtLink>
 
-      <NuxtLink to="/me/tags" class="block">
+      <NuxtLink :to="localePath('/me/tags')" class="block">
         <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
           <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <TagIcon class="w-6 h-6 text-white" />
@@ -160,7 +160,7 @@
         </GlassCard>
       </NuxtLink>
       
-      <NuxtLink to="/me/change-password" class="block">
+      <NuxtLink :to="localePath('/me/change-password')" class="block">
         <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
           <div class="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <ShieldIcon class="w-6 h-6 text-white" />
@@ -204,7 +204,7 @@
             <p class="text-sm text-gray-600 line-clamp-2">{{ post.content }}</p>
             <div class="mt-2">
               <NuxtLink
-                :to="`/posts/${post.id}`"
+                :to="localePath(`/posts/${post.id}`)"
                 class="glass-button-secondary text-xs px-2 py-1 inline-block"
               >
                 {{ t('common.detail') }} →
@@ -228,7 +228,7 @@
             <p class="text-sm text-gray-600 line-clamp-2">{{ comment.content }}</p>
             <div class="mt-2">
               <NuxtLink
-                :to="`/posts/${comment.post_id}`"
+                :to="localePath(`/posts/${comment.post_id}`)"
                 class="glass-button-secondary text-xs px-2 py-1 inline-block"
               >
                 {{ t('common.detail') }} →
@@ -251,6 +251,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import {FileTextIcon, MessageSquareIcon, PlusIcon, ShieldIcon, TagIcon} from 'lucide-vue-next'
 import type {CommentDto, PostDto, User, UserTagDto} from '~/types'

@@ -2,6 +2,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // Run only on client
   if (import.meta.server) return
 
+  const localePath = useLocalePath()
+
   const { $i18n } = useNuxtApp()
   const t = $i18n?.t?.bind($i18n)
 
@@ -22,7 +24,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   
   if (!auth.isAuthenticated) {
     const redirect = to.fullPath !== '/' ? to.fullPath : undefined
-    return navigateTo({ path: '/auth/login', query: redirect ? { redirect } : undefined })
+    return navigateTo({ path: localePath('/auth/login'), query: redirect ? { redirect } : undefined })
   }
   
   // Only superadmin can access
@@ -33,6 +35,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
       window.history.back()
       return
     }
-    return navigateTo('/')
+    return navigateTo(localePath('/'))
   }
 })

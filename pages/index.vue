@@ -13,7 +13,7 @@
         <!-- 发帖入口 -->
         <div v-if="auth.isAuthenticated" class="flex justify-center">
           <NuxtLink
-            to="/posts/new"
+            :to="localePath('/posts/new')"
             class="glass-button-secondary inline-flex items-center gap-2 rounded-full"
           >
             <PlusIcon class="w-5 h-5" />
@@ -94,7 +94,7 @@
           <p class="text-gray-600 mb-4">{{ t('posts.empty') }}</p>
           <NuxtLink
             v-if="auth.isAuthenticated"
-            to="/posts/new"
+            :to="localePath('/posts/new')"
             class="glass-button-secondary inline-flex items-center gap-2"
           >
             <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
@@ -156,6 +156,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'

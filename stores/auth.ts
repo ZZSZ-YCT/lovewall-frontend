@@ -13,6 +13,7 @@ interface AuthState {
 export const useAuthStore = () => {
   const { $i18n } = useNuxtApp()
   const t = $i18n.t.bind($i18n)
+  const localePath = useLocalePath()
 
   const store = defineStore('auth', {
     state: (): AuthState => ({
@@ -84,7 +85,7 @@ export const useAuthStore = () => {
             ? null
             : options?.redirectTo ?? '/auth/login'
           if (target) {
-            await navigateTo(target)
+            await navigateTo(localePath(target))
           }
         }
       },
@@ -182,7 +183,7 @@ export const useAuthStore = () => {
           console.warn('Logout API call failed:', error)
         } finally {
           await this.clearSession({
-            toastMessage: t('share.success'),
+            toastMessage: t('common.success'),
             toastType: 'success',
             redirectTo: '/'
           })

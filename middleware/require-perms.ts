@@ -12,6 +12,8 @@ const ADMIN_BASE_PERMS: PermissionType[] = [
 export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
+  const localePath = useLocalePath()
+
   const { $i18n } = useNuxtApp()
   const t = $i18n?.t?.bind($i18n)
 
@@ -52,7 +54,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return
     }
     log('deny: fallback home')
-    return navigateTo('/')
+    return navigateTo(localePath('/'))
   }
 
   if (!auth.initialized) {
@@ -69,7 +71,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (!auth.isAuthenticated) {
     log('redirect: login required')
-    return navigateTo({ path: '/auth/login', query: { redirect: routePath } })
+    return navigateTo({ path: localePath('/auth/login'), query: { redirect: routePath } })
   }
 
   const metaPerms = to.meta.requiredPerms as PermissionType | PermissionType[] | undefined

@@ -55,7 +55,7 @@
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.comments.empty') }}</h3>
         <div class="flex justify-center">
-          <NuxtLink to="/" class="flex items-center gap-2 px-4 py-2 text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors">
+          <NuxtLink :to="localePath('/')" class="flex items-center gap-2 px-4 py-2 text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors">
             {{ t('common.browse') }} →
           </NuxtLink>
         </div>
@@ -88,7 +88,7 @@
               <!-- Actions -->
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <NuxtLink
-                  :to="`/posts/${comment.post_id}`"
+                  :to="localePath(`/posts/${comment.post_id}`)"
                   class="glass-button-secondary !p-2"
                   :title="t('common.detail')"
                 >
@@ -151,7 +151,7 @@
             <div class="bg-white/10 rounded-lg p-3 border border-white/10">
               <div class="text-sm text-gray-600 mb-1">{{ t('user.comments.source') }}</div>
               <NuxtLink
-                :to="`/posts/${comment.post_id}`"
+                :to="localePath(`/posts/${comment.post_id}`)"
                 class="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors mt-2"
               >
                 {{ t('common.detail') }} →
@@ -208,6 +208,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import {
   MessageSquareIcon,

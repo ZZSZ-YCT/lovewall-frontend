@@ -95,7 +95,7 @@
           <p class="text-sm text-gray-600">
             {{ t('auth.register.loginSuggestion') }}
             <NuxtLink 
-              to="/auth/login" 
+              :to="localePath('/auth/login')"
               class="text-brand-600 hover:text-brand-700 hover:underline ml-1 font-medium"
             >
               {{ t('home.login') }}
@@ -103,7 +103,7 @@
           </p>
           
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             class="glass-button-secondary text-sm px-3 py-1 inline-flex items-center gap-1"
           >
             <ArrowLeftIcon class="w-4 h-4" />
@@ -119,6 +119,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 import { UserPlusIcon, ArrowLeftIcon } from 'lucide-vue-next'
 import { z } from 'zod'
