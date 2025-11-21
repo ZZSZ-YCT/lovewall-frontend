@@ -2,6 +2,10 @@
   "admin": {
     "index": "Administration"
   },
+  "announcements": {
+    "close": "Close Announcement",
+    "index": "Announcements"
+  },
   "auth": {
     "changePassword": {
       "description": "Protect your account",
@@ -14,15 +18,15 @@
         "newPassword": "New Password",
         "newPasswordDescription": "At least 6 characters, suggested to contain numbers, lower/upper case letters and special characters",
         "newPasswordPlaceholder": "Enter New Password(at least 6 characters)",
-        "repeatPasswordNotMatch": "Two different password were entered"
+        "repeatPasswordNotMatch": "Passwords don’t match."
       },
       "index": "Change Password",
       "success": "Changed successful, please re-login.",
       "tips": {
         "0": "Don't use password that have to do with your personal data",
-        "1": "Change your password regularly",
+        "1": "It is recommended to change your password regularly",
         "2": "Don't use the same password among websites",
-        "3": "Safekeeping your password, don't tell ohers",
+        "3": "Keep your password safe, don't share it with ohers",
         "index": "Password Secure Suggestions"
       },
       "title": "Change Password - Zhengzhou No.4 Middle School Confession Wall"
@@ -33,7 +37,7 @@
       "passwordPlaceholder": "Enter password",
       "passwordTooShort": "At least 6 characters",
       "registerNow": "Register Now",
-      "registerSuggestion": "Don't have a account?",
+      "registerSuggestion": "Don't have an account?",
       "title": "Sign in - Zhengzhou No.4 Middle School Confession Wall",
       "usernamePlaceholder": "Enter username",
       "welcome": "Welcome back"
@@ -41,16 +45,21 @@
     "register": {
       "agreeWithTerms": "I have already read and agreed to Terms:",
       "description": "Share, discover, and connect with us.",
-      "index": "Create a account",
-      "loginSuggestion": "Already have a account?",
+      "index": "Create an account",
+      "loginSuggestion": "Already have an account?",
       "notAgreeWithTerms": "Please agree to our terms first",
       "passwordTooLong": "At most 128 characters in Password",
       "title": "Sign Up - Zhengzhou No.4 Middle School Confession Wall",
       "usernameCharset": "Can only contain letters, numbers and underline",
       "usernameLimit": "From 3 to 20 characters, can only contain letters, numbers and underline",
-      "usernameTooLong": "At most 20 characters in username",
-      "usernameTooShort": "At least 3 characters in username"
+      "usernameTooLong": "At most 20 characters in the username",
+      "usernameTooShort": "At least 3 characters in the username"
     }
+  },
+  "captcha": {
+    "click": "Please click in order:",
+    "reference": "Reference Image",
+    "rotate": "Rotate to the correct angle"
   },
   "comment": {
     "commentOversize": "Comments can't be more than 500 characters",
@@ -63,20 +72,26 @@
     "recently": "Recent Comments"
   },
   "common": {
+    "admin": "Admin",
+    "bio": "Bio",
     "browse": "Explore Posts",
     "cancel": "Cancel",
     "captcha": "Let us know you're human",
+    "collapse": "Collapse",
     "comment": "Comment",
+    "commonUser": "User",
     "confirm": "Confirm",
     "content": "Content",
     "current": "Current",
     "delete": "Delete",
     "detail": "See more",
     "disabled": "Disabled",
+    "dismiss": "Dismiss",
     "edited": "Edited",
     "email": "E-Mail",
     "enabled": "Enabled",
-    "feature": "Feature",
+    "expand": "Expand",
+    "feature": "Featured",
     "hide": "Hide",
     "joinTime": "Joined at {time}",
     "known": "Known",
@@ -86,18 +101,25 @@
     },
     "loadMore": "Load more",
     "loading": "Loading...",
+    "moderator": "Moderator",
     "nickname": "Nickname",
     "ok": "OK",
     "password": "Password",
+    "phone": "Phone",
     "pin": "Pin",
     "preview": "Preview",
     "previous": "Back",
-    "pullDownLoading": "Pull down to see more",
+    "pullDownLoading": "Scroll for more",
     "refresh": "Refresh",
+    "reset": "Reset",
     "save": "Save",
-    "success": "Successful",
+    "share": "Share",
+    "show": "Show",
+    "success": "Done",
     "superAdmin": "Super Admin",
+    "unfeature": "Unfeature",
     "unknown": "Unknown",
+    "unpin": "Unpin",
     "username": "Username"
   },
   "error": {
@@ -110,7 +132,7 @@
     },
     "title": "{code} - {message} - Zhengzhou No.4 Middle School Confession Wall",
     "titles": {
-      "401": "Sign in Required",
+      "401": "Sign-in Required",
       "403": "Access denied",
       "404": "Page not Found",
       "500": "Internal Server Error",
@@ -120,7 +142,7 @@
   "home": {
     "backHome": "Back to Home",
     "contact": "Contact Us",
-    "description": "A wall to contact each other.",
+    "description": "A place to connect with each other.",
     "login": "Login",
     "logout": "Logout",
     "privacy": "Privacy Policy",
@@ -147,16 +169,22 @@
     "manage_posts": "Manage Posts/Comments",
     "manage_tags": "Manage Tags",
     "manage_tags_group": "Manage System",
-    "manage_users": "Manage User"
+    "manage_users": "Manage Users"
   },
   "posts": {
     "404": "Post not found",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
     "beFirst": "Be the first one",
     "confessionTo": "Confession from {author} to {target}",
     "contentPlaceholder": "Enter content",
+    "deletedUser": "Deleted Account",
     "deniedAudit": "Audit not passed",
     "description_review": "Request Review: If you considered it as a mistake, you can request a manual review.",
     "empty": "No posts here yet",
+    "locked": "Locked",
     "pendingAudit": "Pending Approval",
     "post": "Post",
     "publish": {
@@ -182,13 +210,13 @@
       "limits": "Supported JPG, PNG, WebP and GIF formats, up to 9 photos, at most 5MB per hhoto",
       "nameOversize": "Nickname can't be more than 50 characters.",
       "namePlaceholder": "Enter your nickname",
-      "publishing": "Posting...",
+      "publishing": "Publishing...",
       "selfRole": "Use my nickname",
       "socialCard": "Social Card",
       "targetName": "Confession Target *",
       "targetNamePlaceholder": "Enter their nickname",
       "tip": {
-        "0": "Be peaceful and sincere",
+        "0": "Be respectful and sincere",
         "1": "Uploading a photo means more for your post",
         "index": "Tips"
       },
@@ -205,7 +233,7 @@
     "socialFrom": "{author}'s post"
   },
   "seo": {
-    "description": "A wall to contact each other.",
+    "description": "A place to connect with each other.",
     "keywords": "Zhengzhou No.4 High School,Zhengzhou No.4 Middle School,Zhengzhou No.4 Junior High School,School Community,Students Communication,Students Discussion",
     "title": "Zhengzhou No.4 Middle School Confession Wall"
   },
@@ -214,10 +242,14 @@
     "success": "Shared successfully"
   },
   "time": {
+    "beforeDays": "{days} days ago",
+    "beforeHours": "{hours} hours ago",
+    "beforeMinutes": "{minutes} minutes ago",
     "expireHour": "Expires after {hour} hours and {minutes} minutes",
     "expireMinutes": "Expires after {minutes} minutes",
     "expireSoon": "Expires soon",
-    "expired": "Expired"
+    "expired": "Expired",
+    "just": "Just now"
   },
   "user": {
     "center": "Personal Center",
@@ -231,15 +263,17 @@
     },
     "commentedOn": "Posted a comment",
     "comments": {
-      "delete_description": "Are you sure about to delete this comment? It will disappear for a long time(very very long).",
+      "delete_description": "Are you sure about to delete this comment? It is not able to recovery.",
       "description": "Manage your comments here",
       "edit": "Edit Comment",
       "edit_placeholder": "Edit your comments here...",
       "empty": "No comments yet",
-      "source": "Come from:",
+      "source": "Source:",
       "totalComments": "Total Comments"
     },
     "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
+    "editAvatar": "Click at avatar to change",
+    "hasPerm": "Owned Permissions:",
     "myComments": "My Comments",
     "myCommentsTitle": "My Comments - Zhengzhou No.4 Middle School Confession Wall",
     "myPosts": "My Posts",
@@ -247,6 +281,7 @@
     "myTags": "My Tags",
     "myTagsTitle": "My Tags - Zhengzhou No.4 Middle School Confession Wall",
     "noActivity": "No activity yet",
+    "noPerm": "This account doesn't have any permission",
     "noPosts": "{nickname} has not published any posts yet",
     "offline": "Offline",
     "offlineAndTime": "Offline - Last Online: {time}",
@@ -264,10 +299,18 @@
       "totalPosts": "Total Posts"
     },
     "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "At most 500 characters in bio",
+      "imageTooLarge": "Image file must not exceed 5MB.",
+      "invalidEmail": "Invalid E-Mail",
+      "invalidPhone": "Invalid phone number",
+      "notImage": "Not an image file."
+    },
     "publish": {
       "description": "Share your love"
     },
     "recently": "Recent Activities",
+    "superAdminPerms": "Super admin owns all system permissions",
     "tags": {
       "acquireTime": "Acquire Time: {time}",
       "description": "Manage your tags here",

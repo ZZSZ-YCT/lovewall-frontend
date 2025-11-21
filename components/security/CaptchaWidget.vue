@@ -3,14 +3,14 @@
     <!-- Loading State -->
     <div v-if="loading" class="captcha-loading">
       <LoadingSpinner size="md" />
-      <p class="text-sm text-gray-600 mt-2">加载验证码...</p>
+      <p class="text-sm text-gray-600 mt-2">{{ t('common.loading') }}</p>
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="captcha-error">
       <p class="text-sm text-red-600 mb-2">{{ error }}</p>
       <button @click="refresh" class="text-sm text-brand-600 hover:underline">
-        点击重新加载
+        {{ t('common.refresh') }}
       </button>
     </div>
 
@@ -19,15 +19,15 @@
       <!-- Click Type -->
       <div v-if="captchaData.type === 'click'" class="click-captcha">
         <div class="thumb-hint">
-          <span class="text-sm font-medium text-gray-700">请依次点击:</span>
-          <img :src="thumbImageSrc" alt="提示字符" class="h-8" />
+          <span class="text-sm font-medium text-gray-700">{{ t('captcha.click') }}</span>
+          <img :src="thumbImageSrc" alt="Hints" class="h-8" />
         </div>
 
         <div class="master-image-wrapper" @click="handleClick">
           <img
             ref="masterImg"
             :src="masterImageSrc"
-            alt="验证码"
+            alt="Captcha"
           />
           <div
             v-for="(dot, index) in dots"
@@ -44,8 +44,8 @@
       <div v-else-if="captchaData.type === 'rotate'" class="rotate-captcha">
         <div class="rotate-images">
           <div class="reference-image">
-            <img :src="masterImageSrc" alt="参考图" />
-            <p class="text-xs text-gray-600 mt-1">参考图</p>
+            <img :src="masterImageSrc" alt="Reference" />
+            <p class="text-xs text-gray-600 mt-1">{{ t('captcha.reference') }}</p>
           </div>
           <div class="rotate-target">
             <div
@@ -56,12 +56,12 @@
             >
               <img
                 :src="thumbImageSrc"
-                alt="旋转图"
+                alt="Rorate"
                 :style="{ transform: `rotate(${rotateAngle}deg)` }"
               />
             </div>
             <p class="text-xs text-gray-600 mt-1">
-              旋转到正确角度 ({{ rotateAngle }}°)
+              {{ t('captcha.rotate') }} ({{ rotateAngle }}°)
             </p>
           </div>
         </div>
@@ -79,18 +79,18 @@
       <div class="captcha-actions">
         <button @click="clearInput" class="action-btn">
           <RotateCcwIcon class="w-4 h-4" />
-          重置
+          {{ t('common.reset') }}
         </button>
         <button @click="refresh" class="action-btn">
           <RefreshCwIcon class="w-4 h-4" />
-          刷新
+          {{ t('common.refresh') }}
         </button>
       </div>
 
       <!-- Timer -->
       <div v-if="remainingTime > 0" class="captcha-timer">
         <span class="text-xs text-gray-500">
-          验证码将在 {{ remainingTime }} 秒后过期
+          {{ remainingTime }}s
         </span>
       </div>
     </div>
@@ -98,6 +98,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { RefreshCwIcon, RotateCcwIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import type { CaptchaData } from '~/composables/useCaptcha'
@@ -179,7 +181,7 @@ const loadCaptcha = async () => {
   } catch (e: any) {
     // 只有最新的请求才显示错误
     if (currentRequestId === loadRequestId) {
-      error.value = e.message || '加载验证码失败'
+      error.value = e.message || t('error.messages.unknown')
       emit('error', error.value)
     }
   } finally {
@@ -200,7 +202,7 @@ const startTimer = () => {
     remainingTime.value--
     if (remainingTime.value <= 0) {
       clearInterval(timerInterval!)
-      error.value = '验证码已过期'
+      error.value = t('time.expired')
       emit('error', error.value)
     }
   }, 1000)

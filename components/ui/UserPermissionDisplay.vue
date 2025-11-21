@@ -11,13 +11,13 @@
       </div>
       
       <span v-if="auth.isSuperadmin" class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded-full font-medium">
-        超级管理员
+        {{ t('common.superAdmin') }}
       </span>
     </div>
 
     <!-- 权限列表 -->
     <div v-if="!auth.isSuperadmin && auth.permissions.length > 0" class="space-y-3">
-      <h4 class="text-sm font-medium text-gray-700">拥有权限：</h4>
+      <h4 class="text-sm font-medium text-gray-700">{{ t('user.hasPerm') }}</h4>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div 
@@ -57,23 +57,25 @@ v-else-if="!auth.isSuperadmin && auth.permissions.length === 0"
          class="p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div class="flex items-center gap-2 text-gray-600">
         <InfoIcon class="w-4 h-4" />
-        <span class="text-sm">当前账户暂无特殊权限</span>
+        <span class="text-sm">{{ t('user.noPerm') }}</span>
       </div>
     </div>
 
     <!-- 超管说明 -->
     <div
-v-if="auth.isSuperadmin" 
+v-if="auth.isSuperadmin"
          class="p-4 bg-red-50 rounded-lg border border-red-200">
       <div class="flex items-center gap-2 text-red-600">
         <ShieldCheckIcon class="w-4 h-4" />
-        <span class="text-sm font-medium">超级管理员拥有所有系统权限</span>
+        <span class="text-sm font-medium">{{ t('user.superAdminPerms') }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { 
   CheckCircleIcon,
   XCircleIcon,
@@ -100,10 +102,10 @@ const userLevel = computed(() => {
 // 等级显示名称
 const levelDisplayName = computed(() => {
   const names = {
-    superadmin: '超级管理员',
-    admin: '管理员',
-    content_manager: '内容管理员', 
-    user: '普通用户'
+    superadmin: t('common.superAdmin'),
+    admin: t('common.admin'),
+    content_manager: t('common.moderator'),
+    user: t('common.commonUser')
   }
   return names[userLevel.value]
 })

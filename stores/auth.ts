@@ -11,9 +11,10 @@ interface AuthState {
 }
 
 export const useAuthStore = () => {
-  const { t } = useI18n()
+  const { $i18n } = useNuxtApp()
+  const t = $i18n.t.bind($i18n)
 
-  return defineStore('auth', {
+  const store = defineStore('auth', {
     state: (): AuthState => ({
       currentUser: null,
       permissions: [],
@@ -278,4 +279,6 @@ export const useAuthStore = () => {
       },
     },
   })
+
+  return store()
 }

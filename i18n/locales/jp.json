@@ -2,6 +2,10 @@
   "admin": {
     "index": "管理"
   },
+  "announcements": {
+    "close": "お知らせを閉じる",
+    "index": "お知らせ"
+  },
   "auth": {
     "changePassword": {
       "description": "アカウントを保護する",
@@ -52,6 +56,11 @@
       "usernameTooShort": "ユーザー名は3文字以上"
     }
   },
+  "captcha": {
+    "click": "順番にクリックしてください:",
+    "reference": "参考画像",
+    "rotate": "正しい角度に回転する"
+  },
   "comment": {
     "commentOversize": "コメントは500文字以内です",
     "loginRequired": "サインインが必要です",
@@ -63,21 +72,27 @@
     "recently": "最近のコメント"
   },
   "common": {
+    "admin": "管理者",
+    "bio": "バイオロジー",
     "browse": "投稿を探索",
     "cancel": "キャンセル",
     "captcha": "人間であることを教えてください",
+    "collapse": "折りたたむ",
     "comment": "コメント",
+    "commonUser": "ユーザー",
     "confirm": "確認",
     "content": "コンテンツ",
     "current": "現在",
     "delete": "消去",
     "detail": "詳細を確認する",
     "disabled": "無効",
+    "dismiss": "抜かす",
     "edited": "編集済み",
     "email": "Eメール",
     "enabled": "有効",
-    "feature": "選択済み",
-    "hide": "隠れる",
+    "expand": "展開",
+    "feature": "注目に設定",
+    "hide": "非表示",
     "joinTime": "{time} に登録",
     "known": "わかりました",
     "layouts": {
@@ -86,18 +101,25 @@
     },
     "loadMore": "さらに読み込む",
     "loading": "読み込み中...",
+    "moderator": "モデレーター",
     "nickname": "ニックネーム",
     "ok": "OK",
     "password": "パスワード",
-    "pin": "ピン留め",
+    "phone": "電話番号",
+    "pin": "固定する",
     "preview": "プレビュー",
     "previous": "前のページに戻る",
     "pullDownLoading": "下に引いてもっと見る",
     "refresh": "リフレッシュ",
+    "reset": "リセット",
     "save": "保存",
+    "share": "シェア",
+    "show": "表示",
     "success": "成功",
     "superAdmin": "スーパー管理者",
+    "unfeature": "注目を解除",
     "unknown": "未知",
+    "unpin": "固定を解除する",
     "username": "ユーザー名"
   },
   "error": {
@@ -151,12 +173,18 @@
   },
   "posts": {
     "404": "投稿が見つかりません",
+    "alt": {
+      "confessionalImage": "{author}の告白投稿画像",
+      "socialImage": "{author} のソーシャル投稿画像"
+    },
     "beFirst": "最初になりましょう",
     "confessionTo": "{author} から {target} への告白",
     "contentPlaceholder": "投稿内容を入力",
+    "deletedUser": "削除されたアカウント",
     "deniedAudit": "監査に合格しなかった",
     "description_review": "レビューをリクエストする: 間違いだと思われる場合は、手動レビューをリクエストできます。",
     "empty": "まだ投稿はありません",
+    "locked": "ロックされています",
     "pendingAudit": "審査待ち",
     "post": "投稿",
     "publish": {
@@ -214,10 +242,14 @@
     "success": "共有に成功しました"
   },
   "time": {
+    "beforeDays": "{days} 日前",
+    "beforeHours": "{hours} 前",
+    "beforeMinutes": "{minutes} 前",
     "expireHour": "{hour}時間{minutes}分後に期限切れになります",
     "expireMinutes": "{minutes} 分後に期限切れになります",
     "expireSoon": "まもなく期限切れ",
-    "expired": "期限切れ"
+    "expired": "期限切れ",
+    "just": "ちょうど今"
   },
   "user": {
     "center": "パーソナルセンター",
@@ -240,6 +272,8 @@
       "totalComments": "合計コメント数"
     },
     "description": "{siteName} の {nickname} のホームページには、公開告白やソーシャル投稿が表示されます。",
+    "editAvatar": "変更するにはアバターをクリックしてください",
+    "hasPerm": "所有権限:",
     "myComments": "マイコメント",
     "myCommentsTitle": "マイコメント - 鄭州第四高校告白壁",
     "myPosts": "私の投稿",
@@ -247,6 +281,7 @@
     "myTags": "マイタグ",
     "myTagsTitle": "マイタグ - 鄭州第四高校告白壁",
     "noActivity": "まだ活動はありません",
+    "noPerm": "このアカウントには権限がありません",
     "noPosts": "{nickname} はまだ投稿を公開していません",
     "offline": "オフライン",
     "offlineAndTime": "オフライン - 最終オンライン: {time}",
@@ -264,10 +299,18 @@
       "totalPosts": "合計投稿数"
     },
     "postsFrom": "{nickname} さんの投稿",
+    "profile": {
+      "bioOversize": "プロフィールは最大500文字まで",
+      "imageTooLarge": "画像ファイルは5MBを超えてはなりません。",
+      "invalidEmail": "無効なメールアドレス",
+      "invalidPhone": "無効な電話番号",
+      "notImage": "画像ファイルではありません。"
+    },
     "publish": {
       "description": "愛を分かち合いましょう"
     },
     "recently": "最近のアクティビティ",
+    "superAdminPerms": "スーパー管理者はすべてのシステム権限を所有します",
     "tags": {
       "acquireTime": "取得時間: {time}",
       "description": "ここでタグを管理します",

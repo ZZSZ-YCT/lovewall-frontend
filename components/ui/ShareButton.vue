@@ -66,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import {
   LoaderIcon,
   ShareIcon,
@@ -118,7 +120,7 @@ onMounted(async () => {
   getPlatformShareUrl = shareComposable.getPlatformShareUrl
 })
 
-const shareText = computed(() => '分享')
+const shareText = computed(() => t('common.share'))
 
 // 图标映射
 const getPlatformIcon = (key: string) => {

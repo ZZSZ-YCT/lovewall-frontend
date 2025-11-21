@@ -166,6 +166,7 @@ const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 
 const auth = useAuthStore()
 const home = useHomeStore()
+
 const { isMobile, isTablet } = useDeviceSafe()
 
 // fuck u shit changes

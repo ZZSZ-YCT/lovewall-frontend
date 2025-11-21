@@ -35,7 +35,7 @@
       <div
         class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
         :class="comment.user_is_online ? 'bg-emerald-400' : 'bg-gray-400'"
-        :title="comment.user_is_online ? onlineTitle : '离线'"
+        :title="comment.user_is_online ? onlineTitle : t('user.offline')"
       />
     </div>
 
@@ -65,7 +65,7 @@
           v-if="showStatusBadge && comment.status === 1"
           class="px-2 py-0.5 text-[11px] bg-gray-100 text-gray-600 rounded-full"
         >
-          已隐藏
+          {{ t('user.posts.hidden') }}
         </span>
       </div>
     </div>
@@ -73,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import type { CommentDto } from '~/types'
 
 const props = withDefaults(defineProps<{
@@ -98,13 +100,13 @@ const avatarFailed = ref(false)
 const userDisplayName = computed(() => {
   return props.comment.user_display_name?.trim() ||
     props.comment.user_username ||
-    `用户${props.comment.user_id?.slice(0, 6) || ''}`
+    `User ${props.comment.user_id?.slice(0, 6) || ''}`
 })
 
 const userInitials = computed(() => {
   const base = userDisplayName.value || ''
   const trimmed = base.trim()
-  if (!trimmed) return '匿'
+  if (!trimmed) return 'anonymous'
   return trimmed.slice(0, 2).toUpperCase()
 })
 
@@ -142,8 +144,8 @@ const userTag = computed(() => renderTag(props.comment.user_tag))
 
 const onlineTitle = computed(() => {
   if (!props.comment.user_is_online) return ''
-  if (!props.comment.user_last_heartbeat) return '在线'
-  return `在线 · ${formatTimeAgo(props.comment.user_last_heartbeat)}`
+  if (!props.comment.user_last_heartbeat) return t('user.online')
+  return `${t('user.online')} · ${formatTimeAgo(props.comment.user_last_heartbeat)}`
 })
 
 const avatarWrapperClasses = computed(() => (
@@ -172,10 +174,10 @@ const formatTimeAgo = (dateString: string) => {
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
 
-  if (minutes < 1) return '刚刚'
-  if (minutes < 60) return `${minutes}分钟前`
-  if (hours < 24) return `${hours}小时前`
-  if (days < 7) return `${days}天前`
+  if (minutes < 1) return t('time.just')
+  if (minutes < 60) return t('time.beforeMinutes', { minutes: minutes })
+  if (hours < 24) return t('time.beforeHours', { hours: hours })
+  if (days < 7) return t('time.beforeDays', { days: days })
   return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
 }
 </script>

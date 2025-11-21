@@ -229,7 +229,7 @@
                       :disabled="actionLoading"
                       @click="togglePin"
                     >
-                      {{ post.is_pinned ? '取消置顶' : '置顶' }}
+                      {{ post.is_pinned ? t('common.unpin') : t('common.pin') }}
                     </button>
 
                     <button
@@ -239,7 +239,7 @@
                       :disabled="actionLoading"
                       @click="toggleFeature"
                     >
-                      {{ post.is_featured ? '取消精华' : '精华' }}
+                      {{ post.is_featured ? t('common.unfeature') : t('common.feature') }}
                     </button>
                   </template>
 
@@ -250,7 +250,7 @@
                     @click="openEditPost"
                   >
                     <EditIcon class="w-3 h-3" />
-                    <span>编辑帖子</span>
+                    <span>{{ t('posts.publish.edit') }}</span>
                   </button>
 
                   <button
@@ -260,7 +260,7 @@
                     :disabled="actionLoading"
                     @click="toggleHide"
                   >
-                    {{ post.status === 1 ? '恢复' : '隐藏' }}
+                    {{ post.status === 1 ? t('common.show') : t('common.hide') }}
                   </button>
 
                   <button
@@ -280,7 +280,7 @@
                     :disabled="actionLoading"
                     @click="confirmDelete"
                   >
-                    删除
+                    {{ t('common.delete') }}
                   </button>
                 </div>
               </div>

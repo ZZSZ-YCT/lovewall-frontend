@@ -2,6 +2,10 @@
   "admin": {
     "index": "管理后台"
   },
+  "announcements": {
+    "close": "关闭公告",
+    "index": "公告"
+  },
   "auth": {
     "changePassword": {
       "description": "保护账户",
@@ -52,6 +56,11 @@
       "usernameTooShort": "用户名至少3个字符"
     }
   },
+  "captcha": {
+    "click": "请依次点击:",
+    "reference": "参考图",
+    "rotate": "旋转到正确角度"
+  },
   "comment": {
     "commentOversize": "评论内容不能超过500字符",
     "loginRequired": "登录后可发表评论",
@@ -63,19 +72,25 @@
     "recently": "最近评论"
   },
   "common": {
+    "admin": "管理员",
+    "bio": "个人简介",
     "browse": "浏览帖子",
     "cancel": "取消",
     "captcha": "让我们知道你是人类",
+    "collapse": "收起",
     "comment": "评论",
+    "commonUser": "普通用户",
     "confirm": "确认",
     "content": "内容",
     "current": "当前",
     "delete": "删除",
     "detail": "查看详情",
     "disabled": "已停用",
+    "dismiss": "不再显示",
     "edited": "已编辑",
     "email": "电子邮箱",
     "enabled": "已启用",
+    "expand": "展开",
     "feature": "精选",
     "hide": "隐藏",
     "joinTime": "加入于 {time}",
@@ -86,18 +101,25 @@
     },
     "loadMore": "加载更多",
     "loading": "加载中...",
+    "moderator": "内容管理员",
     "nickname": "昵称",
     "ok": "好",
     "password": "密码",
+    "phone": "手机号",
     "pin": "置顶",
     "preview": "预览",
     "previous": "返回上页",
     "pullDownLoading": "下拉查看更多",
     "refresh": "刷新",
+    "reset": "重置",
     "save": "保存",
+    "share": "分享",
+    "show": "显示",
     "success": "操作成功完成",
     "superAdmin": "超级管理员",
+    "unfeature": "取消精华",
     "unknown": "未知",
+    "unpin": "取消置顶",
     "username": "用户名"
   },
   "error": {
@@ -151,12 +173,18 @@
   },
   "posts": {
     "404": "帖子不存在",
+    "alt": {
+      "confessionalImage": "{author} 的表白图片",
+      "socialImage": "{author} 的交流图片"
+    },
     "beFirst": "成为第一个",
     "confessionTo": "{author} 对 {target} 的表白",
     "contentPlaceholder": "输入帖子内容",
+    "deletedUser": "用户已注销",
     "deniedAudit": "审核未通过",
     "description_review": "申请人工复核：如果您认为这是误判，可以申请人工复核。",
     "empty": "还没有帖子哦",
+    "locked": "已锁定",
     "pendingAudit": "待审核",
     "post": "发布帖子",
     "publish": {
@@ -214,10 +242,14 @@
     "success": "分享成功"
   },
   "time": {
+    "beforeDays": "{days} 天前",
+    "beforeHours": "{hours} 小时前",
+    "beforeMinutes": "{minutes} 分钟前",
     "expireHour": "{hour} 小时 {minutes} 分钟后过期",
     "expireMinutes": "{minutes} 分钟后过期",
     "expireSoon": "即将过期",
-    "expired": "已过期"
+    "expired": "已过期",
+    "just": "刚刚"
   },
   "user": {
     "center": "个人中心",
@@ -240,6 +272,8 @@
       "totalComments": "总评论数"
     },
     "description": "{nickname} 在 {siteName} 的个人主页，展示公开的表白与交流记录。",
+    "editAvatar": "点击头像更换",
+    "hasPerm": "拥有权限：",
     "myComments": "我的评论",
     "myCommentsTitle": "我的评论 - 郑州四中表白墙",
     "myPosts": "我的帖子",
@@ -247,6 +281,7 @@
     "myTags": "我的标签",
     "myTagsTitle": "我的标签 - 郑州四中表白墙",
     "noActivity": "还没有任何活动。",
+    "noPerm": "当前账户无特殊权限",
     "noPosts": "{nickname} 还未发表过帖子",
     "offline": "离线",
     "offlineAndTime": "离线 - 最后在线：{time}",
@@ -264,10 +299,18 @@
       "totalPosts": "总表白数"
     },
     "postsFrom": "{nickname} 的帖子",
+    "profile": {
+      "bioOversize": "个人简介不能超过500字",
+      "imageTooLarge": "图片文件不能超过5MB",
+      "invalidEmail": "请输入有效的邮箱地址",
+      "invalidPhone": "请输入有效的手机号",
+      "notImage": "请选择图片文件"
+    },
     "publish": {
       "description": "分享你的爱意"
     },
     "recently": "最近活动",
+    "superAdminPerms": "超级管理员拥有所有系统权限",
     "tags": {
       "acquireTime": "获得时间：{time}",
       "description": "在这里管理你的标签",

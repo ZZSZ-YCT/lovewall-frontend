@@ -82,7 +82,7 @@ interface HomeState {
 export const useHomeStore = () => {
   const { t } = useI18n()
 
-  defineStore('home', {
+  const store = defineStore('home', {
     state: (): HomeState => ({
       posts: [],
       pinned: [],
@@ -209,5 +209,7 @@ export const useHomeStore = () => {
       },
     },
   })
+
+  return store()
 }
 

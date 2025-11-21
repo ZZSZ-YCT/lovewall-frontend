@@ -2,6 +2,10 @@
   "admin": {
     "index": "管理後台"
   },
+  "announcements": {
+    "close": "關閉公告",
+    "index": "公告"
+  },
   "auth": {
     "changePassword": {
       "description": "保護您的帳戶",
@@ -52,6 +56,11 @@
       "usernameTooShort": "使用者名稱至少包含 3 個字符"
     }
   },
+  "captcha": {
+    "click": "請依序點擊：",
+    "reference": "參考圖",
+    "rotate": "旋轉到正確的角度"
+  },
   "comment": {
     "commentOversize": "評論字數不得超過 500 個字符",
     "loginRequired": "需要登入才能發表評論",
@@ -63,19 +72,25 @@
     "recently": "最新評論"
   },
   "common": {
+    "admin": "管理員",
+    "bio": "個人簡介",
     "browse": "瀏覽貼文",
     "cancel": "取消",
     "captcha": "讓我們知道你是人類",
+    "collapse": "收起",
     "comment": "評論",
+    "commonUser": "使用者",
     "confirm": "確認",
     "content": "內容",
     "current": "目前",
     "delete": "刪除",
     "detail": "查看詳情",
     "disabled": "已停用",
+    "dismiss": "不再显示",
     "edited": "已編輯",
     "email": "電子郵件",
     "enabled": "已啟用",
+    "expand": "展開",
     "feature": "精選",
     "hide": "隱藏",
     "joinTime": "加入時間為 {time}",
@@ -86,18 +101,25 @@
     },
     "loadMore": "加載更多",
     "loading": "載入中...",
+    "moderator": "版主",
     "nickname": "暱稱",
     "ok": "好",
     "password": "密碼",
+    "phone": "電話號碼",
     "pin": "置頂",
     "preview": "預覽",
     "previous": "回上頁",
     "pullDownLoading": "下拉查看更多",
     "refresh": "刷新",
+    "reset": "重置",
     "save": "保存",
+    "share": "分享",
+    "show": "展示",
     "success": "成功",
     "superAdmin": "超管理員",
+    "unfeature": "取消精選",
     "unknown": "未知",
+    "unpin": "取消置頂",
     "username": "使用者名稱"
   },
   "error": {
@@ -151,12 +173,18 @@
   },
   "posts": {
     "404": "貼文未找到",
+    "alt": {
+      "confessionalImage": "{author} 的自白貼文圖片\t",
+      "socialImage": "{author} 的社群貼文圖片"
+    },
     "beFirst": "成為第一個",
     "confessionTo": "來自 {author} 的表白給 {target}",
     "contentPlaceholder": "輸入貼文內容",
+    "deletedUser": "已刪除帳戶",
     "deniedAudit": "審計未通過",
     "description_review": "請求復核：​​如果您認為這是一個錯誤，您可以請求人工複核。",
     "empty": "這裡還沒有帖子",
+    "locked": "已鎖定",
     "pendingAudit": "待審核",
     "post": "發布貼文",
     "publish": {
@@ -214,10 +242,14 @@
     "success": "分享成功"
   },
   "time": {
+    "beforeDays": "{days} 天前",
+    "beforeHours": "{hours} 小時前",
+    "beforeMinutes": "{minutes} 分鐘前",
     "expireHour": "將在 {hour} 小時 {minutes} 分鐘後過期",
     "expireMinutes": "將在 {minutes} 分鐘后過期",
     "expireSoon": "即將過期",
-    "expired": "已到期"
+    "expired": "已到期",
+    "just": "現在"
   },
   "user": {
     "center": "個人中心",
@@ -240,6 +272,8 @@
       "totalComments": "評論總數"
     },
     "description": "{nickname} 在 {siteName} 上的主頁，顯示公開表白和社交貼文。",
+    "editAvatar": "點擊頭像即可更改",
+    "hasPerm": "擁有的權限：",
     "myComments": "我的評論",
     "myCommentsTitle": "我的評論 - 鄭州市第四高級中學表白牆",
     "myPosts": "我的貼文",
@@ -247,6 +281,7 @@
     "myTags": "我的標籤",
     "myTagsTitle": "我的標籤 - 鄭州市第四高級中學表白牆",
     "noActivity": "暫無活動",
+    "noPerm": "此帳戶沒有任何權限",
     "noPosts": "{nickname} 尚未發布任何帖子",
     "offline": "離線",
     "offlineAndTime": "離線 - 最後在線：{time}",
@@ -264,10 +299,18 @@
       "totalPosts": "總帖子數"
     },
     "postsFrom": "{nickname} 的貼文",
+    "profile": {
+      "bioOversize": "個人簡介最多500個字符",
+      "imageTooLarge": "圖片檔案大小不得超過5MB。",
+      "invalidEmail": "無效的電子郵件",
+      "invalidPhone": "無效的電話號碼",
+      "notImage": "不是圖像檔。"
+    },
     "publish": {
       "description": "分享你的愛"
     },
     "recently": "近期活動",
+    "superAdminPerms": "超級管理員擁有所有系統權限",
     "tags": {
       "acquireTime": "取得時間：{time}",
       "description": "在這裡管理您的標籤",
