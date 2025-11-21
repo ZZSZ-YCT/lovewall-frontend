@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { locale, locales } = useI18n()
+const { locale, locales, setLocale } = useI18n()
 
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Globe2 } from 'lucide-vue-next'
+import type { Locale } from '#i18n'
 
 const switchLocalePath = useSwitchLocalePath()
 
@@ -27,9 +28,10 @@ const currentLabel = computed(() => {
 
 const localeLabel = (l: any) => l.name || l.code?.toUpperCase()
 
-const selectLocale = (code: string) => {
+const selectLocale = async (code: string) => {
   isOpen.value = false
-  const path = switchLocalePath(code)
+  await setLocale(<Locale>code)
+  const path = switchLocalePath(<Locale>code)
   if (path) {
     navigateTo(path)
   }
