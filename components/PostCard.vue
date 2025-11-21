@@ -67,7 +67,7 @@
           <span
             class="online-indicator"
             :class="authorIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
-            :title="authorIsOnline ? (authorOnlineTitle || '在线') : '离线'"
+            :title="authorIsOnline ? (authorOnlineTitle || t('user.online')) : t('user.offline')"
           />
         </div>
         
@@ -89,7 +89,7 @@
               v-if="authorDeleted"
               class="px-1.5 py-0.5 text-[10px] font-medium bg-gray-200 text-gray-700 rounded-full"
             >
-              已注销
+              {{ t('posts.deletedUser') }}
             </span>
 
             <!-- 用户标签：比用户名小一号 -->
@@ -114,7 +114,7 @@
               class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-red-500/80 text-white"
             >
               <PinIcon class="w-2.5 h-2.5" />
-              置顶
+              {{ t('common.pin') }}
             </span>
 
             <span
@@ -122,7 +122,7 @@
               class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-500/80 text-white"
             >
               <StarIcon class="w-2.5 h-2.5" />
-              精华
+              {{ t('common.feature') }}
             </span>
 
             <!-- 已隐藏徽章（仅管理员可见） -->
@@ -130,7 +130,7 @@
               v-if="isModerator && post.status === 1"
               class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-500/80 text-white"
             >
-              已隐藏
+              {{ t('user.posts.hidden') }}
             </span>
           </div>
 
@@ -142,7 +142,7 @@
               class="inline-flex items-center gap-1"
             >
               <LockIcon class="w-3 h-3" />
-              <span>已锁定</span>
+              <span>{{ t('posts.locked') }}</span>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
               @click="showDropdown = false"
             >
-              查看详情
+              {{ t('common.detail') }}
             </NuxtLink>
 
             <template v-if="canManagePost">
@@ -183,14 +183,14 @@
                 @click="handleEdit"
               >
                 <EditIcon class="w-4 h-4" />
-                <span>✏️ 编辑</span>
+                <span>✏️ {{ t('posts.publish.edit') }}</span>
               </button>
               <button
                 v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
                 class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                 @click="handlePin(!post.is_pinned)"
               >
-                {{ post.is_pinned ? '取消置顶' : '置顶' }}
+                {{ post.is_pinned ? t('common.unpin') : t('common.pin') }}
               </button>
 
               <button
@@ -198,7 +198,7 @@
                 class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
                 @click="handleFeature(!post.is_featured)"
               >
-                {{ post.is_featured ? '取消精华' : '设为精华' }}
+                {{ post.is_featured ? t('common.unfeature') : t('common.feature') }}
               </button>
 
               <button
@@ -206,7 +206,7 @@
                 class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
                 @click="handleHide"
               >
-                {{ post.status === 0 ? '隐藏' : '恢复' }}
+                {{ post.status === 0 ? t('common.hide') : t('common.show') }}
               </button>
 
               <button
@@ -214,7 +214,7 @@
                 class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
                 @click="handleDelete"
               >
-                删除
+                {{ t('common.delete') }}
               </button>
             </template>
             </div>
@@ -258,7 +258,7 @@
           class="mt-2 text-sm text-brand-600 hover:text-brand-700 transition-colors"
           @click.stop="expanded = !expanded"
         >
-          {{ expanded ? '收起' : '展开' }}
+          {{ expanded ? t('common.collapse') : t('common.expand') }}
         </button>
       </div>
     </div>
@@ -342,6 +342,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
 import GlassCard from '~/components/ui/GlassCard.vue'
@@ -401,9 +403,9 @@ const eagerHiddenCount = computed(() => Math.max(postImages.value.length - maxPr
 const postImageAltPrefix = computed(() => {
   const { card_type, target_name, author_name } = props.post
   if (card_type !== 'communication' && card_type !== 'social' && target_name) {
-    return `${author_name} 的表白图片`
+    return t('posts.alt.confessionalImage', { author: author_name })
   }
-  return `${author_name} 的交流图片`
+  return t('posts.alt.socialImage', { author: author_name })
 })
 const eagerGridWrapperClass = computed(() => {
   const count = Math.min(postImages.value.length, maxPreviewImages)
@@ -561,7 +563,7 @@ const authorDisplayName = computed(() => {
 const authorInitials = computed(() => {
   const source = authorDisplayName.value || props.post.author_name || ''
   const trimmed = source.trim()
-  if (!trimmed) return '匿'
+  if (!trimmed) return 'anonymous'
   return trimmed.slice(0, 2).toUpperCase()
 })
 
@@ -576,8 +578,8 @@ const authorLastHeartbeat = computed(() => postAuthorMeta.value.author_last_hear
 
 const authorOnlineTitle = computed(() => {
   if (!authorIsOnline.value) return ''
-  if (!authorLastHeartbeat.value) return '在线'
-  return `在线 · ${formatTimeAgo(authorLastHeartbeat.value)}`
+  if (!authorLastHeartbeat.value) return t('user.online')
+  return t('user.offlineAndTime', { time: formatTimeAgo(authorLastHeartbeat.value) })
 })
 
 const authorTag = computed(() => renderTag(postAuthorMeta.value.author_tag))
@@ -609,8 +611,8 @@ const shareData = computed(() => {
   const origin = import.meta.client ? window.location.origin : 'https://your-domain.com'
   const isConfession = props.post.card_type !== 'communication' && props.post.card_type !== 'social'
   const title = isConfession && props.post.target_name
-    ? `${props.post.author_name} 对 ${props.post.target_name} 的表白`
-    : `${props.post.author_name} 的交流`
+    ? t('posts.confessionTo', { author: props.post.author_name, target: props.post.target_name })
+    : t('posts.socialFrom', { author: props.post.author_name })
   return {
     title,
     text: props.post.content.length > 100 ?
@@ -632,7 +634,7 @@ const handleEdit = async () => {
 // Navigate to author profile
 const navigateToAuthor = () => {
   if (authorDeleted.value) {
-    toast.info('该用户已注销，无法访问主页')
+    toast.info(t('error.messages.404'))
     return
   }
   // 如果有author_id，使用ID路由，否则使用用户名（临时方案）
@@ -647,10 +649,10 @@ const navigateToAuthor = () => {
 // Actions
 const handlePin = async (pin: boolean) => {
   try {
-    const reason = await promptModerationReason(pin ? '置顶' : '取消置顶')
+    const reason = await promptModerationReason(pin ? t('common.pin') : t('common.unpin'))
     if (reason === null) return
     await api.pinPost(props.post.id, pin, reason || undefined)
-    toast.success(pin ? '已置顶' : '已取消置顶')
+    toast.success(t('common.success'))
     emit('refresh')
   } catch (error) {
     console.error('Pin post failed:', error)
@@ -660,10 +662,10 @@ const handlePin = async (pin: boolean) => {
 
 const handleFeature = async (feature: boolean) => {
   try {
-    const reason = await promptModerationReason(feature ? '设为精华' : '取消精华')
+    const reason = await promptModerationReason(feature ? t('common.feature') : t('common.unfeature'))
     if (reason === null) return
     await api.featurePost(props.post.id, feature, reason || undefined)
-    toast.success(feature ? '已设为精华' : '已取消精华')
+    toast.success(t('common.success'))
     emit('refresh')
   } catch (error) {
     console.error('Feature post failed:', error)
@@ -740,11 +742,10 @@ const formatTimeAgo = (dateString: string) => {
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
   
-  if (minutes < 1) return '刚刚'
-  if (minutes < 5) return '几分钟前'
-  if (minutes < 60) return `${minutes}分钟前`
-  if (hours < 24) return `${hours}小时前`
-  if (days < 7) return `${days}天前`
+  if (minutes < 1) return t('time.just')
+  if (minutes < 60) return t('time.beforeMinutes', { minutes: minutes })
+  if (hours < 24) return t('time.beforeHours', { hours: hours })
+  if (days < 7) return t('time.beforeDays', { days: days })
   
   return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
 }

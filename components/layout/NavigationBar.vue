@@ -15,7 +15,7 @@
           ]"
         >
           <HeartIcon :class="isMobile ? 'w-5 h-5' : 'w-6 h-6'" />
-          <span :class="{ 'hidden xs:block': isMobile }">郑州四中表白墙</span>
+          <span :class="{ 'hidden xs:block': isMobile }">{{ t('home.title') }}</span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -246,6 +246,9 @@
 </template>
 
 <script setup lang="ts">
+//const { t } = useI18n();
+//suddenly I find this is deprecated
+
 import {
   HeartIcon,
   UserIcon,

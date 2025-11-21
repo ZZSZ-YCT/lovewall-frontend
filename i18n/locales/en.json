@@ -1,0 +1,336 @@
+{
+  "admin": {
+    "index": "Administration"
+  },
+  "announcements": {
+    "close": "Close Announcement",
+    "index": "Announcements"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Protect your account",
+      "forms": {
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Repeat your password",
+        "currentPassword": "Current Password",
+        "currentPasswordPlaceholder": "Enter Current Password",
+        "incorrectPassword": "Incorrect Old Password",
+        "newPassword": "New Password",
+        "newPasswordDescription": "At least 6 characters, suggested to contain numbers, lower/upper case letters and special characters",
+        "newPasswordPlaceholder": "Enter New Password(at least 6 characters)",
+        "repeatPasswordNotMatch": "Passwords don’t match."
+      },
+      "index": "Change Password",
+      "success": "Changed successful, please re-login.",
+      "tips": {
+        "0": "Don't use password that have to do with your personal data",
+        "1": "It is recommended to change your password regularly",
+        "2": "Don't use the same password among websites",
+        "3": "Keep your password safe, don't share it with others",
+        "index": "Password Secure Suggestions"
+      },
+      "title": "Change Password - Zhengzhou No.4 Middle School Confession Wall"
+    },
+    "login": {
+      "description": "Sign in to your account",
+      "invalidCredentials": "Failed to login, please check your username and password",
+      "passwordPlaceholder": "Enter password",
+      "passwordTooShort": "At least 6 characters",
+      "registerNow": "Register Now",
+      "registerSuggestion": "Don't have an account?",
+      "title": "Sign in - Zhengzhou No.4 Middle School Confession Wall",
+      "usernamePlaceholder": "Enter username",
+      "welcome": "Welcome back"
+    },
+    "register": {
+      "agreeWithTerms": "I have already read and agreed to Terms:",
+      "description": "Share, discover, and connect with us.",
+      "index": "Create an account",
+      "loginSuggestion": "Already have an account?",
+      "notAgreeWithTerms": "Please agree to our terms first",
+      "passwordTooLong": "At most 128 characters in Password",
+      "title": "Sign Up - Zhengzhou No.4 Middle School Confession Wall",
+      "usernameCharset": "Can only contain letters, numbers and underline",
+      "usernameLimit": "From 3 to 20 characters, can only contain letters, numbers and underline",
+      "usernameTooLong": "At most 20 characters in the username",
+      "usernameTooShort": "At least 3 characters in the username"
+    }
+  },
+  "captcha": {
+    "click": "Please click in order:",
+    "reference": "Reference Image",
+    "rotate": "Rotate to the correct angle"
+  },
+  "comment": {
+    "commentOversize": "Comments can't be more than 500 characters",
+    "loginRequired": "Login required to post comments",
+    "noComments": "No comments yet.",
+    "placeholder": "Write down your idea...",
+    "send": "Post comment"
+  },
+  "comments": {
+    "recently": "Recent Comments"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Explore Posts",
+    "cancel": "Cancel",
+    "captcha": "Let us know you're human",
+    "collapse": "Collapse",
+    "comment": "Comment",
+    "commonUser": "User",
+    "confirm": "Confirm",
+    "content": "Content",
+    "current": "Current",
+    "delete": "Delete",
+    "detail": "See more",
+    "disabled": "Disabled",
+    "dismiss": "Dismiss",
+    "edited": "Edited",
+    "email": "E-Mail",
+    "enabled": "Enabled",
+    "expand": "Expand",
+    "feature": "Featured",
+    "hide": "Hide",
+    "joinTime": "Joined at {time}",
+    "known": "Known",
+    "layouts": {
+      "grid": "Grid Layout",
+      "list": "List Layout"
+    },
+    "loadMore": "Load more",
+    "loading": "Loading...",
+    "moderator": "Moderator",
+    "nickname": "Nickname",
+    "ok": "OK",
+    "password": "Password",
+    "phone": "Phone",
+    "pin": "Pin",
+    "preview": "Preview",
+    "previous": "Back",
+    "pullDownLoading": "Scroll for more",
+    "refresh": "Refresh",
+    "reset": "Reset",
+    "save": "Save",
+    "share": "Share",
+    "show": "Show",
+    "success": "Done",
+    "superAdmin": "Super Admin",
+    "unfeature": "Unfeature",
+    "unknown": "Unknown",
+    "unpin": "Unpin",
+    "username": "Username"
+  },
+  "error": {
+    "messages": {
+      "401": "Please sign in before visiting this page.",
+      "403": "You do not have permission to access this page. Please contact your administrator.",
+      "404": "Sorry, the page you visited does not exist or has been deleted.",
+      "500": "There are some problems with the server. Please try again later.",
+      "unknown": "An unexpected error has occurred. Please try again later."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Middle School Confession Wall",
+    "titles": {
+      "401": "Sign-in Required",
+      "403": "Access denied",
+      "404": "Page not Found",
+      "500": "Internal Server Error",
+      "unknown": "Something went wrong"
+    }
+  },
+  "home": {
+    "backHome": "Back to Home",
+    "contact": "Contact Us",
+    "description": "A place to connect with each other.",
+    "login": "Login",
+    "logout": "Logout",
+    "privacy": "Privacy Policy",
+    "register": "Register",
+    "title": "Zhengzhou No.4 Middle School Confession Wall",
+    "tos": "Terms of Service"
+  },
+  "notifications": {
+    "amount": "{number} in total",
+    "checkLater": "Come back later.",
+    "description": "Get notifications here",
+    "empty": "No notifications yet",
+    "failed": "Failed to load notifications.",
+    "failedMark": "Failed to mark as read.",
+    "index": "Notifications",
+    "title": "Notifications - Zhengzhou No.4 Middle School Confession Wall",
+    "unread": "Unread"
+  },
+  "permission": {
+    "manage_announcements": "Manage Announcements",
+    "manage_announcements_group": "Manage Community",
+    "manage_content": "Manage Content",
+    "manage_featured": "Manage Featured",
+    "manage_posts": "Manage Posts/Comments",
+    "manage_tags": "Manage Tags",
+    "manage_tags_group": "Manage System",
+    "manage_users": "Manage Users"
+  },
+  "posts": {
+    "404": "Post not found",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "Be the first one",
+    "confessionTo": "Confession from {author} to {target}",
+    "contentPlaceholder": "Enter content",
+    "deletedUser": "Deleted Account",
+    "deniedAudit": "Audit not passed",
+    "description_review": "Request Review: If you considered it as a mistake, you can request a manual review.",
+    "empty": "No posts here yet",
+    "locked": "Locked",
+    "pendingAudit": "Pending Approval",
+    "post": "Post",
+    "publish": {
+      "addPhoto0": "Drag photos here, or",
+      "addPhoto1": "Add photo",
+      "anonymousRole": "Custom Name",
+      "cantEmpty": "Can't be empty",
+      "cantOversize": "Can't be more than 2000 characters",
+      "cardType": "Card Type *",
+      "chooseRole": "Choose Role",
+      "confessionCard": "Confession Card",
+      "description_anonymousRole": "Keep anonymous or use other nickname",
+      "description_confessional": "Publish your confessional post.",
+      "description_social": "Share your contact info or something other.",
+      "edit": "Edit Post",
+      "error": {
+        "imageOversize": "Photo is too large",
+        "imageTooMany": "Uploaded too many photos",
+        "unsupportedImageFormat": "Unsupported image format"
+      },
+      "imageTotal": "Uploaded {number} / 9",
+      "index": "Publish",
+      "limits": "Supported JPG, PNG, WebP and GIF formats, up to 9 photos, at most 5MB per photo",
+      "nameOversize": "Nickname can't be more than 50 characters.",
+      "namePlaceholder": "Enter your nickname",
+      "publishing": "Publishing...",
+      "selfRole": "Use my nickname",
+      "socialCard": "Social Card",
+      "targetName": "Confession Target *",
+      "targetNamePlaceholder": "Enter their nickname",
+      "tip": {
+        "0": "Be respectful and sincere",
+        "1": "Uploading a photo means more for your post",
+        "index": "Tips"
+      },
+      "toasts": {
+        "sent": "Posted, pending audit"
+      },
+      "uploadImage": "Upload Photos(Optional)",
+      "uploadMore": "Upload more photos"
+    },
+    "recently": "Recent Posts",
+    "requestReview": "Request Manual Review",
+    "review": "Manual Review Requested",
+    "reviewRequired": "Manual Review Required",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "A place to connect with each other.",
+    "keywords": "Zhengzhou No.4 High School,Zhengzhou No.4 Middle School,Zhengzhou No.4 Junior High School,School Community,Students Communication,Students Discussion",
+    "title": "Zhengzhou No.4 Middle School Confession Wall"
+  },
+  "share": {
+    "copied": "Copied to the clipboard",
+    "success": "Shared successfully"
+  },
+  "time": {
+    "beforeDays": "{days} days ago",
+    "beforeHours": "{hours} hours ago",
+    "beforeMinutes": "{minutes} minutes ago",
+    "expireHour": "Expires after {hour} hours and {minutes} minutes",
+    "expireMinutes": "Expires after {minutes} minutes",
+    "expireSoon": "Expires soon",
+    "expired": "Expired",
+    "just": "Just now"
+  },
+  "user": {
+    "center": "Personal Center",
+    "centerTitle": "Personal Center - Zhengzhou No.4 Middle School Confession Wall",
+    "centers": {
+      "description": "Manage your personal profile and content",
+      "editProfile": "Edit Profile",
+      "joinedDays": "Days joined",
+      "lastLogin": "Last login at",
+      "registerTime": "Registered at"
+    },
+    "commentedOn": "Posted a comment",
+    "comments": {
+      "delete_description": "Are you sure about to delete this comment? It is not able to recovery.",
+      "description": "Manage your comments here",
+      "edit": "Edit Comment",
+      "edit_placeholder": "Edit your comments here...",
+      "empty": "No comments yet",
+      "source": "Source:",
+      "totalComments": "Total Comments"
+    },
+    "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
+    "editAvatar": "Click at avatar to change",
+    "hasPerm": "Owned Permissions:",
+    "myComments": "My Comments",
+    "myCommentsTitle": "My Comments - Zhengzhou No.4 Middle School Confession Wall",
+    "myPosts": "My Posts",
+    "myPostsTitle": "My Posts - Zhengzhou No.4 Middle School Confession Wall",
+    "myTags": "My Tags",
+    "myTagsTitle": "My Tags - Zhengzhou No.4 Middle School Confession Wall",
+    "noActivity": "No activity yet",
+    "noPerm": "This account doesn't have any permission",
+    "noPosts": "{nickname} has not published any posts yet",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Last Online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "All status",
+      "common": "Common",
+      "confirmDeletion": "Confirm Deletion",
+      "description": "Manage your posts here",
+      "hidden": "Hidden",
+      "noPosts": "No posts yet",
+      "published": "Published",
+      "totalFeatured": "Total Featured Posts",
+      "totalPinned": "Total Pinned Posts",
+      "totalPosts": "Total Posts"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "At most 500 characters in bio",
+      "imageTooLarge": "Image file must not exceed 5MB.",
+      "invalidEmail": "Invalid E-Mail",
+      "invalidPhone": "Invalid phone number",
+      "notImage": "Not an image file."
+    },
+    "publish": {
+      "description": "Share your love"
+    },
+    "recently": "Recent Activities",
+    "superAdminPerms": "Super admin owns all system permissions",
+    "tags": {
+      "acquireTime": "Acquire Time: {time}",
+      "description": "Manage your tags here",
+      "disabled": "Disabled Tag, can't be activated.",
+      "empty": "No tags yet",
+      "getOne": "Get a new tag by redeeming one",
+      "notSet": "Not set",
+      "owns": "Owned tags",
+      "redeem": {
+        "activateCode": "Redeem Code",
+        "description": "Enter activate code to redeem new tag",
+        "index": "Redeem Tag",
+        "recently": "Recently Acquired",
+        "redeemed": "Congratulations! Tag {title} redeemed and auto activated.\nYou can see it in posts and comments.",
+        "redeemed_short": "Redeemed Successful and auto activated.",
+        "wrongPattern": "Incorrect Redeem Code"
+      },
+      "set": "Set \"{title}\" as current tag",
+      "unset": "Unset current tag",
+      "useThis": "Set as current"
+    }
+  }
+}

@@ -48,7 +48,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  altPrefix: '图片'
+  altPrefix: 'Image'
 })
 
 

@@ -20,7 +20,7 @@ const normalizePost = (p: any): PostDto => {
   const normalized: PostDto = {
     id: String(p.id),
     author_id: String(p.author_id ?? p.user_id ?? ''),
-    author_name: String(p.author_name ?? p.author_display_name ?? p.author_username ?? '匿名'),
+    author_name: String(p.author_name ?? p.author_display_name ?? p.author_username ?? 'anonymous'),
     target_name: String(p.target_name ?? p.to_name ?? 'TA'),
     content: String(p.content ?? ''),
     images: normalizeImages(p),
@@ -81,28 +81,31 @@ interface HomeState {
   error: string | null
 }
 
-export const useHomeStore = defineStore('home', {
-  state: (): HomeState => ({
-    posts: [],
-    pinned: [],
-    featured: [],
-    page: 0,
-    pageSize: +useRuntimeConfig().public.pageSize || 20,
-    hasMore: false,
-    loading: false,
-    loadingMore: false,
-    loaded: false,
-    error: null,
-  }),
-  getters: {
-    hasData: (s) => s.loaded && s.posts.length > 0,
-  },
-  actions: {
-    async initialLoad() {
-      // 首次进入首页时加载数据（不做 TTL 缓存，只避免并发）
-      if (this.loaded || this.loading) return
-      await this.forceRefresh()
+export const useHomeStore = () => {
+  const { t } = useI18n()
+
+  const store = defineStore('home', {
+    state: (): HomeState => ({
+      posts: [],
+      pinned: [],
+      featured: [],
+      page: 0,
+      pageSize: +useRuntimeConfig().public.pageSize || 20,
+      hasMore: false,
+      loading: false,
+      loadingMore: false,
+      loaded: false,
+      error: null,
+    }),
+    getters: {
+      hasData: (s) => s.loaded && s.posts.length > 0,
     },
+    actions: {
+      async initialLoad() {
+        // 首次进入首页时加载数据（不做 TTL 缓存，只避免并发）
+        if (this.loaded || this.loading) return
+        await this.forceRefresh()
+      },
 
     async refreshIfStale() {
       // 现在不再按时间判断“是否陈旧”，而是简单地防止并发刷新
@@ -125,101 +128,105 @@ export const useHomeStore = defineStore('home', {
       }
     },
 
-    async forceRefresh() {
-      if (this.loading) return
-      this.loading = true
-      this.error = null
-      try {
-        const api = useNuxtApp().$api
-        const auth = useAuthStore()
-        const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
-        const pageSize = this.pageSize || 20
+      async forceRefresh() {
+        if (this.loading) return
+        this.loading = true
+        this.error = null
+        try {
+          const api = useNuxtApp().$api
+          const auth = useAuthStore()
+          const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
+          const pageSize = this.pageSize || 20
 
-        const params = {
-          page: 1,
-          page_size: pageSize,
+          const params = {
+            page: 1,
+            page_size: pageSize,
+          }
+
+          const listResp = await api.listPosts(params)
+
+          const rawItems = extractItems(listResp)
+          const normalizedItems = dedupeById(rawItems.map(normalizePost))
+          const filteredPosts = canModerate
+            ? normalizedItems
+            : normalizedItems.filter((p: PostDto) => p.status === 0)
+
+          // 刷新时整体替换为第一页数据（后续通过 loadMore 追加）
+          this.posts = filteredPosts
+          this.page = 1
+          this.hasMore = rawItems.length === pageSize
+          this.loaded = true
+        } catch (error: any) {
+          console.error('HomeStore: Failed to refresh posts:', error)
+
+          const message = error?.message || t('error.messages.unknown')
+          this.error = message
+
+          if (import.meta.client) {
+            const toast = useToast()
+            toast.error(message)
+          }
+
+          throw error
+        } finally {
+          this.loading = false
         }
+      },
 
-        const listResp = await api.listPosts(params)
+      async refresh() {
+        await this.forceRefresh()
+      },
 
-        const rawItems = extractItems(listResp)
-        const normalizedItems = dedupeById(rawItems.map(normalizePost))
-        const filteredPosts = canModerate
-          ? normalizedItems
-          : normalizedItems.filter((p: PostDto) => p.status === 0)
+      async loadMore() {
+        if (!this.loaded || !this.hasMore || this.loadingMore) return
+        this.loadingMore = true
+        this.error = null
+        try {
+          const api = useNuxtApp().$api
+          const auth = useAuthStore()
+          const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
+          const pageSize = this.pageSize || 20
+          const next = this.page + 1
 
-        // 刷新时整体替换为第一页数据（后续通过 loadMore 追加）
-        this.posts = filteredPosts
-        this.page = 1
-        this.hasMore = rawItems.length === pageSize
-        this.loaded = true
-      } catch (error: any) {
-        console.error('HomeStore: Failed to refresh posts:', error)
+          const params = {
+            page: next,
+            page_size: pageSize,
+          }
 
-        const message = error?.message || '刷新失败，请稍后重试'
-        this.error = message
+          const listResp: Pagination<PostDto> = await api.listPosts(params)
 
-        if (import.meta.client) {
-          const toast = useToast()
-          toast.error(message)
+          const itemsRaw = extractItems(listResp)
+          const items = dedupeById(itemsRaw.map(normalizePost))
+          const newPosts = canModerate
+            ? items
+            : items.filter((p: PostDto) => p.status === 0)
+
+          const existingIds = new Set(this.posts.map((post) => post.id))
+          const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
+
+          // 追加去重后的新数据
+          if (uniqueNewPosts.length > 0) {
+            this.posts = [...this.posts, ...uniqueNewPosts]
+          }
+          this.page = next
+          this.hasMore = itemsRaw.length === pageSize
+        } catch (error: any) {
+          console.error('Failed to load more posts:', error)
+          const message = error?.message || t('error.messages.unknown')
+          this.error = message
+
+          if (import.meta.client) {
+            const toast = useToast()
+            toast.error(message)
+          }
+          throw error
+        } finally {
+          this.loadingMore = false
         }
-
-        throw error
-      } finally {
-        this.loading = false
-      }
+      },
     },
+  })
 
-    async refresh() {
-      await this.forceRefresh()
-    },
+  return store()
+}
 
-    async loadMore() {
-      if (!this.loaded || !this.hasMore || this.loadingMore) return
-      this.loadingMore = true
-      this.error = null
-      try {
-        const api = useNuxtApp().$api
-        const auth = useAuthStore()
-        const canModerate = auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')
-        const pageSize = this.pageSize || 20
-        const next = this.page + 1
-
-        const params = {
-          page: next,
-          page_size: pageSize,
-        }
-
-        const listResp: Pagination<PostDto> = await api.listPosts(params)
-
-        const itemsRaw = extractItems(listResp)
-        const items = dedupeById(itemsRaw.map(normalizePost))
-        const newPosts = canModerate
-          ? items
-          : items.filter((p: PostDto) => p.status === 0)
-
-        const existingIds = new Set(this.posts.map((post) => post.id))
-        const uniqueNewPosts = newPosts.filter((post) => !existingIds.has(post.id))
-
-        // 追加去重后的新数据
-        if (uniqueNewPosts.length > 0) {
-          this.posts = [...this.posts, ...uniqueNewPosts]
-        }
-        this.page = next
-        this.hasMore = itemsRaw.length === pageSize
-      } catch (error: any) {
-        console.error('Failed to load more posts:', error)
-        const message = error?.message || '加载更多失败，请稍后重试'
-        this.error = message
-
-        if (import.meta.client) {
-          const toast = useToast()
-          toast.error(message)
-        }
-        throw error
-      } finally {
-        this.loadingMore = false
-      }
-    },
-  },
-})

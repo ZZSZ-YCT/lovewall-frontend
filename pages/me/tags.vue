@@ -2,32 +2,32 @@
   <div class="max-w-4xl mx-auto space-y-6">
     <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">我的标签</h1>
-      <p class="text-gray-600 mt-2">管理你拥有的标签和当前显示标签</p>
+      <h1 class="page-title">{{ t('user.myTags') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('user.tags.description') }}</p>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-purple-600 mb-1">{{ userTags.length }}</div>
-        <div class="text-sm text-gray-600">拥有标签数</div>
+        <div class="text-sm text-gray-600">{{ t('user.tags.owns') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="flex items-center justify-center gap-2 flex-wrap">
-          <div class="text-lg font-semibold text-gray-700">当前标签:</div>
+          <div class="text-lg font-semibold text-gray-700">{{ t('common.current') }}</div>
           <TagBadge
             v-if="activeTag"
             :title="activeTag.tag?.title || ''"
             :background="activeTag.tag?.background_color || '#6b7280'"
             :text="activeTag.tag?.text_color || '#ffffff'"
           />
-          <span v-else class="text-gray-500">未设置</span>
+          <span v-else class="text-gray-500">{{ t('user.tags.notSet') }}</span>
           <span
 v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs rounded-full"
             :class="activeStatus.current_tag_enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'"
           >
-            {{ activeStatus.current_tag_enabled ? '已启用' : '已停用' }}
+            {{ activeStatus.current_tag_enabled ? t('common.enabled') : t('common.disabled') }}
           </span>
         </div>
       </GlassCard>
@@ -37,8 +37,8 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
     <GlassCard class="p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-lg font-semibold text-gray-800">兑换新标签</h2>
-          <p class="text-sm text-gray-600 mt-1">输入兑换码获取新的专属标签</p>
+          <h2 class="text-lg font-semibold text-gray-800">{{ t('user.tags.redeem.index') }}</h2>
+          <p class="text-sm text-gray-600 mt-1">{{ t('user.tags.redeem.description') }}</p>
         </div>
         
         <div class="flex items-center gap-3">
@@ -47,13 +47,13 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
               @click="openRedeemModal"
           >
             <TagIcon class="w-5 h-5" />
-            <span>兑换标签</span>
+            <span>{{ t('user.tags.redeem.index') }}</span>
           </button>
         </div>
       </div>
       <!-- Redeem History (if any) -->
       <div v-if="recentlyRedeemed.length" class="mt-6 pt-4 border-t border-white/20">
-        <h3 class="text-sm font-medium text-gray-700 mb-3">最近兑换的标签</h3>
+        <h3 class="text-sm font-medium text-gray-700 mb-3">{{t('user.tags.redeem.recently')}}</h3>
         <div class="flex flex-wrap gap-2">
           <div
             v-for="tag in recentlyRedeemed"
@@ -84,15 +84,15 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
         <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <TagIcon class="w-8 h-8 text-white" />
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">还没有任何标签</h3>
-        <p class="text-gray-600 mb-6">通过兑换码获取你的第一个专属标签吧！</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.tags.empty') }}</h3>
+        <p class="text-gray-600 mb-6">{{ t('user.tags.getOne') }}</p>
       </GlassCard>
     </div>
 
     <!-- Tags List -->
     <div v-else class="space-y-4">
       <div class="border-b border-white/20 pb-2 mb-4">
-        <h2 class="text-lg font-semibold text-gray-800">我的标签列表</h2>
+        <h2 class="text-lg font-semibold text-gray-800">{{ t('user.myTags') }}</h2>
       </div>
 
       <div class="grid gap-4">
@@ -107,17 +107,17 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
               <div class="flex items-center gap-4 flex-1 min-w-0">
                 <div class="min-w-0">
                   <h3 class="font-semibold text-gray-800">
-                    {{ userTag.tag?.title || `标签-${userTag.tag?.id?.slice(0, 8)}` }}
+                    {{ userTag.tag?.title || `Tag-${userTag.tag?.id?.slice(0, 8)}` }}
                   </h3>
                   <div class="text-sm text-gray-600 space-y-1">
-                    <p>获得时间: {{ formatDate(userTag.obtained_at) }}</p>
+                    <p>{{ t('user.tags.acquireTime', { time: formatDate(userTag.obtained_at) }) }}</p>
                     <div class="flex items-center gap-2">
                       <span class="flex items-center gap-1">
                         <div
                           class="w-3 h-3 rounded-full"
                           :class="userTag.is_active ? 'bg-green-500' : 'bg-gray-400'"
                         />
-                        {{ userTag.is_active ? '当前使用' : '未使用' }}
+                        {{ userTag.is_active ? t('common.current') : t('common.disabled') }}
                       </span>
                     </div>
                   </div>
@@ -136,18 +136,17 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
                 <button
                   v-if="!userTag.is_active"
                   :disabled="activating === userTag.user_tag_id || !userTag.tag?.is_active"
-                  :title="userTag.tag?.is_active ? '设为当前标签' : '该标签已被停用，无法设为当前标签'"
+                  :title="userTag.tag?.is_active ? t('user.tags.useThis') : t('common.disabled')"
                   class="glass-button-secondary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   @click="activateTag(userTag)"
                 >
-                  <span v-if="activating === userTag.user_tag_id">设置中...</span>
-                  <span v-else>设为当前标签</span>
+                  <span>{{ t('user.tags.useThis') }}</span>
                 </button>
                 
                 <div v-else class="flex items-center gap-2">
                   <div class="flex items-center gap-2 px-4 py-2 bg-green-100/50 text-green-800 rounded-lg text-sm">
                     <CheckCircleIcon class="w-4 h-4" />
-                    当前使用中
+                    {{ t('common.current') }}
                   </div>
                   <!-- <GlassButton
                     @click="deactivateTag(userTag)"
@@ -173,6 +172,8 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { TagIcon, CheckCircleIcon } from 'lucide-vue-next'
 import TagBadge from '~/components/ui/TagBadge.vue'
 import type { UserTagDto, RedeemResponse, MyActiveTagStatusResponse } from '~/types'
@@ -181,7 +182,8 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'auth',
-  ssr: false
+  ssr: false,
+  title: { k: 'user.myTagsTitle' }
 })
 
 // Stores
@@ -236,12 +238,12 @@ const formatRedeemCodeString = (code: string): string => {
 // Methods
 const openRedeemModal = async () => {
   const code = await adminDialog.prompt({
-    title: '兑换标签',
-    message: '请输入兑换码获取专属标签\n格式: XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX',
-    inputLabel: '兑换码',
-    placeholder: '请输入兑换码',
-    confirmText: '立即兑换',
-    cancelText: '取消',
+    title: t('user.tags.redeem.index'),
+    message: t('user.tags.redeem.message'),
+    inputLabel: t('user.tags.redeem.activateCode'),
+    placeholder: t('user.tags.redeem.message'),
+    confirmText: t('user.tags.redeem.index'),
+    cancelText: t('common.cancel'),
     defaultValue: ''
   })
 
@@ -263,7 +265,7 @@ const loadUserTags = async () => {
     } catch {}
   } catch (error: any) {
     console.error('Load tags error:', error)
-    toast.error('加载标签列表失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     loading.value = false
   }
@@ -271,14 +273,14 @@ const loadUserTags = async () => {
 
 const redeemCode = async (code: string) => {
   if (!code.trim()) {
-    toast.error('请输入兑换码')
+    toast.error(t('user.tags.redeem.message'))
     return
   }
 
   // Basic format validation - 8 groups of 4 characters each
   const codePattern = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/
   if (!codePattern.test(code.toUpperCase())) {
-    toast.error('兑换码格式不正确')
+    toast.error(t('user.tags.redeem.wrongPattern'))
     return
   }
 
@@ -304,17 +306,17 @@ const redeemCode = async (code: string) => {
     } catch {}
 
     // Show success dialog
-    const tagTitle = newUserTag.tag?.title || '新标签'
+    const tagTitle = newUserTag.tag?.title || 'New Tag'
     await adminDialog.confirm({
-      title: '兑换成功！',
-      message: `恭喜你获得了新标签"${tagTitle}"并已自动激活！\n\n新标签已自动设为当前标签，你可以在帖子和评论中看到它的显示效果。`,
-      confirmText: '好的',
+      title: t('common.success'),
+      message: t('user.tags.redeem.redeemed', { title: tagTitle }),
+      confirmText: t('common.ok'),
       cancelText: ''
     })
 
-    toast.success('兑换成功！新标签已自动设为当前标签')
+    toast.success(t('user.tags.redeem.redeemed_short'))
   } catch (error: any) {
-    toast.error(error.message || '兑换失败')
+    toast.error(error.message || t('error.messages.unknown'))
   }
 }
 
@@ -324,7 +326,7 @@ const activateTag = async (userTag: UserTagDto) => {
     const api = useNuxtApp().$api
     // 禁止选择已被全局停用的标签
     if (!userTag.tag?.is_active) {
-      toast.warning('该标签已被停用，无法设为当前标签')
+      toast.warning(t('user.tags.disabled'))
       return
     }
     await api.activateTag(userTag.tag?.id || '')
@@ -334,14 +336,14 @@ const activateTag = async (userTag: UserTagDto) => {
       tag.is_active = tag.user_tag_id === userTag.user_tag_id
     })
     
-    toast.success(`已设置 "${userTag.tag?.title}" 为当前标签`)
+    toast.success(t('user.tags.set', { title: userTag.tag?.title }))
     // 刷新活动标签状态徽章
     try {
       activeStatus.value = await api.getMyActiveTagStatus()
     } catch {}
   } catch (error: any) {
     console.error('Activate tag failed:', error)
-    toast.error('设置标签失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     activating.value = null
   }
@@ -358,13 +360,13 @@ const deactivateTag = async (userTag: UserTagDto) => {
       tag.is_active = false
     })
     
-    toast.success('已取消当前标签，现在没有激活的标签')
+    toast.success(t('user.tags.unset'))
     // 刷新活动标签状态徽章
     try {
       activeStatus.value = await api.getMyActiveTagStatus()
     } catch {}
   } catch (error: any) {
-    toast.error('取消标签失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     deactivating.value = null
   }
@@ -379,7 +381,7 @@ const showAllTags = async () => {
     // 这里我们简单地显示一个提示，你可以根据需求实现标签浏览功能
     toast.info(`当前共有 ${allTags.items.length} 个可用标签，可以通过兑换码获取`)
   } catch (error: any) {
-    toast.error('获取标签信息失败')
+    toast.error(t('error.messages.unknown'))
   }
 }
 
@@ -395,14 +397,6 @@ const formatDate = (dateString: string) => {
 // Initialize
 onMounted(() => {
   loadUserTags()
-})
-
-// SEO
-useHead({
-  title: '我的标签 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '管理你拥有的标签和当前显示标签' }
-  ]
 })
 
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div class="w-full space-y-6">
     <div class="page-header">
-      <h1 class="page-title">系统通知</h1>
-      <p class="text-gray-600 mt-2">审核结果和管理员操作通知</p>
+      <h1 class="page-title">{{ t('notifications.index') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('notifications.description') }}</p>
     </div>
 
     <GlassCard class="p-4">
       <div class="flex justify-between items-center">
-        <div class="text-sm text-gray-600">共 {{ data?.total || 0 }} 条</div>
-        <GlassButton variant="secondary" :loading="loading" @click="refresh">刷新</GlassButton>
+        <div class="text-sm text-gray-600"> {{ t('notifications.amount', { number: (data?.total || 0) }) }} </div>
+        <GlassButton variant="secondary" :loading="loading" @click="refresh">{{ t('common.refresh') }}</GlassButton>
       </div>
     </GlassCard>
 
@@ -18,8 +18,8 @@
 
     <div v-else-if="!items.length" class="text-center py-12">
       <GlassCard class="p-12">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无通知</h3>
-        <p class="text-gray-600">稍后再来看看。</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('notifications.empty') }}</h3>
+        <p class="text-gray-600">{{ t('notifications.checkLater') }}</p>
       </GlassCard>
     </div>
 
@@ -37,7 +37,7 @@
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-1">
               <h3 class="text-lg font-bold text-gray-900">{{ n.title }}</h3>
-              <span v-if="!n.is_read" class="px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">未读</span>
+              <span v-if="!n.is_read" class="px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">{{ t('notifications.unread') }}</span>
             </div>
 
             <div
@@ -52,7 +52,7 @@
       </GlassCard>
 
       <div v-if="data && data.page * data.page_size < data.total" class="text-center pt-2">
-        <GlassButton variant="secondary" :loading="loadingMore" @click="loadMore">加载更多</GlassButton>
+        <GlassButton variant="secondary" :loading="loadingMore" @click="loadMore">{{ t('common.loadMore') }}</GlassButton>
       </div>
     </div>
   </div>
@@ -60,6 +60,8 @@
 
 <!--suppress JSUnusedGlobalSymbols -->
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { nextTick } from 'vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import GlassCard from '~/components/ui/GlassCard.vue'
@@ -69,7 +71,8 @@ import type { NotificationDto } from '~/types/extra'
 
 definePageMeta({
   middleware: ['auth'],
-  ssr: false
+  ssr: false,
+  title: { k: 'notifications.title' }
 })
 
 const api = useNuxtApp().$api
@@ -155,7 +158,7 @@ const load = async (page = 1) => {
       newItems.forEach(attachHandlers)
     }
   } catch (e) {
-    toast.error('加载通知失败')
+    toast.error(t('notifications.failed'))
   } finally {
     loading.value = false
     loadingMore.value = false
@@ -174,7 +177,7 @@ const markRead = async (n: NotificationDto) => {
     await api.markNotificationRead(n.id)
     n.is_read = true
     cleanupObserver(n.id)
-  } catch { toast.error('���ʧ��') }
+  } catch { toast.error(t('notifications.failedMark')) }
 }
 
 const formatDate = (s: string) => new Date(s).toLocaleString('zh-CN')
@@ -355,7 +358,7 @@ const sanitizeUrl = (value?: string | null): string | undefined => {
 // 处理管理员审核操作
 const handleModerationAction = async (notification: NotificationDto, action: 'approve' | 'reject') => {
   if (!permissions.canManagePosts.value) {
-    toast.error('没有权限执行此操作')
+    toast.error(t('error.titles.403'))
     return
   }
   const meta = parseMeta(notification)
@@ -383,7 +386,7 @@ const handleModerationAction = async (notification: NotificationDto, action: 'ap
     // 刷新通知列表
     await refresh()
   } catch (e: any) {
-    toast.error(e?.message || '操作失败')
+    toast.error(e?.message || t('error.titles.unknown'))
   }
 }
 
@@ -396,15 +399,13 @@ const parseMeta = (n: NotificationDto): any => {
 const requestReview = async (postId: string) => {
   try {
     await api.requestPostReview(postId)
-    toast.success('已申请人工复核')
+    toast.success(t('posts.review'))
   } catch (e: any) {
-    toast.error(e?.message || '申请失败')
+    toast.error(e?.message || t('error.titles.unknown'))
   }
 }
 
 onUnmounted(() => cleanupObservers())
 
 onMounted(() => load(1))
-
-useHead({ title: '系统通知 - 郑州四中表白墙' })
 </script>

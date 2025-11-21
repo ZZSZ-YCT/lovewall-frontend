@@ -1,0 +1,336 @@
+{
+  "admin": {
+    "index": "管理"
+  },
+  "announcements": {
+    "close": "お知らせを閉じる",
+    "index": "お知らせ"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "アカウントを保護する",
+      "forms": {
+        "confirmPassword": "パスワードを認証する",
+        "confirmPasswordPlaceholder": "パスワードを繰り返してください",
+        "currentPassword": "現在のパスワード",
+        "currentPasswordPlaceholder": "現在のパスワードを入力してください",
+        "incorrectPassword": "古いパスワードが間違っています",
+        "newPassword": "新しいパスワード",
+        "newPasswordDescription": "少なくとも 6 文字で、数字、小文字/大文字、特殊文字を含めることを推奨します。",
+        "newPasswordPlaceholder": "新しいパスワードを入力してください（6文字以上）",
+        "repeatPasswordNotMatch": "2つの異なるパスワードが入力されました"
+      },
+      "index": "パスワードを変更する",
+      "success": "変更は成功しました。再度ログインしてください。",
+      "tips": {
+        "0": "個人情報に関係するパスワードは使用しないでください",
+        "1": "定期的にパスワードを変更する",
+        "2": "ウェブサイト間で同じパスワードを使用しないでください",
+        "3": "パスワードを安全に保管し、他人に教えないでください",
+        "index": "パスワードの安全"
+      },
+      "title": "パスワードを変更する - 鄭州第四高校告白壁"
+    },
+    "login": {
+      "description": "アカウントにサインイン",
+      "invalidCredentials": "ログインに失敗しました。ユーザー名とパスワードを確認してください。",
+      "passwordPlaceholder": "パスワードを入力してください",
+      "passwordTooShort": "少なくとも6文字",
+      "registerNow": "今すぐ登録",
+      "registerSuggestion": "アカウントをお持ちではありませんか？",
+      "title": "サインイン - 鄭州第四高校告白壁",
+      "usernamePlaceholder": "ユーザー名を入力してください",
+      "welcome": "おかえり"
+    },
+    "register": {
+      "agreeWithTerms": "利用規約をすでに読んで同意しました：",
+      "description": "シェアして、発見して、私たちとつながろう。",
+      "index": "アカウントを作成する",
+      "loginSuggestion": "すでにアカウントをお持ちですか?",
+      "notAgreeWithTerms": "まずは利用規約に同意してください",
+      "passwordTooLong": "パスワードは最大128文字まで",
+      "title": "サインアップ - 鄭州第四高校告白壁",
+      "usernameCharset": "文字、数字、下線のみ使用できます",
+      "usernameLimit": "3〜20文字で、文字、数字、下線のみ使用できます。",
+      "usernameTooLong": "ユーザー名は最大20文字です",
+      "usernameTooShort": "ユーザー名は3文字以上"
+    }
+  },
+  "captcha": {
+    "click": "順番にクリックしてください:",
+    "reference": "参考画像",
+    "rotate": "正しい角度に回転する"
+  },
+  "comment": {
+    "commentOversize": "コメントは500文字以内です",
+    "loginRequired": "サインインが必要です",
+    "noComments": "まだコメントはありません。",
+    "placeholder": "ここにアイデアを残す...",
+    "send": "コメントを投稿"
+  },
+  "comments": {
+    "recently": "最近のコメント"
+  },
+  "common": {
+    "admin": "管理者",
+    "bio": "自己紹介",
+    "browse": "投稿を探索",
+    "cancel": "キャンセル",
+    "captcha": "人間であることを教えてください",
+    "collapse": "折りたたむ",
+    "comment": "コメント",
+    "commonUser": "ユーザー",
+    "confirm": "確認",
+    "content": "コンテンツ",
+    "current": "現在",
+    "delete": "消去",
+    "detail": "詳細を確認する",
+    "disabled": "無効",
+    "dismiss": "抜かす",
+    "edited": "編集済み",
+    "email": "Eメール",
+    "enabled": "有効",
+    "expand": "展開",
+    "feature": "注目に設定",
+    "hide": "非表示",
+    "joinTime": "{time} に登録",
+    "known": "わかりました",
+    "layouts": {
+      "grid": "グリッドレイアウト",
+      "list": "リストレイアウト"
+    },
+    "loadMore": "さらに読み込む",
+    "loading": "読み込み中...",
+    "moderator": "モデレーター",
+    "nickname": "ニックネーム",
+    "ok": "OK",
+    "password": "パスワード",
+    "phone": "電話番号",
+    "pin": "固定する",
+    "preview": "プレビュー",
+    "previous": "前のページに戻る",
+    "pullDownLoading": "下に引いてもっと見る",
+    "refresh": "リフレッシュ",
+    "reset": "リセット",
+    "save": "保存",
+    "share": "シェア",
+    "show": "表示",
+    "success": "成功",
+    "superAdmin": "スーパー管理者",
+    "unfeature": "注目を解除",
+    "unknown": "未知",
+    "unpin": "固定を解除する",
+    "username": "ユーザー名"
+  },
+  "error": {
+    "messages": {
+      "401": "このページにアクセスする前にサインインしてください。",
+      "403": "このページにアクセスする権限がありません。管理者にお問い合わせください。",
+      "404": "申し訳ありませんが、アクセスしたページは存在しないか削除されています。",
+      "500": "サーバーに問題が発生しています。しばらくしてからもう一度お試しください。",
+      "unknown": "予期しないエラーが発生しました。しばらくしてからもう一度お試しください。"
+    },
+    "title": "{code} - {message} - 鄭州第四高校告白壁",
+    "titles": {
+      "401": "サインインが必要です",
+      "403": "アクセスが拒否されました",
+      "404": "ページが見つかりません",
+      "500": "サーバーエラー",
+      "unknown": "問題が発生しました"
+    }
+  },
+  "home": {
+    "backHome": "ホームに戻る",
+    "contact": "お問い合わせ",
+    "description": "生徒同士が連絡を取り合う壁",
+    "login": "サインイン",
+    "logout": "サインアウト",
+    "privacy": "プライバシー規約",
+    "register": "サインアップ",
+    "title": "鄭州第四高校告白壁",
+    "tos": "利用規約"
+  },
+  "notifications": {
+    "amount": "合計 {number} 点",
+    "checkLater": "後でまた来てください。",
+    "description": "ここで通知を受け取る",
+    "empty": "まだ通知はありません",
+    "failed": "通知を読み込めませんでした。",
+    "failedMark": "既読にできませんでした。",
+    "index": "通知",
+    "title": "通知 - 鄭州第四高校告白壁",
+    "unread": "未読"
+  },
+  "permission": {
+    "manage_announcements": "アナウンスの管理",
+    "manage_announcements_group": "コミュニティの管理",
+    "manage_content": "コンテンツの管理",
+    "manage_featured": "注目の管理",
+    "manage_posts": "投稿/コメントの管理",
+    "manage_tags": "タグの管理",
+    "manage_tags_group": "システムの管理",
+    "manage_users": "ユーザーの管理"
+  },
+  "posts": {
+    "404": "投稿が見つかりません",
+    "alt": {
+      "confessionalImage": "{author}の告白投稿画像",
+      "socialImage": "{author} のソーシャル投稿画像"
+    },
+    "beFirst": "最初になりましょう",
+    "confessionTo": "{author} から {target} への告白",
+    "contentPlaceholder": "投稿内容を入力",
+    "deletedUser": "削除されたアカウント",
+    "deniedAudit": "監査に合格しなかった",
+    "description_review": "レビューをリクエストする: 間違いだと思われる場合は、手動レビューをリクエストできます。",
+    "empty": "まだ投稿はありません",
+    "locked": "ロックされています",
+    "pendingAudit": "審査待ち",
+    "post": "投稿",
+    "publish": {
+      "addPhoto0": "写真をここにドラッグするか、",
+      "addPhoto1": "写真を追加",
+      "anonymousRole": "カスタム名",
+      "cantEmpty": "空にすることはできません",
+      "cantOversize": "2000文字を超えることはできません",
+      "cardType": "カードタイプ *",
+      "chooseRole": "役割を選択",
+      "confessionCard": "告白カード",
+      "description_anonymousRole": "匿名または他のニックネームを使用する",
+      "description_confessional": "告白記事を公開します。",
+      "description_social": "連絡先情報やその他の情報を共有します。",
+      "edit": "投稿を編集",
+      "error": {
+        "imageOversize": "写真が大きすぎます",
+        "imageTooMany": "写真をアップロードしすぎました",
+        "unsupportedImageFormat": "サポートされていない画像形式"
+      },
+      "imageTotal": "アップロードした画像: {number} / 9 枚",
+      "index": "投稿",
+      "limits": "JPG、PNG、WebP、GIF形式に対応、最大9枚の写真、1枚あたり最大5MB",
+      "nameOversize": "ニックネームは50文字以内にしてください。",
+      "namePlaceholder": "ニックネームを入力してください",
+      "publishing": "投稿中...",
+      "selfRole": "私のニックネームを使用してください",
+      "socialCard": "コミュニケーションカード",
+      "targetName": "告白対象 *",
+      "targetNamePlaceholder": "ニックネームを入力してください",
+      "tip": {
+        "0": "平和で誠実であること",
+        "1": "写真をアップロードすると投稿の価値が高まります",
+        "index": "投稿提示"
+      },
+      "toasts": {
+        "sent": "投稿済み、監査待ち"
+      },
+      "uploadImage": "写真をアップロードする（オプション）",
+      "uploadMore": "もっと写真をアップロード"
+    },
+    "recently": "最近の投稿",
+    "requestReview": "手動レビューをリクエストする",
+    "review": "手動レビューのリクエスト",
+    "reviewRequired": "手動レビューが必要",
+    "socialFrom": "{author} さんの投稿"
+  },
+  "seo": {
+    "description": "生徒同士が連絡を取り合う壁",
+    "keywords": "鄭州第四高等学校,鄭州第四中学校、鄭州第四中学校,学校コミュニティ,生徒コミュニケーション,学生のディスカッション",
+    "title": "鄭州第四高校告白壁"
+  },
+  "share": {
+    "copied": "クリップボードにコピーされました",
+    "success": "共有に成功しました"
+  },
+  "time": {
+    "beforeDays": "{days} 日前",
+    "beforeHours": "{hours} 前",
+    "beforeMinutes": "{minutes} 前",
+    "expireHour": "{hour}時間{minutes}分後に期限切れになります",
+    "expireMinutes": "{minutes} 分後に期限切れになります",
+    "expireSoon": "まもなく期限切れ",
+    "expired": "期限切れ",
+    "just": "ちょうど今"
+  },
+  "user": {
+    "center": "パーソナルセンター",
+    "centerTitle": "パーソナルセンター - 鄭州第四高校告白壁",
+    "centers": {
+      "description": "個人プロフィールとコンテンツを管理する",
+      "editProfile": "プロフィールを編集",
+      "joinedDays": "入社日数",
+      "lastLogin": "前回のログイン時刻",
+      "registerTime": "登録時刻"
+    },
+    "commentedOn": "コメントを投稿しました",
+    "comments": {
+      "delete_description": "このコメントを削除してもよろしいですか? 削除後は復元できません。",
+      "description": "ここでコメントを管理してください",
+      "edit": "コメントを編集",
+      "edit_placeholder": "ここでコメントを編集してください...",
+      "empty": "まだコメントはありません",
+      "source": "コメントした",
+      "totalComments": "合計コメント数"
+    },
+    "description": "{siteName} の {nickname} のホームページには、公開告白やソーシャル投稿が表示されます。",
+    "editAvatar": "変更するにはアバターをクリックしてください",
+    "hasPerm": "所有権限:",
+    "myComments": "マイコメント",
+    "myCommentsTitle": "マイコメント - 鄭州第四高校告白壁",
+    "myPosts": "私の投稿",
+    "myPostsTitle": "私の投稿 - 鄭州第四高校告白壁",
+    "myTags": "マイタグ",
+    "myTagsTitle": "マイタグ - 鄭州第四高校告白壁",
+    "noActivity": "まだ活動はありません",
+    "noPerm": "このアカウントには権限がありません",
+    "noPosts": "{nickname} はまだ投稿を公開していません",
+    "offline": "オフライン",
+    "offlineAndTime": "オフライン - 最終オンライン: {time}",
+    "online": "オンライン",
+    "posts": {
+      "allState": "すべてのステータス",
+      "common": "一般",
+      "confirmDeletion": "削除を確認",
+      "description": "ここで投稿を管理します",
+      "hidden": "非表示済み",
+      "noPosts": "まだ投稿はありません",
+      "published": "リリース済み",
+      "totalFeatured": "注目記事の総数",
+      "totalPinned": "固定された投稿の合計数",
+      "totalPosts": "合計投稿数"
+    },
+    "postsFrom": "{nickname} さんの投稿",
+    "profile": {
+      "bioOversize": "自己紹介は最大500文字まで",
+      "imageTooLarge": "画像ファイルは5MBを超えてはなりません。",
+      "invalidEmail": "無効なメールアドレス",
+      "invalidPhone": "無効な電話番号",
+      "notImage": "画像ファイルではありません。"
+    },
+    "publish": {
+      "description": "愛を分かち合いましょう"
+    },
+    "recently": "最近のアクティビティ",
+    "superAdminPerms": "スーパー管理者はすべてのシステム権限を所有します",
+    "tags": {
+      "acquireTime": "取得時間: {time}",
+      "description": "ここでタグを管理します",
+      "disabled": "タグが無効です。アクティブ化できません。",
+      "empty": "タグはまだありません",
+      "getOne": "引き換えて新しいタグを入手",
+      "notSet": "未設定",
+      "owns": "所有タグの数",
+      "redeem": {
+        "activateCode": "引き換えコード",
+        "description": "アクティベーションコードを入力してください",
+        "index": "タグを利用する",
+        "recently": "最近取得した",
+        "redeemed": "おめでとうございます！タグ「{title}」が引き換えられ、自動的に有効化されました。\n投稿とコメントでご確認いただけます。",
+        "redeemed_short": "引き換えは成功し、自動的に有効化されました。",
+        "wrongPattern": "引き換えコードが間違っています"
+      },
+      "set": "「{title}」を現在のタグとして設定します",
+      "unset": "現在のタグの設定を解除",
+      "useThis": "現在のものとして設定"
+    }
+  }
+}

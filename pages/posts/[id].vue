@@ -9,10 +9,10 @@
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <div class="glass-card p-8">
-        <h2 class="text-2xl font-bold text-red-600 mb-4">加载失败</h2>
+        <h2 class="text-2xl font-bold text-red-600 mb-4">{{ t('error.titles.unknown') }}</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
         <GlassButton variant="secondary" @click="() => refresh()">
-          重新加载
+          {{ t('common.refresh') }}
         </GlassButton>
       </div>
     </div>
@@ -27,7 +27,7 @@
             <ImageGrid
               v-if="post.images?.length"
               :images="post.images"
-              :alt-prefix="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? `${post.author_name}对${post.target_name}的表白` : `${post.author_name}的交流`"
+              :alt-prefix="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? t('posts.confessionTo', { author: post.author_name, target: post.target_name }) : t('posts.socialFrom', { author: post.author_name })"
             />
             <div
               v-if="!post.images?.length"
@@ -69,7 +69,7 @@
               <div
                 class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
                 :class="post.author_is_online ? 'bg-emerald-400' : 'bg-gray-400'"
-                :title="post.author_is_online ? '在线' : '离线'"
+                :title="post.author_is_online ? t('user.online') : t('user.offline')"
               />
             </div>
           </div>
@@ -120,7 +120,7 @@
                     <div
                       class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
                       :class="post.author_is_online ? 'bg-emerald-400' : 'bg-gray-400'"
-                      :title="post.author_is_online ? '在线' : '离线'"
+                      :title="post.author_is_online ? t('user.online') : t('user.offline')"
                     />
                   </div>
 
@@ -158,36 +158,36 @@
                     <span
                       v-if="(auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) && post.is_pending_review"
                       class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full"
-                      :title="post.audit_msg || '需要人工审核'"
+                      :title="post.audit_msg || t('posts.reviewRequired')"
                     >
-                      待审核
+                      {{ t('posts.pendingAudit') }}
                     </span>
 
                     <span
                       v-if="(auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) && post.manual_review_requested"
                       class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded-full"
-                      title="用户已申请人工复核"
+                      :title="t('posts.review')"
                     >
-                      申请复核
+                      {{ t('posts.requestReview') }}
                     </span>
 
                     <span
                     v-if="post.is_featured"
                     class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
                   >
-                    精华
+                    {{ t('common.feature') }}
                   </span>
                   <span
                     v-if="post.is_pinned"
                     class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full"
                   >
-                    置顶
+                    {{ t('common.pin') }}
                   </span>
                   <span
                     v-if="(auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')) && post.status === 1"
                     class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full"
                   >
-                    已隐藏
+                    {{ t('common.hide') }}
                   </span>
                 </div>
               </div>
@@ -229,7 +229,7 @@
                       :disabled="actionLoading"
                       @click="togglePin"
                     >
-                      {{ post.is_pinned ? '取消置顶' : '置顶' }}
+                      {{ post.is_pinned ? t('common.unpin') : t('common.pin') }}
                     </button>
 
                     <button
@@ -239,7 +239,7 @@
                       :disabled="actionLoading"
                       @click="toggleFeature"
                     >
-                      {{ post.is_featured ? '取消精华' : '精华' }}
+                      {{ post.is_featured ? t('common.unfeature') : t('common.feature') }}
                     </button>
                   </template>
 
@@ -250,7 +250,7 @@
                     @click="openEditPost"
                   >
                     <EditIcon class="w-3 h-3" />
-                    <span>编辑帖子</span>
+                    <span>{{ t('posts.publish.edit') }}</span>
                   </button>
 
                   <button
@@ -260,7 +260,7 @@
                     :disabled="actionLoading"
                     @click="toggleHide"
                   >
-                    {{ post.status === 1 ? '恢复' : '隐藏' }}
+                    {{ post.status === 1 ? t('common.show') : t('common.hide') }}
                   </button>
 
                   <button
@@ -280,7 +280,7 @@
                     :disabled="actionLoading"
                     @click="confirmDelete"
                   >
-                    删除
+                    {{ t('common.delete') }}
                   </button>
                 </div>
               </div>
@@ -293,7 +293,7 @@
       <GlassCard class="p-6">
         <div class="border-b border-white/20 pb-4 mb-6">
           <h2 class="text-xl font-semibold text-gray-800">
-            评论 ({{ commentsData?.total || 0 }})
+            {{ t('common.comment') }} ({{ commentsData?.total || 0 }})
           </h2>
         </div>
 
@@ -320,7 +320,7 @@
                   <div class="relative">
                     <GlassTextarea
                       v-model="commentForm.content"
-                      placeholder="写下你的看法..."
+                      :placeholder="t('comment.placeholder')"
                       :rows="5"
                       :error="commentErrors.content"
                       :input-class="'pr-28 min-h-[140px]'"
@@ -332,23 +332,23 @@
                       :disabled="!commentForm.content.trim()"
                       class="absolute right-3 bottom-3 rounded-full h-10 px-5 !bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
                     >
-                      发布评论
+                      {{ t('comment.send') }}
                     </GlassButton>
                   </div>
                 </form>
               </div>
 
               <div v-else class="mb-6 text-center py-8">
-                <p class="text-gray-600 mb-4">登录后可发表评论</p>
+                <p class="text-gray-600 mb-4">{{ t('comment.loginRequired') }}</p>
                 <NuxtLink to="/auth/login" class="glass-button">
-                  立即登录
+                  {{ t('home.login') }}
                 </NuxtLink>
               </div>
             </template>
 
             <template #fallback>
               <div class="mb-6 text-center py-8 opacity-0 select-none">
-                登录后可发表评论
+                {{ t('comment.loginRequired') }}
               </div>
             </template>
           </ClientOnly>
@@ -363,7 +363,7 @@
 
               <!-- No comments -->
               <div v-else-if="!comments.length" class="text-center py-8 text-gray-500">
-                还没有评论，来发表第一条评论吧！
+                {{ t('comment.noComments') }}
               </div>
 
               <!-- Comments -->
@@ -388,7 +388,7 @@
                       class="flex items-center gap-2 mb-3"
                     >
                       <PinIcon class="w-4 h-4 text-brand-600" />
-                      <span class="text-sm font-medium text-brand-600">置顶评论</span>
+                      <span class="text-sm font-medium text-brand-600">{{ t('common.pin') }}</span>
                     </div>
                     <div class="flex flex-wrap items-start gap-3">
                       <CommentUserInfo
@@ -428,10 +428,10 @@
                 >
                   <div v-if="commentsLoading" class="flex items-center justify-center gap-2 text-gray-600">
                     <LoadingSpinner size="sm" />
-                    <span>加载更多评论...</span>
+                    <span>{{ t('common.loadMore') }}</span>
                   </div>
                   <div v-else class="text-gray-400 text-sm">
-                    向下滚动加载更多评论
+                    {{ t('common.pullDownLoading') }}
                   </div>
                 </div>
               </div>
@@ -444,29 +444,28 @@
     <!-- Edit Post Modal -->
     <GlassModal
       :is-open="isEditingPost"
-      title="编辑帖子"
+      :title="t('posts.publish.edit')"
       max-width="max-w-2xl"
       @close="closeEditPost"
     >
-      <div class="text-gray-700 mb-6">注：由于缓存原因，帖子可能需要一段时间才能完成更新</div>
       <form class="space-y-4" @submit.prevent="savePostEdit">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">作者名称</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.nickname') }}</label>
           <GlassInput v-model="editForm.author_name" autocomplete="nickname" required />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">对象名称</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('posts.publish.targetName') }}</label>
           <GlassInput v-model="editForm.target_name" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.content') }}</label>
           <GlassTextarea
             v-model="editForm.content"
             :rows="6"
             :input-class="'min-h-[200px]'"
-            placeholder="请输入帖子内容"
+            :placeholder="t('posts.contentPlaceholder')"
             required
           />
         </div>
@@ -477,7 +476,7 @@
             variant="outline"
             @click="closeEditPost"
           >
-            取消
+            {{ t('common.cancel') }}
           </GlassButton>
           <GlassButton
             type="submit"
@@ -485,17 +484,16 @@
             :disabled="!editForm.content.trim()"
             class="!bg-pink-500 hover:!bg-pink-600 !text-white !shadow-md !border-pink-400/30"
           >
-            保存
+            {{ t('common.save') }}
           </GlassButton>
         </div>
       </form>
     </GlassModal>
 
-
     <!-- AI Rejection Modal -->
     <GlassModal
       :is-open="showAIRejectionModal"
-      title="内容审核未通过"
+      :title="t('posts.deniedAudit')"
       max-width="max-w-lg"
       @close="showAIRejectionModal = false"
     >
@@ -507,7 +505,7 @@
           <div class="flex-1">
             <p class="text-gray-700">{{ aiRejectionInfo.message }}</p>
             <div class="mt-3 p-3 bg-gray-50 rounded-lg">
-              <p class="text-sm text-gray-600 mb-1">您的内容：</p>
+              <p class="text-sm text-gray-600 mb-1">{{ t('common.content') }}</p>
               <p class="text-sm font-medium text-gray-800 whitespace-pre-wrap">{{ aiRejectionInfo.content }}</p>
             </div>
           </div>
@@ -515,7 +513,7 @@
 
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
           <p class="text-sm text-blue-800">
-            <strong>申请人工复核：</strong>如果您认为这是误判，可以申请管理员进行人工复核。
+            {{ t('posts.description_review') }}
           </p>
         </div>
       </div>
@@ -526,13 +524,13 @@
             variant="secondary"
             @click="showAIRejectionModal = false"
           >
-            好
+            {{ t('common.known') }}
           </GlassButton>
           <GlassButton
             :loading="reviewRequesting"
             @click="requestReview"
           >
-            申请复核
+            {{ t('posts.requestReview') }}
           </GlassButton>
         </div>
       </template>
@@ -542,6 +540,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { CalendarIcon, EditIcon, PinIcon } from 'lucide-vue-next'
 import {type LocationQueryRaw, type LocationQueryValue} from 'vue-router'
 import GlassButton from '~/components/ui/GlassButton.vue'
@@ -657,16 +657,7 @@ onMounted(async () => {
   }
 })
 
-const post = ref<PostDto | null>(postData.value?.post ?? null)
-
-if (import.meta.client) {
-  watch(
-    () => postData.value?.post,
-    (val) => {
-      if (val) post.value = val
-    }
-  )
-}
+const post = computed(() => postData.value?.post)
 
 watchEffect(() => {
   if (postData.value?.authorAvatar) authorAvatar.value = postData.value.authorAvatar
@@ -737,19 +728,18 @@ const savePostEdit = async () => {
       content: editForm.value.content
     }
     const updated = await api.updatePost(post.value.id, payload)
-    post.value = updated
 
     const index = home.posts.findIndex(item => item.id === updated.id)
     if (index !== -1) {
       home.posts[index] = { ...home.posts[index], ...updated }
     }
 
-    toast.success('帖子已更新')
+    toast.success(t('common.success'))
     isEditingPost.value = false
     pendingOpenEdit.value = false
     removeEditQuery()
   } catch (error: any) {
-    toast.error(error?.message || '更新失败')
+    toast.error(error?.message || t('error.messages.unknown'))
   } finally {
     editSaving.value = false
   }
@@ -759,8 +749,8 @@ const savePostEdit = async () => {
 const submitComment = async () => {
   if (!commentForm.content.trim()) return
   if (commentForm.content.length > 500) {
-    commentErrors.value = { content: '评论内容不能超过500个字符' }
-    toast.error('评论内容不能超过500个字符')
+    commentErrors.value = { content: t('comment.commentOversize') }
+    toast.error(t('comment.commentOversize'))
     return
   }
   commentSubmitting.value = true
@@ -777,17 +767,9 @@ const submitComment = async () => {
     }
     comments.value.unshift(enriched as any)
     commentForm.content = ''
-    toast.success('评论发表成功')
+    toast.success(t('common.success'))
   } catch (err: any) {
-    if (err?.response?.status === 422 && err?.response?.data?.error?.code === 'AI_REJECTED') {
-      const reason = err.response.data.error.extras?.reason
-      showAIRejectionModal.value = true
-      aiRejectionInfo.value = {
-        message: reason ? `评论未通过审核：${reason}` : '评论未通过审核',
-        type: 'comment',
-        content: commentForm.content
-      }
-    } else toast.error('评论发表失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     commentSubmitting.value = false
   }
@@ -824,15 +806,15 @@ const toggleCommentPin = async (comment: CommentDto) => {
     let result: { is_pinned: boolean }
     if (comment.is_pinned) {
       result = await api.unpinComment(comment.id)
-      toast.success('已取消置顶')
+      toast.success(t('common.success'))
     } else {
       result = await api.pinComment(comment.id)
-      toast.success('评论已置顶')
+      toast.success(t('common.success'))
     }
     comment.is_pinned = result.is_pinned
     await loadComments()
   } catch (error: any) {
-    toast.error(error?.message || '操作失败')
+    toast.error(error?.message || t('error.messages.unknown'))
   }
 }
 
@@ -851,9 +833,9 @@ const hideComment = async (comment: CommentDto) => {
 
     // Update local state
     comment.status = comment.status === 0 ? 1 : 0
-    toast.success(comment.status === 0 ? '评论已恢复' : '评论已隐藏')
+    toast.success(t('common.success'))
   } catch (err) {
-    toast.error('操作失败')
+    toast.error(t('error.messages.unknown'))
   }
 }
 
@@ -1060,8 +1042,8 @@ definePageMeta({
 })
 
 // SEO
-const siteName = '\u90d1\u5dde\u56db\u4e2d\u8868\u767d\u5899'
-const defaultPostDescription = '\u90d1\u5dde\u56db\u4e2d\u5b98\u65b9\u6821\u56ed\u4fe1\u606f\u4ea4\u6d41\u5e73\u53f0\uff0c\u5e2e\u52a9\u540c\u5b66\u533f\u540d\u5206\u4eab\u5fc3\u58f0\u3001\u8868\u767d\u4e0e\u6821\u56ed\u8d44\u8baf\uff0c\u8425\u9020\u6e29\u6696\u771f\u5b9e\u7684\u4e92\u52a8\u793e\u533a\u3002'
+const siteName = t('seo.title')
+const defaultPostDescription = t('seo.description')
 const runtimeConfig = useRuntimeConfig()
 
 const normalizedSiteOrigin = computed(() => {
@@ -1095,18 +1077,18 @@ const defaultOgImage = computed(() => {
 
 const postHeadline = computed(() => {
   if (!post.value) {
-    return '\u5e16\u5b50\u4e0d\u5b58\u5728'
+    return t('posts.404')
   }
   const confession = post.value.card_type !== 'communication' && post.value.card_type !== 'social'
   if (confession && post.value.target_name) {
-    return `${post.value.author_name}\u5bf9${post.value.target_name}\u7684\u8868\u767d`
+    return t('posts.confessionTo', { author: post.value.author_name, target: post.value.target_name })
   }
-  return `${post.value.author_name}\u7684\u6295\u7a3f`
+  return t('posts.socialFrom', { author: post.value.author_name })
 })
 
 const postSeoTitle = computed(() => {
   if (!post.value) {
-    return `\u5e16\u5b50\u4e0d\u5b58\u5728 - ${siteName}`
+    return `${t('posts.404')} - ${siteName}`
   }
   return `${postHeadline.value} - ${siteName}`
 })

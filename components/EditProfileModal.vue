@@ -1,11 +1,10 @@
 <template>
   <GlassModal
     :is-open="isOpen"
-    title="编辑个人资料"
+    :title="t('user.centers.editProfile')"
     max-width="max-w-2xl"
     @close="closeModal"
   >
-    <div class="text-gray-700 mb-6">注：由于缓存原因，个人可能需要一段时间才能完成更新</div>
     <!-- Form -->
     <form @submit.prevent="handleSubmit">
       <div class="space-y-6">
@@ -39,18 +38,18 @@
                 @change="handleAvatarChange"
               >
             </div>
-            <p class="text-sm text-gray-600">点击头像可更换</p>
+            <p class="text-sm text-gray-600">{{ t('user.editAvatar') }}</p>
           </div>
 
           <!-- Display Name -->
           <div>
             <label for="display_name" class="block text-sm font-medium text-gray-700 mb-2">
-              显示名称
+              {{ t('common.nickname') }}
             </label>
             <GlassInput
               id="display_name"
               v-model="form.display_name"
-              placeholder="请输入显示名称（可选）"
+              :placeholder="t('posts.publish.namePlaceholder')"
               autocomplete="nickname"
               :error="errors.display_name"
             />
@@ -59,13 +58,13 @@
           <!-- Email -->
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-              邮箱
+              {{ t('common.email') }}
             </label>
             <GlassInput
               id="email"
               v-model="form.email"
               type="email"
-              placeholder="请输入邮箱地址（可选）"
+              :placeholder="t('common.email')"
               autocomplete="email"
               :error="errors.email"
             />
@@ -74,12 +73,12 @@
           <!-- Phone -->
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-              手机号
+              {{ t('common.phone') }}
             </label>
             <GlassInput
               id="phone"
               v-model="form.phone"
-              placeholder="请输入手机号（可选）"
+              :placeholder="t('common.phone')"
               autocomplete="tel"
               :error="errors.phone"
             />
@@ -88,12 +87,12 @@
           <!-- Bio -->
           <div>
             <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">
-              个人简介
+              {{ t('common.bio') }}
             </label>
             <GlassTextarea
               id="bio"
               v-model="form.bio"
-              placeholder="介绍一下你自己吧（可选）"
+              :placeholder="t('common.bio')"
               :rows="4"
               :max-length="500"
               :error="errors.bio"
@@ -110,7 +109,7 @@
           class="glass-button-secondary"
           @click="closeModal"
         >
-          取消
+          {{ t('common.cancel') }}
         </button>
         <button
           type="submit"
@@ -119,7 +118,7 @@
           @click="handleSubmit"
         >
           <LoadingSpinner v-if="loading" size="sm" class="mr-2" />
-          保存
+          {{ t('common.save') }}
         </button>
       </div>
     </template>
@@ -127,6 +126,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
+
 import { CameraIcon } from 'lucide-vue-next'
 import GlassModal from '~/components/ui/GlassModal.vue'
 import GlassInput from '~/components/ui/GlassInput.vue'
@@ -196,19 +197,19 @@ const validateForm = () => {
 
   // Validate email
   if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    errors.email = '请输入有效的邮箱地址'
+    errors.email = t('user.profile.invalidEmail')
     isValid = false
   }
 
   // Validate phone
   if (form.phone && !/^1[3-9]\d{9}$/.test(form.phone)) {
-    errors.phone = '请输入有效的手机号'
+    errors.phone = t('user.profile.invalidPhone')
     isValid = false
   }
 
   // Validate bio length
   if (form.bio && form.bio.length > 500) {
-    errors.bio = '个人简介不能超过500字'
+    errors.bio = t('user.profile.bioOversize')
     isValid = false
   }
 
@@ -223,13 +224,13 @@ const handleAvatarChange = (event: Event) => {
 
   // Validate file type
   if (!file.type.startsWith('image/')) {
-    useToast().error('请选择图片文件')
+    useToast().error(t('user.profile.notImage'))
     return
   }
 
   // Validate file size (max 5MB)
   if (file.size > 5 * 1024 * 1024) {
-    useToast().error('图片文件不能超过5MB')
+    useToast().error(t('user.profile.imageTooLarge'))
     return
   }
 
@@ -283,12 +284,12 @@ const handleSubmit = async () => {
     // Update auth store
     auth.setCurrentUser(updatedUser)
     
-    useToast().success('个人资料更新成功')
+    useToast().success(t('common.success'))
     emit('updated', updatedUser)
     closeModal()
   } catch (error: any) {
     console.error('Update profile error:', error)
-    useToast().error('更新失败，请稍后重试')
+    useToast().error(t('error.messages.unknown'))
   } finally {
     loading.value = false
   }

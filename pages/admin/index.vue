@@ -271,7 +271,8 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'admin',
-  ssr: false
+  ssr: false,
+  title: '管理后台 - 郑州四中表白墙'
 })
 
 // Stores
@@ -387,13 +388,5 @@ const formatDate = (dateString: string) => {
 // Initialize
 onMounted(() => {
   loadDashboardData()
-})
-
-// SEO
-useHead({
-  title: '管理后台 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '郑州四中表白墙管理后台，系统管理和内容审核' }
-  ]
 })
 </script>

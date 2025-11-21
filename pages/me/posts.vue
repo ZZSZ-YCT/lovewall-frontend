@@ -2,25 +2,25 @@
   <div class="max-w-4xl mx-auto space-y-6">
     <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">我的表白</h1>
-      <p class="text-gray-600 mt-2">管理你发布的所有表白内容</p>
+      <h1 class="page-title">{{ t('user.myPosts') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('user.posts.description') }}</p>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-brand-600 mb-1">{{ postsData?.total || 0 }}</div>
-        <div class="text-sm text-gray-600">总表白数</div>
+        <div class="text-sm text-gray-600">{{ t('user.posts.totalPosts') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-green-600 mb-1">{{ featuredCount }}</div>
-        <div class="text-sm text-gray-600">精华表白</div>
+        <div class="text-sm text-gray-600">{{ t('user.posts.totalFeatured') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-blue-600 mb-1">{{ pinnedCount }}</div>
-        <div class="text-sm text-gray-600">置顶表白</div>
+        <div class="text-sm text-gray-600">{{ t('user.posts.totalPinned') }}</div>
       </GlassCard>
     </div>
 
@@ -30,7 +30,7 @@
         <div class="flex gap-3">
           <NuxtLink to="/posts/new" class="glass-button">
             <PlusIcon class="w-4 h-4 mr-2" />
-            发布新表白
+            {{ t('posts.publish.index') }}
           </NuxtLink>
         </div>
 
@@ -41,9 +41,9 @@
             class="glass-input px-3 py-2 text-sm"
             @change="applyFilters"
           >
-            <option value="">全部状态</option>
-            <option value="0">已发布</option>
-            <option value="1">已隐藏</option>
+            <option value="">{{ t('user.posts.allState') }}</option>
+            <option value="0">{{ t('user.posts.published') }}</option>
+            <option value="1">{{ t('user.posts.hidden') }}</option>
           </select>
           
           <select
@@ -51,9 +51,9 @@
             class="glass-input px-3 py-2 text-sm"
             @change="applyFilters"
           >
-            <option value="">全部类型</option>
-            <option value="true">精华</option>
-            <option value="false">普通</option>
+            <option value="">{{ t('user.posts.allState') }}</option>
+            <option value="true">{{ t('common.feature') }}</option>
+            <option value="false">{{ t('user.posts.common') }}</option>
           </select>
         </div>
       </div>
@@ -70,8 +70,7 @@
         <div class="w-16 h-16 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <HeartIcon class="w-8 h-8 text-white" />
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">还没有发布表白</h3>
-        <p class="text-gray-600 mb-6">分享你的第一个爱意表达吧！</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.posts.noPosts') }}</h3>
         <!-- 移除底部发布按钮，保留顶部入口 -->
       </GlassCard>
     </div>
@@ -90,7 +89,7 @@
               <NuxtPicture
                 v-if="post.images?.length"
                 :src="assetUrl(post.images[0])"
-                :alt="`${post.author_name}对${post.target_name}的表白`"
+                :alt="t('posts.confessionTo', { author: post.author_name, target: post.target_name})"
                 class="w-24 h-24 object-cover rounded-lg"
                 :modifiers="{ fit: 'cover', quality: 60 }"
                 sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
@@ -111,19 +110,19 @@
                       v-if="post.status === 0 && post.is_featured"
                       class="px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full"
                     >
-                      精华
+                      {{ t('common.feature') }}
                     </span>
                     <span
                       v-if="post.status === 0 && post.is_pinned"
                       class="px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full"
                     >
-                      置顶
+                      {{ t('common.pin') }}
                     </span>
                     <span
                       v-if="post.status === 1"
                       class="px-2 py-0.5 text-xs bg-gray-100 text-gray-800 rounded-full"
                     >
-                      已隐藏
+                      {{ t('user.posts.hidden') }}
                     </span>
                   </div>
                 </div>
@@ -133,7 +132,7 @@
                   <GlassButton
                     variant="secondary"
                     class="!p-2 !text-red-600 hover:!bg-red-50"
-                    title="删除"
+                    :title="t('common.delete')"
                     @click.stop="confirmDelete(post)"
                   >
                     <Trash2Icon class="w-4 h-4" />
@@ -152,7 +151,7 @@
                   
                   <span v-if="post.updated_at && post.updated_at !== post.created_at" class="flex items-center gap-1">
                     <ClockIcon class="w-4 h-4" />
-                    已编辑
+                    {{ t('common.edited') }}
                   </span>
                 </div>
 
@@ -182,7 +181,7 @@
           variant="secondary"
           @click="loadMore"
         >
-          加载更多
+          {{ t('common.loadMore') }}
         </GlassButton>
       </div>
     </div>
@@ -193,7 +192,7 @@
       class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
     >
       <GlassCard class="p-6 max-w-md mx-4">
-        <h3 class="text-lg font-semibold mb-4">确认删除</h3>
+        <h3 class="text-lg font-semibold mb-4">{{ t('user.posts.confirmDeletion') }}</h3>
         <p class="text-gray-600 mb-6">
           确定要删除表白"{{ deleteModal.post?.author_name }} → {{ deleteModal.post?.target_name }}"吗？
           删除后无法恢复。
@@ -219,6 +218,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import {
   PlusIcon,
   HeartIcon,
@@ -235,7 +236,8 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
 
 definePageMeta({
   middleware: 'auth',
-  ssr: false
+  ssr: false,
+  title: { k: 'user.myPostsTitle' }
 })
 
 // Stores
@@ -304,7 +306,7 @@ const loadPosts = async (page = 1, reset = false) => {
     }
     postsData.value = data
   } catch (error: any) {
-    toast.error('加载表白列表失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     loading.value = false
     loadingMore.value = false
@@ -354,11 +356,11 @@ const deletePost = async () => {
       postsData.value.total -= 1
     }
     
-    toast.success('表白已删除')
+    toast.success(t('common.success'))
     deleteModal.show = false
     deleteModal.post = null
   } catch (error) {
-    toast.error('删除失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     deleting.value = false
   }
@@ -393,12 +395,5 @@ onMounted(() => {
   loadPosts()
 })
 
-// SEO
-useHead({
-  title: '我的表白 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '管理你发布的所有表白内容' }
-  ]
-})
 </script>
 

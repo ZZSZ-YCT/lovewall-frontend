@@ -3,9 +3,9 @@
     <!-- Header -->
     <section>
       <div class="page-header">
-        <h1 class="page-title">郑州四中表白墙</h1>
+        <h1 class="page-title">{{ t('home.title') }}</h1>
         <p class="text-gray-600 max-w-2xl mx-auto">
-          校园信息交流平台，在这里发布心里话、分享校园趣事，与同学保持联系。
+          {{ t('home.description') }}
         </p>
       </div>
 
@@ -17,7 +17,7 @@
             class="glass-button-secondary inline-flex items-center gap-2 rounded-full"
           >
             <PlusIcon class="w-5 h-5" />
-            发表表白
+            {{ t('posts.post') }}
           </NuxtLink>
         </div>
       </ClientOnly>
@@ -28,7 +28,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <ClockIcon class="w-5 h-5 text-gray-600" />
-          <h2 class="text-xl font-semibold text-gray-800">最新表白</h2>
+          <h2 class="text-xl font-semibold text-gray-800">{{ t('posts.recently') }}</h2>
         </div>
         <div class="flex items-center gap-2">
           <!-- 布局切换 -->
@@ -43,7 +43,7 @@
                   ? 'bg-white text-brand-600 shadow-sm'
                   : 'text-gray-600 hover:text-brand-600'
               ]"
-              title="宫格布局"
+              :title="t('common.layouts.grid')"
               @click="switchLayout('grid')"
             >
               <GridIcon class="w-4 h-4" />
@@ -55,7 +55,7 @@
                   ? 'bg-white text-brand-600 shadow-sm'
                   : 'text-gray-600 hover:text-brand-600'
               ]"
-              title="列表布局"
+              :title="t('common.layouts.list')"
               @click="switchLayout('list')"
             >
               <ListIcon class="w-4 h-4" />
@@ -69,7 +69,7 @@
             @click="handleRefresh"
           >
             <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
-            刷新
+            {{ t('common.refresh') }}
           </GlassButton>
         </div>
       </div>
@@ -82,7 +82,7 @@
           class="text-center py-12"
         >
           <LoadingSpinner size="lg" />
-          <p class="mt-4 text-gray-600">正在加载表白...</p>
+          <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
         </div>
 
         <!-- 空状态 -->
@@ -91,13 +91,13 @@
           class="text-center py-12"
         >
           <HeartIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p class="text-gray-600 mb-4">还没有表白哦</p>
+          <p class="text-gray-600 mb-4">{{ t('posts.empty') }}</p>
           <NuxtLink
             v-if="auth.isAuthenticated"
             to="/posts/new"
             class="glass-button-secondary inline-flex items-center gap-2"
           >
-            <PlusIcon class="w-4 h-4" /> 成为第一个
+            <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
           </NuxtLink>
         </div>
 
@@ -144,10 +144,10 @@
       >
         <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-600">
           <LoadingSpinner size="sm" />
-          <span>加载中...</span>
+          <span>{{ t('common.loading') }}</span>
         </div>
         <div v-else class="text-gray-400 text-sm">
-          下拉浏览更多内容
+          {{ t('common.pullDownLoading') }}
         </div>
       </div>
     </section>
@@ -155,17 +155,19 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import PostCard from '~/components/PostCard.vue'
 import type { PostDto } from '~/types'
 
-// composables
+const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
+
 const auth = useAuthStore()
 const home = useHomeStore()
+
 const { isMobile, isTablet } = useDeviceSafe()
-const { confirm } = useConfirm()
 
 // fuck u shit changes
 const layoutMode = ref<'grid' | 'list'>('grid')
@@ -270,12 +272,10 @@ onActivated(async () => {
 })
 
 // --- SEO 与结构化数据 ---
-const homepageMetaTitle = '郑州四中表白墙'
-const homepageTitle = '郑州四中表白墙 - 校园信息交流平台'
-const homepageDescription =
-  '郑州四中官方校园信息交流平台，帮助同学们安全、温暖地表达心声，分享校园生活。'
-const homepageKeywords = '郑州四中表白墙,郑州四中,校园表白墙,学生表白,校园交流'
-const siteName = '郑州四中表白墙'
+const homepageTitle = t('seo.title')
+const homepageDescription = t('seo.description')
+const homepageKeywords = t('seo.keywords')
+const siteName = t('seo.title')
 
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
@@ -329,8 +329,7 @@ const homepageStructuredData = computed(() => {
 })
 
 definePageMeta({
-  title: homepageMetaTitle,
-  description: homepageDescription,
+  title: { k: 'seo.title' },
   key: (route: any) => `index-${(route as any).fullPath || '/'}`
 })
 

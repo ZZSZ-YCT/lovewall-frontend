@@ -9,11 +9,13 @@
       class="w-1.5 h-1.5 rounded-full"
       :class="displayStatus ? 'bg-green-500' : 'bg-gray-400'"
     />
-    <span>{{ displayStatus ? '在线' : '离线' }}</span>
+    <span>{{ displayStatus ? t('user.online') : t('user.offline') }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -38,11 +40,11 @@ const displayStatus = computed(() => {
 
 const statusText = computed(() => {
   if (displayStatus.value === null) return ''
-  if (displayStatus.value) return '用户在线'
+  if (displayStatus.value) return t('user.online')
   if (props.lastHeartbeat) {
-    return `最后活跃: ${formatTime(props.lastHeartbeat)}`
+    return t('user.centers.lastLogin') + ` ${formatTime(props.lastHeartbeat)}`
   }
-  return '用户离线'
+  return t('user.offline')
 })
 
 const formatTime = (isoTime: string): string => {
@@ -50,14 +52,14 @@ const formatTime = (isoTime: string): string => {
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
 
-  if (Number.isNaN(diffMs) || diffMs < 0) return '刚刚'
+  if (Number.isNaN(diffMs) || diffMs < 0) return t('time.just')
 
   const diffMinutes = Math.floor(diffMs / 60000)
-  if (diffMinutes < 1) return '刚刚'
-  if (diffMinutes < 60) return `${diffMinutes} 分钟前`
+  if (diffMinutes < 1) return t('time.just')
+  if (diffMinutes < 60) return t('time.beforeMinutes', { minutes: diffMinutes })
   const diffHours = Math.floor(diffMinutes / 60)
-  if (diffHours < 24) return `${diffHours} 小时前`
+  if (diffHours < 24) return t('time.beforeHours', { hours: diffHours })
   const diffDays = Math.floor(diffHours / 24)
-  return `${diffDays} 天前`
+  return t('time.beforeDays', { days: diffDays })
 }
 </script>

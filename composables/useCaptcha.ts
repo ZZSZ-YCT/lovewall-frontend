@@ -7,6 +7,7 @@ export interface CaptchaData {
 }
 
 export const useCaptcha = () => {
+  const { t } = useI18n()
 
   /**
    * 获取验证码
@@ -26,13 +27,13 @@ export const useCaptcha = () => {
       )
 
       if (!response.success || !response.data) {
-        throw new Error(response.error?.message || '获取验证码失败')
+        throw new Error(response.error?.message || t('error.messages.unknown'))
       }
 
       return response.data
     } catch (error: any) {
       console.error('Failed to fetch captcha:', error)
-      throw new Error(error.data?.error?.message || error.message || '获取验证码失败')
+      throw new Error(error.data?.error?.message || error.message || t('error.messages.unknown'))
     }
   }
 

@@ -120,11 +120,7 @@ watch(() => route.path, () => {
   sidebarOpen.value = false
 })
 
-// SEO
-useHead({
-  title: `${currentPageName.value ? `${currentPageName.value} - ` : ''}管理后台 - 郑州四中表白墙`,
-  meta: [
-    { name: 'description', content: '郑州四中表白墙管理后台' }
-  ]
+definePageMeta({
+  title: `${currentPageName.value ? `${currentPageName.value} - ` : ''}管理后台 - 郑州四中表白墙`
 })
 </script>

@@ -15,6 +15,8 @@ export interface ShareData {
 }
 
 export const useShare = () => {
+  const { t } = useI18n()
+
   const toast = useToast()
 
   let lastLoggedCapabilities: string | null = null
@@ -197,7 +199,7 @@ export const useShare = () => {
             delete shareData.url
           }
         } catch (error) {
-          console.warn('图片文件转换失败，使用URL分享:', error)
+          console.warn('Error in transforming to image, used url instead:', error)
         }
       }
 
@@ -266,10 +268,10 @@ export const useShare = () => {
     if ((currentPlatform === 'ios' || currentPlatform === 'ipados') && currentBrowser === 'safari') {
       try {
         await nativeShare(data)
-        toast.success('分享成功')
+        toast.success(t('share.success'))
         return true
       } catch (error) {
-        console.warn('iOS Safari 分享失败:', error)
+        console.warn('iOS Safari Share failed:', error)
       }
     }
 
@@ -277,10 +279,10 @@ export const useShare = () => {
     else if (currentPlatform === 'android' && currentBrowser === 'chrome') {
       try {
         await nativeShare(data)
-        toast.success('分享成功')
+        toast.success(t('share.success'))
         return true
       } catch (error) {
-        console.warn('Android Chrome 分享失败:', error)
+        console.warn('Android Chrome Share failed:', error)
       }
     }
 
@@ -288,10 +290,10 @@ export const useShare = () => {
     else if (currentPlatform === 'windows' && (currentBrowser === 'edge' || currentBrowser === 'chrome')) {
       try {
         await nativeShare(data)
-        toast.success('分享成功')
+        toast.success(t('share.success'))
         return true
       } catch (error) {
-        console.warn('Windows 分享失败:', error)
+        console.warn('Windows Share failed:', error)
       }
     }
 
@@ -299,10 +301,10 @@ export const useShare = () => {
     else if (currentPlatform === 'macos' && currentBrowser === 'safari') {
       try {
         await nativeShare(data)
-        toast.success('分享成功')
+        toast.success(t('share.success'))
         return true
       } catch (error) {
-        console.warn('macOS Safari 分享失败:', error)
+        console.warn('macOS Safari Share failed:', error)
       }
     }
 
@@ -329,7 +331,7 @@ export const useShare = () => {
       }
       return true
     } catch (error) {
-      console.error('复制失败:', error)
+      console.error('Copy failed:', error)
       return false
     }
   }
@@ -373,7 +375,7 @@ export const useShare = () => {
             // console.info('[Share Debug] Native share canceled by user')
             return
           }
-          toast.success('分享成功')
+          toast.success(t('share.success'))
           return
         } catch (error) {
           fallbackReason = 'native-failed'
@@ -388,7 +390,10 @@ ${data.text}
 ${data.url}`
       const copied = await copyToClipboard(shareText)
       if (copied) {
-        toast.success(fallbackReason ? '系统分享不可用，链接已复制到剪贴板' : '链接已复制到剪贴板')
+        if(fallbackReason) {
+          toast.error(t('error.messages.unknown'))
+        }
+        toast.success(t('share.copied'))
         return
       }
       // console.warn('[Share Debug] Clipboard copy failed during fallback', { length: shareText.length })
@@ -402,7 +407,7 @@ ${data.url}`
       }
     }
 
-    toast.error('分享失败，请手动复制链接')
+    toast.error(t('error.messages.unknown'))
   }
 
   const sharePost = async (post: any, options?: any) => {
@@ -411,7 +416,7 @@ ${data.url}`
     const { assetUrl } = useAssetUrl()
     
     const shareData: ShareData = {
-      title: `${post.author_name} 对 ${post.target_name} 的表白`,
+      title: t('posts.confessionTo', { author: post.author_name, target: post.target_name }),
       text: post.content.length > 100 ?
         `${post.content.substring(0, 100)}...` :
         post.content,
@@ -430,7 +435,7 @@ ${data.url}`
         await share(data, { preferredMethod: 'native' })
         return
       } catch (error) {
-        console.warn('原生分享失败，降级到复制链接:', error)
+        console.warn('Native share failed:', error)
       }
     }
 

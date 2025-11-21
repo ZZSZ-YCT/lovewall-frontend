@@ -19,12 +19,12 @@
               <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
               </svg>
-              <h3 class="text-xl font-semibold text-gray-900">公告</h3>
+              <h3 class="text-xl font-semibold text-gray-900">{{ t('announcements.index') }}</h3>
             </div>
             <button
               type="button"
               class="text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="关闭公告"
+              :aria-label="t('announcements.close')"
               @click="handleClose"
             >
               <svg class="w-5 h-5" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,14 +49,14 @@
               class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               @click="handleDismiss"
             >
-              本页面不再显示
+              {{ t('common.dismiss') }}
             </button>
             <button
               type="button"
               class="px-5 py-2.5 text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 rounded-lg transition-colors shadow-sm"
               @click="handleClose"
             >
-              我知道了
+              {{ t('common.known') }}
             </button>
           </div>
         </div>
@@ -66,6 +66,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 interface Props {
   isOpen: boolean
   content: string

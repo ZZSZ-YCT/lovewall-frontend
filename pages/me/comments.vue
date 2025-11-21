@@ -2,25 +2,25 @@
   <div class="w-full space-y-6">
     <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">我的评论</h1>
-      <p class="text-gray-600 mt-2">管理你发表的所有评论</p>
+      <h1 class="page-title">{{ t('user.myComments') }}</h1>
+      <p class="text-gray-600 mt-2">{{ t('user.comments.description') }}</p>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-green-600 mb-1">{{ commentsData?.total || 0 }}</div>
-        <div class="text-sm text-gray-600">总评论数</div>
+        <div class="text-sm text-gray-600">{{ t('user.comments.totalComments') }}</div>
       </GlassCard>
       
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-blue-600 mb-1">{{ visibleCount }}</div>
-        <div class="text-sm text-gray-600">正常显示</div>
+        <div class="text-sm text-gray-600">{{ t('user.posts.common') }}</div>
       </GlassCard>
-      
+
       <GlassCard class="p-6 text-center">
         <div class="text-2xl font-bold text-gray-600 mb-1">{{ hiddenCount }}</div>
-        <div class="text-sm text-gray-600">已隐藏</div>
+        <div class="text-sm text-gray-600">{{ t('user.posts.hidden') }}</div>
       </GlassCard>
     </div>
 
@@ -34,9 +34,9 @@
             class="glass-input px-3 py-2 text-sm"
             @change="applyFilters"
           >
-            <option value="">全部状态</option>
-            <option value="0">正常显示</option>
-            <option value="1">已隐藏</option>
+            <option value="">{{ t('user.posts.allState') }}</option>
+            <option value="0">{{ t('user.posts.common') }}</option>
+            <option value="1">{{ t('user.posts.hidden') }}</option>
           </select>
         </div>
       </div>
@@ -53,11 +53,10 @@
         <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <MessageSquareIcon class="w-8 h-8 text-white" />
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">还没有发表评论</h3>
-        <p class="text-gray-600 mb-6">去看看别人的表白，发表你的看法吧！</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.comments.empty') }}</h3>
         <div class="flex justify-center">
           <NuxtLink to="/" class="flex items-center gap-2 px-4 py-2 text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors">
-            浏览表白 →
+            {{ t('common.browse') }} →
           </NuxtLink>
         </div>
       </GlassCard>
@@ -82,7 +81,7 @@
                 <div class="text-sm text-gray-500">
                   {{ formatDate(comment.created_at) }}
                   <span v-if="comment.updated_at && comment.updated_at !== comment.created_at">
-                    · 已编辑
+                    · {{ t('common.edited') }}
                   </span>
                 </div>
               </div>
@@ -91,7 +90,7 @@
                 <NuxtLink
                   :to="`/posts/${comment.post_id}`"
                   class="glass-button-secondary !p-2"
-                  title="查看原帖"
+                  :title="t('common.detail')"
                 >
                   <ExternalLinkIcon class="w-4 h-4" />
                 </NuxtLink>
@@ -100,7 +99,7 @@
                   v-if="canEdit(comment)"
                   variant="secondary"
                   class="!p-2"
-                  title="编辑评论"
+                  :title="t('user.comments.edit')"
                   @click="startEdit(comment)"
                 >
                   <EditIcon class="w-4 h-4" />
@@ -109,7 +108,7 @@
                 <GlassButton
                   variant="secondary"
                   class="!p-2 !text-red-600 hover:!bg-red-50"
-                  title="删除评论"
+                  :title="t('common.delete')"
                   @click="confirmDelete(comment)"
                 >
                   <Trash2Icon class="w-4 h-4" />
@@ -124,7 +123,7 @@
                 :error="editErrors.content"
                 :rows="3"
                 class="w-full"
-                placeholder="编辑你的评论..."
+                :placeholder="t('user.comments.edit_placeholder')"
               />
               <div class="flex gap-2 justify-end">
                 <GlassButton
@@ -132,14 +131,14 @@
                   class="text-sm px-3 py-1"
                   @click="cancelEdit"
                 >
-                  取消
+                  {{ t('common.cancel') }}
                 </GlassButton>
                 <GlassButton
                   :loading="editing"
                   class="text-sm px-3 py-1"
                   @click="saveEdit"
                 >
-                  保存
+                  {{ t('common.save') }}
                 </GlassButton>
               </div>
             </div>
@@ -150,15 +149,12 @@
 
             <!-- Referenced Post Info -->
             <div class="bg-white/10 rounded-lg p-3 border border-white/10">
-              <div class="text-sm text-gray-600 mb-1">评论的表白：</div>
-              <div class="text-sm font-medium text-gray-800">
-                来自帖子 ID: {{ comment.post_id }}
-              </div>
+              <div class="text-sm text-gray-600 mb-1">{{ t('user.comments.source') }}</div>
               <NuxtLink
                 :to="`/posts/${comment.post_id}`"
                 class="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors mt-2"
               >
-                查看完整表白 →
+                {{ t('common.detail') }} →
               </NuxtLink>
             </div>
           </div>
@@ -175,7 +171,7 @@
           variant="secondary"
           @click="loadMore"
         >
-          加载更多
+          {{ t('common.loadMore') }}
         </GlassButton>
       </div>
     </div>
@@ -186,23 +182,23 @@
       class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
     >
       <GlassCard class="p-6 max-w-md mx-4">
-        <h3 class="text-lg font-semibold mb-4">确认删除</h3>
+        <h3 class="text-lg font-semibold mb-4">{{ t('user.posts.confirmDeletion') }}</h3>
         <p class="text-gray-600 mb-6">
-          确定要删除这条评论吗？删除后无法恢复。
+          {{ t('user.comments.delete_description') }}
         </p>
         <div class="flex gap-3 justify-end">
           <GlassButton
             variant="secondary"
             @click="deleteModal.show = false"
           >
-            取消
+            {{ t('common.cancel') }}
           </GlassButton>
           <GlassButton
             :loading="deleting"
             class="!bg-red-600 hover:!bg-red-700"
             @click="deleteComment"
           >
-            确认删除
+            {{ t('user.posts.confirmDeletion') }}
           </GlassButton>
         </div>
       </GlassCard>
@@ -211,6 +207,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 import {
   MessageSquareIcon,
   ExternalLinkIcon,
@@ -225,7 +223,8 @@ import GlassTextarea from "~/components/ui/GlassTextarea.vue";
 
 definePageMeta({
   middleware: 'auth',
-  ssr: false
+  ssr: false,
+  title: { k: 'user.myCommentsTitle' },
 })
 
 // Stores
@@ -293,7 +292,7 @@ const loadComments = async (page = 1, reset = false) => {
     
     commentsData.value = data
   } catch (error: any) {
-    toast.error('加载评论列表失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     loading.value = false
     loadingMore.value = false
@@ -340,13 +339,13 @@ const saveEdit = async () => {
   editErrors.value = {}
   // 长度限制：500 个字符
   if (editForm.content && editForm.content.length > 500) {
-    editErrors.value.content = '评论内容不能超过 500 个字符'
-    toast.error('评论内容不能超过 500 个字符')
+    editErrors.value.content = t('comment.commentOversize')
+    toast.error(t('comment.commentOversize'))
     return
   }
   
   if (!editForm.content.trim()) {
-    editErrors.value.content = '评论内容不能为空'
+    editErrors.value.content = t('posts.publish.cantEmpty')
     return
   }
   
@@ -361,10 +360,10 @@ const saveEdit = async () => {
       comments.value[index] = { ...comments.value[index], ...updatedComment }
     }
     
-    toast.success('评论已更新')
+    toast.success(t('common.success'))
     cancelEdit()
   } catch (error: any) {
-    toast.error('更新评论失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     editing.value = false
   }
@@ -395,11 +394,11 @@ const deleteComment = async () => {
       commentsData.value.total -= 1
     }
     
-    toast.success('评论已删除')
+    toast.success(t('common.success'))
     deleteModal.show = false
     deleteModal.comment = null
   } catch (error) {
-    toast.error('删除失败')
+    toast.error(t('error.messages.unknown'))
   } finally {
     deleting.value = false
   }
@@ -414,11 +413,4 @@ onMounted(() => {
   loadComments()
 })
 
-// SEO
-useHead({
-  title: '我的评论 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '管理你发表的所有评论' }
-  ]
-})
 </script>

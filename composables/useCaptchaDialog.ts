@@ -17,12 +17,14 @@ interface CaptchaDialogState {
   title: string
 }
 
-const createDefaultState = (): CaptchaDialogState => ({
-  isOpen: false,
-  title: '安全验证'
-})
-
 export const useCaptchaDialog = () => {
+  const { t } = useI18n()
+
+  const createDefaultState = (): CaptchaDialogState => ({
+    isOpen: false,
+    title: t('common.captcha')
+  })
+
   const state = useState<CaptchaDialogState>('captcha-dialog', createDefaultState)
   const resolver = useState<CaptchaDialogResolver>('captcha-dialog-resolver', () => null)
 
@@ -49,7 +51,7 @@ export const useCaptchaDialog = () => {
     return new Promise<CaptchaResult | null>((resolve) => {
       state.value = {
         isOpen: true,
-        title: options?.title ?? '安全验证'
+        title: options?.title ?? t('common.captcha')
       }
       resolver.value = (result: CaptchaResult | null) => {
         resolve(result)

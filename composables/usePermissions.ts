@@ -9,7 +9,44 @@ import type { PermissionType } from '~/types'
  * 权限检查组合式函数
  */
 export const usePermissions = () => {
+  const { t } = useI18n()
+
   const auth = useAuthStore()
+
+  const getPermissionDisplayName = (perm: string): string => {
+    const permissionNames: Record<string, string> = {
+      'MANAGE_USERS': t('permission.manage_users'),
+      'MANAGE_POSTS': t('permission.manage_posts'),
+      'MANAGE_FEATURED': t('permission.manage_featured'),
+      'MANAGE_ANNOUNCEMENTS': t('permission.manage_announcements'),
+      'MANAGE_TAGS': t('permission.manage_tags'),
+    }
+    return permissionNames[perm] || perm
+  }
+
+  /**
+   * 权限分组
+   */
+  const getPermissionGroups = () => {
+    return [
+      {
+        name: t('permission.manage_users'),
+        permissions: ['MANAGE_USERS']
+      },
+      {
+        name: t('permission.manage_content'),
+        permissions: ['MANAGE_POSTS', 'MANAGE_FEATURED']
+      },
+      {
+        name: t('permission.manage_announcements_group'),
+        permissions: ['MANAGE_POSTS', 'MANAGE_ANNOUNCEMENTS']
+      },
+      {
+        name: t('permission.manage_tags_group'),
+        permissions: ['MANAGE_TAGS']
+      }
+    ]
+  }
 
   return {
     // 基础权限检查
@@ -26,6 +63,8 @@ export const usePermissions = () => {
     canManageTags: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_TAGS')),
     canManagePosts: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS')),
     canManageFeatured: computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_FEATURED')),
+    getPermissionDisplayName: getPermissionDisplayName,
+    getPermissionGroups: getPermissionGroups,
 
     // 管理员权限检查 (拥有任一管理权限)
     isAdmin: computed(() => {
@@ -47,44 +86,6 @@ export const usePermissions = () => {
       return auth.isSuperadmin || auth.hasAnyPerm(contentPerms)
     })
   }
-}
-
-/**
- * 权限名称映射
- */
-export const getPermissionDisplayName = (perm: string): string => {
-  const permissionNames: Record<string, string> = {
-    'MANAGE_USERS': '用户管理',
-    'MANAGE_POSTS': '帖子/评论管理',
-    'MANAGE_FEATURED': '精选管理',
-    'MANAGE_ANNOUNCEMENTS': '公告管理',
-    'MANAGE_TAGS': '标签管理',
-  }
-  return permissionNames[perm] || perm
-}
-
-/**
- * 权限分组
- */
-export const getPermissionGroups = () => {
-  return [
-    {
-      name: '用户管理',
-      permissions: ['MANAGE_USERS']
-    },
-    {
-      name: '内容管理',
-      permissions: ['MANAGE_POSTS', 'MANAGE_FEATURED']
-    },
-    {
-      name: '社区管理', 
-      permissions: ['MANAGE_POSTS', 'MANAGE_ANNOUNCEMENTS']
-    },
-    {
-      name: '系统管理',
-      permissions: ['MANAGE_TAGS']
-    }
-  ]
 }
 
 /**

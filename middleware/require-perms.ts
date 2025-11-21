@@ -12,6 +12,9 @@ const ADMIN_BASE_PERMS: PermissionType[] = [
 export default defineNuxtRouteMiddleware(async (to) => {
   if (import.meta.server) return
 
+  const { $i18n } = useNuxtApp()
+  const t = $i18n?.t?.bind($i18n)
+
   const auth = useAuthStore()
   const routePath = to.fullPath
 
@@ -28,11 +31,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const displayName = (perm: PermissionType): string => {
     const map: Record<string, string> = {
-      MANAGE_USERS: '用户管理',
-      MANAGE_POSTS: '帖子/评论管理',
-      MANAGE_FEATURED: '精选管理',
-      MANAGE_ANNOUNCEMENTS: '公告管理',
-      MANAGE_TAGS: '标签管理',
+      MANAGE_USERS: t('permission.manage_users'),
+      MANAGE_POSTS: t('permission.manage_posts'),
+      MANAGE_FEATURED: t('permission.manage_featured'),
+      MANAGE_ANNOUNCEMENTS: t('permission.manage_announcements'),
+      MANAGE_TAGS: t('permission.manage_tags'),
     }
     return map[perm] || perm
   }
@@ -42,7 +45,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const goBack = (msg?: string) => {
     const toast = useToast()
-    toast.error(msg || '无权限访问')
+    toast.error(msg || t('error.messages.403'))
     if (import.meta.client && window.history.length > 1) {
       log('deny: navigate back', { historyLength: window.history.length })
       window.history.back()
@@ -99,7 +102,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const hasAdmin = auth.hasAnyPerm(ADMIN_BASE_PERMS)
     log('check: admin baseline', { hasAdmin })
     if (!hasAdmin) {
-      return goBack('无权限访问: 需要管理员权限')
+      return goBack(t('error.messages.403'))
     }
     return
   }
@@ -111,7 +114,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!hasRequired) {
       const missing = requiredPerms.filter(perm => !auth.hasPerm(perm))
       log('deny: missing required perms', { requiredPerms, missing })
-      return goBack(`无权限访问: 需要${formatPerms(requiredPerms)}权限`)
+      return goBack(t('error.messages.403'))
     }
   }
 
@@ -121,7 +124,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     log('check: any perms', { anyPerms, hasAny })
     if (!hasAny) {
       log('deny: missing any perms', { anyPerms })
-      return goBack(`无权限访问: 需要${formatPerms(anyPerms, '或')}权限`)
+      return goBack(t('error.messages.403'))
     }
   }
 
@@ -132,7 +135,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!hasAll) {
       const missing = allPerms.filter(perm => !auth.hasPerm(perm))
       log('deny: missing all perms', { allPerms, missing })
-      return goBack(`无权限访问: 需要同时具备${formatPerms(allPerms)}权限`)
+      return goBack(t('error.messages.403'))
     }
   }
 
