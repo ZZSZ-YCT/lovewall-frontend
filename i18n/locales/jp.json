@@ -73,7 +73,7 @@
   },
   "common": {
     "admin": "管理者",
-    "bio": "バイオロジー",
+    "bio": "自己紹介",
     "browse": "投稿を探索",
     "cancel": "キャンセル",
     "captcha": "人間であることを教えてください",
@@ -300,7 +300,7 @@
     },
     "postsFrom": "{nickname} さんの投稿",
     "profile": {
-      "bioOversize": "プロフィールは最大500文字まで",
+      "bioOversize": "自己紹介は最大500文字まで",
       "imageTooLarge": "画像ファイルは5MBを超えてはなりません。",
       "invalidEmail": "無効なメールアドレス",
       "invalidPhone": "無効な電話番号",

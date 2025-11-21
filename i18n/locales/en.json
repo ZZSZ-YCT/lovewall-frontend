@@ -26,7 +26,7 @@
         "0": "Don't use password that have to do with your personal data",
         "1": "It is recommended to change your password regularly",
         "2": "Don't use the same password among websites",
-        "3": "Keep your password safe, don't share it with ohers",
+        "3": "Keep your password safe, don't share it with others",
         "index": "Password Secure Suggestions"
       },
       "title": "Change Password - Zhengzhou No.4 Middle School Confession Wall"
@@ -207,7 +207,7 @@
       },
       "imageTotal": "Uploaded {number} / 9",
       "index": "Publish",
-      "limits": "Supported JPG, PNG, WebP and GIF formats, up to 9 photos, at most 5MB per hhoto",
+      "limits": "Supported JPG, PNG, WebP and GIF formats, up to 9 photos, at most 5MB per photo",
       "nameOversize": "Nickname can't be more than 50 characters.",
       "namePlaceholder": "Enter your nickname",
       "publishing": "Publishing...",
