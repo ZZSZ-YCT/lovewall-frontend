@@ -69,6 +69,7 @@
             <label for="acceptTerms" class="text-sm text-gray-600">
               {{ t('auth.register.agreeWithTerms') }}
               <a href="#" class="text-brand-600 hover:text-brand-700">{{ t('home.tos') }}</a>
+              ,
               <a href="#" class="text-brand-600 hover:text-brand-700">{{ t('home.privacy') }}</a>
             </label>
           </div>
@@ -126,6 +127,7 @@ import { z } from 'zod'
 import GlassInput from '~/components/ui/GlassInput.vue'
 import GlassButton from '~/components/ui/GlassButton.vue'
 import type { RegisterForm } from '~/types'
+import CaptchaDialog from '~/components/popup/CaptchaDialog.vue'
 
 // Form schema
 const registerSchema = z.object({
