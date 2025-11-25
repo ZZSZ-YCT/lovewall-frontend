@@ -233,6 +233,16 @@
     "reviewRequired": "Manuel gennemgang krævet",
     "socialFrom": "{author}'s indlæg"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Mellemøsten og Indien",
+      "asia_pacific": "Asien og Stillehavsområdet",
+      "europe": "Europa",
+      "latam_caribbean": "Latinamerika og Caribien",
+      "us_canada_pr": "USA, Canada og Puerto Rico"
+    },
+    "selectRegionTitle": "Vælg din region"
+  },
   "seo": {
     "description": "Et sted at forbinde med hinanden.",
     "keywords": "Zhengzhou No.4 Gymnasium, Zhengzhou No.4 Mellemskole, Zhengzhou No.4 Ungdomsskole, Skolefællesskab, Studenterkommunikation, Studenterdiskussion",

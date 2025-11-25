@@ -233,6 +233,16 @@
     "reviewRequired": "Ukaguzi wa Mikono Unahitajika",
     "socialFrom": "{author}'s chapisho"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Mashariki ya Kati, na India",
+      "asia_pacific": "Asia ya Pasifiki",
+      "europe": "Ulaya",
+      "latam_caribbean": "Amerika ya Kilatini na Visiwa vya Karibiani",
+      "us_canada_pr": "Marekani, Kanada, na Puerto Rico"
+    },
+    "selectRegionTitle": "Chagua eneo lako"
+  },
   "seo": {
     "description": "Mahali pa kuungana na kila mmoja.",
     "keywords": "Shule ya Kati ya Zhengzhou No.4, Shule ya Kati ya Zhengzhou No.4, Shule ya Kati ya Zhengzhou No.4, Jamii ya Shule, Mawasiliano ya Wanafunzi, Majadiliano ya Wanafunzi",

@@ -233,6 +233,16 @@
     "reviewRequired": "수동 검토 필요",
     "socialFrom": "{author}의 게시물"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "아프리카, 중동 및 인도",
+      "asia_pacific": "아시아 태평양",
+      "europe": "유럽",
+      "latam_caribbean": "라틴 아메리카 및 카리브해",
+      "us_canada_pr": "미국, 캐나다 및 푸에르토리코"
+    },
+    "selectRegionTitle": "지역을 선택하세요"
+  },
   "seo": {
     "description": "서로 연결할 수 있는 장소입니다.",
     "keywords": "정저우 제4고등학교, 정저우 제4중학교, 정저우 제4초등학교, 학교 커뮤니티, 학생 소통, 학생 토론",

@@ -233,6 +233,16 @@
     "reviewRequired": "Manuell granskning krävs",
     "socialFrom": "{author}'s inlägg"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Mellanöstern och Indien",
+      "asia_pacific": "Asien och Stillahavsområdet",
+      "europe": "Europa",
+      "latam_caribbean": "Latinamerika och Karibien",
+      "us_canada_pr": "USA, Kanada och Puerto Rico"
+    },
+    "selectRegionTitle": "Välj din region"
+  },
   "seo": {
     "description": "En plats för att ansluta med varandra.",
     "keywords": "Zhengzhou No.4 Gymnasium, Zhengzhou No.4 Grundskola, Zhengzhou No.4 Junior High School, Skolgemenskap, Studentkommunikation, Studentdiskussion",

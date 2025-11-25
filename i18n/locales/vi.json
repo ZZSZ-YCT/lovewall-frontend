@@ -233,6 +233,16 @@
     "reviewRequired": "Cần xem xét thủ công",
     "socialFrom": "{author}'s bài viết"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Châu Phi, Trung Đông và Ấn Độ",
+      "asia_pacific": "Châu Á - Thái Bình Dương",
+      "europe": "Châu Âu",
+      "latam_caribbean": "Châu Mỹ Latinh và Caribe",
+      "us_canada_pr": "Hoa Kỳ, Canada và Puerto Rico"
+    },
+    "selectRegionTitle": "Chọn khu vực của bạn"
+  },
   "seo": {
     "description": "Một nơi để kết nối với nhau.",
     "keywords": "Trường Trung học số 4 Trịnh Châu, Trường Trung học số 4 Trịnh Châu, Trường Trung học cơ sở số 4 Trịnh Châu, Cộng đồng trường học, Giao tiếp sinh viên, Thảo luận sinh viên",

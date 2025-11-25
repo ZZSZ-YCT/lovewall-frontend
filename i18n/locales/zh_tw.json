@@ -233,6 +233,16 @@
     "reviewRequired": "需要人工審核",
     "socialFrom": "{author} 的帖子"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "非洲、中東與印度",
+      "asia_pacific": "亞太地區",
+      "europe": "歐洲",
+      "latam_caribbean": "拉丁美洲與加勒比海地區",
+      "us_canada_pr": "美國、加拿大與波多黎各"
+    },
+    "selectRegionTitle": "請選擇您的地區"
+  },
   "seo": {
     "description": "校园信息交流平台",
     "keywords": "鄭州第四中學,鄭州第四初中,鄭州第四初級中學,學校社區,學生交流,學生討論",

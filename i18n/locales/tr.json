@@ -233,6 +233,16 @@
     "reviewRequired": "Manuel İnceleme Gerekli",
     "socialFrom": "{author}'ın gönderisi"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Orta Doğu ve Hindistan",
+      "asia_pacific": "Asya Pasifik",
+      "europe": "Avrupa",
+      "latam_caribbean": "Latin Amerika ve Karayipler",
+      "us_canada_pr": "Amerika Birleşik Devletleri, Kanada ve Porto Riko"
+    },
+    "selectRegionTitle": "Bölgenizi seçin"
+  },
   "seo": {
     "description": "Birbirimizle bağlantı kurmak için bir yer.",
     "keywords": "Zhengzhou No.4 Lisesi, Zhengzhou No.4 Ortaokulu, Zhengzhou No.4 İlkokulu, Okul Topluluğu, Öğrenci İletişimi, Öğrenci Tartışması",

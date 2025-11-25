@@ -233,6 +233,16 @@
     "reviewRequired": "手動レビューが必要",
     "socialFrom": "{author} さんの投稿"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "アフリカ、中東、インド",
+      "asia_pacific": "アジア太平洋",
+      "europe": "ヨーロッパ",
+      "latam_caribbean": "ラテンアメリカおよびカリブ諸国",
+      "us_canada_pr": "アメリカ合衆国、カナダ、プエルトリコ"
+    },
+    "selectRegionTitle": "地域を選択してください"
+  },
   "seo": {
     "description": "生徒同士が連絡を取り合う壁",
     "keywords": "鄭州第四高等学校,鄭州第四中学校、鄭州第四中学校,学校コミュニティ,生徒コミュニケーション,学生のディスカッション",

@@ -233,6 +233,16 @@
     "reviewRequired": "Revizuire Manuală Necesare",
     "socialFrom": "{author}'s post"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Africa, Orientul Mijlociu și India",
+      "asia_pacific": "Asia și Pacific",
+      "europe": "Europa",
+      "latam_caribbean": "America Latină și Caraibe",
+      "us_canada_pr": "Statele Unite, Canada și Puerto Rico"
+    },
+    "selectRegionTitle": "Alegeți regiunea"
+  },
   "seo": {
     "description": "Un loc pentru a ne conecta unii cu alții.",
     "keywords": "Școala Gimnazială Nr. 4 Zhengzhou, Școala Gimnazială Nr. 4 Zhengzhou, Școala Gimnazială Nr. 4 Zhengzhou, Comunitatea Școlii, Comunicația Studenților, Discuția Studenților",

@@ -233,6 +233,16 @@
     "reviewRequired": "Revisione manuale necessaria",
     "socialFrom": "{author}'s post"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Africa, Medio Oriente e India",
+      "asia_pacific": "Asia Pacifico",
+      "europe": "Europa",
+      "latam_caribbean": "America Latina e Caraibi",
+      "us_canada_pr": "Stati Uniti, Canada e Porto Rico"
+    },
+    "selectRegionTitle": "Scegli la tua regione"
+  },
   "seo": {
     "description": "Un luogo per connettersi tra di noi.",
     "keywords": "Scuola Media No.4 di Zhengzhou, Scuola Superiore No.4 di Zhengzhou, Scuola Media Inferiore No.4 di Zhengzhou, Comunità scolastica, Comunicazione tra studenti, Discussione tra studenti",

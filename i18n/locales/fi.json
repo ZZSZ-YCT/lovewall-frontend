@@ -233,6 +233,16 @@
     "reviewRequired": "Manuaalinen tarkastus vaaditaan",
     "socialFrom": "{author}n julkaisu"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrikka, Lähi-itä ja Intia",
+      "asia_pacific": "Aasia ja Tyynenmeren alue",
+      "europe": "Eurooppa",
+      "latam_caribbean": "Latinalainen Amerikka ja Karibia",
+      "us_canada_pr": "Yhdysvallat, Kanada ja Puerto Rico"
+    },
+    "selectRegionTitle": "Valitse alueesi"
+  },
   "seo": {
     "description": "Paikka, jossa voimme yhdistää toisiimme.",
     "keywords": "Zhengzhou No.4 Lukio, Zhengzhou No.4 Keskikoulu, Zhengzhou No.4 Ala-aste, Kouluyhteisö, Opiskelijaviestintä, Opiskelijakeskustelu",

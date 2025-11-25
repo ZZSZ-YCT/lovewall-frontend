@@ -233,6 +233,16 @@
     "reviewRequired": "Tinjauan Manual Diperlukan",
     "socialFrom": "{author}'s pos"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Timur Tengah, dan India",
+      "asia_pacific": "Asia Pasifik",
+      "europe": "Eropa",
+      "latam_caribbean": "Amerika Latin dan Karibia",
+      "us_canada_pr": "Amerika Serikat, Kanada, dan Puerto Riko"
+    },
+    "selectRegionTitle": "Pilih wilayah Anda"
+  },
   "seo": {
     "description": "Tempat untuk terhubung satu sama lain.",
     "keywords": "Sekolah Menengah No.4 Zhengzhou, Sekolah Menengah No.4 Zhengzhou, Sekolah Menengah Pertama No.4 Zhengzhou, Komunitas Sekolah, Komunikasi Siswa, Diskusi Siswa",

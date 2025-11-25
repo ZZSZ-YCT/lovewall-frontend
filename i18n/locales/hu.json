@@ -233,6 +233,16 @@
     "reviewRequired": "Manuális felülvizsgálat szükséges",
     "socialFrom": "{author} bejegyzése"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, a Közel-Kelet és India",
+      "asia_pacific": "Ázsia és a Csendes-óceáni térség",
+      "europe": "Európa",
+      "latam_caribbean": "Latin-Amerika és a Karib-térség",
+      "us_canada_pr": "Egyesült Államok, Kanada és Puerto Rico"
+    },
+    "selectRegionTitle": "Válassza ki a régiót"
+  },
   "seo": {
     "description": "Egy hely, ahol kapcsolatba léphetünk egymással.",
     "keywords": "Zhengzhou 4. Számú Középiskola, Zhengzhou 4. Számú Középiskola, Zhengzhou 4. Számú Általános Iskola, Iskolai közösség, Diákok kommunikációja, Diákok megbeszélése",

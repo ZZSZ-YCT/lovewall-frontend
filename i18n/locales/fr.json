@@ -233,6 +233,16 @@
     "reviewRequired": "Révision manuelle requise",
     "socialFrom": "{author}'s post"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrique, Moyen-Orient et Inde",
+      "asia_pacific": "Asie-Pacifique",
+      "europe": "Europe",
+      "latam_caribbean": "Amérique latine et Caraïbes",
+      "us_canada_pr": "États-Unis, Canada et Porto Rico"
+    },
+    "selectRegionTitle": "Choisissez votre région"
+  },
   "seo": {
     "description": "Un endroit pour se connecter les uns aux autres.",
     "keywords": "Collège No.4 de Zhengzhou, Collège No.4 de Zhengzhou, École intermédiaire No.4 de Zhengzhou, Communauté scolaire, Communication entre étudiants, Discussion entre étudiants",

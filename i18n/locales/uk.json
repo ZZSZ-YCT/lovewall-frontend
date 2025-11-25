@@ -233,6 +233,16 @@
     "reviewRequired": "需要人工审核",
     "socialFrom": "{author}的帖子"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Африка, Близький Схід та Індія",
+      "asia_pacific": "Азіатсько-Тихоокеанський регіон",
+      "europe": "Європа",
+      "latam_caribbean": "Латинська Америка та Кариби",
+      "us_canada_pr": "Сполучені Штати, Канада та Пуерто-Ріко"
+    },
+    "selectRegionTitle": "Виберіть свій регіон"
+  },
   "seo": {
     "description": "一个彼此连接的地方。",
     "keywords": "郑州四中，高中，初中，学校社区，学生交流，学生讨论",

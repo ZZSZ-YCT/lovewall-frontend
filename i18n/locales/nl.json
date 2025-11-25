@@ -233,6 +233,16 @@
     "reviewRequired": "Handmatige beoordeling vereist",
     "socialFrom": "{author}'s bericht"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, het Midden-Oosten en India",
+      "asia_pacific": "Azië-Pacific",
+      "europe": "Europa",
+      "latam_caribbean": "Latijns-Amerika en het Caribisch gebied",
+      "us_canada_pr": "De Verenigde Staten, Canada en Puerto Rico"
+    },
+    "selectRegionTitle": "Kies uw regio"
+  },
   "seo": {
     "description": "Een plek om met elkaar te verbinden.",
     "keywords": "Zhengzhou No.4 Middelbare School, Zhengzhou No.4 Middelbare School, Zhengzhou No.4 Junior High School, Schoolgemeenschap, Studentencommunicatie, Studentenbespreking",

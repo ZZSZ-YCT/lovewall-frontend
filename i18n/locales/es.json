@@ -233,6 +233,16 @@
     "reviewRequired": "Revisión manual requerida",
     "socialFrom": "{author}'s post"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "África, Oriente Medio e India",
+      "asia_pacific": "Asia Pacífico",
+      "europe": "Europa",
+      "latam_caribbean": "América Latina y el Caribe",
+      "us_canada_pr": "Estados Unidos, Canadá y Puerto Rico"
+    },
+    "selectRegionTitle": "Selecciona tu región"
+  },
   "seo": {
     "description": "Un lugar para conectarse entre sí.",
     "keywords": "Escuela Secundaria No. 4 de Zhengzhou, Escuela Secundaria No. 4 de Zhengzhou, Escuela Secundaria No. 4 de Zhengzhou, Comunidad escolar, Comunicación entre estudiantes, Discusión entre estudiantes",

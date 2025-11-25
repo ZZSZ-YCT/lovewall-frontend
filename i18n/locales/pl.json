@@ -233,6 +233,16 @@
     "reviewRequired": "Wymagany ręczny przegląd",
     "socialFrom": "{author}'s post"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afryka, Bliski Wschód i Indie",
+      "asia_pacific": "Azja i Pacyfik",
+      "europe": "Europa",
+      "latam_caribbean": "Ameryka Łacińska i Karaiby",
+      "us_canada_pr": "Stany Zjednoczone, Kanada i Portoryko"
+    },
+    "selectRegionTitle": "Wybierz swój region"
+  },
   "seo": {
     "description": "Miejsce do łączenia się ze sobą.",
     "keywords": "Zespół Szkół nr 4 w Zhengzhou, Zespół Szkół nr 4 w Zhengzhou, Zespół Szkół nr 4 w Zhengzhou, Społeczność szkolna, Komunikacja uczniów, Dyskusja uczniów",

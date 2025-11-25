@@ -233,6 +233,16 @@
     "reviewRequired": "Manuelle Überprüfung erforderlich",
     "socialFrom": "{author}'s Beitrag"
   },
+  "regions": {
+    "group": {
+      "africa_me_india": "Afrika, Naher Osten und Indien",
+      "asia_pacific": "Asien-Pazifik",
+      "europe": "Europa",
+      "latam_caribbean": "Lateinamerika und Karibik",
+      "us_canada_pr": "Vereinigte Staaten, Kanada und Puerto Rico"
+    },
+    "selectRegionTitle": "Wählen Sie Ihre Region"
+  },
   "seo": {
     "description": "Ein Ort, um sich miteinander zu verbinden.",
     "keywords": "Zhengzhou No.4 High School, Zhengzhou No.4 Mittelschule, Zhengzhou No.4 Junior High School, Schulgemeinschaft, Kommunikation der Schüler, Diskussion der Schüler",
