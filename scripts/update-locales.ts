@@ -329,7 +329,7 @@ async function translateWithOpenAI(
       Authorization: `Bearer ${OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'gpt-5-mini',
       messages,
       temperature: 0,
       response_format: { type: 'json_object' },
