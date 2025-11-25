@@ -324,6 +324,7 @@
         "activateCode": "兌換碼",
         "description": "輸入啟動碼兌換新標籤",
         "index": "兌換標籤",
+        "message": "輸入激活碼以兌換新標籤",
         "recently": "最近取得的",
         "redeemed": "恭喜！標籤 {title} 已兌換並自動啟動。\n您可以在帖子和評論中看到它。",
         "redeemed_short": "兌換成功並自動啟動。",

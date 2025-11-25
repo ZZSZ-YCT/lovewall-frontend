@@ -324,6 +324,7 @@
         "activateCode": "Inwisselcode",
         "description": "Voer activeringscode in om nieuwe tag in te wisselen",
         "index": "Inwissel tag",
+        "message": "Voer de activatiecode in om het nieuwe label te verzilveren",
         "recently": "Onlangs verworven",
         "redeemed": "Gefeliciteerd! Tag {title} ingewisseld en automatisch geactiveerd.\nJe kunt het zien in berichten en reacties.",
         "redeemed_short": "Ingewisseld succesvol en automatisch geactiveerd.",

@@ -324,6 +324,7 @@
         "activateCode": "Tukarkan Kode",
         "description": "Masukkan kode aktivasi untuk menukarkan tag baru",
         "index": "Tukarkan Tag",
+        "message": "Masukkan kode aktivasi untuk menukarkan tag baru",
         "recently": "Baru Diperoleh",
         "redeemed": "Selamat! Tag {title} ditukarkan dan diaktifkan secara otomatis.\nAnda dapat melihatnya di pos dan komentar.",
         "redeemed_short": "Ditukarkan Berhasil dan diaktifkan secara otomatis.",

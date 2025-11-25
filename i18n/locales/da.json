@@ -324,6 +324,7 @@
         "activateCode": "Indløs kode",
         "description": "Indtast aktiveringskode for at indløse nyt tag",
         "index": "Indløs tag",
+        "message": "Indtast aktiveringskoden for at indløse det nye tag",
         "recently": "For nylig erhvervet",
         "redeemed": "Tillykke! Tag {title} indløst og automatisk aktiveret.\nDu kan se det i indlæg og kommentarer.",
         "redeemed_short": "Indløst med succes og automatisk aktiveret.",

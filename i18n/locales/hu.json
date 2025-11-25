@@ -324,6 +324,7 @@
         "activateCode": "Beváltási kód",
         "description": "Írd be az aktiváló kódot az új címke beváltásához",
         "index": "Címke beváltása",
+        "message": "Írja be az aktiváló kódot az új címke beváltásához",
         "recently": "Nemrégiben megszerzett",
         "redeemed": "Gratulálunk! A {title} címke beváltva és automatikusan aktiválva.\nLáthatod a bejegyzésekben és megjegyzésekben.",
         "redeemed_short": "Beváltás sikeres és automatikusan aktiválva.",

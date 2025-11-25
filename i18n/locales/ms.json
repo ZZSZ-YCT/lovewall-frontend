@@ -324,6 +324,7 @@
         "activateCode": "Tebus Kod",
         "description": "Masukkan kod aktif untuk menebus tag baru",
         "index": "Tebus Tag",
+        "message": "Masukkan kod pengaktifan untuk menebus tag baru",
         "recently": "Baru Diperoleh",
         "redeemed": "Tahniah! Tag {title} telah ditebus dan diaktifkan secara automatik.\nAnda boleh melihatnya dalam pos dan komen.",
         "redeemed_short": "Tebus Berjaya dan diaktifkan secara automatik.",

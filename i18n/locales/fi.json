@@ -324,6 +324,7 @@
         "activateCode": "Lunasta koodi",
         "description": "Syötä aktivointikoodi lunastaaksesi uusi tagi",
         "index": "Lunasta tagi",
+        "message": "Syötä aktivointikoodi lunastaaksesi uusi tunnus",
         "recently": "Äskettäin hankittu",
         "redeemed": "Onnittelut! Tagi {title} lunastettu ja automaattisesti aktivoitu.\nVoit nähdä sen julkaisuissa ja kommenteissa.",
         "redeemed_short": "Lunastus onnistui ja automaattisesti aktivoitu.",

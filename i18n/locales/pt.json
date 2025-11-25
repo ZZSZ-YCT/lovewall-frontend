@@ -324,6 +324,7 @@
         "activateCode": "Código de Resgate",
         "description": "Digite o código de ativação para resgatar nova tag",
         "index": "Resgatar Tag",
+        "message": "Digite o código de ativação para resgatar a nova etiqueta",
         "recently": "Recentemente Adquirido",
         "redeemed": "Parabéns! Tag {title} resgatada e ativada automaticamente.\nVocê pode vê-la em postagens e comentários.",
         "redeemed_short": "Resgatado com sucesso e ativado automaticamente.",

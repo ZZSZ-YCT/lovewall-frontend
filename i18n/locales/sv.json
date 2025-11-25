@@ -324,6 +324,7 @@
         "activateCode": "Lös in kod",
         "description": "Ange aktiveringskod för att lösa in ny tagg",
         "index": "Lös in tagg",
+        "message": "Ange aktiveringskoden för att lösa in ny tagg",
         "recently": "Nyligen förvärvad",
         "redeemed": "Grattis! Tagg {title} inlöst och automatiskt aktiverad.\nDu kan se den i inlägg och kommentarer.",
         "redeemed_short": "Inlöst framgångsrikt och automatiskt aktiverad.",

@@ -324,6 +324,7 @@
         "activateCode": "Code de rachat",
         "description": "Entrez le code d'activation pour échanger un nouveau tag",
         "index": "Échanger le tag",
+        "message": "Entrez le code d'activation pour échanger le nouveau tag",
         "recently": "Récemment acquis",
         "redeemed": "Félicitations ! Tag {title} échangé et activé automatiquement.\nVous pouvez le voir dans les publications et les commentaires.",
         "redeemed_short": "Échange réussi et activé automatiquement.",

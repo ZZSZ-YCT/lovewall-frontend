@@ -324,6 +324,7 @@
         "activateCode": "Kod wymiany",
         "description": "Wprowadź kod aktywacyjny, aby wymienić nowy tag",
         "index": "Wymień tag",
+        "message": "Wprowadź kod aktywacyjny, aby zrealizować nową etykietę",
         "recently": "Ostatnio nabyty",
         "redeemed": "Gratulacje! Tag {title} wymieniony i automatycznie aktywowany.\nMożesz go zobaczyć w postach i komentarzach.",
         "redeemed_short": "Wymiana zakończona sukcesem i automatycznie aktywowana.",

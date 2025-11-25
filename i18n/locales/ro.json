@@ -324,6 +324,7 @@
         "activateCode": "Răscumpără Cod",
         "description": "Introdu codul de activare pentru a răscumpăra o etichetă nouă",
         "index": "Răscumpără Etichetă",
+        "message": "Introduceți codul de activare pentru a răscumpăra noul etichetă",
         "recently": "Recent Achiziționat",
         "redeemed": "Felicitări! Eticheta {title} a fost răscumpărată și activată automat.\nO poți vedea în postări și comentarii.",
         "redeemed_short": "Răscumpărat cu succes și activat automat.",

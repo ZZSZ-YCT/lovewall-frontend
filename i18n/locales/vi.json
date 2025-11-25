@@ -324,6 +324,7 @@
         "activateCode": "Đổi mã",
         "description": "Nhập mã kích hoạt để đổi thẻ mới",
         "index": "Đổi thẻ",
+        "message": "Nhập mã kích hoạt để đổi thẻ mới",
         "recently": "Mới nhận được",
         "redeemed": "Chúc mừng! Thẻ {title} đã được đổi và tự động kích hoạt.\nBạn có thể thấy nó trong các bài viết và bình luận.",
         "redeemed_short": "Đã đổi thành công và tự động kích hoạt.",

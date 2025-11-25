@@ -324,6 +324,7 @@
         "activateCode": "Einlösen Code",
         "description": "Geben Sie den Aktivierungscode ein, um ein neues Tag einzulösen",
         "index": "Tag einlösen",
+        "message": "Geben Sie den Aktivierungscode ein, um das neue Tag einzulösen",
         "recently": "Kürzlich erworben",
         "redeemed": "Herzlichen Glückwunsch! Tag {title} wurde eingelöst und automatisch aktiviert.\nSie können es in Beiträgen und Kommentaren sehen.",
         "redeemed_short": "Erfolgreich eingelöst und automatisch aktiviert.",

@@ -324,6 +324,7 @@
         "activateCode": "Codice di riscatto",
         "description": "Inserisci il codice di attivazione per riscattare un nuovo tag",
         "index": "Riscatta tag",
+        "message": "Inserisci il codice di attivazione per riscattare il nuovo tag",
         "recently": "Recentemente acquisito",
         "redeemed": "Congratulazioni! Tag {title} riscattato e attivato automaticamente.\nPuoi vederlo in post e commenti.",
         "redeemed_short": "Riscattato con successo e attivato automaticamente.",

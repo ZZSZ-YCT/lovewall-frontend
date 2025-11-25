@@ -324,6 +324,7 @@
         "activateCode": "Kodu Kullan",
         "description": "Yeni etiket almak için etkinleştirme kodunu girin",
         "index": "Etiketi Kullan",
+        "message": "Yeni etiket almak için etkinleştirme kodunu girin",
         "recently": "Son Zamanlarda Elde Edilen",
         "redeemed": "Tebrikler! Etiket {title} alındı ve otomatik olarak etkinleştirildi.\nGönderilerde ve yorumlarda görebilirsiniz.",
         "redeemed_short": "Başarıyla alındı ve otomatik olarak etkinleştirildi.",

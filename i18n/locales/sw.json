@@ -324,6 +324,7 @@
         "activateCode": "Redeem Code",
         "description": "Ingiza nambari ya kuamsha ili kubadilisha lebo mpya",
         "index": "Redeem Tag",
+        "message": "Ingiza nambari ya kuamsha ili kubadilisha lebo mpya",
         "recently": "Imepatikana hivi karibuni",
         "redeemed": "Hongera! Lebo {title} imebadilishwa na kuamshwa kiotomatiki.\nUnaweza kuiona katika machapisho na maoni.",
         "redeemed_short": "Imepatikana kwa mafanikio na kuamshwa kiotomatiki.",
