@@ -334,5 +334,15 @@
       "unset": "Unset current tag",
       "useThis": "Set as current"
     }
+  },
+  "regions": {
+    "group": {
+      "africa_me_india": "Africa, Middle East, and India",
+      "asia_pacific": "Asia Pacific",
+      "europe": "Europe",
+      "latam_caribbean": "Latin America and the Caribbean",
+      "us_canada_pr": "The United States, Canada, and Puerto Rico"
+    },
+    "selectRegionTitle": "Choose your region"
   }
 }

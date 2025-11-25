@@ -334,5 +334,15 @@
       "unset": "已取消设置当前标签。",
       "useThis": "设为当前标签"
     }
+  },
+  "regions": {
+    "group": {
+      "africa_me_india": "非洲、中东和印度",
+      "asia_pacific": "亚太地区",
+      "europe": "欧洲",
+      "latam_caribbean": "拉丁美洲及加勒比海诸岛",
+      "us_canada_pr": "美国、加拿大和波多黎各岛"
+    },
+    "selectRegionTitle": "地区选择"
   }
 }
