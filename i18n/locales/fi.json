@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Hallinto"
+  },
+  "announcements": {
+    "close": "Sulje ilmoitus",
+    "index": "Ilmoitukset"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Suojaa tiliäsi",
+      "forms": {
+        "confirmPassword": "Vahvista salasana",
+        "confirmPasswordPlaceholder": "Toista salasana",
+        "currentPassword": "Nykyinen salasana",
+        "currentPasswordPlaceholder": "Syötä nykyinen salasana",
+        "incorrectPassword": "Väärä vanha salasana",
+        "newPassword": "Uusi salasana",
+        "newPasswordDescription": "Vähintään 6 merkkiä, suositellaan sisältämään numeroita, pieniä/suuria kirjaimia ja erikoismerkkejä",
+        "newPasswordPlaceholder": "Syötä uusi salasana (vähintään 6 merkkiä)",
+        "repeatPasswordNotMatch": "Salasanat eivät täsmää."
+      },
+      "index": "Vaihda salasana",
+      "success": "Vaihdettiin onnistuneesti, kirjaudu uudelleen sisään.",
+      "tips": {
+        "0": "Älä käytä salasanaa, joka liittyy henkilökohtaisiin tietoihisi",
+        "1": "On suositeltavaa vaihtaa salasana säännöllisesti",
+        "2": "Älä käytä samaa salasanaa eri verkkosivustoilla",
+        "3": "Pidä salasanasi turvassa, älä jaa sitä muiden kanssa",
+        "index": "Salasanan turvallisuussuositukset"
+      },
+      "title": "Vaihda salasana - Zhengzhou No.4 Keskikoulun tunnustusseinä"
+    },
+    "login": {
+      "description": "Kirjaudu sisään tilillesi",
+      "invalidCredentials": "Kirjautuminen epäonnistui, tarkista käyttäjänimesi ja salasanasi",
+      "passwordPlaceholder": "Syötä salasana",
+      "passwordTooShort": "Vähintään 6 merkkiä",
+      "registerNow": "Rekisteröidy nyt",
+      "registerSuggestion": "Eikö sinulla ole tiliä?",
+      "title": "Kirjaudu sisään - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+      "usernamePlaceholder": "Syötä käyttäjänimi",
+      "welcome": "Tervetuloa takaisin"
+    },
+    "register": {
+      "agreeWithTerms": "Olen jo lukenut ja hyväksynyt ehdot:",
+      "description": "Jaa, löydä ja yhdistä kanssamme.",
+      "index": "Luo tili",
+      "loginSuggestion": "Onko sinulla jo tili?",
+      "notAgreeWithTerms": "Hyväksy ensin ehdot",
+      "passwordTooLong": "Enintään 128 merkkiä salasanassa",
+      "title": "Rekisteröidy - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+      "usernameCharset": "Voi sisältää vain kirjaimia, numeroita ja alaviivoja",
+      "usernameLimit": "3-20 merkkiä, voi sisältää vain kirjaimia, numeroita ja alaviivoja",
+      "usernameTooLong": "Enintään 20 merkkiä käyttäjänimessä",
+      "usernameTooShort": "Vähintään 3 merkkiä käyttäjänimessä"
+    }
+  },
+  "captcha": {
+    "click": "Ole hyvä ja napsauta järjestyksessä:",
+    "reference": "Viitekuva",
+    "rotate": "Käännä oikeaan kulmaan"
+  },
+  "comment": {
+    "commentOversize": "Kommentit eivät voi olla yli 500 merkkiä",
+    "loginRequired": "Kirjautuminen vaaditaan kommenttien julkaisemiseen",
+    "noComments": "Ei vielä kommentteja.",
+    "placeholder": "Kirjoita ideasi...",
+    "send": "Julkaise kommentti"
+  },
+  "comments": {
+    "recently": "Viimeisimmät kommentit"
+  },
+  "common": {
+    "admin": "Ylläpitäjä",
+    "bio": "Esittely",
+    "browse": "Tutki julkaisuja",
+    "cancel": "Peruuta",
+    "captcha": "Anna meidän tietää, että olet ihminen",
+    "collapse": "Kaatua",
+    "comment": "Kommentti",
+    "commonUser": "Käyttäjä",
+    "confirm": "Vahvista",
+    "content": "Sisältö",
+    "current": "Nykyinen",
+    "delete": "Poista",
+    "detail": "Näytä lisää",
+    "disabled": "Poistettu",
+    "dismiss": "Hylkää",
+    "edited": "Muokattu",
+    "email": "Sähköposti",
+    "enabled": "Oikeutettu",
+    "expand": "Laajenna",
+    "feature": "Esitelty",
+    "hide": "Piilota",
+    "joinTime": "Liittynyt {time}",
+    "known": "Tunnettu",
+    "layouts": {
+      "grid": "Ruudukkoasettelu",
+      "list": "Luetteloasettelu"
+    },
+    "loadMore": "Lataa lisää",
+    "loading": "Ladataan...",
+    "moderator": "Moderaattori",
+    "nickname": "Lempinimi",
+    "ok": "OK",
+    "password": "Salasana",
+    "phone": "Puhelin",
+    "pin": "Pin",
+    "preview": "Esikatselu",
+    "previous": "Takaisin",
+    "pullDownLoading": "Vieritä lisää",
+    "refresh": "Päivitä",
+    "reset": "Nollaa",
+    "save": "Tallenna",
+    "share": "Jaa",
+    "show": "Näytä",
+    "success": "Valmis",
+    "superAdmin": "Super ylläpitäjä",
+    "unfeature": "Poista esittely",
+    "unknown": "Tuntematon",
+    "unpin": "Poista pin",
+    "username": "Käyttäjänimi"
+  },
+  "error": {
+    "messages": {
+      "401": "Ole hyvä ja kirjaudu sisään ennen tämän sivun vierailua.",
+      "403": "Sinulla ei ole oikeuksia käyttää tätä sivua. Ota yhteyttä järjestelmänvalvojaasi.",
+      "404": "Anteeksi, vierailit sivulla, joka ei ole olemassa tai on poistettu.",
+      "500": "Palvelimella on joitain ongelmia. Yritä myöhemmin uudelleen.",
+      "unknown": "Odottamaton virhe on tapahtunut. Yritä myöhemmin uudelleen."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "titles": {
+      "401": "Kirjautuminen vaaditaan",
+      "403": "Pääsy evätty",
+      "404": "Sivua ei löytynyt",
+      "500": "Sisäinen palvelinvirhe",
+      "unknown": "Jotain meni pieleen"
+    }
+  },
+  "home": {
+    "backHome": "Takaisin kotiin",
+    "contact": "Ota meihin yhteyttä",
+    "description": "Paikka, jossa voimme yhdistää toisiimme.",
+    "login": "Kirjaudu sisään",
+    "logout": "Kirjaudu ulos",
+    "privacy": "Tietosuojakäytäntö",
+    "register": "Rekisteröidy",
+    "title": "Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "tos": "Palveluehdot"
+  },
+  "notifications": {
+    "amount": "{number} yhteensä",
+    "checkLater": "Palaa myöhemmin.",
+    "description": "Saat ilmoituksia täältä",
+    "empty": "Ei vielä ilmoituksia",
+    "failed": "Ilmoitusten lataaminen epäonnistui.",
+    "failedMark": "Merkitse luetuksi epäonnistui.",
+    "index": "Ilmoitukset",
+    "title": "Ilmoitukset - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "unread": "Lukemattomat"
+  },
+  "permission": {
+    "manage_announcements": "Hallitse ilmoituksia",
+    "manage_announcements_group": "Hallitse yhteisöä",
+    "manage_content": "Hallitse sisältöä",
+    "manage_featured": "Hallitse esiteltyjä",
+    "manage_posts": "Hallitse julkaisuja/kommentteja",
+    "manage_tags": "Hallitse tageja",
+    "manage_tags_group": "Hallitse järjestelmää",
+    "manage_users": "Hallitse käyttäjiä"
+  },
+  "posts": {
+    "404": "Julkaisua ei löytynyt",
+    "alt": {
+      "confessionalImage": "{author}n tunnustuspäivityksen kuva",
+      "socialImage": "{author}n sosiaalisen päivityksen kuva"
+    },
+    "beFirst": "Ole ensimmäinen",
+    "confessionTo": "Tunnustus {author}lta {target}lle",
+    "contentPlaceholder": "Syötä sisältö",
+    "deletedUser": "Poistettu tili",
+    "deniedAudit": "Tarkastusta ei hyväksytty",
+    "description_review": "Pyyntö tarkastukseen: Jos pidit sitä virheenä, voit pyytää manuaalista tarkastusta.",
+    "empty": "Ei vielä julkaisuja täällä",
+    "locked": "Lukittu",
+    "pendingAudit": "Hyväksyntää odottamassa",
+    "post": "Julkaise",
+    "publish": {
+      "addPhoto0": "Vedä valokuvat tänne tai",
+      "addPhoto1": "Lisää valokuva",
+      "anonymousRole": "Mukautettu nimi",
+      "cantEmpty": "Ei voi olla tyhjää",
+      "cantOversize": "Ei voi olla yli 2000 merkkiä",
+      "cardType": "Korttityyppi *",
+      "chooseRole": "Valitse rooli",
+      "confessionCard": "Tunnustuskortti",
+      "description_anonymousRole": "Pidä anonyyminä tai käytä muuta lempinimeä",
+      "description_confessional": "Julkaise tunnustuspäivityksesi.",
+      "description_social": "Jaa yhteystietosi tai jotain muuta.",
+      "edit": "Muokkaa julkaisua",
+      "error": {
+        "imageOversize": "Valokuva on liian suuri",
+        "imageTooMany": "Ladattu liian monta valokuvaa",
+        "unsupportedImageFormat": "Tuettua kuvaformaattia ei ole"
+      },
+      "imageTotal": "Ladattu {number} / 9",
+      "index": "Julkaise",
+      "limits": "Tuetut JPG, PNG, WebP ja GIF -muodot, enintään 9 valokuvaa, enintään 5MB per valokuva",
+      "nameOversize": "Lempinimi ei voi olla yli 50 merkkiä.",
+      "namePlaceholder": "Syötä lempinimesi",
+      "publishing": "Julkaistaan...",
+      "selfRole": "Käytä lempinimeäni",
+      "socialCard": "Sosiaalinen kortti",
+      "targetName": "Tunnustuskohde *",
+      "targetNamePlaceholder": "Syötä heidän lempinimensä",
+      "tip": {
+        "0": "Ole kunnioittava ja vilpitön",
+        "1": "Valokuvan lataaminen merkitsee enemmän julkaisullesi",
+        "index": "Vinkit"
+      },
+      "title": "Uusi julkaisu - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+      "toasts": {
+        "sent": "Julkaistu, odottaa tarkastusta"
+      },
+      "uploadImage": "Lataa valokuvia (valinnainen)",
+      "uploadMore": "Lataa lisää valokuvia"
+    },
+    "recently": "Viimeisimmät julkaisut",
+    "requestReview": "Pyydä manuaalista tarkastusta",
+    "review": "Manuaalinen tarkastus pyydetty",
+    "reviewRequired": "Manuaalinen tarkastus vaaditaan",
+    "socialFrom": "{author}n julkaisu"
+  },
+  "seo": {
+    "description": "Paikka, jossa voimme yhdistää toisiimme.",
+    "keywords": "Zhengzhou No.4 Lukio, Zhengzhou No.4 Keskikoulu, Zhengzhou No.4 Ala-aste, Kouluyhteisö, Opiskelijaviestintä, Opiskelijakeskustelu",
+    "title": "Zhengzhou No.4 Keskikoulun tunnustusseinä"
+  },
+  "share": {
+    "copied": "Kopioitu leikepöydälle",
+    "success": "Jaettu onnistuneesti"
+  },
+  "time": {
+    "beforeDays": "{days} päivää sitten",
+    "beforeHours": "{hours} tuntia sitten",
+    "beforeMinutes": "{minutes} minuuttia sitten",
+    "expireHour": "Vanhenee {hour} tunnin ja {minutes} minuutin kuluttua",
+    "expireMinutes": "Vanhenee {minutes} minuutin kuluttua",
+    "expireSoon": "Vanhenee pian",
+    "expired": "Vanhentunut",
+    "just": "Juuri nyt"
+  },
+  "user": {
+    "center": "Henkilökohtainen keskus",
+    "centerTitle": "Henkilökohtainen keskus - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "centers": {
+      "description": "Hallitse henkilökohtaista profiiliasi ja sisältöäsi",
+      "editProfile": "Muokkaa profiilia",
+      "joinedDays": "Liittymispäivät",
+      "lastLogin": "Viimeisin kirjautuminen",
+      "registerTime": "Rekisteröitynyt"
+    },
+    "commentedOn": "Julkaisi kommentin",
+    "comments": {
+      "delete_description": "Oletko varma, että haluat poistaa tämän kommentin? Sitä ei voi palauttaa.",
+      "description": "Hallitse kommenttejasi täällä",
+      "edit": "Muokkaa kommenttia",
+      "edit_placeholder": "Muokkaa kommenttejasi täällä...",
+      "empty": "Ei vielä kommentteja",
+      "source": "Lähde:",
+      "totalComments": "Yhteensä kommentteja"
+    },
+    "description": "{nickname}n kotisivu {siteName}ssa, näyttää julkisia tunnustuksia ja sosiaalisia julkaisuja.",
+    "editAvatar": "Napsauta avatarista vaihtaaksesi",
+    "hasPerm": "Omistetut oikeudet:",
+    "myComments": "Omat kommenttini",
+    "myCommentsTitle": "Omat kommenttini - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "myPosts": "Omat julkaisut",
+    "myPostsTitle": "Omat julkaisut - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "myTags": "Omat tagit",
+    "myTagsTitle": "Omat tagit - Zhengzhou No.4 Keskikoulun tunnustusseinä",
+    "noActivity": "Ei vielä toimintaa",
+    "noPerm": "Tällä tilillä ei ole oikeuksia",
+    "noPosts": "{nickname} ei ole vielä julkaissut mitään",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Viimeksi online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Kaikki tilat",
+      "common": "Yleinen",
+      "confirmDeletion": "Vahvista poisto",
+      "description": "Hallitse julkaisuja täällä",
+      "hidden": "Piilotettu",
+      "noPosts": "Ei vielä julkaisuja",
+      "published": "Julkaistu",
+      "totalFeatured": "Yhteensä esiteltyjä julkaisuja",
+      "totalPinned": "Yhteensä kiinnitettyjä julkaisuja",
+      "totalPosts": "Yhteensä julkaisuja"
+    },
+    "postsFrom": "{nickname}n julkaisut",
+    "profile": {
+      "bioOversize": "Enintään 500 merkkiä esittelyssä",
+      "imageTooLarge": "Kuvafailin koko ei saa ylittää 5MB.",
+      "invalidEmail": "Virheellinen sähköposti",
+      "invalidPhone": "Virheellinen puhelinnumero",
+      "notImage": "Ei kuvafaili."
+    },
+    "publish": {
+      "description": "Jaa rakkautesi"
+    },
+    "recently": "Viimeisimmät aktiviteetit",
+    "superAdminPerms": "Super ylläpitäjällä on kaikki järjestelmän oikeudet",
+    "tags": {
+      "acquireTime": "Hankinta-aika: {time}",
+      "description": "Hallitse tagejasi täällä",
+      "disabled": "Poistettu tagi, ei voi aktivoida.",
+      "empty": "Ei vielä tageja",
+      "getOne": "Hanki uusi tagi lunastamalla yksi",
+      "notSet": "Ei asetettu",
+      "owns": "Omistetut tagit",
+      "redeem": {
+        "activateCode": "Lunasta koodi",
+        "description": "Syötä aktivointikoodi lunastaaksesi uusi tagi",
+        "index": "Lunasta tagi",
+        "recently": "Äskettäin hankittu",
+        "redeemed": "Onnittelut! Tagi {title} lunastettu ja automaattisesti aktivoitu.\nVoit nähdä sen julkaisuissa ja kommenteissa.",
+        "redeemed_short": "Lunastus onnistui ja automaattisesti aktivoitu.",
+        "wrongPattern": "Virheellinen lunastuskoodi"
+      },
+      "set": "Aseta \"{title}\" nykyiseksi tagiksi",
+      "unset": "Poista nykyinen tagi",
+      "useThis": "Aseta nykyiseksi"
+    }
+  }
+}

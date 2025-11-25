@@ -1,0 +1,54 @@
+name: Update i18n locales
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  update-locales:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 允许使用 GITHUB_TOKEN 推送代码
+
+    if: "!contains(github.event.head_commit.message, '[skip locales]')"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 安装依赖
+      - name: Install deps (npm)
+        run: npm ci
+
+      # 运行增量更新脚本
+      - name: Run update:locales
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # 如果你用 OpenAI 翻译
+          OPENAI_API_URL: ${{ secrets.OPENAI_API_URL }}
+          GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }} # 如果你用 Google
+        run: |
+          npm run update:locales
+
+      # 如果 i18n/locales 下有改动，就提交回仓库
+      - name: Commit locale changes
+        run: |
+          if [ -n "$(git status --porcelain i18n/locales)" ]; then
+            echo "Locale files changed, committing..."
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add i18n/locales
+            git commit -m "chore: update i18n locales [skip locales]"
+            git push
+          else
+            echo "No locale changes to commit."
+          fi

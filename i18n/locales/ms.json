@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Pentadbiran"
+  },
+  "announcements": {
+    "close": "Tutup Pengumuman",
+    "index": "Pengumuman"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Lindungi akaun anda",
+      "forms": {
+        "confirmPassword": "Sahkan Kata Laluan",
+        "confirmPasswordPlaceholder": "Ulangi kata laluan anda",
+        "currentPassword": "Kata Laluan Semasa",
+        "currentPasswordPlaceholder": "Masukkan Kata Laluan Semasa",
+        "incorrectPassword": "Kata Laluan Lama Tidak Betul",
+        "newPassword": "Kata Laluan Baru",
+        "newPasswordDescription": "Sekurang-kurangnya 6 aksara, disyorkan mengandungi nombor, huruf kecil/huruf besar dan watak khas",
+        "newPasswordPlaceholder": "Masukkan Kata Laluan Baru (sekurang-kurangnya 6 aksara)",
+        "repeatPasswordNotMatch": "Kata laluan tidak sepadan."
+      },
+      "index": "Tukar Kata Laluan",
+      "success": "Berjaya ditukar, sila log masuk semula.",
+      "tips": {
+        "0": "Jangan gunakan kata laluan yang berkaitan dengan data peribadi anda",
+        "1": "Disyorkan untuk menukar kata laluan anda secara berkala",
+        "2": "Jangan gunakan kata laluan yang sama di antara laman web",
+        "3": "Simpan kata laluan anda dengan selamat, jangan kongsikannya dengan orang lain",
+        "index": "Cadangan Keselamatan Kata Laluan"
+      },
+      "title": "Tukar Kata Laluan - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou"
+    },
+    "login": {
+      "description": "Log masuk ke akaun anda",
+      "invalidCredentials": "Gagal untuk log masuk, sila semak nama pengguna dan kata laluan anda",
+      "passwordPlaceholder": "Masukkan kata laluan",
+      "passwordTooShort": "Sekurang-kurangnya 6 aksara",
+      "registerNow": "Daftar Sekarang",
+      "registerSuggestion": "Tiada akaun?",
+      "title": "Log masuk - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+      "usernamePlaceholder": "Masukkan nama pengguna",
+      "welcome": "Selamat datang kembali"
+    },
+    "register": {
+      "agreeWithTerms": "Saya telah membaca dan bersetuju dengan Terma:",
+      "description": "Kongsi, temui, dan sambungkan dengan kami.",
+      "index": "Buat akaun",
+      "loginSuggestion": "Sudah mempunyai akaun?",
+      "notAgreeWithTerms": "Sila setujui terma kami terlebih dahulu",
+      "passwordTooLong": "Maksimum 128 aksara dalam Kata Laluan",
+      "title": "Daftar - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+      "usernameCharset": "Hanya boleh mengandungi huruf, nombor dan garis bawah",
+      "usernameLimit": "Dari 3 hingga 20 aksara, hanya boleh mengandungi huruf, nombor dan garis bawah",
+      "usernameTooLong": "Maksimum 20 aksara dalam nama pengguna",
+      "usernameTooShort": "Sekurang-kurangnya 3 aksara dalam nama pengguna"
+    }
+  },
+  "captcha": {
+    "click": "Sila klik mengikut urutan:",
+    "reference": "Imej Rujukan",
+    "rotate": "Putar ke sudut yang betul"
+  },
+  "comment": {
+    "commentOversize": "Komen tidak boleh lebih daripada 500 aksara",
+    "loginRequired": "Log masuk diperlukan untuk menghantar komen",
+    "noComments": "Tiada komen lagi.",
+    "placeholder": "Tuliskan idea anda...",
+    "send": "Hantar komen"
+  },
+  "comments": {
+    "recently": "Komen Terkini"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Terokai Pos",
+    "cancel": "Batal",
+    "captcha": "Biar kami tahu anda manusia",
+    "collapse": "Runtuhkan",
+    "comment": "Komen",
+    "commonUser": "Pengguna",
+    "confirm": "Sahkan",
+    "content": "Kandungan",
+    "current": "Semasa",
+    "delete": "Padam",
+    "detail": "Lihat lebih banyak",
+    "disabled": "Dilumpuhkan",
+    "dismiss": "Tolak",
+    "edited": "Diedit",
+    "email": "E-Mel",
+    "enabled": "Dihidupkan",
+    "expand": "Kembangkan",
+    "feature": "Ditampilkan",
+    "hide": "Sembunyikan",
+    "joinTime": "Bergabung pada {time}",
+    "known": "Dikenali",
+    "layouts": {
+      "grid": "Susun Atur Grid",
+      "list": "Susun Atur Senarai"
+    },
+    "loadMore": "Muat lebih banyak",
+    "loading": "Memuatkan...",
+    "moderator": "Moderator",
+    "nickname": "Nama Panggilan",
+    "ok": "OK",
+    "password": "Kata Laluan",
+    "phone": "Telefon",
+    "pin": "PIN",
+    "preview": "Pratonton",
+    "previous": "Kembali",
+    "pullDownLoading": "Gulir untuk lebih banyak",
+    "refresh": "Segarkan",
+    "reset": "Tetapkan Semula",
+    "save": "Simpan",
+    "share": "Kongsi",
+    "show": "Tunjukkan",
+    "success": "Selesai",
+    "superAdmin": "Super Admin",
+    "unfeature": "Tidak Ditampilkan",
+    "unknown": "Tidak Dikenali",
+    "unpin": "Tidak Pin",
+    "username": "Nama Pengguna"
+  },
+  "error": {
+    "messages": {
+      "401": "Sila log masuk sebelum melawat halaman ini.",
+      "403": "Anda tidak mempunyai kebenaran untuk mengakses halaman ini. Sila hubungi pentadbir anda.",
+      "404": "Maaf, halaman yang anda lawati tidak wujud atau telah dipadam.",
+      "500": "Terdapat beberapa masalah dengan pelayan. Sila cuba lagi nanti.",
+      "unknown": "Ralat yang tidak dijangka telah berlaku. Sila cuba lagi nanti."
+    },
+    "title": "{code} - {message} - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "titles": {
+      "401": "Log Masuk Diperlukan",
+      "403": "Akses ditolak",
+      "404": "Halaman tidak Ditemui",
+      "500": "Ralat Pelayan Dalaman",
+      "unknown": "Sesuatu telah berlaku"
+    }
+  },
+  "home": {
+    "backHome": "Kembali ke Halaman Utama",
+    "contact": "Hubungi Kami",
+    "description": "Tempat untuk berhubung antara satu sama lain.",
+    "login": "Log masuk",
+    "logout": "Log keluar",
+    "privacy": "Dasar Privasi",
+    "register": "Daftar",
+    "title": "Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "tos": "Terma Perkhidmatan"
+  },
+  "notifications": {
+    "amount": "{number} secara keseluruhan",
+    "checkLater": "Kembali kemudian.",
+    "description": "Dapatkan pemberitahuan di sini",
+    "empty": "Tiada pemberitahuan lagi",
+    "failed": "Gagal memuatkan pemberitahuan.",
+    "failedMark": "Gagal menandakan sebagai dibaca.",
+    "index": "Pemberitahuan",
+    "title": "Pemberitahuan - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "unread": "Belum dibaca"
+  },
+  "permission": {
+    "manage_announcements": "Urus Pengumuman",
+    "manage_announcements_group": "Urus Komuniti",
+    "manage_content": "Urus Kandungan",
+    "manage_featured": "Urus Ditampilkan",
+    "manage_posts": "Urus Pos/Komen",
+    "manage_tags": "Urus Tag",
+    "manage_tags_group": "Urus Sistem",
+    "manage_users": "Urus Pengguna"
+  },
+  "posts": {
+    "404": "Pos tidak ditemui",
+    "alt": {
+      "confessionalImage": "{author}'s Imej Pos Pengakuan",
+      "socialImage": "{author}'s Imej Pos Sosial"
+    },
+    "beFirst": "Jadilah yang pertama",
+    "confessionTo": "Pengakuan dari {author} kepada {target}",
+    "contentPlaceholder": "Masukkan kandungan",
+    "deletedUser": "Akaun Dipadam",
+    "deniedAudit": "Audit tidak lulus",
+    "description_review": "Permintaan Semakan: Jika anda menganggapnya sebagai kesilapan, anda boleh meminta semakan manual.",
+    "empty": "Tiada pos di sini lagi",
+    "locked": "Terkunci",
+    "pendingAudit": "Menunggu Kelulusan",
+    "post": "Pos",
+    "publish": {
+      "addPhoto0": "Seret foto di sini, atau",
+      "addPhoto1": "Tambah foto",
+      "anonymousRole": "Nama Khas",
+      "cantEmpty": "Tidak boleh kosong",
+      "cantOversize": "Tidak boleh lebih daripada 2000 aksara",
+      "cardType": "Jenis Kad *",
+      "chooseRole": "Pilih Peranan",
+      "confessionCard": "Kad Pengakuan",
+      "description_anonymousRole": "Simpan tanpa nama atau gunakan nama panggilan lain",
+      "description_confessional": "Terbitkan pos pengakuan anda.",
+      "description_social": "Kongsi maklumat hubungan anda atau sesuatu yang lain.",
+      "edit": "Edit Pos",
+      "error": {
+        "imageOversize": "Foto terlalu besar",
+        "imageTooMany": "Muat naik terlalu banyak foto",
+        "unsupportedImageFormat": "Format imej tidak disokong"
+      },
+      "imageTotal": "Muat naik {number} / 9",
+      "index": "Terbitkan",
+      "limits": "Format JPG, PNG, WebP dan GIF disokong, sehingga 9 foto, maksimum 5MB setiap foto",
+      "nameOversize": "Nama panggilan tidak boleh lebih daripada 50 aksara.",
+      "namePlaceholder": "Masukkan nama panggilan anda",
+      "publishing": "Menerbitkan...",
+      "selfRole": "Gunakan nama panggilan saya",
+      "socialCard": "Kad Sosial",
+      "targetName": "Sasaran Pengakuan *",
+      "targetNamePlaceholder": "Masukkan nama panggilan mereka",
+      "tip": {
+        "0": "Bersikap hormat dan ikhlas",
+        "1": "Muat naik foto bermakna lebih untuk pos anda",
+        "index": "Petua"
+      },
+      "title": "Pos Baru - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+      "toasts": {
+        "sent": "Dihantar, menunggu audit"
+      },
+      "uploadImage": "Muat naik Foto (Pilihan)",
+      "uploadMore": "Muat naik lebih banyak foto"
+    },
+    "recently": "Pos Terkini",
+    "requestReview": "Permintaan Semakan Manual",
+    "review": "Semakan Manual Diminta",
+    "reviewRequired": "Semakan Manual Diperlukan",
+    "socialFrom": "{author}'s pos"
+  },
+  "seo": {
+    "description": "Tempat untuk berhubung antara satu sama lain.",
+    "keywords": "Sekolah Menengah No.4 Zhengzhou, Sekolah Menengah No.4 Zhengzhou, Sekolah Menengah No.4 Zhengzhou, Komuniti Sekolah, Komunikasi Pelajar, Perbincangan Pelajar",
+    "title": "Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou"
+  },
+  "share": {
+    "copied": "Disalin ke papan klip",
+    "success": "Dikongsi dengan jayanya"
+  },
+  "time": {
+    "beforeDays": "{days} hari yang lalu",
+    "beforeHours": "{hours} jam yang lalu",
+    "beforeMinutes": "{minutes} minit yang lalu",
+    "expireHour": "Tamat selepas {hour} jam dan {minutes} minit",
+    "expireMinutes": "Tamat selepas {minutes} minit",
+    "expireSoon": "Akan tamat tidak lama lagi",
+    "expired": "Tamat",
+    "just": "Baru sahaja"
+  },
+  "user": {
+    "center": "Pusat Peribadi",
+    "centerTitle": "Pusat Peribadi - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "centers": {
+      "description": "Urus profil dan kandungan peribadi anda",
+      "editProfile": "Edit Profil",
+      "joinedDays": "Hari bergabung",
+      "lastLogin": "Log masuk terakhir pada",
+      "registerTime": "Didaftarkan pada"
+    },
+    "commentedOn": "Menghantar komen",
+    "comments": {
+      "delete_description": "Adakah anda pasti ingin memadam komen ini? Ia tidak dapat dipulihkan.",
+      "description": "Urus komen anda di sini",
+      "edit": "Edit Komen",
+      "edit_placeholder": "Edit komen anda di sini...",
+      "empty": "Tiada komen lagi",
+      "source": "Sumber:",
+      "totalComments": "Jumlah Komen"
+    },
+    "description": "{nickname}'s halaman utama di {siteName}, menunjukkan pengakuan awam dan pos sosial.",
+    "editAvatar": "Klik pada avatar untuk menukar",
+    "hasPerm": "Kebenaran yang dimiliki:",
+    "myComments": "Komen Saya",
+    "myCommentsTitle": "Komen Saya - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "myPosts": "Pos Saya",
+    "myPostsTitle": "Pos Saya - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "myTags": "Tag Saya",
+    "myTagsTitle": "Tag Saya - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
+    "noActivity": "Tiada aktiviti lagi",
+    "noPerm": "Akaun ini tidak mempunyai sebarang kebenaran",
+    "noPosts": "{nickname} belum menerbitkan sebarang pos lagi",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Terakhir Dalam Talian: {time}",
+    "online": "Dalam Talian",
+    "posts": {
+      "allState": "Semua status",
+      "common": "Biasa",
+      "confirmDeletion": "Sahkan Pembuangan",
+      "description": "Urus pos anda di sini",
+      "hidden": "Tersembunyi",
+      "noPosts": "Tiada pos lagi",
+      "published": "Diterbitkan",
+      "totalFeatured": "Jumlah Pos Ditampilkan",
+      "totalPinned": "Jumlah Pos Dipin",
+      "totalPosts": "Jumlah Pos"
+    },
+    "postsFrom": "{nickname}'s Pos",
+    "profile": {
+      "bioOversize": "Maksimum 500 aksara dalam bio",
+      "imageTooLarge": "Fail imej tidak boleh melebihi 5MB.",
+      "invalidEmail": "E-Mel Tidak Sah",
+      "invalidPhone": "Nombor telefon tidak sah",
+      "notImage": "Bukan fail imej."
+    },
+    "publish": {
+      "description": "Kongsi kasih sayang anda"
+    },
+    "recently": "Aktiviti Terkini",
+    "superAdminPerms": "Super admin memiliki semua kebenaran sistem",
+    "tags": {
+      "acquireTime": "Masa Diperoleh: {time}",
+      "description": "Urus tag anda di sini",
+      "disabled": "Tag Dilumpuhkan, tidak boleh diaktifkan.",
+      "empty": "Tiada tag lagi",
+      "getOne": "Dapatkan tag baru dengan menebus satu",
+      "notSet": "Tidak ditetapkan",
+      "owns": "Tag yang dimiliki",
+      "redeem": {
+        "activateCode": "Tebus Kod",
+        "description": "Masukkan kod aktif untuk menebus tag baru",
+        "index": "Tebus Tag",
+        "recently": "Baru Diperoleh",
+        "redeemed": "Tahniah! Tag {title} telah ditebus dan diaktifkan secara automatik.\nAnda boleh melihatnya dalam pos dan komen.",
+        "redeemed_short": "Tebus Berjaya dan diaktifkan secara automatik.",
+        "wrongPattern": "Kod Tebus Tidak Betul"
+      },
+      "set": "Tetapkan \"{title}\" sebagai tag semasa",
+      "unset": "Lepaskan tag semasa",
+      "useThis": "Tetapkan sebagai semasa"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Quản lý"
+  },
+  "announcements": {
+    "close": "Đóng thông báo",
+    "index": "Thông báo"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Bảo vệ tài khoản của bạn",
+      "forms": {
+        "confirmPassword": "Xác nhận mật khẩu",
+        "confirmPasswordPlaceholder": "Nhập lại mật khẩu của bạn",
+        "currentPassword": "Mật khẩu hiện tại",
+        "currentPasswordPlaceholder": "Nhập mật khẩu hiện tại",
+        "incorrectPassword": "Mật khẩu cũ không chính xác",
+        "newPassword": "Mật khẩu mới",
+        "newPasswordDescription": "Tối thiểu 6 ký tự, nên chứa số, chữ thường/chữ hoa và ký tự đặc biệt",
+        "newPasswordPlaceholder": "Nhập mật khẩu mới (tối thiểu 6 ký tự)",
+        "repeatPasswordNotMatch": "Mật khẩu không khớp."
+      },
+      "index": "Đổi mật khẩu",
+      "success": "Đã thay đổi thành công, vui lòng đăng nhập lại.",
+      "tips": {
+        "0": "Không sử dụng mật khẩu liên quan đến dữ liệu cá nhân của bạn",
+        "1": "Nên thay đổi mật khẩu thường xuyên",
+        "2": "Không sử dụng cùng một mật khẩu trên nhiều trang web",
+        "3": "Giữ mật khẩu của bạn an toàn, không chia sẻ với người khác",
+        "index": "Gợi ý bảo mật mật khẩu"
+      },
+      "title": "Đổi mật khẩu - Bức tường thú tội Trường Trung học số 4 Trịnh Châu"
+    },
+    "login": {
+      "description": "Đăng nhập vào tài khoản của bạn",
+      "invalidCredentials": "Đăng nhập không thành công, vui lòng kiểm tra tên người dùng và mật khẩu của bạn",
+      "passwordPlaceholder": "Nhập mật khẩu",
+      "passwordTooShort": "Tối thiểu 6 ký tự",
+      "registerNow": "Đăng ký ngay",
+      "registerSuggestion": "Bạn chưa có tài khoản?",
+      "title": "Đăng nhập - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+      "usernamePlaceholder": "Nhập tên người dùng",
+      "welcome": "Chào mừng trở lại"
+    },
+    "register": {
+      "agreeWithTerms": "Tôi đã đọc và đồng ý với các điều khoản:",
+      "description": "Chia sẻ, khám phá và kết nối với chúng tôi.",
+      "index": "Tạo tài khoản",
+      "loginSuggestion": "Đã có tài khoản?",
+      "notAgreeWithTerms": "Vui lòng đồng ý với các điều khoản của chúng tôi trước",
+      "passwordTooLong": "Tối đa 128 ký tự trong mật khẩu",
+      "title": "Đăng ký - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+      "usernameCharset": "Chỉ có thể chứa chữ cái, số và dấu gạch dưới",
+      "usernameLimit": "Từ 3 đến 20 ký tự, chỉ có thể chứa chữ cái, số và dấu gạch dưới",
+      "usernameTooLong": "Tối đa 20 ký tự trong tên người dùng",
+      "usernameTooShort": "Tối thiểu 3 ký tự trong tên người dùng"
+    }
+  },
+  "captcha": {
+    "click": "Vui lòng nhấp theo thứ tự:",
+    "reference": "Hình ảnh tham khảo",
+    "rotate": "Xoay đến góc chính xác"
+  },
+  "comment": {
+    "commentOversize": "Bình luận không thể nhiều hơn 500 ký tự",
+    "loginRequired": "Cần đăng nhập để đăng bình luận",
+    "noComments": "Chưa có bình luận nào.",
+    "placeholder": "Ghi lại ý tưởng của bạn...",
+    "send": "Đăng bình luận"
+  },
+  "comments": {
+    "recently": "Bình luận gần đây"
+  },
+  "common": {
+    "admin": "Quản trị viên",
+    "bio": "Tiểu sử",
+    "browse": "Khám phá bài viết",
+    "cancel": "Hủy",
+    "captcha": "Cho chúng tôi biết bạn là người thật",
+    "collapse": "Thu gọn",
+    "comment": "Bình luận",
+    "commonUser": "Người dùng",
+    "confirm": "Xác nhận",
+    "content": "Nội dung",
+    "current": "Hiện tại",
+    "delete": "Xóa",
+    "detail": "Xem thêm",
+    "disabled": "Đã tắt",
+    "dismiss": "Bỏ qua",
+    "edited": "Đã chỉnh sửa",
+    "email": "E-Mail",
+    "enabled": "Đã bật",
+    "expand": "Mở rộng",
+    "feature": "Nổi bật",
+    "hide": "Ẩn",
+    "joinTime": "Tham gia vào {time}",
+    "known": "Đã biết",
+    "layouts": {
+      "grid": "Bố cục lưới",
+      "list": "Bố cục danh sách"
+    },
+    "loadMore": "Tải thêm",
+    "loading": "Đang tải...",
+    "moderator": "Người điều hành",
+    "nickname": "Biệt danh",
+    "ok": "OK",
+    "password": "Mật khẩu",
+    "phone": "Điện thoại",
+    "pin": "Mã PIN",
+    "preview": "Xem trước",
+    "previous": "Quay lại",
+    "pullDownLoading": "Cuộn để xem thêm",
+    "refresh": "Làm mới",
+    "reset": "Đặt lại",
+    "save": "Lưu",
+    "share": "Chia sẻ",
+    "show": "Hiện",
+    "success": "Hoàn tất",
+    "superAdmin": "Siêu quản trị viên",
+    "unfeature": "Bỏ nổi bật",
+    "unknown": "Không xác định",
+    "unpin": "Bỏ ghim",
+    "username": "Tên người dùng"
+  },
+  "error": {
+    "messages": {
+      "401": "Vui lòng đăng nhập trước khi truy cập trang này.",
+      "403": "Bạn không có quyền truy cập vào trang này. Vui lòng liên hệ với quản trị viên của bạn.",
+      "404": "Xin lỗi, trang bạn truy cập không tồn tại hoặc đã bị xóa.",
+      "500": "Có một số vấn đề với máy chủ. Vui lòng thử lại sau.",
+      "unknown": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau."
+    },
+    "title": "{code} - {message} - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "titles": {
+      "401": "Cần đăng nhập",
+      "403": "Truy cập bị từ chối",
+      "404": "Không tìm thấy trang",
+      "500": "Lỗi máy chủ nội bộ",
+      "unknown": "Có gì đó không ổn"
+    }
+  },
+  "home": {
+    "backHome": "Quay lại trang chủ",
+    "contact": "Liên hệ với chúng tôi",
+    "description": "Một nơi để kết nối với nhau.",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "privacy": "Chính sách bảo mật",
+    "register": "Đăng ký",
+    "title": "Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "tos": "Điều khoản dịch vụ"
+  },
+  "notifications": {
+    "amount": "{number} tổng cộng",
+    "checkLater": "Quay lại sau.",
+    "description": "Nhận thông báo ở đây",
+    "empty": "Chưa có thông báo nào",
+    "failed": "Tải thông báo không thành công.",
+    "failedMark": "Đánh dấu là đã đọc không thành công.",
+    "index": "Thông báo",
+    "title": "Thông báo - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "unread": "Chưa đọc"
+  },
+  "permission": {
+    "manage_announcements": "Quản lý thông báo",
+    "manage_announcements_group": "Quản lý cộng đồng",
+    "manage_content": "Quản lý nội dung",
+    "manage_featured": "Quản lý nổi bật",
+    "manage_posts": "Quản lý bài viết/bình luận",
+    "manage_tags": "Quản lý thẻ",
+    "manage_tags_group": "Quản lý hệ thống",
+    "manage_users": "Quản lý người dùng"
+  },
+  "posts": {
+    "404": "Bài viết không tìm thấy",
+    "alt": {
+      "confessionalImage": "{author}'s Hình ảnh bài viết thú tội",
+      "socialImage": "{author}'s Hình ảnh bài viết xã hội"
+    },
+    "beFirst": "Hãy là người đầu tiên",
+    "confessionTo": "Thú tội từ {author} đến {target}",
+    "contentPlaceholder": "Nhập nội dung",
+    "deletedUser": "Tài khoản đã bị xóa",
+    "deniedAudit": "Kiểm tra không được thông qua",
+    "description_review": "Yêu cầu xem xét: Nếu bạn coi đây là một sai lầm, bạn có thể yêu cầu xem xét thủ công.",
+    "empty": "Chưa có bài viết nào ở đây",
+    "locked": "Đã khóa",
+    "pendingAudit": "Chờ phê duyệt",
+    "post": "Đăng bài",
+    "publish": {
+      "addPhoto0": "Kéo ảnh vào đây, hoặc",
+      "addPhoto1": "Thêm ảnh",
+      "anonymousRole": "Tên tùy chỉnh",
+      "cantEmpty": "Không được để trống",
+      "cantOversize": "Không được nhiều hơn 2000 ký tự",
+      "cardType": "Loại thẻ *",
+      "chooseRole": "Chọn vai trò",
+      "confessionCard": "Thẻ thú tội",
+      "description_anonymousRole": "Giữ ẩn danh hoặc sử dụng biệt danh khác",
+      "description_confessional": "Đăng bài thú tội của bạn.",
+      "description_social": "Chia sẻ thông tin liên lạc của bạn hoặc điều gì đó khác.",
+      "edit": "Chỉnh sửa bài viết",
+      "error": {
+        "imageOversize": "Ảnh quá lớn",
+        "imageTooMany": "Tải lên quá nhiều ảnh",
+        "unsupportedImageFormat": "Định dạng hình ảnh không được hỗ trợ"
+      },
+      "imageTotal": "Đã tải lên {number} / 9",
+      "index": "Đăng",
+      "limits": "Hỗ trợ định dạng JPG, PNG, WebP và GIF, tối đa 9 ảnh, tối đa 5MB mỗi ảnh",
+      "nameOversize": "Biệt danh không được nhiều hơn 50 ký tự.",
+      "namePlaceholder": "Nhập biệt danh của bạn",
+      "publishing": "Đang xuất bản...",
+      "selfRole": "Sử dụng biệt danh của tôi",
+      "socialCard": "Thẻ xã hội",
+      "targetName": "Mục tiêu thú tội *",
+      "targetNamePlaceholder": "Nhập biệt danh của họ",
+      "tip": {
+        "0": "Hãy tôn trọng và chân thành",
+        "1": "Tải lên một bức ảnh có nghĩa là nhiều hơn cho bài viết của bạn",
+        "index": "Mẹo"
+      },
+      "title": "Bài viết mới - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+      "toasts": {
+        "sent": "Đã đăng, chờ kiểm tra"
+      },
+      "uploadImage": "Tải lên ảnh (Tùy chọn)",
+      "uploadMore": "Tải lên nhiều ảnh hơn"
+    },
+    "recently": "Bài viết gần đây",
+    "requestReview": "Yêu cầu xem xét thủ công",
+    "review": "Yêu cầu xem xét thủ công đã được gửi",
+    "reviewRequired": "Cần xem xét thủ công",
+    "socialFrom": "{author}'s bài viết"
+  },
+  "seo": {
+    "description": "Một nơi để kết nối với nhau.",
+    "keywords": "Trường Trung học số 4 Trịnh Châu, Trường Trung học số 4 Trịnh Châu, Trường Trung học cơ sở số 4 Trịnh Châu, Cộng đồng trường học, Giao tiếp sinh viên, Thảo luận sinh viên",
+    "title": "Bức tường thú tội Trường Trung học số 4 Trịnh Châu"
+  },
+  "share": {
+    "copied": "Đã sao chép vào clipboard",
+    "success": "Chia sẻ thành công"
+  },
+  "time": {
+    "beforeDays": "{days} ngày trước",
+    "beforeHours": "{hours} giờ trước",
+    "beforeMinutes": "{minutes} phút trước",
+    "expireHour": "Hết hạn sau {hour} giờ và {minutes} phút",
+    "expireMinutes": "Hết hạn sau {minutes} phút",
+    "expireSoon": "Sắp hết hạn",
+    "expired": "Đã hết hạn",
+    "just": "Vừa mới"
+  },
+  "user": {
+    "center": "Trung tâm cá nhân",
+    "centerTitle": "Trung tâm cá nhân - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "centers": {
+      "description": "Quản lý hồ sơ cá nhân và nội dung của bạn",
+      "editProfile": "Chỉnh sửa hồ sơ",
+      "joinedDays": "Ngày tham gia",
+      "lastLogin": "Lần đăng nhập cuối cùng vào lúc",
+      "registerTime": "Đã đăng ký vào"
+    },
+    "commentedOn": "Đã đăng một bình luận",
+    "comments": {
+      "delete_description": "Bạn có chắc chắn muốn xóa bình luận này không? Nó không thể phục hồi.",
+      "description": "Quản lý bình luận của bạn ở đây",
+      "edit": "Chỉnh sửa bình luận",
+      "edit_placeholder": "Chỉnh sửa bình luận của bạn ở đây...",
+      "empty": "Chưa có bình luận nào",
+      "source": "Nguồn:",
+      "totalComments": "Tổng số bình luận"
+    },
+    "description": "{nickname}'s trang chủ trên {siteName}, hiển thị thú tội công khai và bài viết xã hội.",
+    "editAvatar": "Nhấp vào avatar để thay đổi",
+    "hasPerm": "Quyền sở hữu:",
+    "myComments": "Bình luận của tôi",
+    "myCommentsTitle": "Bình luận của tôi - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "myPosts": "Bài viết của tôi",
+    "myPostsTitle": "Bài viết của tôi - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "myTags": "Thẻ của tôi",
+    "myTagsTitle": "Thẻ của tôi - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
+    "noActivity": "Chưa có hoạt động nào",
+    "noPerm": "Tài khoản này không có quyền nào",
+    "noPosts": "{nickname} chưa đăng bất kỳ bài viết nào",
+    "offline": "Ngoại tuyến",
+    "offlineAndTime": "Ngoại tuyến - Lần trực tuyến cuối: {time}",
+    "online": "Trực tuyến",
+    "posts": {
+      "allState": "Tất cả trạng thái",
+      "common": "Thông thường",
+      "confirmDeletion": "Xác nhận xóa",
+      "description": "Quản lý bài viết của bạn ở đây",
+      "hidden": "Ẩn",
+      "noPosts": "Chưa có bài viết nào",
+      "published": "Đã xuất bản",
+      "totalFeatured": "Tổng số bài viết nổi bật",
+      "totalPinned": "Tổng số bài viết ghim",
+      "totalPosts": "Tổng số bài viết"
+    },
+    "postsFrom": "{nickname}'s Bài viết",
+    "profile": {
+      "bioOversize": "Tối đa 500 ký tự trong tiểu sử",
+      "imageTooLarge": "Tệp hình ảnh không được vượt quá 5MB.",
+      "invalidEmail": "E-Mail không hợp lệ",
+      "invalidPhone": "Số điện thoại không hợp lệ",
+      "notImage": "Không phải tệp hình ảnh."
+    },
+    "publish": {
+      "description": "Chia sẻ tình yêu của bạn"
+    },
+    "recently": "Hoạt động gần đây",
+    "superAdminPerms": "Siêu quản trị viên sở hữu tất cả quyền hệ thống",
+    "tags": {
+      "acquireTime": "Thời gian thu được: {time}",
+      "description": "Quản lý thẻ của bạn ở đây",
+      "disabled": "Thẻ đã tắt, không thể kích hoạt.",
+      "empty": "Chưa có thẻ nào",
+      "getOne": "Nhận thẻ mới bằng cách đổi thẻ",
+      "notSet": "Chưa được thiết lập",
+      "owns": "Thẻ đã sở hữu",
+      "redeem": {
+        "activateCode": "Đổi mã",
+        "description": "Nhập mã kích hoạt để đổi thẻ mới",
+        "index": "Đổi thẻ",
+        "recently": "Mới nhận được",
+        "redeemed": "Chúc mừng! Thẻ {title} đã được đổi và tự động kích hoạt.\nBạn có thể thấy nó trong các bài viết và bình luận.",
+        "redeemed_short": "Đã đổi thành công và tự động kích hoạt.",
+        "wrongPattern": "Mã đổi không chính xác"
+      },
+      "set": "Đặt \"{title}\" làm thẻ hiện tại",
+      "unset": "Bỏ thẻ hiện tại",
+      "useThis": "Đặt làm hiện tại"
+    }
+  }
+}

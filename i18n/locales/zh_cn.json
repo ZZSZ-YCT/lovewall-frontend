@@ -323,6 +323,7 @@
       "redeem": {
         "activateCode": "兑换码",
         "description": "输入兑换码以兑换新的标签",
+        "message": "输入兑换码以兑换新的标签",
         "index": "兑换标签",
         "recently": "最近兑换的标签",
         "redeemed": "恭喜你获得了新标签 {title}。\n新标签已自动设为当前标签，你可以在帖子和评论中看到他的显示效果。",

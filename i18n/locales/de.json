@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Verwaltung"
+  },
+  "announcements": {
+    "close": "Ankündigung schließen",
+    "index": "Ankündigungen"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Schützen Sie Ihr Konto",
+      "forms": {
+        "confirmPassword": "Passwort bestätigen",
+        "confirmPasswordPlaceholder": "Wiederholen Sie Ihr Passwort",
+        "currentPassword": "Aktuelles Passwort",
+        "currentPasswordPlaceholder": "Geben Sie das aktuelle Passwort ein",
+        "incorrectPassword": "Falsches altes Passwort",
+        "newPassword": "Neues Passwort",
+        "newPasswordDescription": "Mindestens 6 Zeichen, empfohlen, Zahlen, Klein-/Großbuchstaben und Sonderzeichen zu enthalten",
+        "newPasswordPlaceholder": "Geben Sie ein neues Passwort ein (mindestens 6 Zeichen)",
+        "repeatPasswordNotMatch": "Passwörter stimmen nicht überein."
+      },
+      "index": "Passwort ändern",
+      "success": "Änderung erfolgreich, bitte erneut anmelden.",
+      "tips": {
+        "0": "Verwenden Sie kein Passwort, das mit Ihren persönlichen Daten zu tun hat",
+        "1": "Es wird empfohlen, Ihr Passwort regelmäßig zu ändern",
+        "2": "Verwenden Sie nicht dasselbe Passwort auf verschiedenen Websites",
+        "3": "Halten Sie Ihr Passwort sicher, teilen Sie es nicht mit anderen",
+        "index": "Sichere Passwortvorschläge"
+      },
+      "title": "Passwort ändern - Geständniswand der Zhengzhou No.4 Mittelschule"
+    },
+    "login": {
+      "description": "Melden Sie sich bei Ihrem Konto an",
+      "invalidCredentials": "Anmeldung fehlgeschlagen, bitte überprüfen Sie Ihren Benutzernamen und Ihr Passwort",
+      "passwordPlaceholder": "Passwort eingeben",
+      "passwordTooShort": "Mindestens 6 Zeichen",
+      "registerNow": "Jetzt registrieren",
+      "registerSuggestion": "Haben Sie kein Konto?",
+      "title": "Anmelden - Geständniswand der Zhengzhou No.4 Mittelschule",
+      "usernamePlaceholder": "Benutzernamen eingeben",
+      "welcome": "Willkommen zurück"
+    },
+    "register": {
+      "agreeWithTerms": "Ich habe die Bedingungen bereits gelesen und akzeptiert:",
+      "description": "Teilen, entdecken und verbinden Sie sich mit uns.",
+      "index": "Ein Konto erstellen",
+      "loginSuggestion": "Haben Sie bereits ein Konto?",
+      "notAgreeWithTerms": "Bitte stimmen Sie zuerst unseren Bedingungen zu",
+      "passwordTooLong": "Maximal 128 Zeichen im Passwort",
+      "title": "Registrieren - Geständniswand der Zhengzhou No.4 Mittelschule",
+      "usernameCharset": "Darf nur Buchstaben, Zahlen und Unterstriche enthalten",
+      "usernameLimit": "Von 3 bis 20 Zeichen, darf nur Buchstaben, Zahlen und Unterstriche enthalten",
+      "usernameTooLong": "Maximal 20 Zeichen im Benutzernamen",
+      "usernameTooShort": "Mindestens 3 Zeichen im Benutzernamen"
+    }
+  },
+  "captcha": {
+    "click": "Bitte in folgender Reihenfolge klicken:",
+    "reference": "Referenzbild",
+    "rotate": "Drehen Sie in den richtigen Winkel"
+  },
+  "comment": {
+    "commentOversize": "Kommentare dürfen nicht mehr als 500 Zeichen enthalten",
+    "loginRequired": "Anmeldung erforderlich, um Kommentare zu posten",
+    "noComments": "Noch keine Kommentare.",
+    "placeholder": "Schreiben Sie Ihre Idee auf...",
+    "send": "Kommentar posten"
+  },
+  "comments": {
+    "recently": "Neueste Kommentare"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Biografie",
+    "browse": "Beiträge erkunden",
+    "cancel": "Abbrechen",
+    "captcha": "Lassen Sie uns wissen, dass Sie ein Mensch sind",
+    "collapse": "Zusammenklappen",
+    "comment": "Kommentar",
+    "commonUser": "Benutzer",
+    "confirm": "Bestätigen",
+    "content": "Inhalt",
+    "current": "Aktuell",
+    "delete": "Löschen",
+    "detail": "Mehr sehen",
+    "disabled": "Deaktiviert",
+    "dismiss": "Abweisen",
+    "edited": "Bearbeitet",
+    "email": "E-Mail",
+    "enabled": "Aktiviert",
+    "expand": "Erweitern",
+    "feature": "Hervorgehoben",
+    "hide": "Ausblenden",
+    "joinTime": "Beigetreten am {time}",
+    "known": "Bekannt",
+    "layouts": {
+      "grid": "Rasterlayout",
+      "list": "Listenlayout"
+    },
+    "loadMore": "Mehr laden",
+    "loading": "Lädt...",
+    "moderator": "Moderator",
+    "nickname": "Spitzname",
+    "ok": "OK",
+    "password": "Passwort",
+    "phone": "Telefon",
+    "pin": "PIN",
+    "preview": "Vorschau",
+    "previous": "Zurück",
+    "pullDownLoading": "Scrollen für mehr",
+    "refresh": "Aktualisieren",
+    "reset": "Zurücksetzen",
+    "save": "Speichern",
+    "share": "Teilen",
+    "show": "Anzeigen",
+    "success": "Fertig",
+    "superAdmin": "Super Admin",
+    "unfeature": "Hervorhebung aufheben",
+    "unknown": "Unbekannt",
+    "unpin": "Anheften aufheben",
+    "username": "Benutzername"
+  },
+  "error": {
+    "messages": {
+      "401": "Bitte melden Sie sich an, bevor Sie diese Seite besuchen.",
+      "403": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Bitte kontaktieren Sie Ihren Administrator.",
+      "404": "Entschuldigung, die von Ihnen besuchte Seite existiert nicht oder wurde gelöscht.",
+      "500": "Es gibt einige Probleme mit dem Server. Bitte versuchen Sie es später erneut.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+    },
+    "title": "{code} - {message} - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "titles": {
+      "401": "Anmeldung erforderlich",
+      "403": "Zugriff verweigert",
+      "404": "Seite nicht gefunden",
+      "500": "Interner Serverfehler",
+      "unknown": "Etwas ist schief gelaufen"
+    }
+  },
+  "home": {
+    "backHome": "Zurück zur Startseite",
+    "contact": "Kontaktieren Sie uns",
+    "description": "Ein Ort, um sich miteinander zu verbinden.",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "privacy": "Datenschutzrichtlinie",
+    "register": "Registrieren",
+    "title": "Geständniswand der Zhengzhou No.4 Mittelschule",
+    "tos": "Nutzungsbedingungen"
+  },
+  "notifications": {
+    "amount": "{number} insgesamt",
+    "checkLater": "Kommen Sie später zurück.",
+    "description": "Hier Benachrichtigungen erhalten",
+    "empty": "Noch keine Benachrichtigungen",
+    "failed": "Fehler beim Laden der Benachrichtigungen.",
+    "failedMark": "Fehler beim Markieren als gelesen.",
+    "index": "Benachrichtigungen",
+    "title": "Benachrichtigungen - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "unread": "Ungelesen"
+  },
+  "permission": {
+    "manage_announcements": "Ankündigungen verwalten",
+    "manage_announcements_group": "Gemeinschaft verwalten",
+    "manage_content": "Inhalt verwalten",
+    "manage_featured": "Hervorgehobenes verwalten",
+    "manage_posts": "Beiträge/Kommentare verwalten",
+    "manage_tags": "Tags verwalten",
+    "manage_tags_group": "System verwalten",
+    "manage_users": "Benutzer verwalten"
+  },
+  "posts": {
+    "404": "Beitrag nicht gefunden",
+    "alt": {
+      "confessionalImage": "{author}'s Geständnisbeitragsbild",
+      "socialImage": "{author}'s Sozialbeitragsbild"
+    },
+    "beFirst": "Seien Sie der Erste",
+    "confessionTo": "Geständnis von {author} an {target}",
+    "contentPlaceholder": "Inhalt eingeben",
+    "deletedUser": "Gelöschtes Konto",
+    "deniedAudit": "Prüfung nicht bestanden",
+    "description_review": "Überprüfungsanfrage: Wenn Sie es als Fehler betrachten, können Sie eine manuelle Überprüfung anfordern.",
+    "empty": "Hier noch keine Beiträge",
+    "locked": "Gesperrt",
+    "pendingAudit": "Ausstehende Genehmigung",
+    "post": "Beitrag",
+    "publish": {
+      "addPhoto0": "Ziehen Sie Fotos hierher oder",
+      "addPhoto1": "Foto hinzufügen",
+      "anonymousRole": "Benutzerdefinierter Name",
+      "cantEmpty": "Darf nicht leer sein",
+      "cantOversize": "Darf nicht mehr als 2000 Zeichen enthalten",
+      "cardType": "Kartentyp *",
+      "chooseRole": "Rolle wählen",
+      "confessionCard": "Geständniskarte",
+      "description_anonymousRole": "Anonym bleiben oder einen anderen Spitznamen verwenden",
+      "description_confessional": "Veröffentlichen Sie Ihren Geständnisbeitrag.",
+      "description_social": "Teilen Sie Ihre Kontaktdaten oder etwas anderes.",
+      "edit": "Beitrag bearbeiten",
+      "error": {
+        "imageOversize": "Foto ist zu groß",
+        "imageTooMany": "Zu viele Fotos hochgeladen",
+        "unsupportedImageFormat": "Nicht unterstütztes Bildformat"
+      },
+      "imageTotal": "Hochgeladen {number} / 9",
+      "index": "Veröffentlichen",
+      "limits": "Unterstützte Formate: JPG, PNG, WebP und GIF, bis zu 9 Fotos, maximal 5 MB pro Foto",
+      "nameOversize": "Spitzname darf nicht mehr als 50 Zeichen enthalten.",
+      "namePlaceholder": "Geben Sie Ihren Spitznamen ein",
+      "publishing": "Veröffentlichen...",
+      "selfRole": "Verwenden Sie meinen Spitznamen",
+      "socialCard": "Soziale Karte",
+      "targetName": "Geständnisziel *",
+      "targetNamePlaceholder": "Geben Sie ihren Spitznamen ein",
+      "tip": {
+        "0": "Seien Sie respektvoll und aufrichtig",
+        "1": "Das Hochladen eines Fotos bedeutet mehr für Ihren Beitrag",
+        "index": "Tipps"
+      },
+      "title": "Neuer Beitrag - Geständniswand der Zhengzhou No.4 Mittelschule",
+      "toasts": {
+        "sent": "Veröffentlicht, Prüfung ausstehend"
+      },
+      "uploadImage": "Fotos hochladen (optional)",
+      "uploadMore": "Weitere Fotos hochladen"
+    },
+    "recently": "Neueste Beiträge",
+    "requestReview": "Manuelle Überprüfung anfordern",
+    "review": "Manuelle Überprüfung angefordert",
+    "reviewRequired": "Manuelle Überprüfung erforderlich",
+    "socialFrom": "{author}'s Beitrag"
+  },
+  "seo": {
+    "description": "Ein Ort, um sich miteinander zu verbinden.",
+    "keywords": "Zhengzhou No.4 High School, Zhengzhou No.4 Mittelschule, Zhengzhou No.4 Junior High School, Schulgemeinschaft, Kommunikation der Schüler, Diskussion der Schüler",
+    "title": "Geständniswand der Zhengzhou No.4 Mittelschule"
+  },
+  "share": {
+    "copied": "In die Zwischenablage kopiert",
+    "success": "Erfolgreich geteilt"
+  },
+  "time": {
+    "beforeDays": "{days} Tage her",
+    "beforeHours": "{hours} Stunden her",
+    "beforeMinutes": "{minutes} Minuten her",
+    "expireHour": "Läuft nach {hour} Stunden und {minutes} Minuten ab",
+    "expireMinutes": "Läuft nach {minutes} Minuten ab",
+    "expireSoon": "Läuft bald ab",
+    "expired": "Abgelaufen",
+    "just": "Gerade jetzt"
+  },
+  "user": {
+    "center": "Persönliches Zentrum",
+    "centerTitle": "Persönliches Zentrum - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "centers": {
+      "description": "Verwalten Sie Ihr persönliches Profil und Ihren Inhalt",
+      "editProfile": "Profil bearbeiten",
+      "joinedDays": "Tage beigetreten",
+      "lastLogin": "Letzte Anmeldung um",
+      "registerTime": "Registriert am"
+    },
+    "commentedOn": "Einen Kommentar gepostet",
+    "comments": {
+      "delete_description": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten? Er kann nicht wiederhergestellt werden.",
+      "description": "Verwalten Sie Ihre Kommentare hier",
+      "edit": "Kommentar bearbeiten",
+      "edit_placeholder": "Bearbeiten Sie Ihre Kommentare hier...",
+      "empty": "Noch keine Kommentare",
+      "source": "Quelle:",
+      "totalComments": "Gesamtkommentare"
+    },
+    "description": "{nickname}'s Homepage auf {siteName}, zeigt öffentliche Geständnisse und soziale Beiträge.",
+    "editAvatar": "Klicken Sie auf das Avatar, um zu ändern",
+    "hasPerm": "Besitzene Berechtigungen:",
+    "myComments": "Meine Kommentare",
+    "myCommentsTitle": "Meine Kommentare - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "myPosts": "Meine Beiträge",
+    "myPostsTitle": "Meine Beiträge - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "myTags": "Meine Tags",
+    "myTagsTitle": "Meine Tags - Geständniswand der Zhengzhou No.4 Mittelschule",
+    "noActivity": "Noch keine Aktivitäten",
+    "noPerm": "Dieses Konto hat keine Berechtigung",
+    "noPosts": "{nickname} hat noch keine Beiträge veröffentlicht",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Zuletzt online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Alle Status",
+      "common": "Gemeinsam",
+      "confirmDeletion": "Löschen bestätigen",
+      "description": "Verwalten Sie Ihre Beiträge hier",
+      "hidden": "Versteckt",
+      "noPosts": "Noch keine Beiträge",
+      "published": "Veröffentlicht",
+      "totalFeatured": "Gesamtzahl der hervorgehobenen Beiträge",
+      "totalPinned": "Gesamtzahl der angehefteten Beiträge",
+      "totalPosts": "Gesamtzahl der Beiträge"
+    },
+    "postsFrom": "{nickname}'s Beiträge",
+    "profile": {
+      "bioOversize": "Maximal 500 Zeichen in der Biografie",
+      "imageTooLarge": "Bilddatei darf 5 MB nicht überschreiten.",
+      "invalidEmail": "Ungültige E-Mail",
+      "invalidPhone": "Ungültige Telefonnummer",
+      "notImage": "Keine Bilddatei."
+    },
+    "publish": {
+      "description": "Teilen Sie Ihre Liebe"
+    },
+    "recently": "Neueste Aktivitäten",
+    "superAdminPerms": "Superadmin hat alle Systemberechtigungen",
+    "tags": {
+      "acquireTime": "Erwerbszeit: {time}",
+      "description": "Verwalten Sie Ihre Tags hier",
+      "disabled": "Deaktiviertes Tag, kann nicht aktiviert werden.",
+      "empty": "Noch keine Tags",
+      "getOne": "Erhalten Sie ein neues Tag, indem Sie eines einlösen",
+      "notSet": "Nicht festgelegt",
+      "owns": "Besitzene Tags",
+      "redeem": {
+        "activateCode": "Einlösen Code",
+        "description": "Geben Sie den Aktivierungscode ein, um ein neues Tag einzulösen",
+        "index": "Tag einlösen",
+        "recently": "Kürzlich erworben",
+        "redeemed": "Herzlichen Glückwunsch! Tag {title} wurde eingelöst und automatisch aktiviert.\nSie können es in Beiträgen und Kommentaren sehen.",
+        "redeemed_short": "Erfolgreich eingelöst und automatisch aktiviert.",
+        "wrongPattern": "Ungültiger Einlösecode"
+      },
+      "set": "Setzen Sie \"{title}\" als aktuelles Tag",
+      "unset": "Aktuelles Tag aufheben",
+      "useThis": "Als aktuell festlegen"
+    }
+  }
+}

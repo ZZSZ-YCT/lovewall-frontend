@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "管理"
+  },
+  "announcements": {
+    "close": "关闭公告",
+    "index": "公告"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "保护您的账户",
+      "forms": {
+        "confirmPassword": "确认密码",
+        "confirmPasswordPlaceholder": "重复您的密码",
+        "currentPassword": "当前密码",
+        "currentPasswordPlaceholder": "输入当前密码",
+        "incorrectPassword": "旧密码不正确",
+        "newPassword": "新密码",
+        "newPasswordDescription": "至少6个字符，建议包含数字、大小写字母和特殊字符",
+        "newPasswordPlaceholder": "输入新密码（至少6个字符）",
+        "repeatPasswordNotMatch": "密码不匹配。"
+      },
+      "index": "更改密码",
+      "success": "更改成功，请重新登录。",
+      "tips": {
+        "0": "不要使用与您的个人数据相关的密码",
+        "1": "建议定期更改密码",
+        "2": "不要在网站之间使用相同的密码",
+        "3": "保持您的密码安全，不要与他人分享",
+        "index": "密码安全建议"
+      },
+      "title": "更改密码 - 郑州四中告白墙"
+    },
+    "login": {
+      "description": "登录您的账户",
+      "invalidCredentials": "登录失败，请检查您的用户名和密码",
+      "passwordPlaceholder": "输入密码",
+      "passwordTooShort": "至少6个字符",
+      "registerNow": "立即注册",
+      "registerSuggestion": "还没有账户？",
+      "title": "登录 - 郑州四中告白墙",
+      "usernamePlaceholder": "输入用户名",
+      "welcome": "欢迎回来"
+    },
+    "register": {
+      "agreeWithTerms": "我已经阅读并同意条款：",
+      "description": "分享、发现并与我们连接。",
+      "index": "创建账户",
+      "loginSuggestion": "已经有账户？",
+      "notAgreeWithTerms": "请先同意我们的条款",
+      "passwordTooLong": "密码最多128个字符",
+      "title": "注册 - 郑州四中告白墙",
+      "usernameCharset": "只能包含字母、数字和下划线",
+      "usernameLimit": "3到20个字符，只能包含字母、数字和下划线",
+      "usernameTooLong": "用户名最多20个字符",
+      "usernameTooShort": "用户名至少3个字符"
+    }
+  },
+  "captcha": {
+    "click": "请按顺序点击：",
+    "reference": "参考图像",
+    "rotate": "旋转到正确的角度"
+  },
+  "comment": {
+    "commentOversize": "评论不能超过500个字符",
+    "loginRequired": "需要登录才能发布评论",
+    "noComments": "还没有评论。",
+    "placeholder": "写下您的想法...",
+    "send": "发布评论"
+  },
+  "comments": {
+    "recently": "最近评论"
+  },
+  "common": {
+    "admin": "管理员",
+    "bio": "个人简介",
+    "browse": "探索帖子",
+    "cancel": "取消",
+    "captcha": "让我们知道您是人类",
+    "collapse": "折叠",
+    "comment": "评论",
+    "commonUser": "用户",
+    "confirm": "确认",
+    "content": "内容",
+    "current": "当前",
+    "delete": "删除",
+    "detail": "查看更多",
+    "disabled": "已禁用",
+    "dismiss": "解除",
+    "edited": "已编辑",
+    "email": "电子邮件",
+    "enabled": "已启用",
+    "expand": "展开",
+    "feature": "特色",
+    "hide": "隐藏",
+    "joinTime": "加入于 {time}",
+    "known": "已知",
+    "layouts": {
+      "grid": "网格布局",
+      "list": "列表布局"
+    },
+    "loadMore": "加载更多",
+    "loading": "加载中...",
+    "moderator": "版主",
+    "nickname": "昵称",
+    "ok": "好的",
+    "password": "密码",
+    "phone": "电话",
+    "pin": "密码",
+    "preview": "预览",
+    "previous": "返回",
+    "pullDownLoading": "向下滚动以查看更多",
+    "refresh": "刷新",
+    "reset": "重置",
+    "save": "保存",
+    "share": "分享",
+    "show": "显示",
+    "success": "完成",
+    "superAdmin": "超级管理员",
+    "unfeature": "取消特色",
+    "unknown": "未知",
+    "unpin": "取消固定",
+    "username": "用户名"
+  },
+  "error": {
+    "messages": {
+      "401": "请在访问此页面之前登录。",
+      "403": "您没有权限访问此页面。请联系您的管理员。",
+      "404": "抱歉，您访问的页面不存在或已被删除。",
+      "500": "服务器出现一些问题。请稍后再试。",
+      "unknown": "发生意外错误。请稍后再试。"
+    },
+    "title": "{code} - {message} - 郑州四中告白墙",
+    "titles": {
+      "401": "需要登录",
+      "403": "访问被拒绝",
+      "404": "页面未找到",
+      "500": "内部服务器错误",
+      "unknown": "出现问题"
+    }
+  },
+  "home": {
+    "backHome": "返回首页",
+    "contact": "联系我们",
+    "description": "一个彼此连接的地方。",
+    "login": "登录",
+    "logout": "登出",
+    "privacy": "隐私政策",
+    "register": "注册",
+    "title": "郑州四中告白墙",
+    "tos": "服务条款"
+  },
+  "notifications": {
+    "amount": "{number} 总计",
+    "checkLater": "稍后再回来。",
+    "description": "在这里获取通知",
+    "empty": "还没有通知",
+    "failed": "加载通知失败。",
+    "failedMark": "标记为已读失败。",
+    "index": "通知",
+    "title": "通知 - 郑州四中告白墙",
+    "unread": "未读"
+  },
+  "permission": {
+    "manage_announcements": "管理公告",
+    "manage_announcements_group": "管理社区",
+    "manage_content": "管理内容",
+    "manage_featured": "管理特色",
+    "manage_posts": "管理帖子/评论",
+    "manage_tags": "管理标签",
+    "manage_tags_group": "管理系统",
+    "manage_users": "管理用户"
+  },
+  "posts": {
+    "404": "帖子未找到",
+    "alt": {
+      "confessionalImage": "{author}的告白帖子图像",
+      "socialImage": "{author}的社交帖子图像"
+    },
+    "beFirst": "第一个",
+    "confessionTo": "来自 {author} 对 {target} 的告白",
+    "contentPlaceholder": "输入内容",
+    "deletedUser": "已删除账户",
+    "deniedAudit": "审核未通过",
+    "description_review": "请求审核：如果您认为这是一个错误，可以请求人工审核。",
+    "empty": "这里还没有帖子",
+    "locked": "已锁定",
+    "pendingAudit": "待批准",
+    "post": "发布",
+    "publish": {
+      "addPhoto0": "将照片拖到这里，或",
+      "addPhoto1": "添加照片",
+      "anonymousRole": "自定义名称",
+      "cantEmpty": "不能为空",
+      "cantOversize": "不能超过2000个字符",
+      "cardType": "卡片类型 *",
+      "chooseRole": "选择角色",
+      "confessionCard": "告白卡",
+      "description_anonymousRole": "保持匿名或使用其他昵称",
+      "description_confessional": "发布您的告白帖子。",
+      "description_social": "分享您的联系信息或其他内容。",
+      "edit": "编辑帖子",
+      "error": {
+        "imageOversize": "照片太大",
+        "imageTooMany": "上传了太多照片",
+        "unsupportedImageFormat": "不支持的图像格式"
+      },
+      "imageTotal": "已上传 {number} / 9",
+      "index": "发布",
+      "limits": "支持 JPG、PNG、WebP 和 GIF 格式，最多9张照片，每张照片最多5MB",
+      "nameOversize": "昵称不能超过50个字符。",
+      "namePlaceholder": "输入您的昵称",
+      "publishing": "发布中...",
+      "selfRole": "使用我的昵称",
+      "socialCard": "社交卡",
+      "targetName": "告白目标 *",
+      "targetNamePlaceholder": "输入他们的昵称",
+      "tip": {
+        "0": "要尊重和真诚",
+        "1": "上传照片意味着更多的帖子",
+        "index": "提示"
+      },
+      "title": "新帖子 - 郑州四中告白墙",
+      "toasts": {
+        "sent": "已发布，待审核"
+      },
+      "uploadImage": "上传照片（可选）",
+      "uploadMore": "上传更多照片"
+    },
+    "recently": "最近帖子",
+    "requestReview": "请求人工审核",
+    "review": "请求人工审核",
+    "reviewRequired": "需要人工审核",
+    "socialFrom": "{author}的帖子"
+  },
+  "seo": {
+    "description": "一个彼此连接的地方。",
+    "keywords": "郑州四中，高中，初中，学校社区，学生交流，学生讨论",
+    "title": "郑州四中告白墙"
+  },
+  "share": {
+    "copied": "已复制到剪贴板",
+    "success": "分享成功"
+  },
+  "time": {
+    "beforeDays": "{days} 天前",
+    "beforeHours": "{hours} 小时前",
+    "beforeMinutes": "{minutes} 分钟前",
+    "expireHour": "在 {hour} 小时和 {minutes} 分钟后过期",
+    "expireMinutes": "在 {minutes} 分钟后过期",
+    "expireSoon": "即将过期",
+    "expired": "已过期",
+    "just": "刚刚"
+  },
+  "user": {
+    "center": "个人中心",
+    "centerTitle": "个人中心 - 郑州四中告白墙",
+    "centers": {
+      "description": "管理您的个人资料和内容",
+      "editProfile": "编辑个人资料",
+      "joinedDays": "加入天数",
+      "lastLogin": "最后登录于",
+      "registerTime": "注册于"
+    },
+    "commentedOn": "发布了评论",
+    "comments": {
+      "delete_description": "您确定要删除此评论吗？无法恢复。",
+      "description": "在这里管理您的评论",
+      "edit": "编辑评论",
+      "edit_placeholder": "在这里编辑您的评论...",
+      "empty": "还没有评论",
+      "source": "来源：",
+      "totalComments": "总评论"
+    },
+    "description": "{nickname} 在 {siteName} 的主页，显示公共告白和社交帖子。",
+    "editAvatar": "点击头像更改",
+    "hasPerm": "拥有的权限：",
+    "myComments": "我的评论",
+    "myCommentsTitle": "我的评论 - 郑州四中告白墙",
+    "myPosts": "我的帖子",
+    "myPostsTitle": "我的帖子 - 郑州四中告白墙",
+    "myTags": "我的标签",
+    "myTagsTitle": "我的标签 - 郑州四中告白墙",
+    "noActivity": "还没有活动",
+    "noPerm": "此账户没有任何权限",
+    "noPosts": "{nickname} 还没有发布任何帖子",
+    "offline": "离线",
+    "offlineAndTime": "离线 - 最后在线：{time}",
+    "online": "在线",
+    "posts": {
+      "allState": "所有状态",
+      "common": "常见",
+      "confirmDeletion": "确认删除",
+      "description": "在这里管理您的帖子",
+      "hidden": "隐藏",
+      "noPosts": "还没有帖子",
+      "published": "已发布",
+      "totalFeatured": "总特色帖子",
+      "totalPinned": "总固定帖子",
+      "totalPosts": "总帖子"
+    },
+    "postsFrom": "{nickname} 的帖子",
+    "profile": {
+      "bioOversize": "个人简介最多500个字符",
+      "imageTooLarge": "图像文件不得超过5MB。",
+      "invalidEmail": "无效的电子邮件",
+      "invalidPhone": "无效的电话号码",
+      "notImage": "不是图像文件。"
+    },
+    "publish": {
+      "description": "分享您的爱"
+    },
+    "recently": "最近活动",
+    "superAdminPerms": "超级管理员拥有所有系统权限",
+    "tags": {
+      "acquireTime": "获取时间：{time}",
+      "description": "在这里管理您的标签",
+      "disabled": "已禁用标签，无法激活。",
+      "empty": "还没有标签",
+      "getOne": "通过兑换获得新标签",
+      "notSet": "未设置",
+      "owns": "拥有的标签",
+      "redeem": {
+        "activateCode": "兑换码",
+        "description": "输入激活码以兑换新标签",
+        "index": "兑换标签",
+        "recently": "最近获得",
+        "redeemed": "恭喜！标签 {title} 已兑换并自动激活。\n您可以在帖子和评论中看到它。",
+        "redeemed_short": "兑换成功并自动激活。",
+        "wrongPattern": "兑换码不正确"
+      },
+      "set": "将 \"{title}\" 设置为当前标签",
+      "unset": "取消当前标签",
+      "useThis": "设置为当前"
+    }
+  }
+}

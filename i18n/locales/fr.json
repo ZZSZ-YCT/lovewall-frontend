@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administration"
+  },
+  "announcements": {
+    "close": "Fermer l'annonce",
+    "index": "Annonces"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Protégez votre compte",
+      "forms": {
+        "confirmPassword": "Confirmer le mot de passe",
+        "confirmPasswordPlaceholder": "Répétez votre mot de passe",
+        "currentPassword": "Mot de passe actuel",
+        "currentPasswordPlaceholder": "Entrez le mot de passe actuel",
+        "incorrectPassword": "Ancien mot de passe incorrect",
+        "newPassword": "Nouveau mot de passe",
+        "newPasswordDescription": "Au moins 6 caractères, il est conseillé d'inclure des chiffres, des lettres minuscules/majuscules et des caractères spéciaux",
+        "newPasswordPlaceholder": "Entrez un nouveau mot de passe (au moins 6 caractères)",
+        "repeatPasswordNotMatch": "Les mots de passe ne correspondent pas."
+      },
+      "index": "Changer le mot de passe",
+      "success": "Changement réussi, veuillez vous reconnecter.",
+      "tips": {
+        "0": "Ne pas utiliser de mot de passe lié à vos données personnelles",
+        "1": "Il est recommandé de changer régulièrement votre mot de passe",
+        "2": "Ne pas utiliser le même mot de passe sur différents sites",
+        "3": "Gardez votre mot de passe en sécurité, ne le partagez pas avec d'autres",
+        "index": "Suggestions de sécurité du mot de passe"
+      },
+      "title": "Changer le mot de passe - Mur de confession du Collège No.4 de Zhengzhou"
+    },
+    "login": {
+      "description": "Connectez-vous à votre compte",
+      "invalidCredentials": "Échec de la connexion, veuillez vérifier votre nom d'utilisateur et votre mot de passe",
+      "passwordPlaceholder": "Entrez le mot de passe",
+      "passwordTooShort": "Au moins 6 caractères",
+      "registerNow": "Inscrivez-vous maintenant",
+      "registerSuggestion": "Vous n'avez pas de compte ?",
+      "title": "Connexion - Mur de confession du Collège No.4 de Zhengzhou",
+      "usernamePlaceholder": "Entrez le nom d'utilisateur",
+      "welcome": "Content de vous revoir"
+    },
+    "register": {
+      "agreeWithTerms": "J'ai déjà lu et accepté les conditions :",
+      "description": "Partagez, découvrez et connectez-vous avec nous.",
+      "index": "Créer un compte",
+      "loginSuggestion": "Vous avez déjà un compte ?",
+      "notAgreeWithTerms": "Veuillez d'abord accepter nos conditions",
+      "passwordTooLong": "Au maximum 128 caractères pour le mot de passe",
+      "title": "Inscription - Mur de confession du Collège No.4 de Zhengzhou",
+      "usernameCharset": "Ne peut contenir que des lettres, des chiffres et des traits de soulignement",
+      "usernameLimit": "De 3 à 20 caractères, ne peut contenir que des lettres, des chiffres et des traits de soulignement",
+      "usernameTooLong": "Au maximum 20 caractères pour le nom d'utilisateur",
+      "usernameTooShort": "Au moins 3 caractères pour le nom d'utilisateur"
+    }
+  },
+  "captcha": {
+    "click": "Veuillez cliquer dans l'ordre :",
+    "reference": "Image de référence",
+    "rotate": "Faire pivoter à l'angle correct"
+  },
+  "comment": {
+    "commentOversize": "Les commentaires ne peuvent pas dépasser 500 caractères",
+    "loginRequired": "Connexion requise pour poster des commentaires",
+    "noComments": "Pas encore de commentaires.",
+    "placeholder": "Écrivez votre idée...",
+    "send": "Poster un commentaire"
+  },
+  "comments": {
+    "recently": "Commentaires récents"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Explorer les publications",
+    "cancel": "Annuler",
+    "captcha": "Faites-nous savoir que vous êtes humain",
+    "collapse": "Réduire",
+    "comment": "Commentaire",
+    "commonUser": "Utilisateur",
+    "confirm": "Confirmer",
+    "content": "Contenu",
+    "current": "Actuel",
+    "delete": "Supprimer",
+    "detail": "Voir plus",
+    "disabled": "Désactivé",
+    "dismiss": "Rejeter",
+    "edited": "Édité",
+    "email": "E-Mail",
+    "enabled": "Activé",
+    "expand": "Développer",
+    "feature": "En vedette",
+    "hide": "Cacher",
+    "joinTime": "Rejoint à {time}",
+    "known": "Connu",
+    "layouts": {
+      "grid": "Mise en page en grille",
+      "list": "Mise en page en liste"
+    },
+    "loadMore": "Charger plus",
+    "loading": "Chargement...",
+    "moderator": "Modérateur",
+    "nickname": "Surnom",
+    "ok": "OK",
+    "password": "Mot de passe",
+    "phone": "Téléphone",
+    "pin": "Code PIN",
+    "preview": "Aperçu",
+    "previous": "Retour",
+    "pullDownLoading": "Faites défiler pour plus",
+    "refresh": "Rafraîchir",
+    "reset": "Réinitialiser",
+    "save": "Sauvegarder",
+    "share": "Partager",
+    "show": "Afficher",
+    "success": "Fait",
+    "superAdmin": "Super Admin",
+    "unfeature": "Retirer de la vedette",
+    "unknown": "Inconnu",
+    "unpin": "Détacher",
+    "username": "Nom d'utilisateur"
+  },
+  "error": {
+    "messages": {
+      "401": "Veuillez vous connecter avant de visiter cette page.",
+      "403": "Vous n'avez pas la permission d'accéder à cette page. Veuillez contacter votre administrateur.",
+      "404": "Désolé, la page que vous avez visitée n'existe pas ou a été supprimée.",
+      "500": "Il y a des problèmes avec le serveur. Veuillez réessayer plus tard.",
+      "unknown": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+    },
+    "title": "{code} - {message} - Mur de confession du Collège No.4 de Zhengzhou",
+    "titles": {
+      "401": "Connexion requise",
+      "403": "Accès refusé",
+      "404": "Page non trouvée",
+      "500": "Erreur interne du serveur",
+      "unknown": "Quelque chose s'est mal passé"
+    }
+  },
+  "home": {
+    "backHome": "Retour à l'accueil",
+    "contact": "Contactez-nous",
+    "description": "Un endroit pour se connecter les uns aux autres.",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "privacy": "Politique de confidentialité",
+    "register": "S'inscrire",
+    "title": "Mur de confession du Collège No.4 de Zhengzhou",
+    "tos": "Conditions de service"
+  },
+  "notifications": {
+    "amount": "{number} au total",
+    "checkLater": "Revenez plus tard.",
+    "description": "Recevez des notifications ici",
+    "empty": "Pas encore de notifications",
+    "failed": "Échec du chargement des notifications.",
+    "failedMark": "Échec de la marque comme lu.",
+    "index": "Notifications",
+    "title": "Notifications - Mur de confession du Collège No.4 de Zhengzhou",
+    "unread": "Non lu"
+  },
+  "permission": {
+    "manage_announcements": "Gérer les annonces",
+    "manage_announcements_group": "Gérer la communauté",
+    "manage_content": "Gérer le contenu",
+    "manage_featured": "Gérer les mises en avant",
+    "manage_posts": "Gérer les publications/commentaires",
+    "manage_tags": "Gérer les tags",
+    "manage_tags_group": "Gérer le système",
+    "manage_users": "Gérer les utilisateurs"
+  },
+  "posts": {
+    "404": "Publication non trouvée",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "Soyez le premier",
+    "confessionTo": "Confession de {author} à {target}",
+    "contentPlaceholder": "Entrez le contenu",
+    "deletedUser": "Compte supprimé",
+    "deniedAudit": "Audit non réussi",
+    "description_review": "Demande de révision : Si vous considérez cela comme une erreur, vous pouvez demander une révision manuelle.",
+    "empty": "Pas encore de publications ici",
+    "locked": "Verrouillé",
+    "pendingAudit": "En attente d'approbation",
+    "post": "Publication",
+    "publish": {
+      "addPhoto0": "Faites glisser des photos ici, ou",
+      "addPhoto1": "Ajouter une photo",
+      "anonymousRole": "Nom personnalisé",
+      "cantEmpty": "Ne peut pas être vide",
+      "cantOversize": "Ne peut pas dépasser 2000 caractères",
+      "cardType": "Type de carte *",
+      "chooseRole": "Choisir un rôle",
+      "confessionCard": "Carte de confession",
+      "description_anonymousRole": "Rester anonyme ou utiliser un autre surnom",
+      "description_confessional": "Publiez votre publication de confession.",
+      "description_social": "Partagez vos informations de contact ou autre.",
+      "edit": "Modifier la publication",
+      "error": {
+        "imageOversize": "La photo est trop grande",
+        "imageTooMany": "Trop de photos téléchargées",
+        "unsupportedImageFormat": "Format d'image non pris en charge"
+      },
+      "imageTotal": "Téléchargé {number} / 9",
+      "index": "Publier",
+      "limits": "Formats JPG, PNG, WebP et GIF pris en charge, jusqu'à 9 photos, au maximum 5 Mo par photo",
+      "nameOversize": "Le surnom ne peut pas dépasser 50 caractères.",
+      "namePlaceholder": "Entrez votre surnom",
+      "publishing": "Publication en cours...",
+      "selfRole": "Utiliser mon surnom",
+      "socialCard": "Carte sociale",
+      "targetName": "Cible de confession *",
+      "targetNamePlaceholder": "Entrez leur surnom",
+      "tip": {
+        "0": "Soyez respectueux et sincère",
+        "1": "Télécharger une photo signifie plus pour votre publication",
+        "index": "Conseils"
+      },
+      "title": "Nouvelle publication - Mur de confession du Collège No.4 de Zhengzhou",
+      "toasts": {
+        "sent": "Publié, en attente d'audit"
+      },
+      "uploadImage": "Télécharger des photos (facultatif)",
+      "uploadMore": "Télécharger plus de photos"
+    },
+    "recently": "Publications récentes",
+    "requestReview": "Demande de révision manuelle",
+    "review": "Révision manuelle demandée",
+    "reviewRequired": "Révision manuelle requise",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "Un endroit pour se connecter les uns aux autres.",
+    "keywords": "Collège No.4 de Zhengzhou, Collège No.4 de Zhengzhou, École intermédiaire No.4 de Zhengzhou, Communauté scolaire, Communication entre étudiants, Discussion entre étudiants",
+    "title": "Mur de confession du Collège No.4 de Zhengzhou"
+  },
+  "share": {
+    "copied": "Copié dans le presse-papiers",
+    "success": "Partagé avec succès"
+  },
+  "time": {
+    "beforeDays": "{days} jours auparavant",
+    "beforeHours": "{hours} heures auparavant",
+    "beforeMinutes": "{minutes} minutes auparavant",
+    "expireHour": "Expire après {hour} heures et {minutes} minutes",
+    "expireMinutes": "Expire après {minutes} minutes",
+    "expireSoon": "Expire bientôt",
+    "expired": "Expiré",
+    "just": "À l'instant"
+  },
+  "user": {
+    "center": "Centre personnel",
+    "centerTitle": "Centre personnel - Mur de confession du Collège No.4 de Zhengzhou",
+    "centers": {
+      "description": "Gérez votre profil personnel et votre contenu",
+      "editProfile": "Modifier le profil",
+      "joinedDays": "Jours de participation",
+      "lastLogin": "Dernière connexion à",
+      "registerTime": "Inscrit à"
+    },
+    "commentedOn": "A publié un commentaire",
+    "comments": {
+      "delete_description": "Êtes-vous sûr de vouloir supprimer ce commentaire ? Il ne pourra pas être récupéré.",
+      "description": "Gérez vos commentaires ici",
+      "edit": "Modifier le commentaire",
+      "edit_placeholder": "Modifiez vos commentaires ici...",
+      "empty": "Pas encore de commentaires",
+      "source": "Source :",
+      "totalComments": "Total des commentaires"
+    },
+    "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
+    "editAvatar": "Cliquez sur l'avatar pour changer",
+    "hasPerm": "Permissions possédées :",
+    "myComments": "Mes commentaires",
+    "myCommentsTitle": "Mes commentaires - Mur de confession du Collège No.4 de Zhengzhou",
+    "myPosts": "Mes publications",
+    "myPostsTitle": "Mes publications - Mur de confession du Collège No.4 de Zhengzhou",
+    "myTags": "Mes tags",
+    "myTagsTitle": "Mes tags - Mur de confession du Collège No.4 de Zhengzhou",
+    "noActivity": "Pas encore d'activité",
+    "noPerm": "Ce compte n'a aucune permission",
+    "noPosts": "{nickname} n'a pas encore publié de publications",
+    "offline": "Hors ligne",
+    "offlineAndTime": "Hors ligne - Dernière connexion : {time}",
+    "online": "En ligne",
+    "posts": {
+      "allState": "Tous les statuts",
+      "common": "Commun",
+      "confirmDeletion": "Confirmer la suppression",
+      "description": "Gérez vos publications ici",
+      "hidden": "Caché",
+      "noPosts": "Pas encore de publications",
+      "published": "Publié",
+      "totalFeatured": "Total des publications en vedette",
+      "totalPinned": "Total des publications épinglées",
+      "totalPosts": "Total des publications"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "Au maximum 500 caractères dans la bio",
+      "imageTooLarge": "Le fichier image ne doit pas dépasser 5 Mo.",
+      "invalidEmail": "E-Mail invalide",
+      "invalidPhone": "Numéro de téléphone invalide",
+      "notImage": "Pas un fichier image."
+    },
+    "publish": {
+      "description": "Partagez votre amour"
+    },
+    "recently": "Activités récentes",
+    "superAdminPerms": "Le super admin possède toutes les permissions du système",
+    "tags": {
+      "acquireTime": "Temps d'acquisition : {time}",
+      "description": "Gérez vos tags ici",
+      "disabled": "Tag désactivé, ne peut pas être activé.",
+      "empty": "Pas encore de tags",
+      "getOne": "Obtenez un nouveau tag en en échangeant un",
+      "notSet": "Non défini",
+      "owns": "Tags possédés",
+      "redeem": {
+        "activateCode": "Code de rachat",
+        "description": "Entrez le code d'activation pour échanger un nouveau tag",
+        "index": "Échanger le tag",
+        "recently": "Récemment acquis",
+        "redeemed": "Félicitations ! Tag {title} échangé et activé automatiquement.\nVous pouvez le voir dans les publications et les commentaires.",
+        "redeemed_short": "Échange réussi et activé automatiquement.",
+        "wrongPattern": "Code de rachat incorrect"
+      },
+      "set": "Définir \"{title}\" comme tag actuel",
+      "unset": "Désactiver le tag actuel",
+      "useThis": "Définir comme actuel"
+    }
+  }
+}

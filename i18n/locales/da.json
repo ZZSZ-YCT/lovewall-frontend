@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administration"
+  },
+  "announcements": {
+    "close": "Luk meddelelse",
+    "index": "Meddelelser"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Beskyt din konto",
+      "forms": {
+        "confirmPassword": "Bekræft adgangskode",
+        "confirmPasswordPlaceholder": "Gentag din adgangskode",
+        "currentPassword": "Nuværende adgangskode",
+        "currentPasswordPlaceholder": "Indtast nuværende adgangskode",
+        "incorrectPassword": "Forkert gammel adgangskode",
+        "newPassword": "Ny adgangskode",
+        "newPasswordDescription": "Mindst 6 tegn, anbefales at indeholde tal, små/store bogstaver og specialtegn",
+        "newPasswordPlaceholder": "Indtast ny adgangskode (mindst 6 tegn)",
+        "repeatPasswordNotMatch": "Adgangskoderne stemmer ikke overens."
+      },
+      "index": "Skift adgangskode",
+      "success": "Ændret med succes, venligst log ind igen.",
+      "tips": {
+        "0": "Brug ikke adgangskoder, der har noget at gøre med dine personlige data",
+        "1": "Det anbefales at ændre din adgangskode regelmæssigt",
+        "2": "Brug ikke den samme adgangskode på forskellige websteder",
+        "3": "Hold din adgangskode sikker, del den ikke med andre",
+        "index": "Sikre adgangskodeforslag"
+      },
+      "title": "Skift adgangskode - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg"
+    },
+    "login": {
+      "description": "Log ind på din konto",
+      "invalidCredentials": "Login mislykkedes, venligst tjek dit brugernavn og adgangskode",
+      "passwordPlaceholder": "Indtast adgangskode",
+      "passwordTooShort": "Mindst 6 tegn",
+      "registerNow": "Registrer nu",
+      "registerSuggestion": "Har du ikke en konto?",
+      "title": "Log ind - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+      "usernamePlaceholder": "Indtast brugernavn",
+      "welcome": "Velkommen tilbage"
+    },
+    "register": {
+      "agreeWithTerms": "Jeg har allerede læst og accepteret vilkårene:",
+      "description": "Del, opdag og forbind med os.",
+      "index": "Opret en konto",
+      "loginSuggestion": "Har du allerede en konto?",
+      "notAgreeWithTerms": "Venligst accepter vores vilkår først",
+      "passwordTooLong": "Maksimalt 128 tegn i adgangskode",
+      "title": "Tilmeld dig - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+      "usernameCharset": "Kan kun indeholde bogstaver, tal og understregninger",
+      "usernameLimit": "Fra 3 til 20 tegn, kan kun indeholde bogstaver, tal og understregninger",
+      "usernameTooLong": "Maksimalt 20 tegn i brugernavnet",
+      "usernameTooShort": "Mindst 3 tegn i brugernavnet"
+    }
+  },
+  "captcha": {
+    "click": "Venligst klik i rækkefølge:",
+    "reference": "Referencebillede",
+    "rotate": "Rotér til den korrekte vinkel"
+  },
+  "comment": {
+    "commentOversize": "Kommentarer kan ikke være mere end 500 tegn",
+    "loginRequired": "Login kræves for at poste kommentarer",
+    "noComments": "Ingen kommentarer endnu.",
+    "placeholder": "Skriv din idé...",
+    "send": "Post kommentar"
+  },
+  "comments": {
+    "recently": "Seneste kommentarer"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Udforsk indlæg",
+    "cancel": "Annuller",
+    "captcha": "Lad os vide, at du er menneskelig",
+    "collapse": "Kollaps",
+    "comment": "Kommentar",
+    "commonUser": "Bruger",
+    "confirm": "Bekræft",
+    "content": "Indhold",
+    "current": "Nuværende",
+    "delete": "Slet",
+    "detail": "Se mere",
+    "disabled": "Deaktiveret",
+    "dismiss": "Afvis",
+    "edited": "Redigeret",
+    "email": "E-Mail",
+    "enabled": "Aktiveret",
+    "expand": "Udvid",
+    "feature": "Fremhævet",
+    "hide": "Skjul",
+    "joinTime": "Tilmeldt {time}",
+    "known": "Kendt",
+    "layouts": {
+      "grid": "Grid Layout",
+      "list": "Liste Layout"
+    },
+    "loadMore": "Indlæs mere",
+    "loading": "Indlæser...",
+    "moderator": "Moderator",
+    "nickname": "Kaldenavn",
+    "ok": "OK",
+    "password": "Adgangskode",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Forhåndsvisning",
+    "previous": "Tilbage",
+    "pullDownLoading": "Rul for mere",
+    "refresh": "Opdater",
+    "reset": "Nulstil",
+    "save": "Gem",
+    "share": "Del",
+    "show": "Vis",
+    "success": "Færdig",
+    "superAdmin": "Super Admin",
+    "unfeature": "Fjern fremhævelse",
+    "unknown": "Ukendt",
+    "unpin": "Fjern pin",
+    "username": "Brugernavn"
+  },
+  "error": {
+    "messages": {
+      "401": "Venligst log ind før du besøger denne side.",
+      "403": "Du har ikke tilladelse til at få adgang til denne side. Kontakt venligst din administrator.",
+      "404": "Beklager, den side, du besøgte, findes ikke eller er blevet slettet.",
+      "500": "Der er nogle problemer med serveren. Prøv venligst igen senere.",
+      "unknown": "Der er opstået en uventet fejl. Prøv venligst igen senere."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "titles": {
+      "401": "Login kræves",
+      "403": "Adgang nægtet",
+      "404": "Side ikke fundet",
+      "500": "Intern serverfejl",
+      "unknown": "Noget gik galt"
+    }
+  },
+  "home": {
+    "backHome": "Tilbage til start",
+    "contact": "Kontakt os",
+    "description": "Et sted at forbinde med hinanden.",
+    "login": "Log ind",
+    "logout": "Log ud",
+    "privacy": "Privatlivspolitik",
+    "register": "Registrer",
+    "title": "Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "tos": "Servicevilkår"
+  },
+  "notifications": {
+    "amount": "{number} i alt",
+    "checkLater": "Kom tilbage senere.",
+    "description": "Få notifikationer her",
+    "empty": "Ingen notifikationer endnu",
+    "failed": "Mislykkedes med at indlæse notifikationer.",
+    "failedMark": "Mislykkedes med at markere som læst.",
+    "index": "Notifikationer",
+    "title": "Notifikationer - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "unread": "Ulæst"
+  },
+  "permission": {
+    "manage_announcements": "Administrer meddelelser",
+    "manage_announcements_group": "Administrer fællesskab",
+    "manage_content": "Administrer indhold",
+    "manage_featured": "Administrer fremhævet",
+    "manage_posts": "Administrer indlæg/kommentarer",
+    "manage_tags": "Administrer tags",
+    "manage_tags_group": "Administrer system",
+    "manage_users": "Administrer brugere"
+  },
+  "posts": {
+    "404": "Indlæg ikke fundet",
+    "alt": {
+      "confessionalImage": "{author}'s Bekendtgørelsesindlæg Billede",
+      "socialImage": "{author}'s Sociale Indlæg Billede"
+    },
+    "beFirst": "Vær den første",
+    "confessionTo": "Bekendtgørelse fra {author} til {target}",
+    "contentPlaceholder": "Indtast indhold",
+    "deletedUser": "Slettet konto",
+    "deniedAudit": "Revision ikke bestået",
+    "description_review": "Anmodning om gennemgang: Hvis du betragter det som en fejl, kan du anmode om en manuel gennemgang.",
+    "empty": "Ingen indlæg her endnu",
+    "locked": "Låst",
+    "pendingAudit": "Afventer godkendelse",
+    "post": "Indlæg",
+    "publish": {
+      "addPhoto0": "Træk fotos her, eller",
+      "addPhoto1": "Tilføj foto",
+      "anonymousRole": "Brugerdefineret navn",
+      "cantEmpty": "Kan ikke være tom",
+      "cantOversize": "Kan ikke være mere end 2000 tegn",
+      "cardType": "Korttype *",
+      "chooseRole": "Vælg rolle",
+      "confessionCard": "Bekendtgørelseskort",
+      "description_anonymousRole": "Hold anonym eller brug andet kaldenavn",
+      "description_confessional": "Udgiv dit bekendtgørelsesindlæg.",
+      "description_social": "Del dine kontaktoplysninger eller noget andet.",
+      "edit": "Rediger indlæg",
+      "error": {
+        "imageOversize": "Foto er for stort",
+        "imageTooMany": "Uploadet for mange fotos",
+        "unsupportedImageFormat": "Ikke-understøttet billedformat"
+      },
+      "imageTotal": "Uploadet {number} / 9",
+      "index": "Udgiv",
+      "limits": "Understøttede JPG, PNG, WebP og GIF formater, op til 9 fotos, maksimalt 5MB pr. foto",
+      "nameOversize": "Kaldenavn kan ikke være mere end 50 tegn.",
+      "namePlaceholder": "Indtast dit kaldenavn",
+      "publishing": "Udgiver...",
+      "selfRole": "Brug mit kaldenavn",
+      "socialCard": "Socialt kort",
+      "targetName": "Bekendtgørelsesmål *",
+      "targetNamePlaceholder": "Indtast deres kaldenavn",
+      "tip": {
+        "0": "Vær respektfuld og oprigtig",
+        "1": "At uploade et foto betyder mere for dit indlæg",
+        "index": "Tips"
+      },
+      "title": "Nyt indlæg - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+      "toasts": {
+        "sent": "Postet, afventer revision"
+      },
+      "uploadImage": "Upload fotos (valgfrit)",
+      "uploadMore": "Upload flere fotos"
+    },
+    "recently": "Seneste indlæg",
+    "requestReview": "Anmodning om manuel gennemgang",
+    "review": "Manuel gennemgang anmodet",
+    "reviewRequired": "Manuel gennemgang krævet",
+    "socialFrom": "{author}'s indlæg"
+  },
+  "seo": {
+    "description": "Et sted at forbinde med hinanden.",
+    "keywords": "Zhengzhou No.4 Gymnasium, Zhengzhou No.4 Mellemskole, Zhengzhou No.4 Ungdomsskole, Skolefællesskab, Studenterkommunikation, Studenterdiskussion",
+    "title": "Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg"
+  },
+  "share": {
+    "copied": "Kopieret til udklipsholderen",
+    "success": "Delt med succes"
+  },
+  "time": {
+    "beforeDays": "{days} dage siden",
+    "beforeHours": "{hours} timer siden",
+    "beforeMinutes": "{minutes} minutter siden",
+    "expireHour": "Udløber efter {hour} timer og {minutes} minutter",
+    "expireMinutes": "Udløber efter {minutes} minutter",
+    "expireSoon": "Udløber snart",
+    "expired": "Udløbet",
+    "just": "Lige nu"
+  },
+  "user": {
+    "center": "Personligt center",
+    "centerTitle": "Personligt center - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "centers": {
+      "description": "Administrer din personlige profil og indhold",
+      "editProfile": "Rediger profil",
+      "joinedDays": "Dage tilmeldt",
+      "lastLogin": "Sidste login kl.",
+      "registerTime": "Registreret den"
+    },
+    "commentedOn": "Postet en kommentar",
+    "comments": {
+      "delete_description": "Er du sikker på, at du vil slette denne kommentar? Den kan ikke gendannes.",
+      "description": "Administrer dine kommentarer her",
+      "edit": "Rediger kommentar",
+      "edit_placeholder": "Rediger dine kommentarer her...",
+      "empty": "Ingen kommentarer endnu",
+      "source": "Kilde:",
+      "totalComments": "Samlede kommentarer"
+    },
+    "description": "{nickname}'s hjemmeside på {siteName}, viser offentlige bekendtgørelser og sociale indlæg.",
+    "editAvatar": "Klik på avatar for at ændre",
+    "hasPerm": "Ejede tilladelser:",
+    "myComments": "Mine kommentarer",
+    "myCommentsTitle": "Mine kommentarer - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "myPosts": "Mine indlæg",
+    "myPostsTitle": "Mine indlæg - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "myTags": "Mine tags",
+    "myTagsTitle": "Mine tags - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
+    "noActivity": "Ingen aktivitet endnu",
+    "noPerm": "Denne konto har ikke nogen tilladelse",
+    "noPosts": "{nickname} har ikke offentliggjort nogen indlæg endnu",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Sidste online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Alle statusser",
+      "common": "Almindelig",
+      "confirmDeletion": "Bekræft sletning",
+      "description": "Administrer dine indlæg her",
+      "hidden": "Skjult",
+      "noPosts": "Ingen indlæg endnu",
+      "published": "Offentliggjort",
+      "totalFeatured": "Samlede fremhævede indlæg",
+      "totalPinned": "Samlede fastgjorte indlæg",
+      "totalPosts": "Samlede indlæg"
+    },
+    "postsFrom": "{nickname}'s indlæg",
+    "profile": {
+      "bioOversize": "Maksimalt 500 tegn i bio",
+      "imageTooLarge": "Billedfil må ikke overstige 5MB.",
+      "invalidEmail": "Ugyldig E-Mail",
+      "invalidPhone": "Ugyldigt telefonnummer",
+      "notImage": "Ikke en billedfil."
+    },
+    "publish": {
+      "description": "Del din kærlighed"
+    },
+    "recently": "Seneste aktiviteter",
+    "superAdminPerms": "Super admin ejer alle systemtilladelser",
+    "tags": {
+      "acquireTime": "Erhvervet tid: {time}",
+      "description": "Administrer dine tags her",
+      "disabled": "Deaktiveret tag, kan ikke aktiveres.",
+      "empty": "Ingen tags endnu",
+      "getOne": "Få et nyt tag ved at indløse et",
+      "notSet": "Ikke indstillet",
+      "owns": "Ejede tags",
+      "redeem": {
+        "activateCode": "Indløs kode",
+        "description": "Indtast aktiveringskode for at indløse nyt tag",
+        "index": "Indløs tag",
+        "recently": "For nylig erhvervet",
+        "redeemed": "Tillykke! Tag {title} indløst og automatisk aktiveret.\nDu kan se det i indlæg og kommentarer.",
+        "redeemed_short": "Indløst med succes og automatisk aktiveret.",
+        "wrongPattern": "Forkert indløsning kode"
+      },
+      "set": "Indstil \"{title}\" som nuværende tag",
+      "unset": "Fjern nuværende tag",
+      "useThis": "Indstil som nuværende"
+    }
+  }
+}

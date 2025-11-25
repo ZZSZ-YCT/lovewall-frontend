@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Yönetim"
+  },
+  "announcements": {
+    "close": "Duyuruyu Kapat",
+    "index": "Duyurular"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Hesabınızı koruyun",
+      "forms": {
+        "confirmPassword": "Şifreyi Onayla",
+        "confirmPasswordPlaceholder": "Şifrenizi Tekrar Edin",
+        "currentPassword": "Mevcut Şifre",
+        "currentPasswordPlaceholder": "Mevcut Şifreyi Girin",
+        "incorrectPassword": "Yanlış Eski Şifre",
+        "newPassword": "Yeni Şifre",
+        "newPasswordDescription": "En az 6 karakter, rakamlar, küçük/büyük harfler ve özel karakterler içermesi önerilir",
+        "newPasswordPlaceholder": "Yeni Şifreyi Girin (en az 6 karakter)",
+        "repeatPasswordNotMatch": "Şifreler eşleşmiyor."
+      },
+      "index": "Şifreyi Değiştir",
+      "success": "Başarıyla değiştirildi, lütfen tekrar giriş yapın.",
+      "tips": {
+        "0": "Kişisel verilerinizle ilgili şifre kullanmayın",
+        "1": "Şifrenizi düzenli olarak değiştirmeniz önerilir",
+        "2": "Web siteleri arasında aynı şifreyi kullanmayın",
+        "3": "Şifrenizi güvende tutun, başkalarıyla paylaşmayın",
+        "index": "Şifre Güvenlik Önerileri"
+      },
+      "title": "Şifre Değiştir - Zhengzhou No.4 Ortaokul İtiraf Duvarı"
+    },
+    "login": {
+      "description": "Hesabınıza giriş yapın",
+      "invalidCredentials": "Giriş başarısız, lütfen kullanıcı adınızı ve şifrenizi kontrol edin",
+      "passwordPlaceholder": "Şifreyi girin",
+      "passwordTooShort": "En az 6 karakter",
+      "registerNow": "Şimdi Kaydol",
+      "registerSuggestion": "Hesabınız yok mu?",
+      "title": "Giriş yap - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+      "usernamePlaceholder": "Kullanıcı adını girin",
+      "welcome": "Hoş geldiniz"
+    },
+    "register": {
+      "agreeWithTerms": "Şartları okudum ve kabul ediyorum:",
+      "description": "Bizimle paylaşın, keşfedin ve bağlantı kurun.",
+      "index": "Hesap oluştur",
+      "loginSuggestion": "Zaten bir hesabınız var mı?",
+      "notAgreeWithTerms": "Lütfen önce şartlarımızı kabul edin",
+      "passwordTooLong": "Şifrede en fazla 128 karakter",
+      "title": "Kaydol - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+      "usernameCharset": "Sadece harfler, rakamlar ve alt çizgi içerebilir",
+      "usernameLimit": "3 ile 20 karakter arasında, sadece harfler, rakamlar ve alt çizgi içerebilir",
+      "usernameTooLong": "Kullanıcı adında en fazla 20 karakter",
+      "usernameTooShort": "Kullanıcı adında en az 3 karakter"
+    }
+  },
+  "captcha": {
+    "click": "Lütfen sırayla tıklayın:",
+    "reference": "Referans Görseli",
+    "rotate": "Doğru açıya döndür"
+  },
+  "comment": {
+    "commentOversize": "Yorumlar 500 karakterden fazla olamaz",
+    "loginRequired": "Yorum göndermek için giriş yapmanız gerekiyor",
+    "noComments": "Henüz yorum yok.",
+    "placeholder": "Fikrini yaz...",
+    "send": "Yorum gönder"
+  },
+  "comments": {
+    "recently": "Son Yorumlar"
+  },
+  "common": {
+    "admin": "Yönetici",
+    "bio": "Biyografi",
+    "browse": "Gönderileri Keşfet",
+    "cancel": "İptal",
+    "captcha": "İnsansınız olduğunuzu bize bildirin",
+    "collapse": "Daralt",
+    "comment": "Yorum",
+    "commonUser": "Kullanıcı",
+    "confirm": "Onayla",
+    "content": "İçerik",
+    "current": "Mevcut",
+    "delete": "Sil",
+    "detail": "Daha fazlasını gör",
+    "disabled": "Devre dışı",
+    "dismiss": "Reddet",
+    "edited": "Düzenlendi",
+    "email": "E-Posta",
+    "enabled": "Etkin",
+    "expand": "Genişlet",
+    "feature": "Öne Çıkan",
+    "hide": "Gizle",
+    "joinTime": "Şu tarihte katıldı: {time}",
+    "known": "Bilinen",
+    "layouts": {
+      "grid": "Izgara Düzeni",
+      "list": "Liste Düzeni"
+    },
+    "loadMore": "Daha fazla yükle",
+    "loading": "Yükleniyor...",
+    "moderator": "Moderatör",
+    "nickname": "Takma Ad",
+    "ok": "Tamam",
+    "password": "Şifre",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Önizleme",
+    "previous": "Geri",
+    "pullDownLoading": "Daha fazlası için kaydır",
+    "refresh": "Yenile",
+    "reset": "Sıfırla",
+    "save": "Kaydet",
+    "share": "Paylaş",
+    "show": "Göster",
+    "success": "Tamamlandı",
+    "superAdmin": "Süper Yönetici",
+    "unfeature": "Öne Çıkanı Kaldır",
+    "unknown": "Bilinmeyen",
+    "unpin": "Pin Kaldır",
+    "username": "Kullanıcı Adı"
+  },
+  "error": {
+    "messages": {
+      "401": "Bu sayfayı ziyaret etmeden önce lütfen giriş yapın.",
+      "403": "Bu sayfaya erişim izniniz yok. Lütfen yöneticinizle iletişime geçin.",
+      "404": "Üzgünüm, ziyaret ettiğiniz sayfa mevcut değil veya silinmiştir.",
+      "500": "Sunucuda bazı sorunlar var. Lütfen daha sonra tekrar deneyin.",
+      "unknown": "Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "titles": {
+      "401": "Giriş Gerekli",
+      "403": "Erişim reddedildi",
+      "404": "Sayfa Bulunamadı",
+      "500": "Sunucu Hatası",
+      "unknown": "Bir şeyler yanlış gitti"
+    }
+  },
+  "home": {
+    "backHome": "Ana Sayfaya Dön",
+    "contact": "Bize Ulaşın",
+    "description": "Birbirimizle bağlantı kurmak için bir yer.",
+    "login": "Giriş",
+    "logout": "Çıkış",
+    "privacy": "Gizlilik Politikası",
+    "register": "Kaydol",
+    "title": "Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "tos": "Hizmet Şartları"
+  },
+  "notifications": {
+    "amount": "{number} toplamda",
+    "checkLater": "Sonra geri gel.",
+    "description": "Buradan bildirim alın",
+    "empty": "Henüz bildirim yok",
+    "failed": "Bildirimleri yüklemede hata.",
+    "failedMark": "Okunmuş olarak işaretlemede hata.",
+    "index": "Bildirimler",
+    "title": "Bildirimler - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "unread": "Okunmamış"
+  },
+  "permission": {
+    "manage_announcements": "Duyuruları Yönet",
+    "manage_announcements_group": "Topluluğu Yönet",
+    "manage_content": "İçeriği Yönet",
+    "manage_featured": "Öne Çıkanları Yönet",
+    "manage_posts": "Gönderileri/Yorumları Yönet",
+    "manage_tags": "Etiketleri Yönet",
+    "manage_tags_group": "Sistemi Yönet",
+    "manage_users": "Kullanıcıları Yönet"
+  },
+  "posts": {
+    "404": "Gönderi bulunamadı",
+    "alt": {
+      "confessionalImage": "{author}'ın İtiraf Gönderi Görseli",
+      "socialImage": "{author}'ın Sosyal Gönderi Görseli"
+    },
+    "beFirst": "İlk olan siz olun",
+    "confessionTo": "{author}'dan {target}'a itiraf",
+    "contentPlaceholder": "İçeriği girin",
+    "deletedUser": "Silinmiş Hesap",
+    "deniedAudit": "Denetim geçmedi",
+    "description_review": "İnceleme Talebi: Eğer bunu bir hata olarak düşünüyorsanız, manuel inceleme talep edebilirsiniz.",
+    "empty": "Henüz burada gönderi yok",
+    "locked": "Kilitli",
+    "pendingAudit": "Onay Bekliyor",
+    "post": "Gönder",
+    "publish": {
+      "addPhoto0": "Fotoğrafları buraya sürükleyin veya",
+      "addPhoto1": "Fotoğraf ekle",
+      "anonymousRole": "Özel İsim",
+      "cantEmpty": "Boş olamaz",
+      "cantOversize": "2000 karakterden fazla olamaz",
+      "cardType": "Kart Türü *",
+      "chooseRole": "Rol Seç",
+      "confessionCard": "İtiraf Kartı",
+      "description_anonymousRole": "Anonim kal veya başka bir takma ad kullan",
+      "description_confessional": "İtiraf gönderinizi yayınlayın.",
+      "description_social": "İletişim bilgilerinizi veya başka bir şeyi paylaşın.",
+      "edit": "Gönderiyi Düzenle",
+      "error": {
+        "imageOversize": "Fotoğraf çok büyük",
+        "imageTooMany": "Çok fazla fotoğraf yüklendi",
+        "unsupportedImageFormat": "Desteklenmeyen resim formatı"
+      },
+      "imageTotal": "{number} / 9 yüklendi",
+      "index": "Yayınla",
+      "limits": "Desteklenen JPG, PNG, WebP ve GIF formatları, en fazla 9 fotoğraf, fotoğraf başına en fazla 5MB",
+      "nameOversize": "Takma ad 50 karakterden fazla olamaz.",
+      "namePlaceholder": "Takma adınızı girin",
+      "publishing": "Yayınlanıyor...",
+      "selfRole": "Takma adımı kullan",
+      "socialCard": "Sosyal Kart",
+      "targetName": "İtiraf Hedefi *",
+      "targetNamePlaceholder": "Onların takma adını girin",
+      "tip": {
+        "0": "Saygılı ve samimi olun",
+        "1": "Bir fotoğraf yüklemek, gönderiniz için daha fazlasını ifade eder",
+        "index": "İpuçları"
+      },
+      "title": "Yeni Gönderi - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+      "toasts": {
+        "sent": "Gönderildi, denetim bekliyor"
+      },
+      "uploadImage": "Fotoğrafları Yükle (İsteğe Bağlı)",
+      "uploadMore": "Daha fazla fotoğraf yükle"
+    },
+    "recently": "Son Gönderiler",
+    "requestReview": "Manuel İnceleme Talebi",
+    "review": "Manuel İnceleme Talep Edildi",
+    "reviewRequired": "Manuel İnceleme Gerekli",
+    "socialFrom": "{author}'ın gönderisi"
+  },
+  "seo": {
+    "description": "Birbirimizle bağlantı kurmak için bir yer.",
+    "keywords": "Zhengzhou No.4 Lisesi, Zhengzhou No.4 Ortaokulu, Zhengzhou No.4 İlkokulu, Okul Topluluğu, Öğrenci İletişimi, Öğrenci Tartışması",
+    "title": "Zhengzhou No.4 Ortaokul İtiraf Duvarı"
+  },
+  "share": {
+    "copied": "Panoya kopyalandı",
+    "success": "Başarıyla paylaşıldı"
+  },
+  "time": {
+    "beforeDays": "{days} gün önce",
+    "beforeHours": "{hours} saat önce",
+    "beforeMinutes": "{minutes} dakika önce",
+    "expireHour": "{hour} saat ve {minutes} dakika sonra sona erer",
+    "expireMinutes": "{minutes} dakika sonra sona erer",
+    "expireSoon": "Yakında sona erecek",
+    "expired": "Süresi dolmuş",
+    "just": "Şimdi"
+  },
+  "user": {
+    "center": "Kişisel Merkez",
+    "centerTitle": "Kişisel Merkez - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "centers": {
+      "description": "Kişisel profilinizi ve içeriğinizi yönetin",
+      "editProfile": "Profili Düzenle",
+      "joinedDays": "Katıldığınız günler",
+      "lastLogin": "Son giriş tarihi",
+      "registerTime": "Kayıtlı olduğu tarih"
+    },
+    "commentedOn": "Bir yorum gönderdi",
+    "comments": {
+      "delete_description": "Bu yorumu silmek istediğinize emin misiniz? Geri alınamaz.",
+      "description": "Yorumlarınızı burada yönetin",
+      "edit": "Yorumu Düzenle",
+      "edit_placeholder": "Yorumlarınızı burada düzenleyin...",
+      "empty": "Henüz yorum yok",
+      "source": "Kaynak:",
+      "totalComments": "Toplam Yorumlar"
+    },
+    "description": "{nickname}'in {siteName} üzerindeki ana sayfası, kamuya açık itiraf ve sosyal gönderileri gösterir.",
+    "editAvatar": "Avatar'a tıklayarak değiştirin",
+    "hasPerm": "Sahip Olunan İzinler:",
+    "myComments": "Benim Yorumlarım",
+    "myCommentsTitle": "Benim Yorumlarım - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "myPosts": "Benim Gönderilerim",
+    "myPostsTitle": "Benim Gönderilerim - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "myTags": "Benim Etiketlerim",
+    "myTagsTitle": "Benim Etiketlerim - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
+    "noActivity": "Henüz etkinlik yok",
+    "noPerm": "Bu hesabın hiçbir izni yok",
+    "noPosts": "{nickname} henüz herhangi bir gönderi yayınlamadı",
+    "offline": "Çevrimdışı",
+    "offlineAndTime": "Çevrimdışı - Son Çevrimiçi: {time}",
+    "online": "Çevrimiçi",
+    "posts": {
+      "allState": "Tüm durumlar",
+      "common": "Ortak",
+      "confirmDeletion": "Silme Onayla",
+      "description": "Gönderilerinizi burada yönetin",
+      "hidden": "Gizli",
+      "noPosts": "Henüz gönderi yok",
+      "published": "Yayınlandı",
+      "totalFeatured": "Toplam Öne Çıkan Gönderiler",
+      "totalPinned": "Toplam Sabitlenmiş Gönderiler",
+      "totalPosts": "Toplam Gönderiler"
+    },
+    "postsFrom": "{nickname}'in Gönderileri",
+    "profile": {
+      "bioOversize": "Biyografide en fazla 500 karakter",
+      "imageTooLarge": "Görüntü dosyası 5MB'ı geçmemelidir.",
+      "invalidEmail": "Geçersiz E-Posta",
+      "invalidPhone": "Geçersiz telefon numarası",
+      "notImage": "Bir görüntü dosyası değil."
+    },
+    "publish": {
+      "description": "Sevginizi paylaşın"
+    },
+    "recently": "Son Aktiviteler",
+    "superAdminPerms": "Süper yönetici tüm sistem izinlerine sahiptir",
+    "tags": {
+      "acquireTime": "Elde Edilen Zaman: {time}",
+      "description": "Etiketlerinizi burada yönetin",
+      "disabled": "Devre dışı Etiket, etkinleştirilemez.",
+      "empty": "Henüz etiket yok",
+      "getOne": "Yeni bir etiket almak için birini kullanın",
+      "notSet": "Ayar yok",
+      "owns": "Sahip olunan etiketler",
+      "redeem": {
+        "activateCode": "Kodu Kullan",
+        "description": "Yeni etiket almak için etkinleştirme kodunu girin",
+        "index": "Etiketi Kullan",
+        "recently": "Son Zamanlarda Elde Edilen",
+        "redeemed": "Tebrikler! Etiket {title} alındı ve otomatik olarak etkinleştirildi.\nGönderilerde ve yorumlarda görebilirsiniz.",
+        "redeemed_short": "Başarıyla alındı ve otomatik olarak etkinleştirildi.",
+        "wrongPattern": "Yanlış Kullanım Kodu"
+      },
+      "set": "\"{title}\"'ı mevcut etiket olarak ayarla",
+      "unset": "Mevcut etiketi kaldır",
+      "useThis": "Mevcut olarak ayarla"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administration"
+  },
+  "announcements": {
+    "close": "Stäng meddelande",
+    "index": "Meddelanden"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Skydda ditt konto",
+      "forms": {
+        "confirmPassword": "Bekräfta lösenord",
+        "confirmPasswordPlaceholder": "Upprepa ditt lösenord",
+        "currentPassword": "Nuvarande lösenord",
+        "currentPasswordPlaceholder": "Ange nuvarande lösenord",
+        "incorrectPassword": "Fel gammalt lösenord",
+        "newPassword": "Nytt lösenord",
+        "newPasswordDescription": "Minst 6 tecken, rekommenderas att innehålla siffror, små/stora bokstäver och specialtecken",
+        "newPasswordPlaceholder": "Ange nytt lösenord (minst 6 tecken)",
+        "repeatPasswordNotMatch": "Lösenorden matchar inte."
+      },
+      "index": "Ändra lösenord",
+      "success": "Ändrat framgångsrikt, vänligen logga in igen.",
+      "tips": {
+        "0": "Använd inte lösenord som har att göra med dina personuppgifter",
+        "1": "Det rekommenderas att byta lösenord regelbundet",
+        "2": "Använd inte samma lösenord på olika webbplatser",
+        "3": "Håll ditt lösenord säkert, dela det inte med andra",
+        "index": "Säkerhetsförslag för lösenord"
+      },
+      "title": "Ändra lösenord - Zhengzhou No.4 Middle School Bekännelsetavla"
+    },
+    "login": {
+      "description": "Logga in på ditt konto",
+      "invalidCredentials": "Misslyckades med att logga in, vänligen kontrollera ditt användarnamn och lösenord",
+      "passwordPlaceholder": "Ange lösenord",
+      "passwordTooShort": "Minst 6 tecken",
+      "registerNow": "Registrera nu",
+      "registerSuggestion": "Har du inget konto?",
+      "title": "Logga in - Zhengzhou No.4 Middle School Bekännelsetavla",
+      "usernamePlaceholder": "Ange användarnamn",
+      "welcome": "Välkommen tillbaka"
+    },
+    "register": {
+      "agreeWithTerms": "Jag har redan läst och godkänt villkoren:",
+      "description": "Dela, upptäck och anslut med oss.",
+      "index": "Skapa ett konto",
+      "loginSuggestion": "Har du redan ett konto?",
+      "notAgreeWithTerms": "Vänligen godkänn våra villkor först",
+      "passwordTooLong": "Högst 128 tecken i lösenord",
+      "title": "Registrera dig - Zhengzhou No.4 Middle School Bekännelsetavla",
+      "usernameCharset": "Kan endast innehålla bokstäver, siffror och understreck",
+      "usernameLimit": "Från 3 till 20 tecken, kan endast innehålla bokstäver, siffror och understreck",
+      "usernameTooLong": "Högst 20 tecken i användarnamn",
+      "usernameTooShort": "Minst 3 tecken i användarnamn"
+    }
+  },
+  "captcha": {
+    "click": "Vänligen klicka i ordning:",
+    "reference": "Referensbild",
+    "rotate": "Rotera till rätt vinkel"
+  },
+  "comment": {
+    "commentOversize": "Kommentarer kan inte vara mer än 500 tecken",
+    "loginRequired": "Inloggning krävs för att posta kommentarer",
+    "noComments": "Inga kommentarer än.",
+    "placeholder": "Skriv ner din idé...",
+    "send": "Posta kommentar"
+  },
+  "comments": {
+    "recently": "Senaste kommentarer"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Utforska inlägg",
+    "cancel": "Avbryt",
+    "captcha": "Låt oss veta att du är människa",
+    "collapse": "Kollapsa",
+    "comment": "Kommentar",
+    "commonUser": "Användare",
+    "confirm": "Bekräfta",
+    "content": "Innehåll",
+    "current": "Nuvarande",
+    "delete": "Ta bort",
+    "detail": "Se mer",
+    "disabled": "Inaktiverad",
+    "dismiss": "Avvisa",
+    "edited": "Redigerad",
+    "email": "E-post",
+    "enabled": "Aktiverad",
+    "expand": "Expandera",
+    "feature": "Utvald",
+    "hide": "Dölj",
+    "joinTime": "Gick med {time}",
+    "known": "Känd",
+    "layouts": {
+      "grid": "Rutnätslayout",
+      "list": "Listlayout"
+    },
+    "loadMore": "Ladda mer",
+    "loading": "Laddar...",
+    "moderator": "Moderator",
+    "nickname": "Smeknamn",
+    "ok": "OK",
+    "password": "Lösenord",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Förhandsgranska",
+    "previous": "Tillbaka",
+    "pullDownLoading": "Rulla för mer",
+    "refresh": "Uppdatera",
+    "reset": "Återställ",
+    "save": "Spara",
+    "share": "Dela",
+    "show": "Visa",
+    "success": "Klar",
+    "superAdmin": "Superadmin",
+    "unfeature": "Ta bort utmärkelse",
+    "unknown": "Okänd",
+    "unpin": "Ta bort pin",
+    "username": "Användarnamn"
+  },
+  "error": {
+    "messages": {
+      "401": "Vänligen logga in innan du besöker denna sida.",
+      "403": "Du har inte behörighet att få tillgång till denna sida. Vänligen kontakta din administratör.",
+      "404": "Tyvärr, sidan du besökte finns inte eller har tagits bort.",
+      "500": "Det finns några problem med servern. Vänligen försök igen senare.",
+      "unknown": "Ett oväntat fel har inträffat. Vänligen försök igen senare."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "titles": {
+      "401": "Inloggning krävs",
+      "403": "Åtkomst nekad",
+      "404": "Sidan hittades inte",
+      "500": "Intern serverfel",
+      "unknown": "Något gick fel"
+    }
+  },
+  "home": {
+    "backHome": "Tillbaka till startsidan",
+    "contact": "Kontakta oss",
+    "description": "En plats för att ansluta med varandra.",
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "privacy": "Integritetspolicy",
+    "register": "Registrera",
+    "title": "Zhengzhou No.4 Middle School Bekännelsetavla",
+    "tos": "Användarvillkor"
+  },
+  "notifications": {
+    "amount": "{number} totalt",
+    "checkLater": "Kom tillbaka senare.",
+    "description": "Få meddelanden här",
+    "empty": "Inga meddelanden än",
+    "failed": "Misslyckades med att ladda meddelanden.",
+    "failedMark": "Misslyckades med att markera som läst.",
+    "index": "Meddelanden",
+    "title": "Meddelanden - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "unread": "Olästa"
+  },
+  "permission": {
+    "manage_announcements": "Hantera meddelanden",
+    "manage_announcements_group": "Hantera gemenskap",
+    "manage_content": "Hantera innehåll",
+    "manage_featured": "Hantera utvalda",
+    "manage_posts": "Hantera inlägg/kommentarer",
+    "manage_tags": "Hantera taggar",
+    "manage_tags_group": "Hantera system",
+    "manage_users": "Hantera användare"
+  },
+  "posts": {
+    "404": "Inlägg hittades inte",
+    "alt": {
+      "confessionalImage": "{author}'s Bekännelsetavla Bild",
+      "socialImage": "{author}'s Sociala Inlägg Bild"
+    },
+    "beFirst": "Var den första",
+    "confessionTo": "Bekännelse från {author} till {target}",
+    "contentPlaceholder": "Ange innehåll",
+    "deletedUser": "Raderat konto",
+    "deniedAudit": "Granskning inte godkänd",
+    "description_review": "Begär granskning: Om du anser att det är ett misstag kan du begära en manuell granskning.",
+    "empty": "Inga inlägg här än",
+    "locked": "Låst",
+    "pendingAudit": "Väntar på godkännande",
+    "post": "Inlägg",
+    "publish": {
+      "addPhoto0": "Dra foton hit, eller",
+      "addPhoto1": "Lägg till foto",
+      "anonymousRole": "Anpassat namn",
+      "cantEmpty": "Kan inte vara tomt",
+      "cantOversize": "Kan inte vara mer än 2000 tecken",
+      "cardType": "Korttyp *",
+      "chooseRole": "Välj roll",
+      "confessionCard": "Bekännelsekort",
+      "description_anonymousRole": "Håll anonym eller använd annat smeknamn",
+      "description_confessional": "Publicera ditt bekännelsetavla.",
+      "description_social": "Dela din kontaktinformation eller något annat.",
+      "edit": "Redigera inlägg",
+      "error": {
+        "imageOversize": "Foto är för stort",
+        "imageTooMany": "Laddat upp för många foton",
+        "unsupportedImageFormat": "Stöds inte bildformat"
+      },
+      "imageTotal": "Laddat upp {number} / 9",
+      "index": "Publicera",
+      "limits": "Stödda JPG, PNG, WebP och GIF-format, upp till 9 foton, högst 5MB per foto",
+      "nameOversize": "Smeknamn kan inte vara mer än 50 tecken.",
+      "namePlaceholder": "Ange ditt smeknamn",
+      "publishing": "Publicerar...",
+      "selfRole": "Använd mitt smeknamn",
+      "socialCard": "Socialt kort",
+      "targetName": "Bekännelse mål *",
+      "targetNamePlaceholder": "Ange deras smeknamn",
+      "tip": {
+        "0": "Var respektfull och uppriktig",
+        "1": "Att ladda upp ett foto betyder mer för ditt inlägg",
+        "index": "Tips"
+      },
+      "title": "Nytt inlägg - Zhengzhou No.4 Middle School Bekännelsetavla",
+      "toasts": {
+        "sent": "Postat, väntar på granskning"
+      },
+      "uploadImage": "Ladda upp foton (valfritt)",
+      "uploadMore": "Ladda upp fler foton"
+    },
+    "recently": "Senaste inlägg",
+    "requestReview": "Begär manuell granskning",
+    "review": "Manuell granskning begärd",
+    "reviewRequired": "Manuell granskning krävs",
+    "socialFrom": "{author}'s inlägg"
+  },
+  "seo": {
+    "description": "En plats för att ansluta med varandra.",
+    "keywords": "Zhengzhou No.4 Gymnasium, Zhengzhou No.4 Grundskola, Zhengzhou No.4 Junior High School, Skolgemenskap, Studentkommunikation, Studentdiskussion",
+    "title": "Zhengzhou No.4 Middle School Bekännelsetavla"
+  },
+  "share": {
+    "copied": "Kopierad till urklipp",
+    "success": "Delad framgångsrikt"
+  },
+  "time": {
+    "beforeDays": "{days} dagar sedan",
+    "beforeHours": "{hours} timmar sedan",
+    "beforeMinutes": "{minutes} minuter sedan",
+    "expireHour": "Går ut efter {hour} timmar och {minutes} minuter",
+    "expireMinutes": "Går ut efter {minutes} minuter",
+    "expireSoon": "Går ut snart",
+    "expired": "Utgått",
+    "just": "Nyss"
+  },
+  "user": {
+    "center": "Personligt centrum",
+    "centerTitle": "Personligt centrum - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "centers": {
+      "description": "Hantera din personliga profil och innehåll",
+      "editProfile": "Redigera profil",
+      "joinedDays": "Dagar som gått med",
+      "lastLogin": "Senaste inloggning vid",
+      "registerTime": "Registrerad vid"
+    },
+    "commentedOn": "Postade en kommentar",
+    "comments": {
+      "delete_description": "Är du säker på att du vill radera denna kommentar? Den kan inte återställas.",
+      "description": "Hantera dina kommentarer här",
+      "edit": "Redigera kommentar",
+      "edit_placeholder": "Redigera dina kommentarer här...",
+      "empty": "Inga kommentarer än",
+      "source": "Källa:",
+      "totalComments": "Totalt antal kommentarer"
+    },
+    "description": "{nickname}'s hemsida på {siteName}, visar offentliga bekännelser och sociala inlägg.",
+    "editAvatar": "Klicka på avatar för att ändra",
+    "hasPerm": "Ägda behörigheter:",
+    "myComments": "Mina kommentarer",
+    "myCommentsTitle": "Mina kommentarer - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "myPosts": "Mina inlägg",
+    "myPostsTitle": "Mina inlägg - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "myTags": "Mina taggar",
+    "myTagsTitle": "Mina taggar - Zhengzhou No.4 Middle School Bekännelsetavla",
+    "noActivity": "Ingen aktivitet än",
+    "noPerm": "Detta konto har inga behörigheter",
+    "noPosts": "{nickname} har inte publicerat några inlägg än",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Senast online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Alla statusar",
+      "common": "Vanlig",
+      "confirmDeletion": "Bekräfta radering",
+      "description": "Hantera dina inlägg här",
+      "hidden": "Dold",
+      "noPosts": "Inga inlägg än",
+      "published": "Publicerad",
+      "totalFeatured": "Totalt antal utvalda inlägg",
+      "totalPinned": "Totalt antal fastnålade inlägg",
+      "totalPosts": "Totalt antal inlägg"
+    },
+    "postsFrom": "{nickname}'s inlägg",
+    "profile": {
+      "bioOversize": "Högst 500 tecken i bio",
+      "imageTooLarge": "Bildfil får inte överstiga 5MB.",
+      "invalidEmail": "Ogiltig e-post",
+      "invalidPhone": "Ogiltigt telefonnummer",
+      "notImage": "Inte en bildfil."
+    },
+    "publish": {
+      "description": "Dela din kärlek"
+    },
+    "recently": "Senaste aktiviteter",
+    "superAdminPerms": "Superadmin har alla systembehörigheter",
+    "tags": {
+      "acquireTime": "Förvärvad tid: {time}",
+      "description": "Hantera dina taggar här",
+      "disabled": "Inaktiverad tagg, kan inte aktiveras.",
+      "empty": "Inga taggar än",
+      "getOne": "Få en ny tagg genom att lösa in en",
+      "notSet": "Inte inställd",
+      "owns": "Ägda taggar",
+      "redeem": {
+        "activateCode": "Lös in kod",
+        "description": "Ange aktiveringskod för att lösa in ny tagg",
+        "index": "Lös in tagg",
+        "recently": "Nyligen förvärvad",
+        "redeemed": "Grattis! Tagg {title} inlöst och automatiskt aktiverad.\nDu kan se den i inlägg och kommentarer.",
+        "redeemed_short": "Inlöst framgångsrikt och automatiskt aktiverad.",
+        "wrongPattern": "Ogiltig inlösningskod"
+      },
+      "set": "Ställ in \"{title}\" som aktuell tagg",
+      "unset": "Ta bort aktuell tagg",
+      "useThis": "Ställ in som aktuell"
+    }
+  }
+}

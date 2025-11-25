@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administracja"
+  },
+  "announcements": {
+    "close": "Zamknij ogłoszenie",
+    "index": "Ogłoszenia"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Chroń swoje konto",
+      "forms": {
+        "confirmPassword": "Potwierdź hasło",
+        "confirmPasswordPlaceholder": "Powtórz swoje hasło",
+        "currentPassword": "Aktualne hasło",
+        "currentPasswordPlaceholder": "Wprowadź aktualne hasło",
+        "incorrectPassword": "Niepoprawne stare hasło",
+        "newPassword": "Nowe hasło",
+        "newPasswordDescription": "Co najmniej 6 znaków, zaleca się zawierać cyfry, małe/duże litery i znaki specjalne",
+        "newPasswordPlaceholder": "Wprowadź nowe hasło (co najmniej 6 znaków)",
+        "repeatPasswordNotMatch": "Hasła się nie zgadzają."
+      },
+      "index": "Zmień hasło",
+      "success": "Zmiana zakończona sukcesem, proszę zalogować się ponownie.",
+      "tips": {
+        "0": "Nie używaj hasła, które ma związek z twoimi danymi osobowymi",
+        "1": "Zaleca się regularną zmianę hasła",
+        "2": "Nie używaj tego samego hasła na różnych stronach",
+        "3": "Chroń swoje hasło, nie dziel się nim z innymi",
+        "index": "Sugestie dotyczące bezpieczeństwa hasła"
+      },
+      "title": "Zmień hasło - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou"
+    },
+    "login": {
+      "description": "Zaloguj się do swojego konta",
+      "invalidCredentials": "Nie udało się zalogować, sprawdź swoją nazwę użytkownika i hasło",
+      "passwordPlaceholder": "Wprowadź hasło",
+      "passwordTooShort": "Co najmniej 6 znaków",
+      "registerNow": "Zarejestruj się teraz",
+      "registerSuggestion": "Nie masz konta?",
+      "title": "Zaloguj się - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+      "usernamePlaceholder": "Wprowadź nazwę użytkownika",
+      "welcome": "Witamy z powrotem"
+    },
+    "register": {
+      "agreeWithTerms": "Już przeczytałem i zgadzam się na warunki:",
+      "description": "Dziel się, odkrywaj i łącz się z nami.",
+      "index": "Utwórz konto",
+      "loginSuggestion": "Już masz konto?",
+      "notAgreeWithTerms": "Proszę najpierw zgodzić się na nasze warunki",
+      "passwordTooLong": "Maksymalnie 128 znaków w haśle",
+      "title": "Zarejestruj się - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+      "usernameCharset": "Może zawierać tylko litery, cyfry i podkreślenia",
+      "usernameLimit": "Od 3 do 20 znaków, może zawierać tylko litery, cyfry i podkreślenia",
+      "usernameTooLong": "Maksymalnie 20 znaków w nazwie użytkownika",
+      "usernameTooShort": "Co najmniej 3 znaki w nazwie użytkownika"
+    }
+  },
+  "captcha": {
+    "click": "Proszę kliknąć w kolejności:",
+    "reference": "Obraz referencyjny",
+    "rotate": "Obróć do właściwego kąta"
+  },
+  "comment": {
+    "commentOversize": "Komentarze nie mogą mieć więcej niż 500 znaków",
+    "loginRequired": "Wymagane logowanie, aby dodać komentarze",
+    "noComments": "Brak komentarzy.",
+    "placeholder": "Zapisz swój pomysł...",
+    "send": "Opublikuj komentarz"
+  },
+  "comments": {
+    "recently": "Ostatnie komentarze"
+  },
+  "common": {
+    "admin": "Administrator",
+    "bio": "Biografia",
+    "browse": "Odkrywaj posty",
+    "cancel": "Anuluj",
+    "captcha": "Daj nam znać, że jesteś człowiekiem",
+    "collapse": "Zwiń",
+    "comment": "Komentarz",
+    "commonUser": "Użytkownik",
+    "confirm": "Potwierdź",
+    "content": "Treść",
+    "current": "Aktualny",
+    "delete": "Usuń",
+    "detail": "Zobacz więcej",
+    "disabled": "Wyłączone",
+    "dismiss": "Odrzuć",
+    "edited": "Edytowane",
+    "email": "E-Mail",
+    "enabled": "Włączone",
+    "expand": "Rozwiń",
+    "feature": "Wyróżnione",
+    "hide": "Ukryj",
+    "joinTime": "Dołączył {time}",
+    "known": "Znany",
+    "layouts": {
+      "grid": "Układ siatki",
+      "list": "Układ listy"
+    },
+    "loadMore": "Załaduj więcej",
+    "loading": "Ładowanie...",
+    "moderator": "Moderator",
+    "nickname": "Pseudonim",
+    "ok": "OK",
+    "password": "Hasło",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Podgląd",
+    "previous": "Wstecz",
+    "pullDownLoading": "Przewiń, aby zobaczyć więcej",
+    "refresh": "Odśwież",
+    "reset": "Zresetuj",
+    "save": "Zapisz",
+    "share": "Podziel się",
+    "show": "Pokaż",
+    "success": "Gotowe",
+    "superAdmin": "Super administrator",
+    "unfeature": "Usuń wyróżnienie",
+    "unknown": "Nieznany",
+    "unpin": "Odprzypnij",
+    "username": "Nazwa użytkownika"
+  },
+  "error": {
+    "messages": {
+      "401": "Proszę zalogować się przed odwiedzeniem tej strony.",
+      "403": "Nie masz uprawnień do dostępu do tej strony. Proszę skontaktować się z administratorem.",
+      "404": "Przykro nam, strona, którą odwiedziłeś, nie istnieje lub została usunięta.",
+      "500": "Wystąpiły pewne problemy z serwerem. Proszę spróbować ponownie później.",
+      "unknown": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie później."
+    },
+    "title": "{code} - {message} - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "titles": {
+      "401": "Wymagane logowanie",
+      "403": "Dostęp zabroniony",
+      "404": "Strona nie znaleziona",
+      "500": "Błąd wewnętrzny serwera",
+      "unknown": "Coś poszło nie tak"
+    }
+  },
+  "home": {
+    "backHome": "Powrót do strony głównej",
+    "contact": "Skontaktuj się z nami",
+    "description": "Miejsce do łączenia się ze sobą.",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "privacy": "Polityka prywatności",
+    "register": "Zarejestruj się",
+    "title": "Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "tos": "Warunki korzystania z usługi"
+  },
+  "notifications": {
+    "amount": "{number} łącznie",
+    "checkLater": "Wróć później.",
+    "description": "Otrzymuj powiadomienia tutaj",
+    "empty": "Brak powiadomień",
+    "failed": "Nie udało się załadować powiadomień.",
+    "failedMark": "Nie udało się oznaczyć jako przeczytane.",
+    "index": "Powiadomienia",
+    "title": "Powiadomienia - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "unread": "Nieprzeczytane"
+  },
+  "permission": {
+    "manage_announcements": "Zarządzaj ogłoszeniami",
+    "manage_announcements_group": "Zarządzaj społecznością",
+    "manage_content": "Zarządzaj treścią",
+    "manage_featured": "Zarządzaj wyróżnionymi",
+    "manage_posts": "Zarządzaj postami/komentarzami",
+    "manage_tags": "Zarządzaj tagami",
+    "manage_tags_group": "Zarządzaj systemem",
+    "manage_users": "Zarządzaj użytkownikami"
+  },
+  "posts": {
+    "404": "Post nie znaleziony",
+    "alt": {
+      "confessionalImage": "{author}'s Obraz postu wyznania",
+      "socialImage": "{author}'s Obraz postu społecznościowego"
+    },
+    "beFirst": "Bądź pierwszym",
+    "confessionTo": "Wyznanie od {author} do {target}",
+    "contentPlaceholder": "Wprowadź treść",
+    "deletedUser": "Usunięte konto",
+    "deniedAudit": "Audyt nie przeszedł",
+    "description_review": "Prośba o przegląd: Jeśli uważasz, że to błąd, możesz poprosić o ręczny przegląd.",
+    "empty": "Brak postów tutaj",
+    "locked": "Zablokowane",
+    "pendingAudit": "Oczekujące zatwierdzenie",
+    "post": "Post",
+    "publish": {
+      "addPhoto0": "Przeciągnij zdjęcia tutaj lub",
+      "addPhoto1": "Dodaj zdjęcie",
+      "anonymousRole": "Niestandardowa nazwa",
+      "cantEmpty": "Nie może być puste",
+      "cantOversize": "Nie może mieć więcej niż 2000 znaków",
+      "cardType": "Typ karty *",
+      "chooseRole": "Wybierz rolę",
+      "confessionCard": "Karta wyznania",
+      "description_anonymousRole": "Zachowaj anonimowość lub użyj innego pseudonimu",
+      "description_confessional": "Opublikuj swoje wyznanie.",
+      "description_social": "Podziel się swoimi danymi kontaktowymi lub czymś innym.",
+      "edit": "Edytuj post",
+      "error": {
+        "imageOversize": "Zdjęcie jest za duże",
+        "imageTooMany": "Przesłano zbyt wiele zdjęć",
+        "unsupportedImageFormat": "Nieobsługiwany format obrazu"
+      },
+      "imageTotal": "Przesłano {number} / 9",
+      "index": "Opublikuj",
+      "limits": "Obsługiwane formaty JPG, PNG, WebP i GIF, do 9 zdjęć, maksymalnie 5MB na zdjęcie",
+      "nameOversize": "Pseudonim nie może mieć więcej niż 50 znaków.",
+      "namePlaceholder": "Wprowadź swój pseudonim",
+      "publishing": "Publikowanie...",
+      "selfRole": "Użyj mojego pseudonimu",
+      "socialCard": "Karta społecznościowa",
+      "targetName": "Cel wyznania *",
+      "targetNamePlaceholder": "Wprowadź ich pseudonim",
+      "tip": {
+        "0": "Bądź szanowany i szczery",
+        "1": "Przesyłanie zdjęcia oznacza więcej dla twojego postu",
+        "index": "Wskazówki"
+      },
+      "title": "Nowy post - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+      "toasts": {
+        "sent": "Opublikowano, oczekuje na audyt"
+      },
+      "uploadImage": "Prześlij zdjęcia (opcjonalnie)",
+      "uploadMore": "Prześlij więcej zdjęć"
+    },
+    "recently": "Ostatnie posty",
+    "requestReview": "Prośba o ręczny przegląd",
+    "review": "Ręczny przegląd żądany",
+    "reviewRequired": "Wymagany ręczny przegląd",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "Miejsce do łączenia się ze sobą.",
+    "keywords": "Zespół Szkół nr 4 w Zhengzhou, Zespół Szkół nr 4 w Zhengzhou, Zespół Szkół nr 4 w Zhengzhou, Społeczność szkolna, Komunikacja uczniów, Dyskusja uczniów",
+    "title": "Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou"
+  },
+  "share": {
+    "copied": "Skopiowano do schowka",
+    "success": "Udostępniono pomyślnie"
+  },
+  "time": {
+    "beforeDays": "{days} dni temu",
+    "beforeHours": "{hours} godzin temu",
+    "beforeMinutes": "{minutes} minut temu",
+    "expireHour": "Wygasa po {hour} godzinach i {minutes} minutach",
+    "expireMinutes": "Wygasa po {minutes} minutach",
+    "expireSoon": "Wygasa wkrótce",
+    "expired": "Wygasło",
+    "just": "Właśnie teraz"
+  },
+  "user": {
+    "center": "Centrum osobiste",
+    "centerTitle": "Centrum osobiste - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "centers": {
+      "description": "Zarządzaj swoim profilem osobistym i treścią",
+      "editProfile": "Edytuj profil",
+      "joinedDays": "Dni dołączenia",
+      "lastLogin": "Ostatnie logowanie o",
+      "registerTime": "Zarejestrowano o"
+    },
+    "commentedOn": "Opublikowano komentarz",
+    "comments": {
+      "delete_description": "Czy na pewno chcesz usunąć ten komentarz? Nie można go odzyskać.",
+      "description": "Zarządzaj swoimi komentarzami tutaj",
+      "edit": "Edytuj komentarz",
+      "edit_placeholder": "Edytuj swoje komentarze tutaj...",
+      "empty": "Brak komentarzy",
+      "source": "Źródło:",
+      "totalComments": "Łączna liczba komentarzy"
+    },
+    "description": "{nickname}'s strona główna na {siteName}, pokazuje publiczne wyznania i posty społecznościowe.",
+    "editAvatar": "Kliknij na awatar, aby zmienić",
+    "hasPerm": "Posiadane uprawnienia:",
+    "myComments": "Moje komentarze",
+    "myCommentsTitle": "Moje komentarze - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "myPosts": "Moje posty",
+    "myPostsTitle": "Moje posty - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "myTags": "Moje tagi",
+    "myTagsTitle": "Moje tagi - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
+    "noActivity": "Brak aktywności",
+    "noPerm": "To konto nie ma żadnych uprawnień",
+    "noPosts": "{nickname} jeszcze nie opublikował żadnych postów",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Ostatnio online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Wszystkie statusy",
+      "common": "Powszechne",
+      "confirmDeletion": "Potwierdź usunięcie",
+      "description": "Zarządzaj swoimi postami tutaj",
+      "hidden": "Ukryte",
+      "noPosts": "Brak postów",
+      "published": "Opublikowane",
+      "totalFeatured": "Łączna liczba wyróżnionych postów",
+      "totalPinned": "Łączna liczba przypiętych postów",
+      "totalPosts": "Łączna liczba postów"
+    },
+    "postsFrom": "{nickname}'s posty",
+    "profile": {
+      "bioOversize": "Maksymalnie 500 znaków w biografii",
+      "imageTooLarge": "Plik obrazu nie może przekraczać 5MB.",
+      "invalidEmail": "Nieprawidłowy E-Mail",
+      "invalidPhone": "Nieprawidłowy numer telefonu",
+      "notImage": "Nie jest plikiem obrazu."
+    },
+    "publish": {
+      "description": "Podziel się swoją miłością"
+    },
+    "recently": "Ostatnie aktywności",
+    "superAdminPerms": "Super administrator ma wszystkie uprawnienia systemowe",
+    "tags": {
+      "acquireTime": "Czas nabycia: {time}",
+      "description": "Zarządzaj swoimi tagami tutaj",
+      "disabled": "Wyłączony tag, nie można aktywować.",
+      "empty": "Brak tagów",
+      "getOne": "Uzyskaj nowy tag, wymieniając jeden",
+      "notSet": "Nie ustawiono",
+      "owns": "Posiadane tagi",
+      "redeem": {
+        "activateCode": "Kod wymiany",
+        "description": "Wprowadź kod aktywacyjny, aby wymienić nowy tag",
+        "index": "Wymień tag",
+        "recently": "Ostatnio nabyty",
+        "redeemed": "Gratulacje! Tag {title} wymieniony i automatycznie aktywowany.\nMożesz go zobaczyć w postach i komentarzach.",
+        "redeemed_short": "Wymiana zakończona sukcesem i automatycznie aktywowana.",
+        "wrongPattern": "Niepoprawny kod wymiany"
+      },
+      "set": "Ustaw \"{title}\" jako bieżący tag",
+      "unset": "Usuń bieżący tag",
+      "useThis": "Ustaw jako bieżący"
+    }
+  }
+}

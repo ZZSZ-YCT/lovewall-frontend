@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Utawala"
+  },
+  "announcements": {
+    "close": "Funga Tangazo",
+    "index": "Matangazo"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Linda akaunti yako",
+      "forms": {
+        "confirmPassword": "Thibitisha Neno la Siri",
+        "confirmPasswordPlaceholder": "Rudia neno lako la siri",
+        "currentPassword": "Neno la Siri la Sasa",
+        "currentPasswordPlaceholder": "Ingiza Neno la Siri la Sasa",
+        "incorrectPassword": "Neno la zamani si sahihi",
+        "newPassword": "Neno la Siri Mpya",
+        "newPasswordDescription": "Angalau herufi 6, inapendekezwa kuwa na nambari, herufi ndogo/kuu na wahusika maalum",
+        "newPasswordPlaceholder": "Ingiza Neno la Siri Mpya (angalau herufi 6)",
+        "repeatPasswordNotMatch": "Maneno ya siri hayafanani."
+      },
+      "index": "Badilisha Neno la Siri",
+      "success": "Imebadilishwa kwa mafanikio, tafadhali ingia tena.",
+      "tips": {
+        "0": "Usitumie neno la siri linalohusiana na data zako binafsi",
+        "1": "Inapendekezwa kubadilisha neno lako la siri mara kwa mara",
+        "2": "Usitumie neno la siri sawa kati ya tovuti",
+        "3": "Hifadhi neno lako la siri salama, usishiriki na wengine",
+        "index": "Mapendekezo ya Usalama wa Neno la Siri"
+      },
+      "title": "Badilisha Neno la Siri - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4"
+    },
+    "login": {
+      "description": "Ingia kwenye akaunti yako",
+      "invalidCredentials": "Kuingia kumeshindwa, tafadhali angalia jina lako la mtumiaji na neno la siri",
+      "passwordPlaceholder": "Ingiza neno la siri",
+      "passwordTooShort": "Angalau herufi 6",
+      "registerNow": "Jisajili Sasa",
+      "registerSuggestion": "Huna akaunti?",
+      "title": "Ingia - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+      "usernamePlaceholder": "Ingiza jina la mtumiaji",
+      "welcome": "Karibu tena"
+    },
+    "register": {
+      "agreeWithTerms": "Nimeshasoma na kukubali Masharti:",
+      "description": "Shiriki, gundua, na uungane nasi.",
+      "index": "Unda akaunti",
+      "loginSuggestion": "Tayari una akaunti?",
+      "notAgreeWithTerms": "Tafadhali kubali masharti yetu kwanza",
+      "passwordTooLong": "Kwa juu herufi 128 katika Neno la Siri",
+      "title": "Jisajili - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+      "usernameCharset": "Inaweza kuwa na herufi, nambari na alama za chini tu",
+      "usernameLimit": "Kuanzia herufi 3 hadi 20, inaweza kuwa na herufi, nambari na alama za chini tu",
+      "usernameTooLong": "Kwa juu herufi 20 katika jina la mtumiaji",
+      "usernameTooShort": "Angalau herufi 3 katika jina la mtumiaji"
+    }
+  },
+  "captcha": {
+    "click": "Tafadhali bonyeza kwa mpangilio:",
+    "reference": "Picha ya Kurejelea",
+    "rotate": "Geuza kwa pembe sahihi"
+  },
+  "comment": {
+    "commentOversize": "Maoni hayawezi kuwa zaidi ya herufi 500",
+    "loginRequired": "Kuingia kunahitajika ili kuweka maoni",
+    "noComments": "Hakuna maoni bado.",
+    "placeholder": "Andika wazo lako...",
+    "send": "Weka maoni"
+  },
+  "comments": {
+    "recently": "Maoni ya Karibuni"
+  },
+  "common": {
+    "admin": "Msimamizi",
+    "bio": "Maelezo",
+    "browse": "Gundua Machapisho",
+    "cancel": "Ghairi",
+    "captcha": "Tuambie wewe ni binadamu",
+    "collapse": "Punguza",
+    "comment": "Maoni",
+    "commonUser": "Mtumiaji",
+    "confirm": "Thibitisha",
+    "content": "Maudhui",
+    "current": "Sasa",
+    "delete": "Futa",
+    "detail": "Tazama zaidi",
+    "disabled": "Imezimwa",
+    "dismiss": "Futa",
+    "edited": "Imehaririwa",
+    "email": "Barua pepe",
+    "enabled": "Imewezeshwa",
+    "expand": "Panua",
+    "feature": "Imeangaziwa",
+    "hide": "Ficha",
+    "joinTime": "Uliungana {time}",
+    "known": "Inajulikana",
+    "layouts": {
+      "grid": "Mpangilio wa Gridi",
+      "list": "Mpangilio wa Orodha"
+    },
+    "loadMore": "Pakia zaidi",
+    "loading": "Inapakia...",
+    "moderator": "Msimamizi",
+    "nickname": "Jina la Utani",
+    "ok": "Sawa",
+    "password": "Neno la Siri",
+    "phone": "Simu",
+    "pin": "Pin",
+    "preview": "Kagua",
+    "previous": "Rudi",
+    "pullDownLoading": "Piga skrol kwa zaidi",
+    "refresh": "Refresh",
+    "reset": "Rekebisha",
+    "save": "Hifadhi",
+    "share": "Shiriki",
+    "show": "Onyesha",
+    "success": "Imekamilika",
+    "superAdmin": "Msimamizi Mkuu",
+    "unfeature": "Futa Kipengele",
+    "unknown": "Haijulikani",
+    "unpin": "Futa Pin",
+    "username": "Jina la Mtumiaji"
+  },
+  "error": {
+    "messages": {
+      "401": "Tafadhali ingia kabla ya kutembelea ukurasa huu.",
+      "403": "Huna ruhusa ya kufikia ukurasa huu. Tafadhali wasiliana na msimamizi wako.",
+      "404": "Samahani, ukurasa ulio tembelea haupo au umefutwa.",
+      "500": "Kuna matatizo kadhaa na seva. Tafadhali jaribu tena baadaye.",
+      "unknown": "Kosa lisilotarajiwa limetokea. Tafadhali jaribu tena baadaye."
+    },
+    "title": "{code} - {message} - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "titles": {
+      "401": "Kuingia Kunahitajika",
+      "403": "Ruhusa imekataliwa",
+      "404": "Ukurasa haukupatikana",
+      "500": "Kosa la Ndani la Seva",
+      "unknown": "Kuna tatizo"
+    }
+  },
+  "home": {
+    "backHome": "Rudi Nyumbani",
+    "contact": "Wasiliana Nasi",
+    "description": "Mahali pa kuungana na kila mmoja.",
+    "login": "Ingia",
+    "logout": "Toka",
+    "privacy": "Sera ya Faragha",
+    "register": "Jisajili",
+    "title": "Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "tos": "Masharti ya Huduma"
+  },
+  "notifications": {
+    "amount": "{number} kwa jumla",
+    "checkLater": "Rudi baadaye.",
+    "description": "Pata arifa hapa",
+    "empty": "Hakuna arifa bado",
+    "failed": "Kushindwa kupakia arifa.",
+    "failedMark": "Kushindwa kuweka kama kusomwa.",
+    "index": "Arifa",
+    "title": "Arifa - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "unread": "Hazijasomwa"
+  },
+  "permission": {
+    "manage_announcements": "Simamizi wa Matangazo",
+    "manage_announcements_group": "Simamizi wa Jamii",
+    "manage_content": "Simamizi wa Maudhui",
+    "manage_featured": "Simamizi wa Imeangaziwa",
+    "manage_posts": "Simamizi wa Machapisho/Maoni",
+    "manage_tags": "Simamizi wa Lebo",
+    "manage_tags_group": "Simamizi wa Mfumo",
+    "manage_users": "Simamizi wa Watumiaji"
+  },
+  "posts": {
+    "404": "Chapisho halikupatikana",
+    "alt": {
+      "confessionalImage": "{author}'s Picha ya Chapisho la Kutubu",
+      "socialImage": "{author}'s Picha ya Chapisho la Kijamii"
+    },
+    "beFirst": "Kuwa wa kwanza",
+    "confessionTo": "Kutubu kutoka {author} kwa {target}",
+    "contentPlaceholder": "Ingiza maudhui",
+    "deletedUser": "Akaunti Imefutwa",
+    "deniedAudit": "Ukaguzi haukupita",
+    "description_review": "Omba Ukaguzi: Ikiwa unadhani ni kosa, unaweza kuomba ukaguzi wa mikono.",
+    "empty": "Hakuna machapisho hapa bado",
+    "locked": "Imefungwa",
+    "pendingAudit": "Inasubiriidhinishwa",
+    "post": "Chapisho",
+    "publish": {
+      "addPhoto0": "Vuta picha hapa, au",
+      "addPhoto1": "Ongeza picha",
+      "anonymousRole": "Jina la Kawaida",
+      "cantEmpty": "Haiwezi kuwa tupu",
+      "cantOversize": "Haiwezi kuwa zaidi ya herufi 2000",
+      "cardType": "Aina ya Kadi *",
+      "chooseRole": "Chagua Jukumu",
+      "confessionCard": "Kadi ya Kutubu",
+      "description_anonymousRole": "Hifadhi kuwa bila jina au tumia jina lingine",
+      "description_confessional": "Chapisha chapisho lako la kutubu.",
+      "description_social": "Shiriki taarifa zako za mawasiliano au kitu kingine.",
+      "edit": "Hariri Chapisho",
+      "error": {
+        "imageOversize": "Picha ni kubwa sana",
+        "imageTooMany": "Umeupload picha nyingi sana",
+        "unsupportedImageFormat": "Muundo wa picha haukubaliki"
+      },
+      "imageTotal": "Umeupload {number} / 9",
+      "index": "Chapisha",
+      "limits": "Inakubali muundo wa JPG, PNG, WebP na GIF, hadi picha 9, kwa juu 5MB kwa picha",
+      "nameOversize": "Jina la utani haliwezi kuwa zaidi ya herufi 50.",
+      "namePlaceholder": "Ingiza jina lako la utani",
+      "publishing": "Inachapishwa...",
+      "selfRole": "Tumia jina langu la utani",
+      "socialCard": "Kadi ya Kijamii",
+      "targetName": "Lengo la Kutubu *",
+      "targetNamePlaceholder": "Ingiza jina lao la utani",
+      "tip": {
+        "0": "Kuwa na heshima na mkweli",
+        "1": "Kupakia picha kuna maana zaidi kwa chapisho lako",
+        "index": "Vidokezo"
+      },
+      "title": "Chapisho Mpya - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+      "toasts": {
+        "sent": "Imepakiwa, inasubiri ukaguzi"
+      },
+      "uploadImage": "Pakia Picha (Hiari)",
+      "uploadMore": "Pakia picha zaidi"
+    },
+    "recently": "Machapisho ya Karibuni",
+    "requestReview": "Omba Ukaguzi wa Mikono",
+    "review": "Omba Ukaguzi wa Mikono",
+    "reviewRequired": "Ukaguzi wa Mikono Unahitajika",
+    "socialFrom": "{author}'s chapisho"
+  },
+  "seo": {
+    "description": "Mahali pa kuungana na kila mmoja.",
+    "keywords": "Shule ya Kati ya Zhengzhou No.4, Shule ya Kati ya Zhengzhou No.4, Shule ya Kati ya Zhengzhou No.4, Jamii ya Shule, Mawasiliano ya Wanafunzi, Majadiliano ya Wanafunzi",
+    "title": "Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4"
+  },
+  "share": {
+    "copied": "Kopi kwenye clipboard",
+    "success": "Shiriki kwa mafanikio"
+  },
+  "time": {
+    "beforeDays": "{days} siku zilizopita",
+    "beforeHours": "{hours} masaa yaliyopita",
+    "beforeMinutes": "{minutes} dakika zilizopita",
+    "expireHour": "Inatisha baada ya {hour} masaa na {minutes} dakika",
+    "expireMinutes": "Inatisha baada ya {minutes} dakika",
+    "expireSoon": "Inatisha hivi karibuni",
+    "expired": "Imeisha",
+    "just": "Sasa hivi"
+  },
+  "user": {
+    "center": "Kituo Binafsi",
+    "centerTitle": "Kituo Binafsi - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "centers": {
+      "description": "Simamizi wasifu wako binafsi na maudhui",
+      "editProfile": "Hariri Profaili",
+      "joinedDays": "Siku zilizoungana",
+      "lastLogin": "Kuingia kwa mwisho",
+      "registerTime": "Iliandikishwa"
+    },
+    "commentedOn": "Imepost maoni",
+    "comments": {
+      "delete_description": "Je, uko tayari kufuta maoni haya? Haiwezi kurekebishwa.",
+      "description": "Simamizi maoni yako hapa",
+      "edit": "Hariri Maoni",
+      "edit_placeholder": "Hariri maoni yako hapa...",
+      "empty": "Hakuna maoni bado",
+      "source": "Chanzo:",
+      "totalComments": "Maoni Jumla"
+    },
+    "description": "{nickname}'s ukurasa wa nyumbani kwenye {siteName}, inaonyesha kutubu na machapisho ya kijamii.",
+    "editAvatar": "Bonyeza kwenye avatar kubadilisha",
+    "hasPerm": "Ruhusa Miliki:",
+    "myComments": "Maoni Yangu",
+    "myCommentsTitle": "Maoni Yangu - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "myPosts": "Machapisho Yangu",
+    "myPostsTitle": "Machapisho Yangu - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "myTags": "Lebo Zangu",
+    "myTagsTitle": "Lebo Zangu - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
+    "noActivity": "Hakuna shughuli bado",
+    "noPerm": "Akaunti hii haina ruhusa yoyote",
+    "noPosts": "{nickname} hajachapisha machapisho yoyote bado",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Mtandaoni Mwisho: {time}",
+    "online": "Mtandaoni",
+    "posts": {
+      "allState": "Hali zote",
+      "common": "Kawaida",
+      "confirmDeletion": "Thibitisha Kufuta",
+      "description": "Simamizi machapisho yako hapa",
+      "hidden": "Imefichwa",
+      "noPosts": "Hakuna machapisho bado",
+      "published": "Imepakiwa",
+      "totalFeatured": "Machapisho Yote ya Imeangaziwa",
+      "totalPinned": "Machapisho Yote ya Imewekwa",
+      "totalPosts": "Machapisho Yote"
+    },
+    "postsFrom": "{nickname}'s Machapisho",
+    "profile": {
+      "bioOversize": "Kwa juu herufi 500 katika maelezo",
+      "imageTooLarge": "Faili ya picha haiwezi kuzidi 5MB.",
+      "invalidEmail": "Barua pepe si sahihi",
+      "invalidPhone": "Nambari ya simu si sahihi",
+      "notImage": "Sio faili ya picha."
+    },
+    "publish": {
+      "description": "Shiriki upendo wako"
+    },
+    "recently": "Shughuli za Karibuni",
+    "superAdminPerms": "Msimamizi mkuu ana ruhusa zote za mfumo",
+    "tags": {
+      "acquireTime": "Pata Wakati: {time}",
+      "description": "Simamizi lebo zako hapa",
+      "disabled": "Lebo Imezimwa, haiwezi kuamshwa.",
+      "empty": "Hakuna lebo bado",
+      "getOne": "Pata lebo mpya kwa kubadilisha moja",
+      "notSet": "Haijapangwa",
+      "owns": "Lebo zilizo na miliki",
+      "redeem": {
+        "activateCode": "Redeem Code",
+        "description": "Ingiza nambari ya kuamsha ili kubadilisha lebo mpya",
+        "index": "Redeem Tag",
+        "recently": "Imepatikana hivi karibuni",
+        "redeemed": "Hongera! Lebo {title} imebadilishwa na kuamshwa kiotomatiki.\nUnaweza kuiona katika machapisho na maoni.",
+        "redeemed_short": "Imepatikana kwa mafanikio na kuamshwa kiotomatiki.",
+        "wrongPattern": "Nambari ya Kubadilisha si sahihi"
+      },
+      "set": "Weka \"{title}\" kama lebo ya sasa",
+      "unset": "Futa lebo ya sasa",
+      "useThis": "Weka kama ya sasa"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Adminisztráció"
+  },
+  "announcements": {
+    "close": "Közeli bejelentés",
+    "index": "Bejelentések"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Védd meg a fiókodat",
+      "forms": {
+        "confirmPassword": "Jelszó megerősítése",
+        "confirmPasswordPlaceholder": "Ismételd meg a jelszavad",
+        "currentPassword": "Jelenlegi jelszó",
+        "currentPasswordPlaceholder": "Írd be a jelenlegi jelszót",
+        "incorrectPassword": "Hibás régi jelszó",
+        "newPassword": "Új jelszó",
+        "newPasswordDescription": "Legalább 6 karakter, javasolt számokat, kis/nagybetűket és speciális karaktereket tartalmazni",
+        "newPasswordPlaceholder": "Írd be az új jelszót (legalább 6 karakter)",
+        "repeatPasswordNotMatch": "A jelszavak nem egyeznek."
+      },
+      "index": "Jelszó megváltoztatása",
+      "success": "Sikeresen megváltoztatva, kérlek jelentkezz be újra.",
+      "tips": {
+        "0": "Ne használj olyan jelszót, ami a személyes adataiddal kapcsolatos",
+        "1": "Ajánlott a jelszavad rendszeres megváltoztatása",
+        "2": "Ne használd ugyanazt a jelszót több weboldalon",
+        "3": "Tartsd biztonságban a jelszavad, ne oszd meg másokkal",
+        "index": "Jelszó biztonsági javaslatok"
+      },
+      "title": "Jelszó megváltoztatása - Zhengzhou 4. Számú Középiskola Vallomásfala"
+    },
+    "login": {
+      "description": "Jelentkezz be a fiókodba",
+      "invalidCredentials": "A bejelentkezés nem sikerült, kérlek ellenőrizd a felhasználóneved és a jelszavad",
+      "passwordPlaceholder": "Írd be a jelszót",
+      "passwordTooShort": "Legalább 6 karakter",
+      "registerNow": "Regisztrálj most",
+      "registerSuggestion": "Nincs fiókod?",
+      "title": "Jelentkezz be - Zhengzhou 4. Számú Középiskola Vallomásfala",
+      "usernamePlaceholder": "Írd be a felhasználónevet",
+      "welcome": "Üdvözlünk vissza"
+    },
+    "register": {
+      "agreeWithTerms": "Már elolvastam és egyetértek a feltételekkel:",
+      "description": "Oszd meg, fedezd fel és kapcsolódj hozzánk.",
+      "index": "Hozz létre egy fiókot",
+      "loginSuggestion": "Már van fiókod?",
+      "notAgreeWithTerms": "Kérlek először fogadd el a feltételeinket",
+      "passwordTooLong": "Legfeljebb 128 karakter a jelszóban",
+      "title": "Regisztrálj - Zhengzhou 4. Számú Középiskola Vallomásfala",
+      "usernameCharset": "Csak betűket, számokat és aláhúzást tartalmazhat",
+      "usernameLimit": "3 és 20 karakter között, csak betűket, számokat és aláhúzást tartalmazhat",
+      "usernameTooLong": "Legfeljebb 20 karakter a felhasználónévben",
+      "usernameTooShort": "Legalább 3 karakter a felhasználónévben"
+    }
+  },
+  "captcha": {
+    "click": "Kérlek kattints a következő sorrendben:",
+    "reference": "Referencia kép",
+    "rotate": "Forgasd a helyes szögbe"
+  },
+  "comment": {
+    "commentOversize": "A megjegyzések nem lehetnek hosszabbak 500 karaktertől",
+    "loginRequired": "Bejelentkezés szükséges a megjegyzések közzétételéhez",
+    "noComments": "Még nincsenek megjegyzések.",
+    "placeholder": "Írd le az ötleted...",
+    "send": "Megjegyzés közzététele"
+  },
+  "comments": {
+    "recently": "Legutóbbi megjegyzések"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Bejegyzések felfedezése",
+    "cancel": "Mégse",
+    "captcha": "Tudd meg, hogy ember vagy",
+    "collapse": "Összecsuk",
+    "comment": "Megjegyzés",
+    "commonUser": "Felhasználó",
+    "confirm": "Megerősítés",
+    "content": "Tartalom",
+    "current": "Jelenlegi",
+    "delete": "Törlés",
+    "detail": "Továbbiak megtekintése",
+    "disabled": "Letiltva",
+    "dismiss": "Elutasít",
+    "edited": "Szerkesztve",
+    "email": "E-Mail",
+    "enabled": "Engedélyezve",
+    "expand": "Kibővít",
+    "feature": "Kiemelt",
+    "hide": "Elrejt",
+    "joinTime": "Csatlakozva: {time}",
+    "known": "Ismert",
+    "layouts": {
+      "grid": "Rács elrendezés",
+      "list": "Lista elrendezés"
+    },
+    "loadMore": "Továbbiak betöltése",
+    "loading": "Betöltés...",
+    "moderator": "Moderátor",
+    "nickname": "Becenév",
+    "ok": "Rendben",
+    "password": "Jelszó",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Előnézet",
+    "previous": "Vissza",
+    "pullDownLoading": "Görgess tovább",
+    "refresh": "Frissítés",
+    "reset": "Visszaállítás",
+    "save": "Mentés",
+    "share": "Megosztás",
+    "show": "Megjelenítés",
+    "success": "Kész",
+    "superAdmin": "Szuper admin",
+    "unfeature": "Kiemelés eltávolítása",
+    "unknown": "Ismeretlen",
+    "unpin": "Pin eltávolítása",
+    "username": "Felhasználónév"
+  },
+  "error": {
+    "messages": {
+      "401": "Kérlek jelentkezz be, mielőtt meglátogatnád ezt az oldalt.",
+      "403": "Nincs jogosultságod hozzáférni ehhez az oldalhoz. Kérlek vedd fel a kapcsolatot az adminisztrátoroddal.",
+      "404": "Sajnálom, a meglátogatott oldal nem létezik vagy törölve lett.",
+      "500": "Néhány probléma merült fel a szerverrel. Kérlek próbáld újra később.",
+      "unknown": "Váratlan hiba történt. Kérlek próbáld újra később."
+    },
+    "title": "{code} - {message} - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "titles": {
+      "401": "Bejelentkezés szükséges",
+      "403": "Hozzáférés megtagadva",
+      "404": "Az oldal nem található",
+      "500": "Belső szerverhiba",
+      "unknown": "Valami rosszul sült el"
+    }
+  },
+  "home": {
+    "backHome": "Vissza a kezdőlapra",
+    "contact": "Lépj velünk kapcsolatba",
+    "description": "Egy hely, ahol kapcsolatba léphetünk egymással.",
+    "login": "Bejelentkezés",
+    "logout": "Kijelentkezés",
+    "privacy": "Adatvédelmi irányelvek",
+    "register": "Regisztráció",
+    "title": "Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "tos": "Szolgáltatási feltételek"
+  },
+  "notifications": {
+    "amount": "{number} összesen",
+    "checkLater": "Gyere vissza később.",
+    "description": "Itt kaphatsz értesítéseket",
+    "empty": "Még nincsenek értesítések",
+    "failed": "Nem sikerült betölteni az értesítéseket.",
+    "failedMark": "Nem sikerült olvasottá jelölni.",
+    "index": "Értesítések",
+    "title": "Értesítések - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "unread": "Olvasatlan"
+  },
+  "permission": {
+    "manage_announcements": "Bejelentések kezelése",
+    "manage_announcements_group": "Közösség kezelése",
+    "manage_content": "Tartalom kezelése",
+    "manage_featured": "Kiemelt kezelése",
+    "manage_posts": "Bejegyzések/megjegyzések kezelése",
+    "manage_tags": "Címkék kezelése",
+    "manage_tags_group": "Rendszer kezelése",
+    "manage_users": "Felhasználók kezelése"
+  },
+  "posts": {
+    "404": "Bejegyzés nem található",
+    "alt": {
+      "confessionalImage": "{author} vallomásos bejegyzésének képe",
+      "socialImage": "{author} közösségi bejegyzésének képe"
+    },
+    "beFirst": "Te légy az első",
+    "confessionTo": "Vallomás {author}-tól {target}-nak",
+    "contentPlaceholder": "Írd be a tartalmat",
+    "deletedUser": "Törölt fiók",
+    "deniedAudit": "Audit nem teljesült",
+    "description_review": "Felülvizsgálat kérése: Ha tévedésnek tartod, kérhetsz manuális felülvizsgálatot.",
+    "empty": "Itt még nincsenek bejegyzések",
+    "locked": "Zárolva",
+    "pendingAudit": "Jóváhagyásra vár",
+    "post": "Bejegyzés",
+    "publish": {
+      "addPhoto0": "Húzd ide a fényképeket, vagy",
+      "addPhoto1": "Fénykép hozzáadása",
+      "anonymousRole": "Egyedi név",
+      "cantEmpty": "Nem lehet üres",
+      "cantOversize": "Nem lehet több mint 2000 karakter",
+      "cardType": "Kártya típusa *",
+      "chooseRole": "Válaszd ki a szerepet",
+      "confessionCard": "Vallomás kártya",
+      "description_anonymousRole": "Tartsd névtelenül vagy használj másik becenevet",
+      "description_confessional": "Publikáld a vallomásos bejegyzésedet.",
+      "description_social": "Oszd meg a kapcsolati adataidat vagy valami mást.",
+      "edit": "Bejegyzés szerkesztése",
+      "error": {
+        "imageOversize": "A fénykép túl nagy",
+        "imageTooMany": "Túl sok fényképet töltöttél fel",
+        "unsupportedImageFormat": "Nem támogatott képformátum"
+      },
+      "imageTotal": "Feltöltve: {number} / 9",
+      "index": "Közzététel",
+      "limits": "Támogatott JPG, PNG, WebP és GIF formátumok, legfeljebb 9 fénykép, legfeljebb 5MB fényképenként",
+      "nameOversize": "A becenév nem lehet több mint 50 karakter.",
+      "namePlaceholder": "Írd be a beceneved",
+      "publishing": "Közzététel...",
+      "selfRole": "Használj becenevet",
+      "socialCard": "Közösségi kártya",
+      "targetName": "Vallomás célpont *",
+      "targetNamePlaceholder": "Írd be a becenevüket",
+      "tip": {
+        "0": "Légy tiszteletteljes és őszinte",
+        "1": "Fénykép feltöltése többet jelent a bejegyzésed számára",
+        "index": "Tippek"
+      },
+      "title": "Új bejegyzés - Zhengzhou 4. Számú Középiskola Vallomásfala",
+      "toasts": {
+        "sent": "Közzétéve, audit alatt"
+      },
+      "uploadImage": "Fényképek feltöltése (opcionális)",
+      "uploadMore": "Tölts fel több fényképet"
+    },
+    "recently": "Legutóbbi bejegyzések",
+    "requestReview": "Kérem manuális felülvizsgálatot",
+    "review": "Manuális felülvizsgálat kérése",
+    "reviewRequired": "Manuális felülvizsgálat szükséges",
+    "socialFrom": "{author} bejegyzése"
+  },
+  "seo": {
+    "description": "Egy hely, ahol kapcsolatba léphetünk egymással.",
+    "keywords": "Zhengzhou 4. Számú Középiskola, Zhengzhou 4. Számú Középiskola, Zhengzhou 4. Számú Általános Iskola, Iskolai közösség, Diákok kommunikációja, Diákok megbeszélése",
+    "title": "Zhengzhou 4. Számú Középiskola Vallomásfala"
+  },
+  "share": {
+    "copied": "Másolva a vágólapra",
+    "success": "Sikeresen megosztva"
+  },
+  "time": {
+    "beforeDays": "{days} nappal ezelőtt",
+    "beforeHours": "{hours} órával ezelőtt",
+    "beforeMinutes": "{minutes} perccel ezelőtt",
+    "expireHour": "Lejár {hour} óra és {minutes} perc múlva",
+    "expireMinutes": "Lejár {minutes} perc múlva",
+    "expireSoon": "Hamarosan lejár",
+    "expired": "Lejárt",
+    "just": "Most"
+  },
+  "user": {
+    "center": "Személyes központ",
+    "centerTitle": "Személyes központ - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "centers": {
+      "description": "Kezeld a személyes profilodat és tartalmadat",
+      "editProfile": "Profil szerkesztése",
+      "joinedDays": "Csatlakozási napok",
+      "lastLogin": "Utolsó bejelentkezés",
+      "registerTime": "Regisztrálva"
+    },
+    "commentedOn": "Megjegyzést írtál",
+    "comments": {
+      "delete_description": "Biztos vagy benne, hogy törölni akarod ezt a megjegyzést? Nem lehet visszaállítani.",
+      "description": "Itt kezelheted a megjegyzéseidet",
+      "edit": "Megjegyzés szerkesztése",
+      "edit_placeholder": "Szerkeszd a megjegyzéseidet itt...",
+      "empty": "Még nincsenek megjegyzések",
+      "source": "Forrás:",
+      "totalComments": "Összes megjegyzés"
+    },
+    "description": "{nickname} kezdőlapja a {siteName}-on, nyilvános vallomásokat és közösségi bejegyzéseket mutat.",
+    "editAvatar": "Kattints a profilképre a változtatáshoz",
+    "hasPerm": "Tulajdonolt jogosultságok:",
+    "myComments": "Saját megjegyzéseim",
+    "myCommentsTitle": "Saját megjegyzéseim - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "myPosts": "Saját bejegyzéseim",
+    "myPostsTitle": "Saját bejegyzéseim - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "myTags": "Saját címkéim",
+    "myTagsTitle": "Saját címkéim - Zhengzhou 4. Számú Középiskola Vallomásfala",
+    "noActivity": "Még nincs aktivitás",
+    "noPerm": "Ez a fiók nem rendelkezik jogosultsággal",
+    "noPosts": "{nickname} még nem tett közzé bejegyzéseket",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Utolsó online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Minden állapot",
+      "common": "Általános",
+      "confirmDeletion": "Törlés megerősítése",
+      "description": "Itt kezelheted a bejegyzéseidet",
+      "hidden": "Rejtett",
+      "noPosts": "Még nincsenek bejegyzések",
+      "published": "Közzétéve",
+      "totalFeatured": "Összes kiemelt bejegyzés",
+      "totalPinned": "Összes rögzített bejegyzés",
+      "totalPosts": "Összes bejegyzés"
+    },
+    "postsFrom": "{nickname} bejegyzései",
+    "profile": {
+      "bioOversize": "Legfeljebb 500 karakter a bio-ban",
+      "imageTooLarge": "A képfájl nem haladhatja meg az 5MB-ot.",
+      "invalidEmail": "Érvénytelen E-Mail",
+      "invalidPhone": "Érvénytelen telefonszám",
+      "notImage": "Nem képfájl."
+    },
+    "publish": {
+      "description": "Oszd meg a szereteted"
+    },
+    "recently": "Legutóbbi tevékenységek",
+    "superAdminPerms": "A szuper admin minden rendszerjogosultsággal rendelkezik",
+    "tags": {
+      "acquireTime": "Beszerzési idő: {time}",
+      "description": "Itt kezelheted a címkéidet",
+      "disabled": "Letiltott címke, nem aktiválható.",
+      "empty": "Még nincsenek címkék",
+      "getOne": "Szerezz új címkét egy beváltással",
+      "notSet": "Nincs beállítva",
+      "owns": "Tulajdonolt címkék",
+      "redeem": {
+        "activateCode": "Beváltási kód",
+        "description": "Írd be az aktiváló kódot az új címke beváltásához",
+        "index": "Címke beváltása",
+        "recently": "Nemrégiben megszerzett",
+        "redeemed": "Gratulálunk! A {title} címke beváltva és automatikusan aktiválva.\nLáthatod a bejegyzésekben és megjegyzésekben.",
+        "redeemed_short": "Beváltás sikeres és automatikusan aktiválva.",
+        "wrongPattern": "Hibás beváltási kód"
+      },
+      "set": "Állítsd be a \"{title}\"-t aktuális címkének",
+      "unset": "Állítsd vissza az aktuális címkét",
+      "useThis": "Állítsd be aktuálisnak"
+    }
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Amministrazione"
+  },
+  "announcements": {
+    "close": "Chiudi annuncio",
+    "index": "Annunci"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Proteggi il tuo account",
+      "forms": {
+        "confirmPassword": "Conferma password",
+        "confirmPasswordPlaceholder": "Ripeti la tua password",
+        "currentPassword": "Password attuale",
+        "currentPasswordPlaceholder": "Inserisci la password attuale",
+        "incorrectPassword": "Password vecchia errata",
+        "newPassword": "Nuova password",
+        "newPasswordDescription": "Almeno 6 caratteri, si consiglia di contenere numeri, lettere minuscole/maiuscole e caratteri speciali",
+        "newPasswordPlaceholder": "Inserisci la nuova password (almeno 6 caratteri)",
+        "repeatPasswordNotMatch": "Le password non corrispondono."
+      },
+      "index": "Cambia password",
+      "success": "Cambiato con successo, per favore accedi di nuovo.",
+      "tips": {
+        "0": "Non utilizzare password che riguardano i tuoi dati personali",
+        "1": "Si consiglia di cambiare regolarmente la password",
+        "2": "Non utilizzare la stessa password tra i siti web",
+        "3": "Tieni al sicuro la tua password, non condividerla con altri",
+        "index": "Suggerimenti per la sicurezza della password"
+      },
+      "title": "Cambia password - Muro delle confessioni della Scuola Media No.4 di Zhengzhou"
+    },
+    "login": {
+      "description": "Accedi al tuo account",
+      "invalidCredentials": "Accesso non riuscito, controlla il tuo nome utente e la tua password",
+      "passwordPlaceholder": "Inserisci la password",
+      "passwordTooShort": "Almeno 6 caratteri",
+      "registerNow": "Registrati ora",
+      "registerSuggestion": "Non hai un account?",
+      "title": "Accedi - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+      "usernamePlaceholder": "Inserisci nome utente",
+      "welcome": "Bentornato"
+    },
+    "register": {
+      "agreeWithTerms": "Ho già letto e accettato i termini:",
+      "description": "Condividi, scopri e connettiti con noi.",
+      "index": "Crea un account",
+      "loginSuggestion": "Hai già un account?",
+      "notAgreeWithTerms": "Per favore, accetta prima i nostri termini",
+      "passwordTooLong": "Al massimo 128 caratteri nella password",
+      "title": "Iscriviti - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+      "usernameCharset": "Può contenere solo lettere, numeri e underscore",
+      "usernameLimit": "Da 3 a 20 caratteri, può contenere solo lettere, numeri e underscore",
+      "usernameTooLong": "Al massimo 20 caratteri nel nome utente",
+      "usernameTooShort": "Almeno 3 caratteri nel nome utente"
+    }
+  },
+  "captcha": {
+    "click": "Per favore clicca in ordine:",
+    "reference": "Immagine di riferimento",
+    "rotate": "Ruota all'angolo corretto"
+  },
+  "comment": {
+    "commentOversize": "I commenti non possono superare i 500 caratteri",
+    "loginRequired": "Accesso richiesto per pubblicare commenti",
+    "noComments": "Nessun commento ancora.",
+    "placeholder": "Scrivi la tua idea...",
+    "send": "Pubblica commento"
+  },
+  "comments": {
+    "recently": "Commenti recenti"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Bio",
+    "browse": "Esplora post",
+    "cancel": "Annulla",
+    "captcha": "Fai sapere che sei umano",
+    "collapse": "Riduci",
+    "comment": "Commento",
+    "commonUser": "Utente",
+    "confirm": "Conferma",
+    "content": "Contenuto",
+    "current": "Attuale",
+    "delete": "Elimina",
+    "detail": "Vedi di più",
+    "disabled": "Disabilitato",
+    "dismiss": "Ignora",
+    "edited": "Modificato",
+    "email": "E-Mail",
+    "enabled": "Abilitato",
+    "expand": "Espandi",
+    "feature": "In evidenza",
+    "hide": "Nascondi",
+    "joinTime": "Unito a {time}",
+    "known": "Conosciuto",
+    "layouts": {
+      "grid": "Layout a griglia",
+      "list": "Layout a lista"
+    },
+    "loadMore": "Carica di più",
+    "loading": "Caricamento...",
+    "moderator": "Moderatore",
+    "nickname": "Soprannome",
+    "ok": "OK",
+    "password": "Password",
+    "phone": "Telefono",
+    "pin": "Pin",
+    "preview": "Anteprima",
+    "previous": "Indietro",
+    "pullDownLoading": "Scorri per di più",
+    "refresh": "Aggiorna",
+    "reset": "Reimposta",
+    "save": "Salva",
+    "share": "Condividi",
+    "show": "Mostra",
+    "success": "Fatto",
+    "superAdmin": "Super Admin",
+    "unfeature": "Rimuovi in evidenza",
+    "unknown": "Sconosciuto",
+    "unpin": "Rimuovi pin",
+    "username": "Nome utente"
+  },
+  "error": {
+    "messages": {
+      "401": "Per favore accedi prima di visitare questa pagina.",
+      "403": "Non hai il permesso di accedere a questa pagina. Contatta il tuo amministratore.",
+      "404": "Spiacente, la pagina che hai visitato non esiste o è stata eliminata.",
+      "500": "Ci sono alcuni problemi con il server. Per favore riprova più tardi.",
+      "unknown": "Si è verificato un errore imprevisto. Per favore riprova più tardi."
+    },
+    "title": "{code} - {message} - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "titles": {
+      "401": "Accesso richiesto",
+      "403": "Accesso negato",
+      "404": "Pagina non trovata",
+      "500": "Errore interno del server",
+      "unknown": "Qualcosa è andato storto"
+    }
+  },
+  "home": {
+    "backHome": "Torna alla home",
+    "contact": "Contattaci",
+    "description": "Un luogo per connettersi tra di noi.",
+    "login": "Accedi",
+    "logout": "Disconnetti",
+    "privacy": "Informativa sulla privacy",
+    "register": "Registrati",
+    "title": "Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "tos": "Termini di servizio"
+  },
+  "notifications": {
+    "amount": "{number} in totale",
+    "checkLater": "Torna più tardi.",
+    "description": "Ricevi notifiche qui",
+    "empty": "Nessuna notifica ancora",
+    "failed": "Impossibile caricare le notifiche.",
+    "failedMark": "Impossibile contrassegnare come letto.",
+    "index": "Notifiche",
+    "title": "Notifiche - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "unread": "Non letto"
+  },
+  "permission": {
+    "manage_announcements": "Gestisci annunci",
+    "manage_announcements_group": "Gestisci comunità",
+    "manage_content": "Gestisci contenuti",
+    "manage_featured": "Gestisci in evidenza",
+    "manage_posts": "Gestisci post/commenti",
+    "manage_tags": "Gestisci tag",
+    "manage_tags_group": "Gestisci sistema",
+    "manage_users": "Gestisci utenti"
+  },
+  "posts": {
+    "404": "Post non trovato",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "Sii il primo",
+    "confessionTo": "Confessione da {author} a {target}",
+    "contentPlaceholder": "Inserisci contenuto",
+    "deletedUser": "Account eliminato",
+    "deniedAudit": "Audit non superato",
+    "description_review": "Richiesta di revisione: se lo consideri un errore, puoi richiedere una revisione manuale.",
+    "empty": "Nessun post qui ancora",
+    "locked": "Bloccato",
+    "pendingAudit": "In attesa di approvazione",
+    "post": "Pubblica",
+    "publish": {
+      "addPhoto0": "Trascina le foto qui, o",
+      "addPhoto1": "Aggiungi foto",
+      "anonymousRole": "Nome personalizzato",
+      "cantEmpty": "Non può essere vuoto",
+      "cantOversize": "Non può superare i 2000 caratteri",
+      "cardType": "Tipo di carta *",
+      "chooseRole": "Scegli ruolo",
+      "confessionCard": "Carta di confessione",
+      "description_anonymousRole": "Rimani anonimo o usa un altro soprannome",
+      "description_confessional": "Pubblica il tuo post di confessione.",
+      "description_social": "Condividi le tue informazioni di contatto o altro.",
+      "edit": "Modifica post",
+      "error": {
+        "imageOversize": "La foto è troppo grande",
+        "imageTooMany": "Caricate troppe foto",
+        "unsupportedImageFormat": "Formato immagine non supportato"
+      },
+      "imageTotal": "Caricato {number} / 9",
+      "index": "Pubblica",
+      "limits": "Formati supportati JPG, PNG, WebP e GIF, fino a 9 foto, al massimo 5MB per foto",
+      "nameOversize": "Il soprannome non può superare i 50 caratteri.",
+      "namePlaceholder": "Inserisci il tuo soprannome",
+      "publishing": "Pubblicazione in corso...",
+      "selfRole": "Usa il mio soprannome",
+      "socialCard": "Carta sociale",
+      "targetName": "Obiettivo di confessione *",
+      "targetNamePlaceholder": "Inserisci il loro soprannome",
+      "tip": {
+        "0": "Sii rispettoso e sincero",
+        "1": "Caricare una foto significa di più per il tuo post",
+        "index": "Suggerimenti"
+      },
+      "title": "Nuovo post - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+      "toasts": {
+        "sent": "Pubblicato, in attesa di audit"
+      },
+      "uploadImage": "Carica foto (opzionale)",
+      "uploadMore": "Carica più foto"
+    },
+    "recently": "Post recenti",
+    "requestReview": "Richiesta di revisione manuale",
+    "review": "Revisione manuale richiesta",
+    "reviewRequired": "Revisione manuale necessaria",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "Un luogo per connettersi tra di noi.",
+    "keywords": "Scuola Media No.4 di Zhengzhou, Scuola Superiore No.4 di Zhengzhou, Scuola Media Inferiore No.4 di Zhengzhou, Comunità scolastica, Comunicazione tra studenti, Discussione tra studenti",
+    "title": "Muro delle confessioni della Scuola Media No.4 di Zhengzhou"
+  },
+  "share": {
+    "copied": "Copiato negli appunti",
+    "success": "Condiviso con successo"
+  },
+  "time": {
+    "beforeDays": "{days} giorni fa",
+    "beforeHours": "{hours} ore fa",
+    "beforeMinutes": "{minutes} minuti fa",
+    "expireHour": "Scade dopo {hour} ore e {minutes} minuti",
+    "expireMinutes": "Scade dopo {minutes} minuti",
+    "expireSoon": "Scade presto",
+    "expired": "Scaduto",
+    "just": "Proprio ora"
+  },
+  "user": {
+    "center": "Centro personale",
+    "centerTitle": "Centro personale - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "centers": {
+      "description": "Gestisci il tuo profilo personale e contenuti",
+      "editProfile": "Modifica profilo",
+      "joinedDays": "Giorni uniti",
+      "lastLogin": "Ultimo accesso a",
+      "registerTime": "Registrato a"
+    },
+    "commentedOn": "Ha pubblicato un commento",
+    "comments": {
+      "delete_description": "Sei sicuro di voler eliminare questo commento? Non sarà possibile recuperarlo.",
+      "description": "Gestisci i tuoi commenti qui",
+      "edit": "Modifica commento",
+      "edit_placeholder": "Modifica i tuoi commenti qui...",
+      "empty": "Nessun commento ancora",
+      "source": "Fonte:",
+      "totalComments": "Commenti totali"
+    },
+    "description": "{nickname}'s homepage su {siteName}, mostra confessioni pubbliche e post social.",
+    "editAvatar": "Clicca sull'avatar per cambiare",
+    "hasPerm": "Permessi posseduti:",
+    "myComments": "I miei commenti",
+    "myCommentsTitle": "I miei commenti - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "myPosts": "I miei post",
+    "myPostsTitle": "I miei post - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "myTags": "I miei tag",
+    "myTagsTitle": "I miei tag - Muro delle confessioni della Scuola Media No.4 di Zhengzhou",
+    "noActivity": "Nessuna attività ancora",
+    "noPerm": "Questo account non ha alcun permesso",
+    "noPosts": "{nickname} non ha ancora pubblicato post",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Ultimo accesso: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Tutti gli stati",
+      "common": "Comune",
+      "confirmDeletion": "Conferma eliminazione",
+      "description": "Gestisci i tuoi post qui",
+      "hidden": "Nascosto",
+      "noPosts": "Nessun post ancora",
+      "published": "Pubblicato",
+      "totalFeatured": "Totale post in evidenza",
+      "totalPinned": "Totale post fissati",
+      "totalPosts": "Totale post"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "Al massimo 500 caratteri nella bio",
+      "imageTooLarge": "Il file immagine non deve superare 5MB.",
+      "invalidEmail": "E-Mail non valido",
+      "invalidPhone": "Numero di telefono non valido",
+      "notImage": "Non è un file immagine."
+    },
+    "publish": {
+      "description": "Condividi il tuo amore"
+    },
+    "recently": "Attività recenti",
+    "superAdminPerms": "Super admin possiede tutti i permessi di sistema",
+    "tags": {
+      "acquireTime": "Tempo di acquisizione: {time}",
+      "description": "Gestisci i tuoi tag qui",
+      "disabled": "Tag disabilitato, non può essere attivato.",
+      "empty": "Nessun tag ancora",
+      "getOne": "Ottieni un nuovo tag riscattando uno",
+      "notSet": "Non impostato",
+      "owns": "Tag posseduti",
+      "redeem": {
+        "activateCode": "Codice di riscatto",
+        "description": "Inserisci il codice di attivazione per riscattare un nuovo tag",
+        "index": "Riscatta tag",
+        "recently": "Recentemente acquisito",
+        "redeemed": "Congratulazioni! Tag {title} riscattato e attivato automaticamente.\nPuoi vederlo in post e commenti.",
+        "redeemed_short": "Riscattato con successo e attivato automaticamente.",
+        "wrongPattern": "Codice di riscatto errato"
+      },
+      "set": "Imposta \"{title}\" come tag attuale",
+      "unset": "Rimuovi tag attuale",
+      "useThis": "Imposta come attuale"
+    }
+  }
+}

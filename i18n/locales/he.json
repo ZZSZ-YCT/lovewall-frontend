@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "מנהל"
+  },
+  "announcements": {
+    "close": "סגור הודעה",
+    "index": "הודעות"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "הגן על החשבון שלך",
+      "forms": {
+        "confirmPassword": "אשר סיסמה",
+        "confirmPasswordPlaceholder": "חזור על הסיסמה שלך",
+        "currentPassword": "סיסמה נוכחית",
+        "currentPasswordPlaceholder": "הזן סיסמה נוכחית",
+        "incorrectPassword": "סיסמה ישנה שגויה",
+        "newPassword": "סיסמה חדשה",
+        "newPasswordDescription": "לפחות 6 תווים, מומלץ לכלול מספרים, אותיות קטנות/גדולות ודמויות מיוחדות",
+        "newPasswordPlaceholder": "הזן סיסמה חדשה (לפחות 6 תווים)",
+        "repeatPasswordNotMatch": "הסיסמאות אינן תואמות."
+      },
+      "index": "שנה סיסמה",
+      "success": "שונה בהצלחה, אנא התחבר מחדש.",
+      "tips": {
+        "0": "אל תשתמש בסיסמה שקשורה לנתונים האישיים שלך",
+        "1": "מומלץ לשנות את הסיסמה שלך באופן קבוע",
+        "2": "אל תשתמש באותה סיסמה בין אתרים",
+        "3": "שמור על הסיסמה שלך בטוחה, אל תשתף אותה עם אחרים",
+        "index": "הצעות לסיסמה מאובטחת"
+      },
+      "title": "שנה סיסמה - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו"
+    },
+    "login": {
+      "description": "התחבר לחשבון שלך",
+      "invalidCredentials": "התחברות נכשלה, אנא בדוק את שם המשתמש והסיסמה שלך",
+      "passwordPlaceholder": "הזן סיסמה",
+      "passwordTooShort": "לפחות 6 תווים",
+      "registerNow": "הרשם עכשיו",
+      "registerSuggestion": "אין לך חשבון?",
+      "title": "התחבר - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+      "usernamePlaceholder": "הזן שם משתמש",
+      "welcome": "ברוך שובך"
+    },
+    "register": {
+      "agreeWithTerms": "קראתי והסכמתי לתנאים:",
+      "description": "שתף, גלה, והתחבר איתנו.",
+      "index": "צור חשבון",
+      "loginSuggestion": "כבר יש לך חשבון?",
+      "notAgreeWithTerms": "אנא הסכם לתנאים שלנו קודם",
+      "passwordTooLong": "עד 128 תווים בסיסמה",
+      "title": "הרשמה - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+      "usernameCharset": "יכול להכיל רק אותיות, מספרים וקו תחתון",
+      "usernameLimit": "מ-3 עד 20 תווים, יכול להכיל רק אותיות, מספרים וקו תחתון",
+      "usernameTooLong": "עד 20 תווים בשם המשתמש",
+      "usernameTooShort": "לפחות 3 תווים בשם המשתמש"
+    }
+  },
+  "captcha": {
+    "click": "אנא לחץ בסדר:",
+    "reference": "תמונת הפניה",
+    "rotate": "סובב לזווית הנכונה"
+  },
+  "comment": {
+    "commentOversize": "התגובות לא יכולות להיות יותר מ-500 תווים",
+    "loginRequired": "דרושה התחברות כדי לפרסם תגובות",
+    "noComments": "אין תגובות עדיין.",
+    "placeholder": "כתוב את הרעיון שלך...",
+    "send": "פרסם תגובה"
+  },
+  "comments": {
+    "recently": "תגובות אחרונות"
+  },
+  "common": {
+    "admin": "מנהל",
+    "bio": "ביוגרפיה",
+    "browse": "חקור פוסטים",
+    "cancel": "בטל",
+    "captcha": "תן לנו לדעת שאתה בן אדם",
+    "collapse": "מוטט",
+    "comment": "תגובה",
+    "commonUser": "משתמש",
+    "confirm": "אשר",
+    "content": "תוכן",
+    "current": "נוכחי",
+    "delete": "מחק",
+    "detail": "ראה עוד",
+    "disabled": "מושבת",
+    "dismiss": "דחה",
+    "edited": "נערך",
+    "email": "דוא\"ל",
+    "enabled": "מאופשר",
+    "expand": "הרחב",
+    "feature": "מוצג",
+    "hide": "הסתר",
+    "joinTime": "הצטרף ב-{time}",
+    "known": "ידוע",
+    "layouts": {
+      "grid": "פריסת רשת",
+      "list": "פריסת רשימה"
+    },
+    "loadMore": "טען עוד",
+    "loading": "טוען...",
+    "moderator": "מנחה",
+    "nickname": "כינוי",
+    "ok": "אוקי",
+    "password": "סיסמה",
+    "phone": "טלפון",
+    "pin": "קוד גישה",
+    "preview": "תצוגה מקדימה",
+    "previous": "חזור",
+    "pullDownLoading": "גלול לעוד",
+    "refresh": "רענן",
+    "reset": "אפס",
+    "save": "שמור",
+    "share": "שתף",
+    "show": "הצג",
+    "success": "בוצע",
+    "superAdmin": "מנהל על",
+    "unfeature": "הסר תכונה",
+    "unknown": "לא ידוע",
+    "unpin": "הסר קוד גישה",
+    "username": "שם משתמש"
+  },
+  "error": {
+    "messages": {
+      "401": "אנא התחבר לפני ביקור בדף זה.",
+      "403": "אין לך הרשאה לגשת לדף זה. אנא פנה למנהל שלך.",
+      "404": "סליחה, הדף שביקרת בו אינו קיים או נמחק.",
+      "500": "יש כמה בעיות עם השרת. אנא נסה שוב מאוחר יותר.",
+      "unknown": "שגיאה בלתי צפויה התרחשה. אנא נסה שוב מאוחר יותר."
+    },
+    "title": "{code} - {message} - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "titles": {
+      "401": "דרושה התחברות",
+      "403": "גישה נדחתה",
+      "404": "הדף לא נמצא",
+      "500": "שגיאת שרת פנימית",
+      "unknown": "משהו השתבש"
+    }
+  },
+  "home": {
+    "backHome": "חזור הביתה",
+    "contact": "צור קשר",
+    "description": "מקום להתחבר אחד עם השני.",
+    "login": "התחברות",
+    "logout": "התנתק",
+    "privacy": "מדיניות פרטיות",
+    "register": "הרשמה",
+    "title": "קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "tos": "תנאי שירות"
+  },
+  "notifications": {
+    "amount": "{number} בסך הכל",
+    "checkLater": "חזור מאוחר יותר.",
+    "description": "קבל התראות כאן",
+    "empty": "אין התראות עדיין",
+    "failed": "נכשל לטעון התראות.",
+    "failedMark": "נכשל לסמן כנקרא.",
+    "index": "התראות",
+    "title": "התראות - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "unread": "לא נקרא"
+  },
+  "permission": {
+    "manage_announcements": "נהל הודעות",
+    "manage_announcements_group": "נהל קהילה",
+    "manage_content": "נהל תוכן",
+    "manage_featured": "נהל מוצגים",
+    "manage_posts": "נהל פוסטים/תגובות",
+    "manage_tags": "נהל תגיות",
+    "manage_tags_group": "נהל מערכת",
+    "manage_users": "נהל משתמשים"
+  },
+  "posts": {
+    "404": "הפוסט לא נמצא",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "היה הראשון",
+    "confessionTo": "וידוי מ-{author} ל-{target}",
+    "contentPlaceholder": "הזן תוכן",
+    "deletedUser": "חשבון נמחק",
+    "deniedAudit": "ביקורת לא עברה",
+    "description_review": "בקשת סקירה: אם אתה רואה את זה כטעות, תוכל לבקש סקירה ידנית.",
+    "empty": "אין פוסטים כאן עדיין",
+    "locked": "נעול",
+    "pendingAudit": "ממתין לאישור",
+    "post": "פוסט",
+    "publish": {
+      "addPhoto0": "גרור תמונות לכאן, או",
+      "addPhoto1": "הוסף תמונה",
+      "anonymousRole": "שם מותאם אישית",
+      "cantEmpty": "לא יכול להיות ריק",
+      "cantOversize": "לא יכול להיות יותר מ-2000 תווים",
+      "cardType": "סוג כרטיס *",
+      "chooseRole": "בחר תפקיד",
+      "confessionCard": "כרטיס וידוי",
+      "description_anonymousRole": "שמור על אנונימיות או השתמש בכינוי אחר",
+      "description_confessional": "פרסם את הפוסט הווידוי שלך.",
+      "description_social": "שתף את פרטי הקשר שלך או משהו אחר.",
+      "edit": "ערוך פוסט",
+      "error": {
+        "imageOversize": "התמונה גדולה מדי",
+        "imageTooMany": "הועלו יותר מדי תמונות",
+        "unsupportedImageFormat": "פורמט תמונה לא נתמך"
+      },
+      "imageTotal": "הועלו {number} / 9",
+      "index": "פרסם",
+      "limits": "פורמטים נתמכים JPG, PNG, WebP ו-GIF, עד 9 תמונות, עד 5MB לכל תמונה",
+      "nameOversize": "הכינוי לא יכול להיות יותר מ-50 תווים.",
+      "namePlaceholder": "הזן את הכינוי שלך",
+      "publishing": "מפרסם...",
+      "selfRole": "השתמש בכינוי שלי",
+      "socialCard": "כרטיס חברתי",
+      "targetName": "מטרה של וידוי *",
+      "targetNamePlaceholder": "הזן את הכינוי שלהם",
+      "tip": {
+        "0": "היה מכבד וכנה",
+        "1": "העלאת תמונה משמעותה יותר לפוסט שלך",
+        "index": "טיפים"
+      },
+      "title": "פוסט חדש - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+      "toasts": {
+        "sent": "פורסם, ממתין לביקורת"
+      },
+      "uploadImage": "העלה תמונות (אופציונלי)",
+      "uploadMore": "העלה עוד תמונות"
+    },
+    "recently": "פוסטים אחרונים",
+    "requestReview": "בקשת ביקורת ידנית",
+    "review": "בקשת ביקורת ידנית",
+    "reviewRequired": "דרושה ביקורת ידנית",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "מקום להתחבר אחד עם השני.",
+    "keywords": "בית הספר התיכון הרביעי של זנג'זואו, בית הספר התיכון הרביעי של זנג'זואו, בית הספר התיכון הרביעי של זנג'זואו, קהילת בית הספר, תקשורת תלמידים, דיון תלמידים",
+    "title": "קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו"
+  },
+  "share": {
+    "copied": "הועתק ללוח",
+    "success": "שיתוף הצליח"
+  },
+  "time": {
+    "beforeDays": "{days} ימים לפני",
+    "beforeHours": "{hours} שעות לפני",
+    "beforeMinutes": "{minutes} דקות לפני",
+    "expireHour": "פג לאחר {hour} שעות ו-{minutes} דקות",
+    "expireMinutes": "פג לאחר {minutes} דקות",
+    "expireSoon": "פג בקרוב",
+    "expired": "פג",
+    "just": "עכשיו"
+  },
+  "user": {
+    "center": "מרכז אישי",
+    "centerTitle": "מרכז אישי - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "centers": {
+      "description": "נהל את הפרופיל האישי שלך ואת התוכן",
+      "editProfile": "ערוך פרופיל",
+      "joinedDays": "ימים הצטרף",
+      "lastLogin": "ההתחברות האחרונה ב",
+      "registerTime": "נרשם ב"
+    },
+    "commentedOn": "פרסם תגובה",
+    "comments": {
+      "delete_description": "האם אתה בטוח שאתה רוצה למחוק את התגובה הזו? זה לא ניתן לשחזור.",
+      "description": "נהל את התגובות שלך כאן",
+      "edit": "ערוך תגובה",
+      "edit_placeholder": "ערוך את התגובות שלך כאן...",
+      "empty": "אין תגובות עדיין",
+      "source": "מקור:",
+      "totalComments": "סך הכל תגובות"
+    },
+    "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
+    "editAvatar": "לחץ על התמונה כדי לשנות",
+    "hasPerm": "הרשאות בבעלות:",
+    "myComments": "התגובות שלי",
+    "myCommentsTitle": "התגובות שלי - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "myPosts": "הפוסטים שלי",
+    "myPostsTitle": "הפוסטים שלי - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "myTags": "התגיות שלי",
+    "myTagsTitle": "התגיות שלי - קיר ההודאות של בית הספר התיכון הרביעי של זנג'זואו",
+    "noActivity": "אין פעילות עדיין",
+    "noPerm": "לחשבון הזה אין שום הרשאה",
+    "noPosts": "{nickname} לא פרסם שום פוסטים עדיין",
+    "offline": "לא מקוון",
+    "offlineAndTime": "לא מקוון - אחרון מקוון: {time}",
+    "online": "מקוון",
+    "posts": {
+      "allState": "כל הסטטוסים",
+      "common": "נפוץ",
+      "confirmDeletion": "אשר מחיקה",
+      "description": "נהל את הפוסטים שלך כאן",
+      "hidden": "מוסתר",
+      "noPosts": "אין פוסטים עדיין",
+      "published": "פורסם",
+      "totalFeatured": "סך הכל פוסטים מוצגים",
+      "totalPinned": "סך הכל פוסטים מקודמים",
+      "totalPosts": "סך הכל פוסטים"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "עד 500 תווים בביו",
+      "imageTooLarge": "קובץ התמונה לא יכול לעלות על 5MB.",
+      "invalidEmail": "דוא\"ל לא חוקי",
+      "invalidPhone": "מספר טלפון לא חוקי",
+      "notImage": "לא קובץ תמונה."
+    },
+    "publish": {
+      "description": "שתף את האהבה שלך"
+    },
+    "recently": "פעילויות אחרונות",
+    "superAdminPerms": "מנהל על יש לו את כל ההרשאות במערכת",
+    "tags": {
+      "acquireTime": "זמן רכישה: {time}",
+      "description": "נהל את התגיות שלך כאן",
+      "disabled": "תגית מושבתת, לא ניתן להפעיל.",
+      "empty": "אין תגיות עדיין",
+      "getOne": "קבל תגית חדשה על ידי מימוש אחת",
+      "notSet": "לא הוגדר",
+      "owns": "תגיות בבעלות",
+      "redeem": {
+        "activateCode": "מימוש קוד",
+        "description": "הזן קוד הפעלה כדי לממש תגית חדשה",
+        "index": "מימוש תגית",
+        "recently": "נרכש לאחרונה",
+        "redeemed": "מזל טוב! תגית {title} מומשה והופעלה אוטומטית.\nאתה יכול לראות את זה בפוסטים ובתגובות.",
+        "redeemed_short": "מומש בהצלחה והופעל אוטומטית.",
+        "wrongPattern": "קוד מימוש שגוי"
+      },
+      "set": "הגדר \"{title}\" כתג הנוכחי",
+      "unset": "בטל תג נוכחי",
+      "useThis": "הגדר כנוכחי"
+    }
+  }
+}

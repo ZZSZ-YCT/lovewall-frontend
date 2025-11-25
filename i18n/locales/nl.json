@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administratie"
+  },
+  "announcements": {
+    "close": "Sluit aankondiging",
+    "index": "Aankondigingen"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Bescherm je account",
+      "forms": {
+        "confirmPassword": "Bevestig wachtwoord",
+        "confirmPasswordPlaceholder": "Herhaal je wachtwoord",
+        "currentPassword": "Huidig wachtwoord",
+        "currentPasswordPlaceholder": "Voer huidig wachtwoord in",
+        "incorrectPassword": "Oud wachtwoord is onjuist",
+        "newPassword": "Nieuw wachtwoord",
+        "newPasswordDescription": "Minimaal 6 tekens, aanbevolen om cijfers, kleine/grote letters en speciale tekens te bevatten",
+        "newPasswordPlaceholder": "Voer nieuw wachtwoord in (minimaal 6 tekens)",
+        "repeatPasswordNotMatch": "Wachtwoorden komen niet overeen."
+      },
+      "index": "Verander wachtwoord",
+      "success": "Veranderd succesvol, log alstublieft opnieuw in.",
+      "tips": {
+        "0": "Gebruik geen wachtwoord dat verband houdt met je persoonlijke gegevens",
+        "1": "Het wordt aanbevolen om je wachtwoord regelmatig te veranderen",
+        "2": "Gebruik niet hetzelfde wachtwoord op verschillende websites",
+        "3": "Houd je wachtwoord veilig, deel het niet met anderen",
+        "index": "Veilige wachtwoordsuggesties"
+      },
+      "title": "Verander wachtwoord - Zhengzhou No.4 Middelbare School Bekentenismuur"
+    },
+    "login": {
+      "description": "Log in op je account",
+      "invalidCredentials": "Inloggen mislukt, controleer je gebruikersnaam en wachtwoord",
+      "passwordPlaceholder": "Voer wachtwoord in",
+      "passwordTooShort": "Minimaal 6 tekens",
+      "registerNow": "Registreer nu",
+      "registerSuggestion": "Heb je geen account?",
+      "title": "Inloggen - Zhengzhou No.4 Middelbare School Bekentenismuur",
+      "usernamePlaceholder": "Voer gebruikersnaam in",
+      "welcome": "Welkom terug"
+    },
+    "register": {
+      "agreeWithTerms": "Ik heb de voorwaarden al gelezen en ga akkoord:",
+      "description": "Deel, ontdek en verbind met ons.",
+      "index": "Maak een account aan",
+      "loginSuggestion": "Heb je al een account?",
+      "notAgreeWithTerms": "Ga eerst akkoord met onze voorwaarden",
+      "passwordTooLong": "Maximaal 128 tekens in wachtwoord",
+      "title": "Aanmelden - Zhengzhou No.4 Middelbare School Bekentenismuur",
+      "usernameCharset": "Mag alleen letters, cijfers en onderstreping bevatten",
+      "usernameLimit": "Van 3 tot 20 tekens, mag alleen letters, cijfers en onderstreping bevatten",
+      "usernameTooLong": "Maximaal 20 tekens in de gebruikersnaam",
+      "usernameTooShort": "Minimaal 3 tekens in de gebruikersnaam"
+    }
+  },
+  "captcha": {
+    "click": "Klik alstublieft in volgorde:",
+    "reference": "Referentie-afbeelding",
+    "rotate": "Draai naar de juiste hoek"
+  },
+  "comment": {
+    "commentOversize": "Reacties mogen niet meer dan 500 tekens zijn",
+    "loginRequired": "Inloggen vereist om reacties te plaatsen",
+    "noComments": "Nog geen reacties.",
+    "placeholder": "Schrijf je idee op...",
+    "send": "Plaats reactie"
+  },
+  "comments": {
+    "recently": "Recente reacties"
+  },
+  "common": {
+    "admin": "Beheerder",
+    "bio": "Bio",
+    "browse": "Verken berichten",
+    "cancel": "Annuleren",
+    "captcha": "Laat ons weten dat je menselijk bent",
+    "collapse": "Inklappen",
+    "comment": "Commentaar",
+    "commonUser": "Gebruiker",
+    "confirm": "Bevestigen",
+    "content": "Inhoud",
+    "current": "Huidig",
+    "delete": "Verwijderen",
+    "detail": "Zie meer",
+    "disabled": "Uitgeschakeld",
+    "dismiss": "Afwijzen",
+    "edited": "Bewerkt",
+    "email": "E-Mail",
+    "enabled": "Ingeschakeld",
+    "expand": "Uitbreiden",
+    "feature": "Uitgelicht",
+    "hide": "Verbergen",
+    "joinTime": "Toegevoegd op {time}",
+    "known": "Bekend",
+    "layouts": {
+      "grid": "Rasterlay-out",
+      "list": "Lijstlay-out"
+    },
+    "loadMore": "Laad meer",
+    "loading": "Laden...",
+    "moderator": "Moderator",
+    "nickname": "Bijnaam",
+    "ok": "OK",
+    "password": "Wachtwoord",
+    "phone": "Telefoon",
+    "pin": "Pincode",
+    "preview": "Voorbeeld",
+    "previous": "Terug",
+    "pullDownLoading": "Scroll voor meer",
+    "refresh": "Vernieuwen",
+    "reset": "Resetten",
+    "save": "Opslaan",
+    "share": "Delen",
+    "show": "Toon",
+    "success": "Klaar",
+    "superAdmin": "Superbeheerder",
+    "unfeature": "Verwijder uit de uitgelichte",
+    "unknown": "Onbekend",
+    "unpin": "Verwijder vast",
+    "username": "Gebruikersnaam"
+  },
+  "error": {
+    "messages": {
+      "401": "Log alstublieft in voordat je deze pagina bezoekt.",
+      "403": "Je hebt geen toestemming om deze pagina te openen. Neem contact op met je beheerder.",
+      "404": "Sorry, de pagina die je bezocht bestaat niet of is verwijderd.",
+      "500": "Er zijn enkele problemen met de server. Probeer het later opnieuw.",
+      "unknown": "Er is een onverwachte fout opgetreden. Probeer het later opnieuw."
+    },
+    "title": "{code} - {message} - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "titles": {
+      "401": "Inloggen vereist",
+      "403": "Toegang geweigerd",
+      "404": "Pagina niet gevonden",
+      "500": "Interne serverfout",
+      "unknown": "Er is iets misgegaan"
+    }
+  },
+  "home": {
+    "backHome": "Terug naar start",
+    "contact": "Neem contact met ons op",
+    "description": "Een plek om met elkaar te verbinden.",
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "privacy": "Privacybeleid",
+    "register": "Registreren",
+    "title": "Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "tos": "Servicevoorwaarden"
+  },
+  "notifications": {
+    "amount": "{number} in totaal",
+    "checkLater": "Kom later terug.",
+    "description": "Ontvang hier meldingen",
+    "empty": "Nog geen meldingen",
+    "failed": "Mislukt om meldingen te laden.",
+    "failedMark": "Mislukt om als gelezen te markeren.",
+    "index": "Meldingen",
+    "title": "Meldingen - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "unread": "Ongelezen"
+  },
+  "permission": {
+    "manage_announcements": "Beheer aankondigingen",
+    "manage_announcements_group": "Beheer gemeenschap",
+    "manage_content": "Beheer inhoud",
+    "manage_featured": "Beheer uitgelicht",
+    "manage_posts": "Beheer berichten/reacties",
+    "manage_tags": "Beheer tags",
+    "manage_tags_group": "Beheer systeem",
+    "manage_users": "Beheer gebruikers"
+  },
+  "posts": {
+    "404": "Bericht niet gevonden",
+    "alt": {
+      "confessionalImage": "{author}'s Bekentenis Post Afbeelding",
+      "socialImage": "{author}'s Sociale Post Afbeelding"
+    },
+    "beFirst": "Wees de eerste",
+    "confessionTo": "Bekentenis van {author} aan {target}",
+    "contentPlaceholder": "Voer inhoud in",
+    "deletedUser": "Verwijderd account",
+    "deniedAudit": "Audit niet geslaagd",
+    "description_review": "Verzoek om beoordeling: Als je het als een fout beschouwt, kun je een handmatige beoordeling aanvragen.",
+    "empty": "Nog geen berichten hier",
+    "locked": "Vergrendeld",
+    "pendingAudit": "In afwachting van goedkeuring",
+    "post": "Plaats",
+    "publish": {
+      "addPhoto0": "Sleep foto's hierheen, of",
+      "addPhoto1": "Voeg foto toe",
+      "anonymousRole": "Aangepaste naam",
+      "cantEmpty": "Mag niet leeg zijn",
+      "cantOversize": "Mag niet meer dan 2000 tekens zijn",
+      "cardType": "Kaarttype *",
+      "chooseRole": "Kies rol",
+      "confessionCard": "Bekenteniskaart",
+      "description_anonymousRole": "Blijf anoniem of gebruik een andere bijnaam",
+      "description_confessional": "Publiceer je bekentenispost.",
+      "description_social": "Deel je contactinformatie of iets anders.",
+      "edit": "Bewerk bericht",
+      "error": {
+        "imageOversize": "Foto is te groot",
+        "imageTooMany": "Te veel foto's geüpload",
+        "unsupportedImageFormat": "Ongeldig afbeeldingsformaat"
+      },
+      "imageTotal": "Geüpload {number} / 9",
+      "index": "Publiceren",
+      "limits": "Ondersteunde JPG-, PNG-, WebP- en GIF-indelingen, tot 9 foto's, maximaal 5MB per foto",
+      "nameOversize": "Bijnaam mag niet meer dan 50 tekens zijn.",
+      "namePlaceholder": "Voer je bijnaam in",
+      "publishing": "Publiceren...",
+      "selfRole": "Gebruik mijn bijnaam",
+      "socialCard": "Sociale kaart",
+      "targetName": "Bekentenisdoel *",
+      "targetNamePlaceholder": "Voer hun bijnaam in",
+      "tip": {
+        "0": "Wees respectvol en oprecht",
+        "1": "Een foto uploaden betekent meer voor je bericht",
+        "index": "Tips"
+      },
+      "title": "Nieuw bericht - Zhengzhou No.4 Middelbare School Bekentenismuur",
+      "toasts": {
+        "sent": "Geplaatst, in afwachting van audit"
+      },
+      "uploadImage": "Upload foto's (optioneel)",
+      "uploadMore": "Upload meer foto's"
+    },
+    "recently": "Recente berichten",
+    "requestReview": "Verzoek om handmatige beoordeling",
+    "review": "Handmatige beoordeling aangevraagd",
+    "reviewRequired": "Handmatige beoordeling vereist",
+    "socialFrom": "{author}'s bericht"
+  },
+  "seo": {
+    "description": "Een plek om met elkaar te verbinden.",
+    "keywords": "Zhengzhou No.4 Middelbare School, Zhengzhou No.4 Middelbare School, Zhengzhou No.4 Junior High School, Schoolgemeenschap, Studentencommunicatie, Studentenbespreking",
+    "title": "Zhengzhou No.4 Middelbare School Bekentenismuur"
+  },
+  "share": {
+    "copied": "Gekopieerd naar het klembord",
+    "success": "Succesvol gedeeld"
+  },
+  "time": {
+    "beforeDays": "{days} dagen geleden",
+    "beforeHours": "{hours} uur geleden",
+    "beforeMinutes": "{minutes} minuten geleden",
+    "expireHour": "Verloopt na {hour} uur en {minutes} minuten",
+    "expireMinutes": "Verloopt na {minutes} minuten",
+    "expireSoon": "Verloopt binnenkort",
+    "expired": "Verlopen",
+    "just": "Zojuist"
+  },
+  "user": {
+    "center": "Persoonlijk centrum",
+    "centerTitle": "Persoonlijk centrum - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "centers": {
+      "description": "Beheer je persoonlijke profiel en inhoud",
+      "editProfile": "Bewerk profiel",
+      "joinedDays": "Dagen lid",
+      "lastLogin": "Laatste inlog op",
+      "registerTime": "Geregistreerd op"
+    },
+    "commentedOn": "Plaatste een reactie",
+    "comments": {
+      "delete_description": "Weet je zeker dat je deze reactie wilt verwijderen? Het kan niet worden hersteld.",
+      "description": "Beheer je reacties hier",
+      "edit": "Bewerk reactie",
+      "edit_placeholder": "Bewerk je reacties hier...",
+      "empty": "Nog geen reacties",
+      "source": "Bron:",
+      "totalComments": "Totaal aantal reacties"
+    },
+    "description": "{nickname}'s homepage op {siteName}, toont openbare bekentenissen en sociale berichten.",
+    "editAvatar": "Klik op het avatar om te veranderen",
+    "hasPerm": "Beheerde machtigingen:",
+    "myComments": "Mijn reacties",
+    "myCommentsTitle": "Mijn reacties - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "myPosts": "Mijn berichten",
+    "myPostsTitle": "Mijn berichten - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "myTags": "Mijn tags",
+    "myTagsTitle": "Mijn tags - Zhengzhou No.4 Middelbare School Bekentenismuur",
+    "noActivity": "Nog geen activiteit",
+    "noPerm": "Dit account heeft geen enkele toestemming",
+    "noPosts": "{nickname} heeft nog geen berichten gepubliceerd",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Laatste online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Alle status",
+      "common": "Algemeen",
+      "confirmDeletion": "Bevestig verwijdering",
+      "description": "Beheer je berichten hier",
+      "hidden": "Verborgen",
+      "noPosts": "Nog geen berichten",
+      "published": "Gepubliceerd",
+      "totalFeatured": "Totaal aantal uitgelichte berichten",
+      "totalPinned": "Totaal aantal vastgezette berichten",
+      "totalPosts": "Totaal aantal berichten"
+    },
+    "postsFrom": "{nickname}'s berichten",
+    "profile": {
+      "bioOversize": "Maximaal 500 tekens in bio",
+      "imageTooLarge": "Afbeeldingsbestand mag niet groter zijn dan 5MB.",
+      "invalidEmail": "Ongeldig E-Mail",
+      "invalidPhone": "Ongeldig telefoonnummer",
+      "notImage": "Geen afbeeldingsbestand."
+    },
+    "publish": {
+      "description": "Deel je liefde"
+    },
+    "recently": "Recente activiteiten",
+    "superAdminPerms": "Superbeheerder heeft alle systeemrechten",
+    "tags": {
+      "acquireTime": "Verworven tijd: {time}",
+      "description": "Beheer je tags hier",
+      "disabled": "Uitgeschakelde tag, kan niet worden geactiveerd.",
+      "empty": "Nog geen tags",
+      "getOne": "Krijg een nieuwe tag door er een in te wisselen",
+      "notSet": "Niet ingesteld",
+      "owns": "Beheerde tags",
+      "redeem": {
+        "activateCode": "Inwisselcode",
+        "description": "Voer activeringscode in om nieuwe tag in te wisselen",
+        "index": "Inwissel tag",
+        "recently": "Onlangs verworven",
+        "redeemed": "Gefeliciteerd! Tag {title} ingewisseld en automatisch geactiveerd.\nJe kunt het zien in berichten en reacties.",
+        "redeemed_short": "Ingewisseld succesvol en automatisch geactiveerd.",
+        "wrongPattern": "Ongeldige inwisselcode"
+      },
+      "set": "Stel \"{title}\" in als huidige tag",
+      "unset": "Verwijder huidige tag",
+      "useThis": "Stel in als huidige"
+    }
+  }
+}

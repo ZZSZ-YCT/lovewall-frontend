@@ -8,6 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "update:locales": "ts-node scripts/update-locales.ts",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -54,6 +55,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^9.38.0",
     "typescript": "^5.9.3",
-    "vue-tsc": "^3.1.2"
+    "vue-tsc": "^3.1.2",
+    "ts-node": "^10.0.0"
   }
 }

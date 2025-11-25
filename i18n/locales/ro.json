@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administrație"
+  },
+  "announcements": {
+    "close": "Închide Anunțul",
+    "index": "Anunțuri"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Protejează-ți contul",
+      "forms": {
+        "confirmPassword": "Confirmă Parola",
+        "confirmPasswordPlaceholder": "Repetă parola",
+        "currentPassword": "Parola Curentă",
+        "currentPasswordPlaceholder": "Introdu Parola Curentă",
+        "incorrectPassword": "Parola Veche Incorectă",
+        "newPassword": "Parola Nouă",
+        "newPasswordDescription": "Cel puțin 6 caractere, se recomandă să conțină numere, litere mici/mari și caractere speciale",
+        "newPasswordPlaceholder": "Introdu Parola Nouă (cel puțin 6 caractere)",
+        "repeatPasswordNotMatch": "Parolele nu se potrivesc."
+      },
+      "index": "Schimbă Parola",
+      "success": "Schimbare reușită, te rugăm să te reconectezi.",
+      "tips": {
+        "0": "Nu folosi o parolă care are legătură cu datele tale personale",
+        "1": "Se recomandă să îți schimbi parola regulat",
+        "2": "Nu folosi aceeași parolă pe site-uri diferite",
+        "3": "Păstrează-ți parola în siguranță, nu o împărtăși cu alții",
+        "index": "Sugestii pentru Securitatea Parolei"
+      },
+      "title": "Schimbă Parola - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou"
+    },
+    "login": {
+      "description": "Conectează-te la contul tău",
+      "invalidCredentials": "Conectare eșuată, te rugăm să verifici numele de utilizator și parola",
+      "passwordPlaceholder": "Introdu parola",
+      "passwordTooShort": "Cel puțin 6 caractere",
+      "registerNow": "Înregistrează-te Acum",
+      "registerSuggestion": "Nu ai un cont?",
+      "title": "Conectare - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+      "usernamePlaceholder": "Introdu numele de utilizator",
+      "welcome": "Bine ai revenit"
+    },
+    "register": {
+      "agreeWithTerms": "Am citit și sunt de acord cu Termenii:",
+      "description": "Împărtășește, descoperă și conectează-te cu noi.",
+      "index": "Creează un cont",
+      "loginSuggestion": "Ai deja un cont?",
+      "notAgreeWithTerms": "Te rugăm să fii de acord cu termenii noștri mai întâi",
+      "passwordTooLong": "Cel mult 128 de caractere în Parolă",
+      "title": "Înscriere - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+      "usernameCharset": "Poate conține doar litere, numere și subliniere",
+      "usernameLimit": "De la 3 la 20 de caractere, poate conține doar litere, numere și subliniere",
+      "usernameTooLong": "Cel mult 20 de caractere în numele de utilizator",
+      "usernameTooShort": "Cel puțin 3 caractere în numele de utilizator"
+    }
+  },
+  "captcha": {
+    "click": "Te rugăm să faci clic în ordine:",
+    "reference": "Imagine de Referință",
+    "rotate": "Rotește la un unghi corect"
+  },
+  "comment": {
+    "commentOversize": "Comentariile nu pot depăși 500 de caractere",
+    "loginRequired": "Conectarea este necesară pentru a posta comentarii",
+    "noComments": "Nu sunt comentarii încă.",
+    "placeholder": "Scrie-ți ideea...",
+    "send": "Postează comentariul"
+  },
+  "comments": {
+    "recently": "Comentarii Recente"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Biografie",
+    "browse": "Explorează Postările",
+    "cancel": "Anulează",
+    "captcha": "Lasă-ne să știm că ești om",
+    "collapse": "Colapsează",
+    "comment": "Comentariu",
+    "commonUser": "Utilizator",
+    "confirm": "Confirmă",
+    "content": "Conținut",
+    "current": "Curent",
+    "delete": "Șterge",
+    "detail": "Vezi mai mult",
+    "disabled": "Dezactivat",
+    "dismiss": "Respinge",
+    "edited": "Editat",
+    "email": "E-Mail",
+    "enabled": "Activat",
+    "expand": "Extinde",
+    "feature": "Prezentat",
+    "hide": "Ascunde",
+    "joinTime": "Alăturat la {time}",
+    "known": "Cunoscut",
+    "layouts": {
+      "grid": "Aspect Grilă",
+      "list": "Aspect Listă"
+    },
+    "loadMore": "Încarcă mai mult",
+    "loading": "Se încarcă...",
+    "moderator": "Moderator",
+    "nickname": "Pseudonim",
+    "ok": "OK",
+    "password": "Parolă",
+    "phone": "Telefon",
+    "pin": "Pin",
+    "preview": "Previzualizare",
+    "previous": "Înapoi",
+    "pullDownLoading": "Derulează pentru mai mult",
+    "refresh": "Reîmprospătează",
+    "reset": "Resetează",
+    "save": "Salvează",
+    "share": "Împărtășește",
+    "show": "Arată",
+    "success": "Finalizat",
+    "superAdmin": "Super Admin",
+    "unfeature": "Dezactivează",
+    "unknown": "Necunoscut",
+    "unpin": "Dezpin",
+    "username": "Nume de utilizator"
+  },
+  "error": {
+    "messages": {
+      "401": "Te rugăm să te conectezi înainte de a vizita această pagină.",
+      "403": "Nu ai permisiunea de a accesa această pagină. Te rugăm să contactezi administratorul.",
+      "404": "Ne pare rău, pagina pe care ai vizitat-o nu există sau a fost ștearsă.",
+      "500": "Există unele probleme cu serverul. Te rugăm să încerci din nou mai târziu.",
+      "unknown": "A apărut o eroare neașteptată. Te rugăm să încerci din nou mai târziu."
+    },
+    "title": "{code} - {message} - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "titles": {
+      "401": "Conectare necesară",
+      "403": "Acces refuzat",
+      "404": "Pagina nu a fost găsită",
+      "500": "Eroare Internă a Serverului",
+      "unknown": "Ceva a mers prost"
+    }
+  },
+  "home": {
+    "backHome": "Înapoi la Acasă",
+    "contact": "Contactează-ne",
+    "description": "Un loc pentru a ne conecta unii cu alții.",
+    "login": "Conectare",
+    "logout": "Deconectare",
+    "privacy": "Politica de Confidențialitate",
+    "register": "Înregistrează-te",
+    "title": "Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "tos": "Termeni de Serviciu"
+  },
+  "notifications": {
+    "amount": "{number} în total",
+    "checkLater": "Revenim mai târziu.",
+    "description": "Obține notificări aici",
+    "empty": "Nu sunt notificări încă",
+    "failed": "Încărcarea notificărilor a eșuat.",
+    "failedMark": "Marcare ca citit a eșuat.",
+    "index": "Notificări",
+    "title": "Notificări - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "unread": "Necitite"
+  },
+  "permission": {
+    "manage_announcements": "Gestionează Anunțurile",
+    "manage_announcements_group": "Gestionează Comunitatea",
+    "manage_content": "Gestionează Conținutul",
+    "manage_featured": "Gestionează Prezentările",
+    "manage_posts": "Gestionează Postările/Comentariile",
+    "manage_tags": "Gestionează Etichetele",
+    "manage_tags_group": "Gestionează Sistemul",
+    "manage_users": "Gestionează Utilizatorii"
+  },
+  "posts": {
+    "404": "Postare nu găsită",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "Fii primul",
+    "confessionTo": "Confesiune de la {author} către {target}",
+    "contentPlaceholder": "Introdu conținut",
+    "deletedUser": "Cont Șters",
+    "deniedAudit": "Auditul nu a fost trecut",
+    "description_review": "Solicitare Revizuire: Dacă consideri că este o greșeală, poți solicita o revizuire manuală.",
+    "empty": "Nu sunt postări aici încă",
+    "locked": "Blocat",
+    "pendingAudit": "Așteaptă Aprobat",
+    "post": "Postare",
+    "publish": {
+      "addPhoto0": "Trage fotografiile aici, sau",
+      "addPhoto1": "Adaugă fotografie",
+      "anonymousRole": "Nume Personalizat",
+      "cantEmpty": "Nu poate fi gol",
+      "cantOversize": "Nu poate depăși 2000 de caractere",
+      "cardType": "Tip Card *",
+      "chooseRole": "Alege Rol",
+      "confessionCard": "Card de Confesiune",
+      "description_anonymousRole": "Păstrează anonim sau folosește alt pseudonim",
+      "description_confessional": "Publică-ți postarea de confesiune.",
+      "description_social": "Împărtășește informațiile tale de contact sau altceva.",
+      "edit": "Editează Postarea",
+      "error": {
+        "imageOversize": "Fotografia este prea mare",
+        "imageTooMany": "Ai încărcat prea multe fotografii",
+        "unsupportedImageFormat": "Format de imagine nesuportat"
+      },
+      "imageTotal": "Încărcat {number} / 9",
+      "index": "Publică",
+      "limits": "Formate acceptate JPG, PNG, WebP și GIF, până la 9 fotografii, cel mult 5MB pe fotografie",
+      "nameOversize": "Pseudonimul nu poate depăși 50 de caractere.",
+      "namePlaceholder": "Introduceti pseudonimul tau",
+      "publishing": "Publicare...",
+      "selfRole": "Folosește-mi pseudonimul",
+      "socialCard": "Card Social",
+      "targetName": "Țintă de Confesiune *",
+      "targetNamePlaceholder": "Introduceti pseudonimul lor",
+      "tip": {
+        "0": "Fii respectuos și sincer",
+        "1": "Încărcarea unei fotografii înseamnă mai mult pentru postarea ta",
+        "index": "Sfaturi"
+      },
+      "title": "Postare Nouă - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+      "toasts": {
+        "sent": "Postat, așteaptă audit"
+      },
+      "uploadImage": "Încarcă Fotografii (Opțional)",
+      "uploadMore": "Încarcă mai multe fotografii"
+    },
+    "recently": "Postări Recente",
+    "requestReview": "Solicitare Revizuire Manuală",
+    "review": "Revizuire Manuală Solicitată",
+    "reviewRequired": "Revizuire Manuală Necesare",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "Un loc pentru a ne conecta unii cu alții.",
+    "keywords": "Școala Gimnazială Nr. 4 Zhengzhou, Școala Gimnazială Nr. 4 Zhengzhou, Școala Gimnazială Nr. 4 Zhengzhou, Comunitatea Școlii, Comunicația Studenților, Discuția Studenților",
+    "title": "Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou"
+  },
+  "share": {
+    "copied": "Copiat în clipboard",
+    "success": "Împărtășit cu succes"
+  },
+  "time": {
+    "beforeDays": "{days} zile în urmă",
+    "beforeHours": "{hours} ore în urmă",
+    "beforeMinutes": "{minutes} minute în urmă",
+    "expireHour": "Expiră după {hour} ore și {minutes} minute",
+    "expireMinutes": "Expiră după {minutes} minute",
+    "expireSoon": "Expiră în curând",
+    "expired": "Expirat",
+    "just": "Chiar acum"
+  },
+  "user": {
+    "center": "Centru Personal",
+    "centerTitle": "Centru Personal - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "centers": {
+      "description": "Gestionează-ți profilul personal și conținutul",
+      "editProfile": "Editează Profilul",
+      "joinedDays": "Zile alăturate",
+      "lastLogin": "Ultima conectare la",
+      "registerTime": "Înregistrat la"
+    },
+    "commentedOn": "A postat un comentariu",
+    "comments": {
+      "delete_description": "Ești sigur că vrei să ștergi acest comentariu? Nu poate fi recuperat.",
+      "description": "Gestionează comentariile tale aici",
+      "edit": "Editează Comentariul",
+      "edit_placeholder": "Editează comentariile tale aici...",
+      "empty": "Nu sunt comentarii încă",
+      "source": "Sursă:",
+      "totalComments": "Comentarii Totale"
+    },
+    "description": "{nickname}'s homepage on {siteName}, shows public confession and social posts.",
+    "editAvatar": "Fă clic pe avatar pentru a schimba",
+    "hasPerm": "Permisiuni deținute:",
+    "myComments": "Comentariile Mele",
+    "myCommentsTitle": "Comentariile Mele - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "myPosts": "Postările Mele",
+    "myPostsTitle": "Postările Mele - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "myTags": "Etichetele Mele",
+    "myTagsTitle": "Etichetele Mele - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
+    "noActivity": "Nu există activitate încă",
+    "noPerm": "Acest cont nu are nicio permisiune",
+    "noPosts": "{nickname} nu a publicat încă nicio postare",
+    "offline": "Offline",
+    "offlineAndTime": "Offline - Ultima Online: {time}",
+    "online": "Online",
+    "posts": {
+      "allState": "Toate stările",
+      "common": "Comun",
+      "confirmDeletion": "Confirmă Ștergerea",
+      "description": "Gestionează-ți postările aici",
+      "hidden": "Ascuns",
+      "noPosts": "Nu sunt postări încă",
+      "published": "Publicat",
+      "totalFeatured": "Total Postări Prezentate",
+      "totalPinned": "Total Postări Fixate",
+      "totalPosts": "Total Postări"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "Cel mult 500 de caractere în biografie",
+      "imageTooLarge": "Fișierul imagine nu trebuie să depășească 5MB.",
+      "invalidEmail": "E-Mail Invalid",
+      "invalidPhone": "Număr de telefon invalid",
+      "notImage": "Nu este un fișier imagine."
+    },
+    "publish": {
+      "description": "Împărtășește-ți dragostea"
+    },
+    "recently": "Activități Recente",
+    "superAdminPerms": "Super admin deține toate permisiunile sistemului",
+    "tags": {
+      "acquireTime": "Timp de Achiziție: {time}",
+      "description": "Gestionează-ți etichetele aici",
+      "disabled": "Etichetă dezactivată, nu poate fi activată.",
+      "empty": "Nu sunt etichete încă",
+      "getOne": "Obține o etichetă nouă prin răscumpărarea uneia",
+      "notSet": "Nu este setat",
+      "owns": "Etichete deținute",
+      "redeem": {
+        "activateCode": "Răscumpără Cod",
+        "description": "Introdu codul de activare pentru a răscumpăra o etichetă nouă",
+        "index": "Răscumpără Etichetă",
+        "recently": "Recent Achiziționat",
+        "redeemed": "Felicitări! Eticheta {title} a fost răscumpărată și activată automat.\nO poți vedea în postări și comentarii.",
+        "redeemed_short": "Răscumpărat cu succes și activat automat.",
+        "wrongPattern": "Cod de Răscumpărare Incorect"
+      },
+      "set": "Setează \"{title}\" ca etichetă curentă",
+      "unset": "Dezactivează eticheta curentă",
+      "useThis": "Setează ca curent"
+    }
+  }
+}

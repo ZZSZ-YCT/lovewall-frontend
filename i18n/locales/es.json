@@ -1,0 +1,337 @@
+{
+  "admin": {
+    "index": "Administración"
+  },
+  "announcements": {
+    "close": "Cerrar anuncio",
+    "index": "Anuncios"
+  },
+  "auth": {
+    "changePassword": {
+      "description": "Protege tu cuenta",
+      "forms": {
+        "confirmPassword": "Confirmar contraseña",
+        "confirmPasswordPlaceholder": "Repite tu contraseña",
+        "currentPassword": "Contraseña actual",
+        "currentPasswordPlaceholder": "Ingresa la contraseña actual",
+        "incorrectPassword": "Contraseña antigua incorrecta",
+        "newPassword": "Nueva contraseña",
+        "newPasswordDescription": "Al menos 6 caracteres, se sugiere incluir números, letras minúsculas/mayúsculas y caracteres especiales",
+        "newPasswordPlaceholder": "Ingresa nueva contraseña (al menos 6 caracteres)",
+        "repeatPasswordNotMatch": "Las contraseñas no coinciden."
+      },
+      "index": "Cambiar contraseña",
+      "success": "Cambio exitoso, por favor vuelve a iniciar sesión.",
+      "tips": {
+        "0": "No uses una contraseña relacionada con tus datos personales",
+        "1": "Se recomienda cambiar tu contraseña regularmente",
+        "2": "No uses la misma contraseña en diferentes sitios web",
+        "3": "Mantén tu contraseña segura, no la compartas con otros",
+        "index": "Sugerencias de seguridad de contraseña"
+      },
+      "title": "Cambiar contraseña - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou"
+    },
+    "login": {
+      "description": "Inicia sesión en tu cuenta",
+      "invalidCredentials": "Error al iniciar sesión, por favor verifica tu nombre de usuario y contraseña",
+      "passwordPlaceholder": "Ingresa la contraseña",
+      "passwordTooShort": "Al menos 6 caracteres",
+      "registerNow": "Regístrate ahora",
+      "registerSuggestion": "¿No tienes una cuenta?",
+      "title": "Iniciar sesión - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+      "usernamePlaceholder": "Ingresa el nombre de usuario",
+      "welcome": "Bienvenido de nuevo"
+    },
+    "register": {
+      "agreeWithTerms": "Ya he leído y aceptado los términos:",
+      "description": "Comparte, descubre y conéctate con nosotros.",
+      "index": "Crea una cuenta",
+      "loginSuggestion": "¿Ya tienes una cuenta?",
+      "notAgreeWithTerms": "Por favor acepta nuestros términos primero",
+      "passwordTooLong": "Máximo 128 caracteres en la contraseña",
+      "title": "Regístrate - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+      "usernameCharset": "Solo puede contener letras, números y guiones bajos",
+      "usernameLimit": "De 3 a 20 caracteres, solo puede contener letras, números y guiones bajos",
+      "usernameTooLong": "Máximo 20 caracteres en el nombre de usuario",
+      "usernameTooShort": "Al menos 3 caracteres en el nombre de usuario"
+    }
+  },
+  "captcha": {
+    "click": "Por favor haz clic en orden:",
+    "reference": "Imagen de referencia",
+    "rotate": "Rota al ángulo correcto"
+  },
+  "comment": {
+    "commentOversize": "Los comentarios no pueden tener más de 500 caracteres",
+    "loginRequired": "Se requiere iniciar sesión para publicar comentarios",
+    "noComments": "No hay comentarios aún.",
+    "placeholder": "Escribe tu idea...",
+    "send": "Publicar comentario"
+  },
+  "comments": {
+    "recently": "Comentarios recientes"
+  },
+  "common": {
+    "admin": "Admin",
+    "bio": "Biografía",
+    "browse": "Explorar publicaciones",
+    "cancel": "Cancelar",
+    "captcha": "Déjanos saber que eres humano",
+    "collapse": "Colapsar",
+    "comment": "Comentario",
+    "commonUser": "Usuario",
+    "confirm": "Confirmar",
+    "content": "Contenido",
+    "current": "Actual",
+    "delete": "Eliminar",
+    "detail": "Ver más",
+    "disabled": "Deshabilitado",
+    "dismiss": "Descartar",
+    "edited": "Editado",
+    "email": "Correo electrónico",
+    "enabled": "Habilitado",
+    "expand": "Expandir",
+    "feature": "Destacado",
+    "hide": "Ocultar",
+    "joinTime": "Unido en {time}",
+    "known": "Conocido",
+    "layouts": {
+      "grid": "Diseño de cuadrícula",
+      "list": "Diseño de lista"
+    },
+    "loadMore": "Cargar más",
+    "loading": "Cargando...",
+    "moderator": "Moderador",
+    "nickname": "Apodo",
+    "ok": "OK",
+    "password": "Contraseña",
+    "phone": "Teléfono",
+    "pin": "PIN",
+    "preview": "Vista previa",
+    "previous": "Atrás",
+    "pullDownLoading": "Desplázate para más",
+    "refresh": "Actualizar",
+    "reset": "Restablecer",
+    "save": "Guardar",
+    "share": "Compartir",
+    "show": "Mostrar",
+    "success": "Hecho",
+    "superAdmin": "Super Admin",
+    "unfeature": "Desdestacar",
+    "unknown": "Desconocido",
+    "unpin": "Desanclar",
+    "username": "Nombre de usuario"
+  },
+  "error": {
+    "messages": {
+      "401": "Por favor inicia sesión antes de visitar esta página.",
+      "403": "No tienes permiso para acceder a esta página. Por favor contacta a tu administrador.",
+      "404": "Lo siento, la página que visitaste no existe o ha sido eliminada.",
+      "500": "Hay algunos problemas con el servidor. Por favor intenta de nuevo más tarde.",
+      "unknown": "Ha ocurrido un error inesperado. Por favor intenta de nuevo más tarde."
+    },
+    "title": "{code} - {message} - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "titles": {
+      "401": "Se requiere iniciar sesión",
+      "403": "Acceso denegado",
+      "404": "Página no encontrada",
+      "500": "Error interno del servidor",
+      "unknown": "Algo salió mal"
+    }
+  },
+  "home": {
+    "backHome": "Volver a inicio",
+    "contact": "Contáctanos",
+    "description": "Un lugar para conectarse entre sí.",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "privacy": "Política de privacidad",
+    "register": "Registrarse",
+    "title": "Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "tos": "Términos de servicio"
+  },
+  "notifications": {
+    "amount": "{number} en total",
+    "checkLater": "Vuelve más tarde.",
+    "description": "Recibe notificaciones aquí",
+    "empty": "No hay notificaciones aún",
+    "failed": "Error al cargar notificaciones.",
+    "failedMark": "Error al marcar como leído.",
+    "index": "Notificaciones",
+    "title": "Notificaciones - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "unread": "No leídas"
+  },
+  "permission": {
+    "manage_announcements": "Gestionar anuncios",
+    "manage_announcements_group": "Gestionar comunidad",
+    "manage_content": "Gestionar contenido",
+    "manage_featured": "Gestionar destacados",
+    "manage_posts": "Gestionar publicaciones/comentarios",
+    "manage_tags": "Gestionar etiquetas",
+    "manage_tags_group": "Gestionar sistema",
+    "manage_users": "Gestionar usuarios"
+  },
+  "posts": {
+    "404": "Publicación no encontrada",
+    "alt": {
+      "confessionalImage": "{author}'s Confessional Post Image",
+      "socialImage": "{author}'s Social Post Image"
+    },
+    "beFirst": "Sé el primero",
+    "confessionTo": "Confesión de {author} a {target}",
+    "contentPlaceholder": "Ingresa contenido",
+    "deletedUser": "Cuenta eliminada",
+    "deniedAudit": "Auditoría no aprobada",
+    "description_review": "Solicitud de revisión: Si consideras que fue un error, puedes solicitar una revisión manual.",
+    "empty": "No hay publicaciones aquí aún",
+    "locked": "Bloqueado",
+    "pendingAudit": "Pendiente de aprobación",
+    "post": "Publicar",
+    "publish": {
+      "addPhoto0": "Arrastra fotos aquí, o",
+      "addPhoto1": "Agregar foto",
+      "anonymousRole": "Nombre personalizado",
+      "cantEmpty": "No puede estar vacío",
+      "cantOversize": "No puede tener más de 2000 caracteres",
+      "cardType": "Tipo de tarjeta *",
+      "chooseRole": "Elegir rol",
+      "confessionCard": "Tarjeta de confesión",
+      "description_anonymousRole": "Mantener anónimo o usar otro apodo",
+      "description_confessional": "Publica tu publicación de confesión.",
+      "description_social": "Comparte tu información de contacto o algo más.",
+      "edit": "Editar publicación",
+      "error": {
+        "imageOversize": "La foto es demasiado grande",
+        "imageTooMany": "Se han subido demasiadas fotos",
+        "unsupportedImageFormat": "Formato de imagen no soportado"
+      },
+      "imageTotal": "Subido {number} / 9",
+      "index": "Publicar",
+      "limits": "Formatos JPG, PNG, WebP y GIF soportados, hasta 9 fotos, máximo 5MB por foto",
+      "nameOversize": "El apodo no puede tener más de 50 caracteres.",
+      "namePlaceholder": "Ingresa tu apodo",
+      "publishing": "Publicando...",
+      "selfRole": "Usar mi apodo",
+      "socialCard": "Tarjeta social",
+      "targetName": "Objetivo de confesión *",
+      "targetNamePlaceholder": "Ingresa su apodo",
+      "tip": {
+        "0": "Sé respetuoso y sincero",
+        "1": "Subir una foto significa más para tu publicación",
+        "index": "Consejos"
+      },
+      "title": "Nueva publicación - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+      "toasts": {
+        "sent": "Publicado, pendiente de auditoría"
+      },
+      "uploadImage": "Subir fotos (opcional)",
+      "uploadMore": "Subir más fotos"
+    },
+    "recently": "Publicaciones recientes",
+    "requestReview": "Solicitar revisión manual",
+    "review": "Revisión manual solicitada",
+    "reviewRequired": "Revisión manual requerida",
+    "socialFrom": "{author}'s post"
+  },
+  "seo": {
+    "description": "Un lugar para conectarse entre sí.",
+    "keywords": "Escuela Secundaria No. 4 de Zhengzhou, Escuela Secundaria No. 4 de Zhengzhou, Escuela Secundaria No. 4 de Zhengzhou, Comunidad escolar, Comunicación entre estudiantes, Discusión entre estudiantes",
+    "title": "Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou"
+  },
+  "share": {
+    "copied": "Copiado al portapapeles",
+    "success": "Compartido exitosamente"
+  },
+  "time": {
+    "beforeDays": "{days} días atrás",
+    "beforeHours": "{hours} horas atrás",
+    "beforeMinutes": "{minutes} minutos atrás",
+    "expireHour": "Expira después de {hour} horas y {minutes} minutos",
+    "expireMinutes": "Expira después de {minutes} minutos",
+    "expireSoon": "Expira pronto",
+    "expired": "Expirado",
+    "just": "Justo ahora"
+  },
+  "user": {
+    "center": "Centro personal",
+    "centerTitle": "Centro personal - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "centers": {
+      "description": "Gestiona tu perfil personal y contenido",
+      "editProfile": "Editar perfil",
+      "joinedDays": "Días unidos",
+      "lastLogin": "Último inicio de sesión en",
+      "registerTime": "Registrado en"
+    },
+    "commentedOn": "Publicó un comentario",
+    "comments": {
+      "delete_description": "¿Estás seguro de que deseas eliminar este comentario? No se podrá recuperar.",
+      "description": "Gestiona tus comentarios aquí",
+      "edit": "Editar comentario",
+      "edit_placeholder": "Edita tus comentarios aquí...",
+      "empty": "No hay comentarios aún",
+      "source": "Fuente:",
+      "totalComments": "Total de comentarios"
+    },
+    "description": "{nickname}'s homepage on {siteName}, muestra confesiones públicas y publicaciones sociales.",
+    "editAvatar": "Haz clic en el avatar para cambiar",
+    "hasPerm": "Permisos poseídos:",
+    "myComments": "Mis comentarios",
+    "myCommentsTitle": "Mis comentarios - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "myPosts": "Mis publicaciones",
+    "myPostsTitle": "Mis publicaciones - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "myTags": "Mis etiquetas",
+    "myTagsTitle": "Mis etiquetas - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
+    "noActivity": "No hay actividad aún",
+    "noPerm": "Esta cuenta no tiene ningún permiso",
+    "noPosts": "{nickname} no ha publicado ninguna publicación aún",
+    "offline": "Desconectado",
+    "offlineAndTime": "Desconectado - Última conexión: {time}",
+    "online": "Conectado",
+    "posts": {
+      "allState": "Todos los estados",
+      "common": "Común",
+      "confirmDeletion": "Confirmar eliminación",
+      "description": "Gestiona tus publicaciones aquí",
+      "hidden": "Oculto",
+      "noPosts": "No hay publicaciones aún",
+      "published": "Publicado",
+      "totalFeatured": "Total de publicaciones destacadas",
+      "totalPinned": "Total de publicaciones ancladas",
+      "totalPosts": "Total de publicaciones"
+    },
+    "postsFrom": "{nickname}'s Posts",
+    "profile": {
+      "bioOversize": "Máximo 500 caracteres en la biografía",
+      "imageTooLarge": "El archivo de imagen no debe exceder 5MB.",
+      "invalidEmail": "Correo electrónico inválido",
+      "invalidPhone": "Número de teléfono inválido",
+      "notImage": "No es un archivo de imagen."
+    },
+    "publish": {
+      "description": "Comparte tu amor"
+    },
+    "recently": "Actividades recientes",
+    "superAdminPerms": "El super administrador posee todos los permisos del sistema",
+    "tags": {
+      "acquireTime": "Tiempo de adquisición: {time}",
+      "description": "Gestiona tus etiquetas aquí",
+      "disabled": "Etiqueta deshabilitada, no se puede activar.",
+      "empty": "No hay etiquetas aún",
+      "getOne": "Obtén una nueva etiqueta canjeando una",
+      "notSet": "No establecido",
+      "owns": "Etiquetas poseídas",
+      "redeem": {
+        "activateCode": "Canjear código",
+        "description": "Ingresa el código de activación para canjear una nueva etiqueta",
+        "index": "Canjear etiqueta",
+        "recently": "Recientemente adquirida",
+        "redeemed": "¡Felicidades! Etiqueta {title} canjeada y activada automáticamente.\nPuedes verla en publicaciones y comentarios.",
+        "redeemed_short": "Canjeado exitosamente y activado automáticamente.",
+        "wrongPattern": "Código de canje incorrecto"
+      },
+      "set": "Establecer \"{title}\" como etiqueta actual",
+      "unset": "Desestablecer etiqueta actual",
+      "useThis": "Establecer como actual"
+    }
+  }
+}

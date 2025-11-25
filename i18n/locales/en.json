@@ -323,6 +323,7 @@
       "redeem": {
         "activateCode": "Redeem Code",
         "description": "Enter activate code to redeem new tag",
+        "message": "Enter activate code to redeem new tag",
         "index": "Redeem Tag",
         "recently": "Recently Acquired",
         "redeemed": "Congratulations! Tag {title} redeemed and auto activated.\nYou can see it in posts and comments.",
