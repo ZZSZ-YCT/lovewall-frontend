@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "update:locales": "ts-node scripts/update-locales.ts",
+    "update:locales": "bun scripts/update-locales.ts",
     "lint": "eslint ."
   },
   "dependencies": {
