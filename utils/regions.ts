@@ -35,7 +35,7 @@ export const REGIONS: Region[] = [
   { id: 'jp', name: '日本',             language: 'ja',   group: 'asia_pacific' },
   { id: 'cn', name: '中国大陆',         language: 'zh-CN',group: 'asia_pacific' },
   { id: 'tw', name: '臺灣',             language: 'zh-TW',group: 'asia_pacific' },
-  { id: 'hk', name: '香港',             language: 'zh-CN',group: 'asia_pacific' },
+  { id: 'hk', name: '香港',             language: 'zh-TW',group: 'asia_pacific' },
   { id: 'kr', name: '대한민국',         language: 'ko',   group: 'asia_pacific' },
   { id: 'th', name: 'ประเทศไทย',        language: 'th',   group: 'asia_pacific' },
   { id: 'vn', name: 'Việt Nam',        language: 'vi',   group: 'asia_pacific' },
