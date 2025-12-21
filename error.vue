@@ -78,11 +78,13 @@ const goHome = () => {
   navigateTo(localePath('/'))
 }
 
-// Set page title
-definePageMeta({
-  title: {
-    k: 'error.title',
-    p: { code: props.error.statusCode, title: getErrorTitle(props.error.statusCode) }
-  }
+// 设置页面标题（error.vue 不能使用 definePageMeta）
+useHead({
+  title: computed(() =>
+    t('error.title', {
+      code: props.error.statusCode,
+      message: getErrorTitle(props.error.statusCode)
+    })
+  )
 })
 </script>

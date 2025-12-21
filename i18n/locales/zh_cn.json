@@ -344,5 +344,47 @@
       "us_canada_pr": "美国、加拿大和波多黎各岛"
     },
     "selectRegionTitle": "地区选择"
+  },
+  "page129": {
+    "pageTitle": "郑州四中纪念129红歌比赛活动视频",
+    "pageDescription": "",
+    "videoProvider": "视频由",
+    "videoProviderName": "溜溜梅 （BD6JCB）",
+    "videoProviderSuffix": "提供",
+    "quickNav": "快速导航",
+    "jumpTo": "跳转到{title}",
+    "videos": "个视频",
+    "clickToPlay": "点击播放",
+    "closeVideo": "关闭",
+    "baiduNetdisk": "百度网盘下载",
+    "scanToDownload": "扫码下载",
+    "downloadVideo": "下载{title}视频",
+    "qrCodeAlt": "{title} 百度网盘二维码",
+    "sections": {
+      "regular": {
+        "title": "常规班",
+        "subtitle": "高一（1-15）班级红歌比赛",
+        "description": "班级全员参与的合唱展示"
+      },
+      "tibetan": {
+        "title": "藏班",
+        "subtitle": "藏族班级特色红歌展示",
+        "description": "藏1班、藏2班、藏3班"
+      },
+      "demei": {
+        "title": "国际部",
+        "subtitle": "国际部班级合唱作品",
+        "description": "德美1班、德美2班"
+      },
+      "teacher": {
+        "title": "教师团队",
+        "subtitle": "教师团队合唱展示",
+        "description": "致敬一二九精神"
+      }
+    },
+    "meta": {
+      "description": "郑州四中纪念一二九红歌比赛活动视频集锦，包含常规班、藏班、国际部及教师团队共21个展示模块。支持在线播放和百度网盘下载。",
+      "keywords": "郑州四中,一二九,红歌比赛,班级合唱,视频集锦"
+    }
   }
 }

@@ -27,3 +27,4 @@ logs
 .claude
 *.md
 !README.md
+codexmcp

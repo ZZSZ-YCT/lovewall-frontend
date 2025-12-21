@@ -344,5 +344,47 @@
       "us_canada_pr": "The United States, Canada, and Puerto Rico"
     },
     "selectRegionTitle": "Choose your region"
+  },
+  "page129": {
+    "pageTitle": "Zhengzhou No.4 Middle School 129 Red Song Competition Videos",
+    "pageDescription": "21 video modules including Regular Classes, Tibetan Classes, International Department, and Teacher Team. Supports online playback and Baidu Netdisk download.",
+    "videoProvider": "Videos provided by",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "quickNav": "Quick navigation",
+    "jumpTo": "Jump to {title}",
+    "videos": "videos",
+    "clickToPlay": "Click to play",
+    "closeVideo": "Close",
+    "baiduNetdisk": "Baidu Netdisk",
+    "scanToDownload": "Scan to download",
+    "downloadVideo": "Download {title} video",
+    "qrCodeAlt": "{title} Baidu Netdisk QR code",
+    "sections": {
+      "regular": {
+        "title": "Regular Classes",
+        "subtitle": "Grade 10 (Class 1-15) Red Song Competition",
+        "description": "Full class participation performances"
+      },
+      "tibetan": {
+        "title": "Tibetan Classes",
+        "subtitle": "Tibetan Classes Featured Display",
+        "description": "Tibetan Class 1, 2, and 3"
+      },
+      "demei": {
+        "title": "International Dept.",
+        "subtitle": "International Department Chorus",
+        "description": "Demei Class 1 and 2"
+      },
+      "teacher": {
+        "title": "Teacher Team",
+        "subtitle": "Teacher Team Performance",
+        "description": "Paying tribute to 129 spirit"
+      }
+    },
+    "meta": {
+      "description": "Zhengzhou No.4 Middle School 129 Red Song Competition video collection, including 21 modules from Regular Classes, Tibetan Classes, International Department, and Teacher Team. Supports online playback and Baidu Netdisk download.",
+      "keywords": "Zhengzhou No.4 Middle School, 129, Red Song Competition, Class Chorus, Video Collection"
+    }
   }
 }
