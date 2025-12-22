@@ -65,7 +65,6 @@ export default defineNuxtConfig({
       crossOriginOpenerPolicy: 'same-origin',
       crossOriginResourcePolicy: 'cross-origin',
       xContentTypeOptions: 'nosniff',
-      xFrameOptions: 'SAMEORIGIN',
       xPermittedCrossDomainPolicies: 'none',
       referrerPolicy: 'no-referrer-when-downgrade',
       contentSecurityPolicy: {
