@@ -161,6 +161,48 @@
     "title": "Notificaciones - Muro de confesiones de la Escuela Secundaria No. 4 de Zhengzhou",
     "unread": "No leídas"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Haz clic para reproducir",
+    "closeVideo": "Cerrar",
+    "downloadVideo": "Descargar el vídeo de {title}",
+    "jumpTo": "Ir a {title}",
+    "meta": {
+      "description": "Colección de vídeos del Concurso de Canciones Rojas 129 de la Escuela Secundaria Nº 4 de Zhengzhou, que incluye 21 módulos de Clases Regulares, Clases Tibetanas, Departamento Internacional y Equipo de Profesores. Soporta reproducción en línea y descarga desde Baidu Netdisk.",
+      "keywords": "Escuela Secundaria Nº 4 de Zhengzhou, 129, Concurso de Canciones Rojas, Coro de Clase, Colección de vídeos"
+    },
+    "pageDescription": "21 módulos de vídeo que incluyen Clases Regulares, Clases Tibetanas, Departamento Internacional y Equipo de Profesores. Soporta reproducción en línea y descarga desde Baidu Netdisk.",
+    "pageTitle": "Videos del Concurso de Canciones Rojas 129 de la Escuela Secundaria Nº 4 de Zhengzhou",
+    "qrCodeAlt": "Código QR de Baidu Netdisk de {title}",
+    "quickNav": "Navegación rápida",
+    "scanToDownload": "Escanea para descargar",
+    "sections": {
+      "demei": {
+        "description": "Clases Demei 1 y 2",
+        "subtitle": "Coro del Departamento Internacional",
+        "title": "Departamento Internacional"
+      },
+      "regular": {
+        "description": "Actuaciones con participación de toda la clase",
+        "subtitle": "Concurso de Canciones Rojas de 10.º grado (Clases 1-15)",
+        "title": "Clases Regulares"
+      },
+      "teacher": {
+        "description": "Rindiendo homenaje al espíritu 129",
+        "subtitle": "Actuación del Equipo de Profesores",
+        "title": "Equipo de Profesores"
+      },
+      "tibetan": {
+        "description": "Clases Tibetanas 1, 2 y 3",
+        "subtitle": "Muestra destacada de las Clases Tibetanas",
+        "title": "Clases Tibetanas"
+      }
+    },
+    "videoProvider": "Videos proporcionados por",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videos"
+  },
   "permission": {
     "manage_announcements": "Gestionar anuncios",
     "manage_announcements_group": "Gestionar comunidad",

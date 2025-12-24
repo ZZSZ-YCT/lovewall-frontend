@@ -161,6 +161,48 @@
     "title": "Meddelanden - Zhengzhou No.4 Middle School Bekännelsetavla",
     "unread": "Olästa"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Klicka för att spela upp",
+    "closeVideo": "Stäng",
+    "downloadVideo": "Ladda ner videon {title}",
+    "jumpTo": "Hoppa till {title}",
+    "meta": {
+      "description": "Videouppsättning från Zhengzhou nr 4 högstadieskolas 129 Röda sångtävling, inklusive 21 moduler från ordinarie klasser, tibetanska klasser, den internationella avdelningen och lärarteamet. Stöder onlineuppspelning och nedladdning via Baidu Netdisk.",
+      "keywords": "Zhengzhou nr 4 högstadieskola, 129, Röda sångtävling, Klasskör, Videouppsättning"
+    },
+    "pageDescription": "21 videomoduler inklusive ordinarie klasser, tibetanska klasser, den internationella avdelningen och lärarteamet. Stöder onlineuppspelning och nedladdning från Baidu Netdisk.",
+    "pageTitle": "Zhengzhou nr 4 högstadieskolas 129 Röda sångtävling - videor",
+    "qrCodeAlt": "{title} Baidu Netdisk QR-kod",
+    "quickNav": "Snabb navigering",
+    "scanToDownload": "Skanna för att ladda ner",
+    "sections": {
+      "demei": {
+        "description": "Demei klasser 1 och 2",
+        "subtitle": "Internationella avdelningens kör",
+        "title": "Internationella avdelningen"
+      },
+      "regular": {
+        "description": "Framträdanden med fullt klassdeltagande",
+        "subtitle": "Årskurs 10 (klass 1–15) Röda sångtävling",
+        "title": "Ordinarie klasser"
+      },
+      "teacher": {
+        "description": "Hylla 129-andan",
+        "subtitle": "Lärarteamets framträdande",
+        "title": "Lärarteam"
+      },
+      "tibetan": {
+        "description": "Tibetanska klasser 1, 2 och 3",
+        "subtitle": "Särskild visning av tibetanska klasser",
+        "title": "Tibetanska klasser"
+      }
+    },
+    "videoProvider": "Videor tillhandahålls av",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videor"
+  },
   "permission": {
     "manage_announcements": "Hantera meddelanden",
     "manage_announcements_group": "Hantera gemenskap",

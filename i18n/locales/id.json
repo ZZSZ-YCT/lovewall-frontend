@@ -161,6 +161,48 @@
     "title": "Notifikasi - Dinding Pengakuan Sekolah Menengah No.4 Zhengzhou",
     "unread": "Belum dibaca"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Klik untuk memutar",
+    "closeVideo": "Tutup",
+    "downloadVideo": "Unduh video {title}",
+    "jumpTo": "Lompat ke {title}",
+    "meta": {
+      "description": "Koleksi video Lomba Lagu Merah 129 Sekolah Menengah No.4 Zhengzhou, mencakup 21 modul dari Kelas Reguler, Kelas Tibet, Departemen Internasional, dan Tim Guru. Mendukung pemutaran daring dan unduhan dari Baidu Netdisk.",
+      "keywords": "Sekolah Menengah No.4 Zhengzhou, 129, Lomba Lagu Merah, Paduan Suara Kelas, Koleksi Video"
+    },
+    "pageDescription": "21 modul video termasuk Kelas Reguler, Kelas Tibet, Departemen Internasional, dan Tim Guru. Mendukung pemutaran daring dan unduhan dari Baidu Netdisk.",
+    "pageTitle": "Video Lomba Lagu Merah 129 Sekolah Menengah No.4 Zhengzhou",
+    "qrCodeAlt": "Kode QR Baidu Netdisk untuk {title}",
+    "quickNav": "Navigasi cepat",
+    "scanToDownload": "Pindai untuk mengunduh",
+    "sections": {
+      "demei": {
+        "description": "Kelas Demei 1 dan 2",
+        "subtitle": "Paduan Suara Departemen Internasional",
+        "title": "Departemen Internasional"
+      },
+      "regular": {
+        "description": "Pertunjukan partisipasi seluruh kelas",
+        "subtitle": "Lomba Lagu Merah Kelas 10 (Kelas 1-15)",
+        "title": "Kelas Reguler"
+      },
+      "teacher": {
+        "description": "Menghormati semangat 129",
+        "subtitle": "Pertunjukan Tim Guru",
+        "title": "Tim Guru"
+      },
+      "tibetan": {
+        "description": "Kelas Tibet 1, 2, dan 3",
+        "subtitle": "Tampilan Unggulan Kelas Tibet",
+        "title": "Kelas Tibet"
+      }
+    },
+    "videoProvider": "Video disediakan oleh",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "video"
+  },
   "permission": {
     "manage_announcements": "Kelola Pengumuman",
     "manage_announcements_group": "Kelola Komunitas",

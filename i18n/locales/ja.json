@@ -161,6 +161,48 @@
     "title": "通知 - 鄭州第四高校告白壁",
     "unread": "未読"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu ネットディスク",
+    "clickToPlay": "クリックして再生",
+    "closeVideo": "閉じる",
+    "downloadVideo": "{title}の動画をダウンロード",
+    "jumpTo": "{title}へジャンプ",
+    "meta": {
+      "description": "鄭州第4中学校の129紅歌合唱大会ビデオ集。普通クラス、チベットクラス、国際部、教師チームの全21モジュールを収録。オンライン再生とBaidu ネットディスクからのダウンロードに対応しています。",
+      "keywords": "鄭州第4中学校、129、紅歌合唱大会、クラス合唱、ビデオコレクション"
+    },
+    "pageDescription": "普通クラス、チベットクラス、国際部、教師チームを含む全21モジュール。オンライン再生とBaidu ネットディスクからのダウンロードに対応。",
+    "pageTitle": "鄭州第4中学校 129紅歌合唱大会の動画",
+    "qrCodeAlt": "{title} の Baidu ネットディスクQRコード",
+    "quickNav": "クイックナビゲーション",
+    "scanToDownload": "スキャンしてダウンロード",
+    "sections": {
+      "demei": {
+        "description": "Demeiクラス1・2",
+        "subtitle": "国際部合唱",
+        "title": "国際部"
+      },
+      "regular": {
+        "description": "全クラス参加の演奏",
+        "subtitle": "10年生（クラス1～15）紅歌合唱大会",
+        "title": "普通クラス"
+      },
+      "teacher": {
+        "description": "129精神への敬意を表して",
+        "subtitle": "教師チームのパフォーマンス",
+        "title": "教師チーム"
+      },
+      "tibetan": {
+        "description": "チベットクラス1、2、3",
+        "subtitle": "チベットクラス特集",
+        "title": "チベットクラス"
+      }
+    },
+    "videoProvider": "動画提供：",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "動画"
+  },
   "permission": {
     "manage_announcements": "アナウンスの管理",
     "manage_announcements_group": "コミュニティの管理",

@@ -161,6 +161,48 @@
     "title": "Benachrichtigungen - Geständniswand der Zhengzhou No.4 Mittelschule",
     "unread": "Ungelesen"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Zum Abspielen klicken",
+    "closeVideo": "Schließen",
+    "downloadVideo": "Video {title} herunterladen",
+    "jumpTo": "Springe zu {title}",
+    "meta": {
+      "description": "Videosammlung des 129-Wettbewerbs der Roten Lieder der Mittelschule Nr. 4 Zhengzhou, mit 21 Modulen aus Regelklassen, tibetischen Klassen, der Internationalen Abteilung und dem Lehrerteam. Unterstützt Online-Wiedergabe und den Download über Baidu Netdisk.",
+      "keywords": "Mittelschule Nr. 4 Zhengzhou, 129, Wettbewerb der Roten Lieder, Klassenchor, Videosammlung"
+    },
+    "pageDescription": "21 Videomodule, darunter Regelklassen, tibetische Klassen, die Internationale Abteilung und das Lehrerteam. Unterstützt Online-Wiedergabe und den Download über Baidu Netdisk.",
+    "pageTitle": "Videos des 129-Wettbewerbs der Roten Lieder der Mittelschule Nr. 4 Zhengzhou",
+    "qrCodeAlt": "{title} Baidu Netdisk QR-Code",
+    "quickNav": "Schnellnavigation",
+    "scanToDownload": "Zum Herunterladen scannen",
+    "sections": {
+      "demei": {
+        "description": "Demei-Klassen 1 und 2",
+        "subtitle": "Chor der Internationalen Abteilung",
+        "title": "Internationale Abteilung"
+      },
+      "regular": {
+        "description": "Aufführungen mit voller Klassenbeteiligung",
+        "subtitle": "Jahrgang 10 (Klassen 1-15) - Wettbewerb der Roten Lieder",
+        "title": "Regelklassen"
+      },
+      "teacher": {
+        "description": "Hommage an den 129-Geist",
+        "subtitle": "Auftritt des Lehrerteams",
+        "title": "Lehrerteam"
+      },
+      "tibetan": {
+        "description": "Tibetische Klassen 1, 2 und 3",
+        "subtitle": "Sondervorstellung der tibetischen Klassen",
+        "title": "Tibetische Klassen"
+      }
+    },
+    "videoProvider": "Videos bereitgestellt von",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "Videos"
+  },
   "permission": {
     "manage_announcements": "Ankündigungen verwalten",
     "manage_announcements_group": "Gemeinschaft verwalten",

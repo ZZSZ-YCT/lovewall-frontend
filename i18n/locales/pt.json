@@ -161,6 +161,48 @@
     "title": "Notificações - Mural de Confissões da Escola Secundária No.4 de Zhengzhou",
     "unread": "Não lidas"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Clique para reproduzir",
+    "closeVideo": "Fechar",
+    "downloadVideo": "Fazer o download do vídeo {title}",
+    "jumpTo": "Ir para {title}",
+    "meta": {
+      "description": "Coletânea de vídeos do Concurso de Canções Vermelhas 129 da Escola Secundária Nº 4 de Zhengzhou, incluindo 21 módulos das Turmas Regulares, Turmas Tibetanas, Departamento Internacional e Equipe de Professores. Suporta reprodução online e download pelo Baidu Netdisk.",
+      "keywords": "Escola Secundária Nº 4 de Zhengzhou, 129, Concurso de Canções Vermelhas, Coro da Turma, Coletânea de Vídeos"
+    },
+    "pageDescription": "21 módulos de vídeo incluindo Turmas Regulares, Turmas Tibetanas, Departamento Internacional e Equipe de Professores. Suporta reprodução online e download pelo Baidu Netdisk.",
+    "pageTitle": "Vídeos do Concurso de Canções Vermelhas 129 da Escola Secundária Nº 4 de Zhengzhou",
+    "qrCodeAlt": "Código QR do Baidu Netdisk de {title}",
+    "quickNav": "Navegação rápida",
+    "scanToDownload": "Escaneie para fazer o download",
+    "sections": {
+      "demei": {
+        "description": "Turma Demei 1 e 2",
+        "subtitle": "Coro do Departamento Internacional",
+        "title": "Departamento Internacional"
+      },
+      "regular": {
+        "description": "Apresentações com participação de toda a turma",
+        "subtitle": "10.º ano (Turmas 1-15) Concurso de Canções Vermelhas",
+        "title": "Turmas Regulares"
+      },
+      "teacher": {
+        "description": "Prestando homenagem ao espírito 129",
+        "subtitle": "Apresentação da Equipe de Professores",
+        "title": "Equipe de Professores"
+      },
+      "tibetan": {
+        "description": "Turma Tibetana 1, 2 e 3",
+        "subtitle": "Exibição destacada das Turmas Tibetanas",
+        "title": "Turmas Tibetanas"
+      }
+    },
+    "videoProvider": "Vídeos fornecidos por",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "vídeos"
+  },
   "permission": {
     "manage_announcements": "Gerenciar Anúncios",
     "manage_announcements_group": "Gerenciar Comunidade",

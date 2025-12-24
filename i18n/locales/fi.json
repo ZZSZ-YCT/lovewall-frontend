@@ -161,6 +161,48 @@
     "title": "Ilmoitukset - Zhengzhou No.4 Keskikoulun tunnustusseinä",
     "unread": "Lukemattomat"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Klikkaa toistaaksesi",
+    "closeVideo": "Sulje",
+    "downloadVideo": "Lataa {title}-video",
+    "jumpTo": "Siirry kohtaan {title}",
+    "meta": {
+      "description": "Zhengzhoun 4. keskikoulun 129 Punaisen laulun kilpailun videokokoelma, joka sisältää 21 moduulia: tavalliset luokat, tiibetiläiset luokat, kansainvälinen osasto ja opettajatiimi. Tukee verkkotoistoa ja Baidu Netdisk-latausta.",
+      "keywords": "Zhengzhoun 4. keskikoulu, 129, Punaisen laulun kilpailu, luokkakuoro, videokokoelma"
+    },
+    "pageDescription": "21 videomoduulia, mukaan lukien tavalliset luokat, tiibetiläiset luokat, kansainvälinen osasto ja opettajatiimi. Tukee verkkotoistoa ja Baidu Netdisk-latausta.",
+    "pageTitle": "Zhengzhoun 4. keskikoulun 129 Punaisen laulun kilpailun videot",
+    "qrCodeAlt": "{title} Baidu Netdiskin QR-koodi",
+    "quickNav": "Nopea navigointi",
+    "scanToDownload": "Skannaa ladataksesi",
+    "sections": {
+      "demei": {
+        "description": "Demei-luokat 1 ja 2",
+        "subtitle": "Kansainvälisen osaston kuoro",
+        "title": "Kansainvälinen osasto"
+      },
+      "regular": {
+        "description": "Koko luokan esitykset",
+        "subtitle": "10. luokka (luokat 1-15) - Punaisen laulun kilpailu",
+        "title": "Tavalliset luokat"
+      },
+      "teacher": {
+        "description": "Kunnianosoitus 129-hengelle",
+        "subtitle": "Opettajatiimin esitys",
+        "title": "Opettajatiimi"
+      },
+      "tibetan": {
+        "description": "Tiibetiluokat 1, 2 ja 3",
+        "subtitle": "Tiibetiläisten luokkien erikoisesittely",
+        "title": "Tiibetiläiset luokat"
+      }
+    },
+    "videoProvider": "Videot tarjoaa",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videot"
+  },
   "permission": {
     "manage_announcements": "Hallitse ilmoituksia",
     "manage_announcements_group": "Hallitse yhteisöä",

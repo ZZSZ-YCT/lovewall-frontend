@@ -161,6 +161,48 @@
     "title": "Arifa - Ukuta wa Kutubu Shule ya Kati ya Zhengzhou No.4",
     "unread": "Hazijasomwa"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Bonyeza kucheza",
+    "closeVideo": "Funga",
+    "downloadVideo": "Pakua video ya {title}",
+    "jumpTo": "Ruka kwenda {title}",
+    "meta": {
+      "description": "Mkusanyiko wa video za Shindano la Wimbo Mwekundu 129 za Shule ya Upili ya Zhengzhou Na.4, zikiwemo moduli 21 kutoka Madarasa ya Kawaida, Madarasa ya Tibet, Idara ya Kimataifa, na Timu ya Walimu. Inaunga mkono uchezaji mtandaoni na kupakua kupitia Baidu Netdisk.",
+      "keywords": "Shule ya Upili ya Zhengzhou Na.4, 129, Shindano la Wimbo Mwekundu, Koorasi za Madarasa, Mkusanyiko wa Video"
+    },
+    "pageDescription": "Moduli 21 za video zikiwemo Madarasa ya Kawaida, Madarasa ya Tibet, Idara ya Kimataifa, na Timu ya Walimu. Inaunga mkono uchezaji mtandaoni na kupakua kupitia Baidu Netdisk.",
+    "pageTitle": "Video za Shindano la Wimbo Mwekundu 129 wa Shule ya Upili ya Zhengzhou Na.4",
+    "qrCodeAlt": "Msimbo wa QR wa Baidu Netdisk wa {title}",
+    "quickNav": "Uvinjari wa Haraka",
+    "scanToDownload": "Skana ili kupakua",
+    "sections": {
+      "demei": {
+        "description": "Darasa la Demei 1 na 2",
+        "subtitle": "Koorasi ya Idara ya Kimataifa",
+        "title": "Idara ya Kimataifa"
+      },
+      "regular": {
+        "description": "Maonyesho ya ushiriki wa darasa nzima",
+        "subtitle": "Shindano la Wimbo Mwekundu, Darasa la 10 (Madarasa 1-15)",
+        "title": "Madarasa ya Kawaida"
+      },
+      "teacher": {
+        "description": "Kutoa heshima kwa roho ya 129",
+        "subtitle": "Maonyesho ya Timu ya Walimu",
+        "title": "Timu ya Walimu"
+      },
+      "tibetan": {
+        "description": "Darasa la Tibet 1, 2 na 3",
+        "subtitle": "Maonyesho Maalum ya Madarasa ya Tibet",
+        "title": "Madarasa ya Tibet"
+      }
+    },
+    "videoProvider": "Video zilizotolewa na",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "video"
+  },
   "permission": {
     "manage_announcements": "Simamizi wa Matangazo",
     "manage_announcements_group": "Simamizi wa Jamii",

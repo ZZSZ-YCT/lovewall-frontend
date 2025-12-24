@@ -161,6 +161,48 @@
     "title": "Powiadomienia - Ściana wyznań Zespołu Szkół nr 4 w Zhengzhou",
     "unread": "Nieprzeczytane"
   },
+  "page129": {
+    "baiduNetdisk": "Dysk Baidu",
+    "clickToPlay": "Kliknij, aby odtworzyć",
+    "closeVideo": "Zamknij",
+    "downloadVideo": "Pobierz wideo {title}",
+    "jumpTo": "Przejdź do {title}",
+    "meta": {
+      "description": "Zbiór filmów z Konkursu Czerwonych Piosenek 129 Szkoły Średniej nr 4 w Zhengzhou, obejmujący 21 modułów: klasy zwykłe, klasy tybetańskie, wydział międzynarodowy i zespół nauczycieli. Obsługuje odtwarzanie online i pobieranie z Dysku Baidu.",
+      "keywords": "Szkoła Średnia nr 4 w Zhengzhou, 129, Konkurs Czerwonych Piosenek, Chór klasowy, Zbiór filmów"
+    },
+    "pageDescription": "21 modułów wideo obejmujących klasy zwykłe, klasy tybetańskie, wydział międzynarodowy i zespół nauczycieli. Obsługuje odtwarzanie online i pobieranie z Dysku Baidu.",
+    "pageTitle": "Filmy z Konkursu Czerwonych Piosenek 129 Szkoły Średniej nr 4 w Zhengzhou",
+    "qrCodeAlt": "Kod QR Dysku Baidu dla {title}",
+    "quickNav": "Szybka nawigacja",
+    "scanToDownload": "Zeskanuj, aby pobrać",
+    "sections": {
+      "demei": {
+        "description": "Klasy Demei 1 i 2",
+        "subtitle": "Chór wydziału międzynarodowego",
+        "title": "Wydział międzynarodowy"
+      },
+      "regular": {
+        "description": "Występy z udziałem całych klas",
+        "subtitle": "Konkurs Czerwonych Piosenek dla 10. klasy (oddziały 1–15)",
+        "title": "Klasy zwykłe"
+      },
+      "teacher": {
+        "description": "Składając hołd duchowi 129",
+        "subtitle": "Występ zespołu nauczycieli",
+        "title": "Zespół nauczycieli"
+      },
+      "tibetan": {
+        "description": "Klasy tybetańskie 1, 2 i 3",
+        "subtitle": "Prezentacja wyróżnionych występów klas tybetańskich",
+        "title": "Klasy tybetańskie"
+      }
+    },
+    "videoProvider": "Filmy dostarczone przez",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "wideo"
+  },
   "permission": {
     "manage_announcements": "Zarządzaj ogłoszeniami",
     "manage_announcements_group": "Zarządzaj społecznością",

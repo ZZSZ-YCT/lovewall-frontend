@@ -161,6 +161,48 @@
     "title": "Értesítések - Zhengzhou 4. Számú Középiskola Vallomásfala",
     "unread": "Olvasatlan"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Kattintson a lejátszáshoz",
+    "closeVideo": "Bezárás",
+    "downloadVideo": "Töltse le a(z) {title} videót",
+    "jumpTo": "Ugrás ide: {title}",
+    "meta": {
+      "description": "A Zhengzhou 4. számú középiskola 129. Vörös dalverseny videógyűjteménye, amely 21 modult tartalmaz a rendes osztályoktól, tibeti osztályoktól, a nemzetközi részlegtől és a tanári csapattól. Támogatja az online lejátszást és a Baidu Netdiskről való letöltést.",
+      "keywords": "Zhengzhou 4. számú középiskola, 129, Vörös dalverseny, osztálykórus, videógyűjtemény"
+    },
+    "pageDescription": "21 videómodul, beleértve a rendes osztályokat, tibeti osztályokat, a nemzetközi részleget és a tanári csapatot. Támogatja az online lejátszást és a Baidu Netdiskről való letöltést.",
+    "pageTitle": "Zhengzhou 4. számú középiskola 129. Vörös dalverseny videói",
+    "qrCodeAlt": "{title} Baidu Netdisk QR-kódja",
+    "quickNav": "Gyors navigáció",
+    "scanToDownload": "Szkennelje be a letöltéshez",
+    "sections": {
+      "demei": {
+        "description": "Demei 1. és 2. osztály",
+        "subtitle": "Nemzetközi részleg kórusa",
+        "title": "Nemzetközi részleg"
+      },
+      "regular": {
+        "description": "Teljes osztály részvételével előadott produkciók",
+        "subtitle": "10. évfolyam (1–15. osztály) Vörös dalversenye",
+        "title": "Rendes osztályok"
+      },
+      "teacher": {
+        "description": "Tisztelgés a 129 szellemisége előtt",
+        "subtitle": "Tanári csapat előadása",
+        "title": "Tanári csapat"
+      },
+      "tibetan": {
+        "description": "Tibeti osztályok 1., 2. és 3.",
+        "subtitle": "Tibeti osztályok kiemelt bemutatója",
+        "title": "Tibeti osztályok"
+      }
+    },
+    "videoProvider": "Videókat szolgáltatja:",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videók"
+  },
   "permission": {
     "manage_announcements": "Bejelentések kezelése",
     "manage_announcements_group": "Közösség kezelése",

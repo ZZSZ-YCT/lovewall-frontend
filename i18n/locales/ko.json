@@ -161,6 +161,48 @@
     "title": "알림 - 정저우 제4중학교 고백 벽",
     "unread": "읽지 않음"
   },
+  "page129": {
+    "baiduNetdisk": "바이두 넷디스크",
+    "clickToPlay": "클릭하여 재생",
+    "closeVideo": "닫기",
+    "downloadVideo": "{title} 영상 다운로드",
+    "jumpTo": "{title}로 이동",
+    "meta": {
+      "description": "정저우 제4중학교 129 홍가 경연 비디오 모음으로, 일반반, 티베트반, 국제부, 교사팀 등 21개 모듈을 포함합니다. 온라인 재생 및 바이두 넷디스크 다운로드를 지원합니다.",
+      "keywords": "정저우 제4중학교, 129, 홍가 경연, 학급 합창, 비디오 모음"
+    },
+    "pageDescription": "일반반, 티베트반, 국제부, 교사팀을 포함한 21개 비디오 모듈. 온라인 재생 및 바이두 넷디스크 다운로드 지원.",
+    "pageTitle": "정저우 제4중학교 129 홍가 경연 영상",
+    "qrCodeAlt": "{title} 바이두 넷디스크 QR 코드",
+    "quickNav": "빠른 탐색",
+    "scanToDownload": "스캔하여 다운로드",
+    "sections": {
+      "demei": {
+        "description": "데메이 1반 및 2반",
+        "subtitle": "국제부 합창",
+        "title": "국제부"
+      },
+      "regular": {
+        "description": "학급 전원 참여 공연",
+        "subtitle": "10학년(1~15반) 홍가 경연",
+        "title": "일반반"
+      },
+      "teacher": {
+        "description": "129 정신에 경의를 표함",
+        "subtitle": "교사팀 공연",
+        "title": "교사팀"
+      },
+      "tibetan": {
+        "description": "티베트반 1반, 2반, 3반",
+        "subtitle": "티베트반 특별 공연",
+        "title": "티베트반"
+      }
+    },
+    "videoProvider": "영상 제공:",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "영상"
+  },
   "permission": {
     "manage_announcements": "공지사항 관리",
     "manage_announcements_group": "커뮤니티 관리",

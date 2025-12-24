@@ -161,6 +161,48 @@
     "title": "Thông báo - Bức tường thú tội Trường Trung học số 4 Trịnh Châu",
     "unread": "Chưa đọc"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Nhấp để phát",
+    "closeVideo": "Đóng",
+    "downloadVideo": "Tải video {title}",
+    "jumpTo": "Chuyển đến {title}",
+    "meta": {
+      "description": "Tuyển tập video Cuộc thi Hát Đỏ 129 Trường Trung học số 4 Trịnh Châu, bao gồm 21 chuyên mục từ Lớp thường, Lớp Tây Tạng, Ban Quốc tế và Đội ngũ giáo viên. Hỗ trợ phát trực tuyến và tải xuống từ Baidu Netdisk.",
+      "keywords": "Trường Trung học số 4 Trịnh Châu, 129, Cuộc thi Hát Đỏ, Hợp xướng lớp, Tuyển tập video"
+    },
+    "pageDescription": "Bao gồm 21 chuyên mục video từ Lớp thường, Lớp Tây Tạng, Ban Quốc tế và Đội ngũ giáo viên. Hỗ trợ phát trực tuyến và tải xuống từ Baidu Netdisk.",
+    "pageTitle": "Video Cuộc thi Hát Đỏ 129 Trường Trung học số 4 Trịnh Châu",
+    "qrCodeAlt": "Mã QR Baidu Netdisk của {title}",
+    "quickNav": "Điều hướng nhanh",
+    "scanToDownload": "Quét để tải xuống",
+    "sections": {
+      "demei": {
+        "description": "Lớp Demei 1 và 2",
+        "subtitle": "Hợp xướng Ban Quốc tế",
+        "title": "Ban Quốc tế"
+      },
+      "regular": {
+        "description": "Biểu diễn toàn lớp",
+        "subtitle": "Lớp 10 (Lớp 1-15) Cuộc thi Hát Đỏ",
+        "title": "Lớp thường"
+      },
+      "teacher": {
+        "description": "Tôn vinh tinh thần 129",
+        "subtitle": "Biểu diễn đội ngũ giáo viên",
+        "title": "Đội ngũ giáo viên"
+      },
+      "tibetan": {
+        "description": "Lớp Tây Tạng 1, 2 và 3",
+        "subtitle": "Trình diễn đặc sắc của Lớp Tây Tạng",
+        "title": "Lớp Tây Tạng"
+      }
+    },
+    "videoProvider": "Video được cung cấp bởi",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "video"
+  },
   "permission": {
     "manage_announcements": "Quản lý thông báo",
     "manage_announcements_group": "Quản lý cộng đồng",

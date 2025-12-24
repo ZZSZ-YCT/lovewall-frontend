@@ -161,6 +161,48 @@
     "title": "Notificări - Zidul Confesiunilor Școlii Gimnaziale Nr. 4 Zhengzhou",
     "unread": "Necitite"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Click pentru redare",
+    "closeVideo": "Închide",
+    "downloadVideo": "Descarcă videoclipul {title}",
+    "jumpTo": "Sari la {title}",
+    "meta": {
+      "description": "Colecție video a Concursului de Cântece Roșii 129 al Şcolii Medii Nr.4 din Zhengzhou, incluzând 21 de module din clasele regulate, clasele tibetane, departamentul internațional și echipa profesorilor. Suportă redare online și descărcare prin Baidu Netdisk.",
+      "keywords": "Şcoala Medie Nr.4 Zhengzhou, 129, Concursul Cântecelor Roșii, Cor de clasă, Colecție video"
+    },
+    "pageDescription": "21 module video, incluzând clasele regulate, clasele tibetane, departamentul internațional și echipa de profesori. Suportă redare online și descărcare prin Baidu Netdisk.",
+    "pageTitle": "Videoclipuri ale Concursului „Cântecul Roșu 129” al Şcolii Medii Nr.4 din Zhengzhou",
+    "qrCodeAlt": "Cod QR Baidu Netdisk pentru {title}",
+    "quickNav": "Navigare rapidă",
+    "scanToDownload": "Scanează pentru a descărca",
+    "sections": {
+      "demei": {
+        "description": "Clasa Demei 1 și 2",
+        "subtitle": "Corul Departamentului Internațional",
+        "title": "Departamentul internațional"
+      },
+      "regular": {
+        "description": "Spectacole cu participarea întregii clase",
+        "subtitle": "Concursul de Cântece Roșii pentru clasa a 10-a (secțiile 1-15)",
+        "title": "Clase regulate"
+      },
+      "teacher": {
+        "description": "Omagiu adus spiritului 129",
+        "subtitle": "Spectacolul echipei de profesori",
+        "title": "Echipa profesorilor"
+      },
+      "tibetan": {
+        "description": "Clasele tibetane 1, 2 și 3",
+        "subtitle": "Prezentare specială a claselor tibetane",
+        "title": "Clase tibetane"
+      }
+    },
+    "videoProvider": "Videoclipuri furnizate de",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videoclipuri"
+  },
   "permission": {
     "manage_announcements": "Gestionează Anunțurile",
     "manage_announcements_group": "Gestionează Comunitatea",

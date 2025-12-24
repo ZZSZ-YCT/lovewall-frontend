@@ -161,6 +161,48 @@
     "title": "Meldingen - Zhengzhou No.4 Middelbare School Bekentenismuur",
     "unread": "Ongelezen"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Klik om af te spelen",
+    "closeVideo": "Sluiten",
+    "downloadVideo": "Download de video {title}",
+    "jumpTo": "Ga naar {title}",
+    "meta": {
+      "description": "Videocollectie van de 129 Rode Liedjeswedstrijd van Zhengzhou Nr.4 Middelbare School, inclusief 21 modules van reguliere klassen, Tibetaanse klassen, internationale afdeling en het docententeam. Ondersteunt online afspelen en downloaden via Baidu Netdisk.",
+      "keywords": "Zhengzhou Nr.4 Middelbare School, 129, Rode Liedjeswedstrijd, Klaskoor, Videocollectie"
+    },
+    "pageDescription": "21 videomodules inclusief reguliere klassen, Tibetaanse klassen, internationale afdeling en docententeam. Ondersteunt online afspelen en downloaden via Baidu Netdisk.",
+    "pageTitle": "Video's van de 129 Rode Liedjeswedstrijd van Zhengzhou Nr.4 Middelbare School",
+    "qrCodeAlt": "Baidu Netdisk QR-code voor {title}",
+    "quickNav": "Snelle navigatie",
+    "scanToDownload": "Scan om te downloaden",
+    "sections": {
+      "demei": {
+        "description": "Demei klas 1 en 2",
+        "subtitle": "Koor van de internationale afdeling",
+        "title": "Internationale afdeling"
+      },
+      "regular": {
+        "description": "Optredens met volledige klasdeelname",
+        "subtitle": "10e jaar (klassen 1-15) Rode Liedjeswedstrijd",
+        "title": "Reguliere klassen"
+      },
+      "teacher": {
+        "description": "Een eerbetoon aan de 129-geest",
+        "subtitle": "Optreden van het docententeam",
+        "title": "Docententeam"
+      },
+      "tibetan": {
+        "description": "Tibetaanse klas 1, 2 en 3",
+        "subtitle": "Uitgelicht: Tibetaanse klassen",
+        "title": "Tibetaanse klassen"
+      }
+    },
+    "videoProvider": "Video's geleverd door",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "video's"
+  },
   "permission": {
     "manage_announcements": "Beheer aankondigingen",
     "manage_announcements_group": "Beheer gemeenschap",

@@ -161,6 +161,48 @@
     "title": "通知 - 鄭州市第四高級中學表白牆",
     "unread": "未读"
   },
+  "page129": {
+    "baiduNetdisk": "百度網盤",
+    "clickToPlay": "點擊播放",
+    "closeVideo": "關閉",
+    "downloadVideo": "下載 {title} 影片",
+    "jumpTo": "跳至 {title}",
+    "meta": {
+      "description": "鄭州第四中學129紅歌比賽影片合集，包含來自普通班、藏族班、國際部及教師團隊的21個模組。支援線上播放與百度網盤下載。",
+      "keywords": "鄭州第四中學、129、紅歌比賽、班級合唱、影片合集"
+    },
+    "pageDescription": "包含普通班、藏族班、國際部及教師團隊等21個視頻模組。支援線上播放與百度網盤下載。",
+    "pageTitle": "鄭州第四中學129紅歌比賽影片",
+    "qrCodeAlt": "{title} 的百度網盤二維碼",
+    "quickNav": "快速導覽",
+    "scanToDownload": "掃描下載",
+    "sections": {
+      "demei": {
+        "description": "德美1、2班",
+        "subtitle": "國際部合唱",
+        "title": "國際部"
+      },
+      "regular": {
+        "description": "全班參與表演",
+        "subtitle": "高一（1-15班）紅歌比賽",
+        "title": "普通班"
+      },
+      "teacher": {
+        "description": "向129精神致敬",
+        "subtitle": "教師團隊表演",
+        "title": "教師團隊"
+      },
+      "tibetan": {
+        "description": "藏族1、2、3班",
+        "subtitle": "藏族班精彩呈現",
+        "title": "藏族班"
+      }
+    },
+    "videoProvider": "影片提供者",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "影片"
+  },
   "permission": {
     "manage_announcements": "管理公告",
     "manage_announcements_group": "管理社區",

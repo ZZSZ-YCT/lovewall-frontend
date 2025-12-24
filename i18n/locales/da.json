@@ -161,6 +161,48 @@
     "title": "Notifikationer - Zhengzhou No.4 Mellemskole Bekendtgørelsesvæg",
     "unread": "Ulæst"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Klik for at afspille",
+    "closeVideo": "Luk",
+    "downloadVideo": "Download {title}-videoen",
+    "jumpTo": "Gå til {title}",
+    "meta": {
+      "description": "Video-samling fra Zhengzhou Nr.4 Mellemskoles 129 Røde Sangkonkurrence, inklusive 21 moduler fra almindelige klasser, tibetanske klasser, den internationale afdeling og lærerteamet. Understøtter onlineafspilning og download fra Baidu Netdisk.",
+      "keywords": "Zhengzhou Nr.4 Mellemskole, 129, Røde Sangkonkurrence, klassekor, videosamling"
+    },
+    "pageDescription": "21 videomoduler inklusive almindelige klasser, tibetanske klasser, den internationale afdeling og lærerteamet. Understøtter onlineafspilning og download fra Baidu Netdisk.",
+    "pageTitle": "Zhengzhou Nr.4 Mellemskole 129 Røde Sangkonkurrence-videoer",
+    "qrCodeAlt": "{title} Baidu Netdisk QR-kode",
+    "quickNav": "Hurtig navigation",
+    "scanToDownload": "Scan for at downloade",
+    "sections": {
+      "demei": {
+        "description": "Demei klasse 1 og 2",
+        "subtitle": "Kor fra den internationale afdeling",
+        "title": "International afdeling"
+      },
+      "regular": {
+        "description": "Fremførelser med hele klassens deltagelse",
+        "subtitle": "10. klasse (Klasse 1-15) Røde Sangkonkurrence",
+        "title": "Almindelige klasser"
+      },
+      "teacher": {
+        "description": "Hylde 129-ånden",
+        "subtitle": "Lærerteamets optræden",
+        "title": "Lærerteamet"
+      },
+      "tibetan": {
+        "description": "Tibetanske klasser 1, 2 og 3",
+        "subtitle": "Udvalgt fremvisning af tibetanske klasser",
+        "title": "Tibetanske klasser"
+      }
+    },
+    "videoProvider": "Videoer leveret af",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videoer"
+  },
   "permission": {
     "manage_announcements": "Administrer meddelelser",
     "manage_announcements_group": "Administrer fællesskab",

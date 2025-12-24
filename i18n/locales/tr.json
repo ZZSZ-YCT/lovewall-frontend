@@ -161,6 +161,48 @@
     "title": "Bildirimler - Zhengzhou No.4 Ortaokul İtiraf Duvarı",
     "unread": "Okunmamış"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "Oynatmak için tıklayın",
+    "closeVideo": "Kapat",
+    "downloadVideo": "{title} videosunu indir",
+    "jumpTo": "{title} bölümüne atla",
+    "meta": {
+      "description": "Zhengzhou 4. Ortaokulu 129 Kızıl Şarkı Yarışması video koleksiyonu; Normal Sınıflar, Tibet Sınıfları, Uluslararası Bölüm ve Öğretmen Ekibi olmak üzere 21 modül içerir. Çevrimiçi oynatmayı ve Baidu Netdisk'ten indirmeyi destekler.",
+      "keywords": "Zhengzhou 4. Ortaokulu, 129, Kızıl Şarkı Yarışması, Sınıf Korosu, Video Koleksiyonu"
+    },
+    "pageDescription": "Normal Sınıflar, Tibet Sınıfları, Uluslararası Bölüm ve Öğretmen Ekibi dahil 21 video modülü. Çevrimiçi oynatmayı ve Baidu Netdisk'ten indirmeyi destekler.",
+    "pageTitle": "Zhengzhou 4. Ortaokulu 129 Kızıl Şarkı Yarışması Videoları",
+    "qrCodeAlt": "{title} Baidu Netdisk QR kodu",
+    "quickNav": "Hızlı gezinme",
+    "scanToDownload": "İndirmek için tarayın",
+    "sections": {
+      "demei": {
+        "description": "Demei Sınıfları 1 ve 2",
+        "subtitle": "Uluslararası Bölüm Korosu",
+        "title": "Uluslararası Bölüm"
+      },
+      "regular": {
+        "description": "Tüm sınıf katılımlı performanslar",
+        "subtitle": "10. sınıf (1-15 numaralı sınıflar) Kızıl Şarkı Yarışması",
+        "title": "Normal Sınıflar"
+      },
+      "teacher": {
+        "description": "129 ruhuna saygı",
+        "subtitle": "Öğretmen Ekibi Performansı",
+        "title": "Öğretmen Ekibi"
+      },
+      "tibetan": {
+        "description": "Tibet Sınıfları 1, 2 ve 3",
+        "subtitle": "Tibet Sınıfları Öne Çıkan Gösterimi",
+        "title": "Tibet Sınıfları"
+      }
+    },
+    "videoProvider": "Videoları sağlayan",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "videolar"
+  },
   "permission": {
     "manage_announcements": "Duyuruları Yönet",
     "manage_announcements_group": "Topluluğu Yönet",

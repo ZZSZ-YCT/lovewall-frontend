@@ -161,6 +161,48 @@
     "title": "اعلان‌ها - دیوار اعترافات مدرسه متوسطه شماره 4 ژنگژو",
     "unread": "خوانده نشده"
   },
+  "page129": {
+    "baiduNetdisk": "Baidu Netdisk",
+    "clickToPlay": "برای پخش کلیک کنید",
+    "closeVideo": "بستن",
+    "downloadVideo": "دانلود ویدئوی {title}",
+    "jumpTo": "پرش به {title}",
+    "meta": {
+      "description": "مجموعه ویدئوهای مسابقه سرودهای سرخ 129 دبیرستان شماره ۴ ژنگژو، شامل 21 ماژول از کلاس‌های عادی، کلاس‌های تبتی، بخش بین‌الملل و تیم معلمان. پخش آنلاین و دانلود از Baidu Netdisk را پشتیبانی می‌کند.",
+      "keywords": "دبیرستان شماره ۴ ژنگژو، 129، مسابقه سرودهای سرخ، کر کلاسی، مجموعه ویدئو"
+    },
+    "pageDescription": "21 ماژول ویدیویی شامل کلاس‌های عادی، کلاس‌های تبتی، بخش بین‌الملل و تیم معلمان. پخش آنلاین و دانلود از Baidu Netdisk را پشتیبانی می‌کند.",
+    "pageTitle": "ویدئوهای مسابقه سرودهای سرخ 129 دبیرستان شماره ۴ ژنگژو",
+    "qrCodeAlt": "کد QR Baidu Netdisk برای {title}",
+    "quickNav": "ناوبری سریع",
+    "scanToDownload": "برای دانلود اسکن کنید",
+    "sections": {
+      "demei": {
+        "description": "کلاس Demei 1 و 2",
+        "subtitle": "گروه کر بخش بین‌الملل",
+        "title": "بخش بین‌الملل"
+      },
+      "regular": {
+        "description": "اجرای گروهی با شرکت تمامی اعضای کلاس",
+        "subtitle": "مسابقه سرودهای سرخ پایه دهم (کلاس‌های 1-15)",
+        "title": "کلاس‌های عادی"
+      },
+      "teacher": {
+        "description": "ادای احترام به روحیه 129",
+        "subtitle": "اجرای تیم معلمان",
+        "title": "تیم معلمان"
+      },
+      "tibetan": {
+        "description": "کلاس تبتی 1، 2 و 3",
+        "subtitle": "نمایش ویژه کلاس‌های تبتی",
+        "title": "کلاس‌های تبتی"
+      }
+    },
+    "videoProvider": "ویدیوها ارائه شده توسط",
+    "videoProviderName": "Liuliume (BD6JCB)",
+    "videoProviderSuffix": "",
+    "videos": "ویدیوها"
+  },
   "permission": {
     "manage_announcements": "مدیریت اعلانات",
     "manage_announcements_group": "مدیریت جامعه",
