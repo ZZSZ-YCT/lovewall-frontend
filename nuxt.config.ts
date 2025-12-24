@@ -161,7 +161,16 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'node-server',
-    compressPublicAssets: true
+    compressPublicAssets: true,
+    routeRules: {
+      '/**': {
+        headers: {
+          'Cross-Origin-Embedder-Policy': 'require-corp',
+          'Cross-Origin-Opener-Policy': 'same-origin',
+          'Cross-Origin-Resource-Policy': 'cross-origin'
+        }
+      }
+    }
   },
   ssr: true,
   app: {
