@@ -63,6 +63,7 @@ export default defineNuxtConfig({
     },
     headers: {
       crossOriginOpenerPolicy: 'same-origin',
+      crossOriginEmbedderPolicy: 'require-corp',
       crossOriginResourcePolicy: 'cross-origin',
       xContentTypeOptions: 'nosniff',
       xPermittedCrossDomainPolicies: 'none',
