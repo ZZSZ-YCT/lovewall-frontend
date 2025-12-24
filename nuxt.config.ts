@@ -72,7 +72,7 @@ export default defineNuxtConfig({
         'font-src': ["'self'", 'https:', 'data:'],
         'form-action': ["'self'"],
         'frame-ancestors': ["'self'"],
-        'frame-src': ["'self'", 'https://player.bilibili.com'],
+        'frame-src': ["'self'", 'https://player.bilibili.com', 'https://www.bilibili.com', 'https://*.bilibili.com'],
         'img-src': ["'self'", 'data:', 'https://picsum.photos', ...imageDomains.map(host => `https://${host}`)],
         'object-src': ["'none'"],
         'script-src-attr': ["'none'"],
