@@ -360,7 +360,8 @@ useHead({
  * 根据BV号生成Bilibili播放器URL
  */
 const getBilibiliUrl = (bvid: string): string => {
-  return `https://player.bilibili.com/player.html?bvid=${bvid}&high_quality=1&as_wide=1&autoplay=1`
+  // 使用 https 强制安全协议，同时附带 isOutside/enable_ssl 以保证生产环境 iframe 嵌入可用
+  return `https://player.bilibili.com/player.html?bvid=${bvid}&high_quality=1&as_wide=1&autoplay=1&isOutside=1&enable_ssl=1`
 }
 
 /**
