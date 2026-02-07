@@ -9,9 +9,9 @@
       :maxlength="maxLength"
       :value="modelValue"
       :class="[
-        'glass-input w-full px-4 py-3 text-sm resize-none',
+        'input w-full px-3 py-2 text-sm resize-none',
         {
-          'border-red-400 focus:ring-red-300/60': hasError
+          'border-red-400 focus:ring-red-200 focus:border-red-400': hasError
         },
         inputClass
       ]"
@@ -19,16 +19,16 @@
       @blur="$emit('blur', $event)"
       @focus="$emit('focus', $event)"
     />
-    
+
     <!-- Character counter -->
     <div
       v-if="maxLength"
-      class="absolute bottom-3 right-3 text-xs text-gray-500 pointer-events-none"
+      class="absolute bottom-2 right-3 text-xs text-gray-400 pointer-events-none"
     >
       {{ currentLength }}/{{ maxLength }}
     </div>
   </div>
-  
+
   <!-- Error message -->
   <p v-if="error" class="mt-1 text-sm text-red-500">
     {{ error }}
@@ -65,13 +65,12 @@ const currentLength = computed(() => props.modelValue?.length || 0)
 const handleInput = (event: Event) => {
   const target = event.target as HTMLTextAreaElement
   let value = target.value
-  
-  // Enforce max length
+
   if (props.maxLength && value.length > props.maxLength) {
     value = value.slice(0, props.maxLength)
     target.value = value
   }
-  
+
   emit('update:modelValue', value)
 }
 </script>

@@ -6,11 +6,11 @@
         class="announcement-modal fixed inset-0 z-[10000] flex items-center justify-center p-4"
       >
         <!-- 背景遮罩 -->
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="handleClose" />
+        <div class="absolute inset-0 bg-black/40" @click="handleClose" />
 
         <!-- 公告内容 -->
         <div
-          class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden animate-dialog-in"
+          class="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[85vh] overflow-hidden animate-dialog-in"
           @click.stop
         >
           <!-- 头部 -->

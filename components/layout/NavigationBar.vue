@@ -22,7 +22,7 @@
         <div class="hidden md:flex items-center gap-6">
           <NuxtLink
             to="/"
-            class="glass-button-secondary text-sm font-medium px-4 py-2"
+            class="btn-secondary text-sm font-medium px-4 py-2"
           >
             首页
           </NuxtLink>
@@ -30,7 +30,7 @@
           <NuxtLink
             v-if="auth.isAuthenticated"
             to="/posts/new"
-            class="glass-button-secondary text-sm font-medium px-4 py-2"
+            class="btn-secondary text-sm font-medium px-4 py-2"
           >
             发布表白
           </NuxtLink>
@@ -38,7 +38,7 @@
           <NuxtLink
             v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
             to="/admin"
-            class="glass-button-secondary text-sm font-medium px-4 py-2"
+            class="btn-secondary text-sm font-medium px-4 py-2"
           >
             管理后台
           </NuxtLink>
@@ -55,13 +55,13 @@
             <div v-if="!isMobile" class="flex items-center gap-2">
               <NuxtLink
                 to="/auth/login"
-                class="glass-button-secondary px-4 py-2 text-sm font-medium"
+                class="btn-secondary px-4 py-2 text-sm font-medium"
               >
                 登录
               </NuxtLink>
               <NuxtLink
                 to="/auth/register"
-                class="glass-button px-4 py-2 text-sm font-medium"
+                class="btn-primary px-4 py-2 text-sm font-medium"
               >
                 注册
               </NuxtLink>
@@ -76,7 +76,7 @@
               :class="[
                 'relative inline-flex items-center justify-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60',
                 isMobile ? 'h-9 w-9' : 'h-10 w-10',
-                'text-gray-700 hover:text-brand-600 hover:bg-white/30'
+                'text-gray-700 hover:text-brand-600 hover:bg-gray-50'
               ]"
               title="系统通知"
               aria-label="系统通知"
@@ -94,7 +94,7 @@
             <div ref="userMenuRef" class="relative">
               <button
                 :class="[
-                  'flex items-center gap-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/20 transition-colors',
+                  'flex items-center gap-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors',
                   isMobile ? 'p-1.5' : 'p-2'
                 ]"
                 @click="showUserMenu = !showUserMenu"
@@ -111,7 +111,7 @@
                     :src="assetUrl(auth.currentUser.avatar_url)"
                     :alt="auth.userDisplayName"
                     :class="[
-                      'relative rounded-full object-cover border border-white/20',
+                      'relative rounded-full object-cover border border-gray-200',
                       isMobile ? 'w-5 h-5' : 'w-6 h-6'
                     ]"
                   />
@@ -124,32 +124,32 @@
               <!-- Dropdown menu -->
               <div
                 v-if="showUserMenu"
-                class="absolute right-0 mt-2 w-48 glass-card py-2 shadow-lg"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md border border-gray-200 py-2 shadow-lg"
               >
                 <NuxtLink
                   to="/me"
-                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
                   个人中心
                 </NuxtLink>
                 <NuxtLink
                   to="/me/posts"
-                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
                   我的帖子
                 </NuxtLink>
                 <NuxtLink
                   to="/me/tags"
-                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                  class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
                   我的标签
                 </NuxtLink>
-                <hr class="my-1 border-white/20">
+                <hr class="my-1 border-gray-200">
                 <button
-                  class="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                  class="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="handleLogout"
                 >
                   退出登录
@@ -172,12 +172,12 @@
       <!-- Mobile Navigation -->
       <div
         v-if="showMobileMenu && isMobile"
-        class="py-3 border-t border-white/20 animate-slide-down"
+        class="py-3 border-t border-gray-200 animate-slide-down"
       >
         <div class="space-y-2">
           <NuxtLink
             to="/"
-            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
             首页
@@ -186,7 +186,7 @@
           <NuxtLink
             v-if="auth.isAuthenticated"
             to="/posts/new"
-            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
             发布表白
@@ -195,7 +195,7 @@
           <NuxtLink
             v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
             to="/admin"
-            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
             管理后台
@@ -203,17 +203,17 @@
 
           <!-- Mobile Auth buttons -->
           <template v-if="!auth.isAuthenticated">
-            <div class="pt-2 border-t border-white/20 mt-2">
+            <div class="pt-2 border-t border-gray-200 mt-2">
               <NuxtLink
                 to="/auth/login"
-                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
                 登录
               </NuxtLink>
               <NuxtLink
                 to="/auth/register"
-                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
                 注册
@@ -223,16 +223,16 @@
 
           <!-- Mobile User menu -->
           <template v-if="auth.isAuthenticated">
-            <div class="pt-2 border-t border-white/20 mt-2">
+            <div class="pt-2 border-t border-gray-200 mt-2">
               <NuxtLink
                 to="/me"
-                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
                 个人中心
               </NuxtLink>
               <button
-                class="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white/20 rounded-lg"
+                class="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="handleLogout"
               >
                 退出登录

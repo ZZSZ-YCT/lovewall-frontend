@@ -67,7 +67,7 @@
           <GlassButton
             type="button"
             variant="secondary"
-            class="flex-1 glass-button"
+            class="flex-1"
             @click="$router.back()"
           >
             {{ t('common.cancel') }}
@@ -75,7 +75,7 @@
           
           <GlassButton
             type="submit"
-            class="flex-1 glass-button"
+            class="flex-1"
             :disabled="!isFormValid || loading"
             :loading="loading"
             @click="handleSubmit"

@@ -11,7 +11,7 @@
       v-if="visible"
       class="toast-item"
       :class="[
-        'flex items-center gap-3 px-6 py-3 rounded-2xl backdrop-blur-md shadow-xl border min-w-80 transform transition-all',
+        'flex items-center gap-3 px-6 py-3 rounded-lg shadow-lg border min-w-80 transform transition-all',
         toastStyles[type]
       ]"
     >
@@ -67,7 +67,6 @@ const toastStyles = {
 
 <style scoped>
 .toast-item {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 </style>

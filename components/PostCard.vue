@@ -1,146 +1,94 @@
 <template>
-  <GlassCard 
+  <div
     :class="[
       'card',
       variant === 'list' ? 'post-card-list' : 'post-card',
-      'cursor-pointer group relative overflow-hidden',
-      'transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg',
-      'rounded-3xl',
-      isMobile && 'rounded-2xl sm:rounded-3xl',
-    ]" 
+      'cursor-pointer group',
+    ]"
     @click="goDetail"
   >
     <!-- Header -->
-    <div
-:class="[
-      'flex items-center justify-between pb-3',
-      isMobile ? 'px-3 pt-3' : 'px-4 pt-4'
-    ]">
+    <div class="flex items-center justify-between px-4 pt-4 pb-2">
       <div class="flex items-center gap-3 flex-1 min-w-0">
         <!-- Author Avatar -->
         <div
-          :class="[
-            'relative flex-shrink-0 transition-transform hover:scale-110 cursor-pointer avatar-wrapper',
-            isMobile ? 'w-10 h-10' : 'w-12 h-12'
-          ]"
+          :class="['relative flex-shrink-0 cursor-pointer', isMobile ? 'w-9 h-9' : 'w-10 h-10']"
           @click.stop="navigateToAuthor"
         >
-          <!-- 管理员光圈效果 -->
-          <template v-if="post.is_author_admin">
-            <div
-              class="absolute -inset-[4px] rounded-full border-[4px] border-sky-400/95 pointer-events-none"
-            />
-            <div
-              class="absolute -inset-[8px] rounded-full bg-sky-300/40 blur-2xl pointer-events-none"
-            />
-          </template>
-
-          <!-- 头像容器 -->
           <NuxtImg
             v-if="authorAvatarUrl"
             :src="authorAvatarUrl"
             :alt="authorDisplayName"
             format="webp"
-            class="author-avatar"
-            :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
-            :width="isMobile ? 40 : 48"
-            :height="isMobile ? 40 : 48"
+            class="w-full h-full rounded-full object-cover border border-gray-200"
+            :width="isMobile ? 36 : 40"
+            :height="isMobile ? 36 : 40"
             :loading="eager ? 'eager' : 'lazy'"
             :fetchpriority="eager ? 'high' : 'auto'"
             decoding="async"
             @error="handleAuthorAvatarError"
           />
-
-          <!-- Default initials when no avatar -->
           <div
             v-else
-            class="avatar-placeholder"
             :class="[
-              isMobile ? 'text-xs' : 'text-sm',
-              post.is_author_admin ? 'border-0' : 'border-2 border-white/20'
+              'w-full h-full rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-semibold uppercase border border-gray-200',
+              isMobile ? 'text-xs' : 'text-sm'
             ]"
           >
             {{ authorInitials }}
           </div>
-
-          <!-- 在线状态指示器：总是显示，在线绿色/离线灰色 -->
+          <!-- Online indicator -->
           <span
-            class="online-indicator"
-            :class="authorIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
+            class="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white"
+            :class="authorIsOnline ? 'bg-green-500' : 'bg-gray-300'"
             :title="authorIsOnline ? (authorOnlineTitle || t('user.online')) : t('user.offline')"
           />
         </div>
-        
+
         <div class="flex-1 min-w-0">
-          <!-- 用户名、徽章、标签在同一行 -->
-          <div
-:class="[
-            'flex items-center gap-2 flex-wrap',
-            isMobile ? 'mb-0.5' : 'mb-1'
-          ]">
+          <div class="flex items-center gap-2 flex-wrap">
             <h3
-:class="[
-              'font-semibold text-gray-900 cursor-pointer hover:text-brand-600 transition-colors truncate',
-              isMobile ? 'text-sm' : 'text-base'
-            ]" @click.stop="navigateToAuthor">
+              class="font-medium text-gray-900 text-sm cursor-pointer hover:text-brand-600 transition-colors truncate"
+              @click.stop="navigateToAuthor"
+            >
               {{ authorDisplayName }}
             </h3>
             <span
               v-if="authorDeleted"
-              class="px-1.5 py-0.5 text-[10px] font-medium bg-gray-200 text-gray-700 rounded-full"
-            >
-              {{ t('posts.deletedUser') }}
-            </span>
-
-            <!-- 用户标签：比用户名小一号 -->
+              class="px-1.5 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-500 rounded"
+            >{{ t('posts.deletedUser') }}</span>
+            <!-- User tag -->
             <span
               v-if="authorTag && authorTag.useCssMode"
               :class="authorTag.className"
-              class="inline-block text-xs leading-tight px-2 py-0.5 rounded"
-            >
-              {{ authorTag.title }}
-            </span>
+              class="inline-block text-xs leading-tight px-1.5 py-0.5 rounded"
+            >{{ authorTag.title }}</span>
             <span
               v-else-if="authorTag"
-              class="inline-block text-xs leading-tight px-2 py-0.5 rounded font-medium"
+              class="inline-block text-xs leading-tight px-1.5 py-0.5 rounded font-medium"
               :style="authorTag.inlineStyles"
-            >
-              {{ authorTag.title }}
-            </span>
-
-            <!-- 置顶精华徽章 -->
+            >{{ authorTag.title }}</span>
+            <!-- Badges -->
             <span
               v-if="post.status !== 1 && post.is_pinned"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-red-500/80 text-white"
+              class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-600 border border-red-200"
             >
-              <PinIcon class="w-2.5 h-2.5" />
-              {{ t('common.pin') }}
+              <PinIcon class="w-2.5 h-2.5" /> {{ t('common.pin') }}
             </span>
-
             <span
               v-if="post.status !== 1 && post.is_featured"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-500/80 text-white"
+              class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-600 border border-blue-200"
             >
-              <StarIcon class="w-2.5 h-2.5" />
-              {{ t('common.feature') }}
+              <StarIcon class="w-2.5 h-2.5" /> {{ t('common.feature') }}
             </span>
-
-            <!-- 已隐藏徽章（仅管理员可见） -->
             <span
               v-if="isModerator && post.status === 1"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-500/80 text-white"
-            >
-              {{ t('user.posts.hidden') }}
-            </span>
+              class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-500"
+            >{{ t('user.posts.hidden') }}</span>
           </div>
-
-          <!-- 第二行：时间和锁定状态 -->
-          <div class="flex items-center gap-2 text-xs text-gray-500">
+          <div class="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
             <span>{{ formatDate(post.created_at) }}</span>
-            <div
-              v-if="post.is_locked"
-              class="inline-flex items-center gap-1"
-            >
+            <div v-if="post.is_locked" class="inline-flex items-center gap-1">
               <LockIcon class="w-3 h-3" />
               <span>{{ t('posts.locked') }}</span>
             </div>
@@ -149,74 +97,58 @@
       </div>
 
       <ClientOnly>
-        <!-- Actions dropdown -->
         <div v-if="showActions && canManage" ref="dropdownRef" class="relative flex-shrink-0" @click.stop>
           <button
             ref="dropdownButtonRef"
-            class="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-white/20 transition-colors opacity-80 group-hover:opacity-100"
+            class="p-1.5 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100 transition-colors"
             @click="toggleDropdown"
           >
             <MoreVerticalIcon class="w-4 h-4" />
           </button>
-
           <Teleport to="body">
             <div
               v-if="showDropdown"
               ref="dropdownMenuRef"
               :style="dropdownStyle"
-              class="fixed w-48 glass-card py-2 shadow-lg z-[9999]"
+              class="fixed w-48 bg-white rounded-md border border-gray-200 shadow-lg py-1 z-[9999]"
               @click.stop
             >
-            <NuxtLink
-              :to="localePath(`/posts/${post.id}`)"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-              @click="showDropdown = false"
-            >
-              {{ t('common.detail') }}
-            </NuxtLink>
-
-            <template v-if="canManagePost">
-              <hr class="my-1 border-white/20">
-              <button
-                v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
-                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20 flex items-center gap-2"
-                @click="handleEdit"
-              >
-                <EditIcon class="w-4 h-4" />
-                <span>✏️ {{ t('posts.publish.edit') }}</span>
-              </button>
-              <button
-                v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-                @click="handlePin(!post.is_pinned)"
-              >
-                {{ post.is_pinned ? t('common.unpin') : t('common.pin') }}
-              </button>
-
-              <button
-                v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
-                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-white/20"
-                @click="handleFeature(!post.is_featured)"
-              >
-                {{ post.is_featured ? t('common.unfeature') : t('common.feature') }}
-              </button>
-
-              <button
-                v-if="auth.hasPerm('MANAGE_POSTS')"
-                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
-                @click="handleHide"
-              >
-                {{ post.status === 0 ? t('common.hide') : t('common.show') }}
-              </button>
-
-              <button
-                v-if="auth.hasPerm('MANAGE_POSTS')"
-                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/20"
-                @click="handleDelete"
-              >
-                {{ t('common.delete') }}
-              </button>
-            </template>
+              <NuxtLink
+                :to="localePath(`/posts/${post.id}`)"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                @click="showDropdown = false"
+              >{{ t('common.detail') }}</NuxtLink>
+              <template v-if="canManagePost">
+                <hr class="my-1 border-gray-100">
+                <button
+                  v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS'])"
+                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  @click="handleEdit"
+                >
+                  <EditIcon class="w-4 h-4" />
+                  <span>{{ t('posts.publish.edit') }}</span>
+                </button>
+                <button
+                  v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
+                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  @click="handlePin(!post.is_pinned)"
+                >{{ post.is_pinned ? t('common.unpin') : t('common.pin') }}</button>
+                <button
+                  v-if="auth.hasPerm('MANAGE_FEATURED') && post.status === 0"
+                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  @click="handleFeature(!post.is_featured)"
+                >{{ post.is_featured ? t('common.unfeature') : t('common.feature') }}</button>
+                <button
+                  v-if="auth.hasPerm('MANAGE_POSTS')"
+                  class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  @click="handleHide"
+                >{{ post.status === 0 ? t('common.hide') : t('common.show') }}</button>
+                <button
+                  v-if="auth.hasPerm('MANAGE_POSTS')"
+                  class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  @click="handleDelete"
+                >{{ t('common.delete') }}</button>
+              </template>
             </div>
           </Teleport>
         </div>
@@ -227,52 +159,28 @@
     </div>
 
     <!-- Content -->
-    <div
-:class="[
-      'pb-3',
-      isMobile ? 'px-3' : 'px-4'
-    ]">
-      <!-- Love declaration -->
-      <div :class="isMobile ? 'mb-2' : 'mb-3'">
+    <div class="px-4 pb-2">
+      <div class="mb-2">
         <p
           v-if="(post.card_type !== 'communication' && post.card_type !== 'social') && post.target_name"
-          :class="[
-            'font-medium text-gray-900 mb-2',
-            isMobile ? 'text-base' : 'text-lg'
-          ]"
-        >
-          → {{ post.target_name }}
-        </p>
-        <p
-:class="[
-          'text-gray-700 leading-relaxed',
-          isMobile ? 'text-xs' : 'text-sm',
+          class="font-medium text-gray-900 mb-1 text-sm"
+        >&rarr; {{ post.target_name }}</p>
+        <p :class="[
+          'text-gray-600 leading-relaxed text-sm',
           { 'line-clamp-3': !expanded && isMobile },
           { 'line-clamp-4': !expanded && !isMobile }
-        ]">
-          {{ post.content }}
-        </p>
-        
+        ]">{{ post.content }}</p>
         <button
           v-if="post.content.length > 150"
-          class="mt-2 text-sm text-brand-600 hover:text-brand-700 transition-colors"
+          class="mt-1 text-xs text-brand-600 hover:text-brand-700 transition-colors"
           @click.stop="expanded = !expanded"
-        >
-          {{ expanded ? t('common.collapse') : t('common.expand') }}
-        </button>
+        >{{ expanded ? t('common.collapse') : t('common.expand') }}</button>
       </div>
     </div>
 
     <!-- Images -->
-    <div
-      v-if="post.images?.length"
-      :class="[
-        'pb-3',
-        isMobile ? 'px-3' : 'px-4'
-      ]"
-      @click.stop
-    >
-      <div v-if="useEagerImageGrid" class="space-y-3">
+    <div v-if="post.images?.length" class="px-4 pb-3" @click.stop>
+      <div v-if="useEagerImageGrid" class="space-y-2">
         <div ref="eagerGalleryRef" :class="eagerGridWrapperClass">
           <a
             v-for="(image, index) in eagerPreviewImages"
@@ -291,17 +199,15 @@
               :sizes="eagerImageSizes"
               format="webp"
               :modifiers="{ fit: 'cover' }"
-              class="w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl aspect-square object-cover"
+              class="w-full border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity rounded-md aspect-square object-cover"
               loading="eager"
               fetchpriority="high"
               decoding="async"
             />
             <div
               v-if="eagerHiddenCount > 0 && index === eagerPreviewImages.length - 1"
-              class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold rounded-lg md:rounded-xl"
-            >
-              +{{ eagerHiddenCount }}
-            </div>
+              class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold rounded-md"
+            >+{{ eagerHiddenCount }}</div>
           </a>
         </div>
       </div>
@@ -314,11 +220,7 @@
     </div>
 
     <!-- Footer -->
-    <div
-:class="[
-      'flex items-center justify-between border-t border-white/10',
-      isMobile ? 'px-3 py-2' : 'px-4 py-3'
-    ]">
+    <div class="flex items-center justify-between border-t border-gray-100 px-4 py-2">
       <div class="flex items-center gap-4">
         <ShareButton
           :data="shareData"
@@ -328,17 +230,9 @@
           @click.stop
         />
       </div>
-      
-      <div
-:class="[
-        'text-gray-400',
-        isMobile ? 'text-xs' : 'text-sm'
-      ]">
-        {{ formatTimeAgo(post.created_at) }}
-      </div>
+      <div class="text-gray-400 text-xs">{{ formatTimeAgo(post.created_at) }}</div>
     </div>
-
-  </GlassCard>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -347,7 +241,6 @@ const localePath = useLocalePath()
 
 import {EditIcon, LockIcon, MoreVerticalIcon, PinIcon, StarIcon} from 'lucide-vue-next'
 import {onClickOutside} from '@vueuse/core'
-import GlassCard from '~/components/ui/GlassCard.vue'
 import ShareButton from '~/components/ui/ShareButton.vue'
 import type {PostDto} from '~/types'
 
@@ -375,11 +268,8 @@ const props = withDefaults(defineProps<Props>(), {
   eager: false
 })
 
-const emit = defineEmits<{
-  refresh: []
-}>()
+const emit = defineEmits<{ refresh: [] }>()
 
-// Stores
 const auth = useAuthStore()
 const api = useNuxtApp().$api
 const toast = useToast()
@@ -388,7 +278,6 @@ const { isMobile } = useDeviceSafe()
 const { confirm: confirmDialog, prompt: promptDialog } = useAdminDialog()
 const { renderTag } = useTagRenderer()
 
-// State
 const expanded = ref(false)
 const showDropdown = ref(false)
 const dropdownRef = ref<HTMLElement>()
@@ -411,10 +300,10 @@ const postImageAltPrefix = computed(() => {
 const eagerGridWrapperClass = computed(() => {
   const count = Math.min(postImages.value.length, maxPreviewImages)
   if (count <= 0) return ''
-  if (count === 1) return 'grid gap-3 grid-cols-1'
-  if (count === 2) return 'grid gap-3 grid-cols-2'
-  if (count === 3) return 'grid gap-3 grid-cols-3'
-  return 'grid gap-3 grid-cols-2'
+  if (count === 1) return 'grid gap-2 grid-cols-1'
+  if (count === 2) return 'grid gap-2 grid-cols-2'
+  if (count === 3) return 'grid gap-2 grid-cols-3'
+  return 'grid gap-2 grid-cols-2'
 })
 const eagerImageSizes = '100vw sm:70vw lg:600px'
 const eagerGalleryRef = ref<HTMLElement | null>(null)
@@ -433,21 +322,12 @@ const destroyEagerLightbox = () => {
 }
 
 const ensureEagerLightbox = async () => {
-  if (!import.meta.client || !useEagerImageGrid.value) {
-    return null
-  }
-  if (eagerLightbox.value) {
-    return eagerLightbox.value
-  }
-
+  if (!import.meta.client || !useEagerImageGrid.value) return null
+  if (eagerLightbox.value) return eagerLightbox.value
   await nextTick()
-  if (!eagerGalleryRef.value) {
-    return null
-  }
-
+  if (!eagerGalleryRef.value) return null
   await import('photoswipe/style.css')
   const PhotoSwipeLightbox = (await import('photoswipe/lightbox')).default
-
   eagerLightbox.value = new PhotoSwipeLightbox({
     gallery: eagerGalleryRef.value,
     children: 'a',
@@ -461,12 +341,7 @@ const ensureEagerLightbox = async () => {
     closeOnVerticalDrag: true,
     bgOpacity: 0.98,
     showHideAnimationType: 'zoom',
-    padding: {
-      top: 60,
-      bottom: 60,
-      left: 20,
-      right: 20
-    }
+    padding: { top: 60, bottom: 60, left: 20, right: 20 }
   })
   eagerLightbox.value.init()
   return eagerLightbox.value
@@ -478,62 +353,28 @@ const openEagerGallery = async (index: number) => {
   lb.loadAndOpen(index)
 }
 
-watch(useEagerImageGrid, (active) => {
-  if (!active) {
-    destroyEagerLightbox()
-  }
-})
+watch(useEagerImageGrid, (active) => { if (!active) destroyEagerLightbox() })
+watch(() => postAuthorMeta.value.author_avatar_url, () => { avatarLoadFailed.value = false })
 
-watch(() => postAuthorMeta.value.author_avatar_url, () => {
-  avatarLoadFailed.value = false
-})
-
-// Dropdown位置计算
+// Dropdown position
 const dropdownStyle = ref<{ top: string; left?: string; right?: string }>({ top: '0px', left: '0px' })
-
 const updateDropdownPosition = () => {
   if (!dropdownButtonRef.value) return
   const rect = dropdownButtonRef.value.getBoundingClientRect()
-  const menuWidth = 192 // w-48 = 12rem = 192px
-
-  // 计算是否右侧空间足够
+  const menuWidth = 192
   const spaceOnRight = window.innerWidth - rect.right
-  const spaceOnLeft = rect.left
-
   if (spaceOnRight >= menuWidth) {
-    // 右侧空间足够，右对齐按钮
-    dropdownStyle.value = {
-      top: `${rect.bottom + 4}px`,
-      left: `${rect.right - menuWidth}px`,
-      right: undefined
-    }
-  } else if (spaceOnLeft >= menuWidth) {
-    // 右侧不够，左侧对齐
-    dropdownStyle.value = {
-      top: `${rect.bottom + 4}px`,
-      left: `${rect.left}px`,
-      right: undefined
-    }
+    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: `${rect.right - menuWidth}px`, right: undefined }
+  } else if (rect.left >= menuWidth) {
+    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: `${rect.left}px`, right: undefined }
   } else {
-    // 两侧都不够，贴右边
-    dropdownStyle.value = {
-      top: `${rect.bottom + 4}px`,
-      left: undefined,
-      right: '8px'
-    }
+    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: undefined, right: '8px' }
   }
 }
-
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
-  if (showDropdown.value) {
-    nextTick(() => {
-      updateDropdownPosition()
-    })
-  }
+  if (showDropdown.value) nextTick(() => updateDropdownPosition())
 }
-
-// 监听窗口变化和滚动，更新dropdown位置
 watch(showDropdown, (isOpen) => {
   if (isOpen) {
     window.addEventListener('resize', updateDropdownPosition)
@@ -543,71 +384,49 @@ watch(showDropdown, (isOpen) => {
     window.removeEventListener('scroll', updateDropdownPosition, true)
   }
 })
-
-// 组件卸载时清理
 onUnmounted(() => {
   window.removeEventListener('resize', updateDropdownPosition)
   window.removeEventListener('scroll', updateDropdownPosition, true)
   destroyEagerLightbox()
 })
-
-// Close dropdown when clicking outside
-onClickOutside(dropdownRef, () => {
-  showDropdown.value = false
-})
+onClickOutside(dropdownRef, () => { showDropdown.value = false })
 
 const authorDisplayName = computed(() => {
   const displayName = postAuthorMeta.value.author_display_name?.trim()
   return displayName && displayName.length > 0 ? displayName : props.post.author_name
 })
-
 const authorInitials = computed(() => {
   const source = authorDisplayName.value || props.post.author_name || ''
   const trimmed = source.trim()
-  if (!trimmed) return 'anonymous'
+  if (!trimmed) return 'A'
   return trimmed.slice(0, 2).toUpperCase()
 })
-
 const authorAvatarUrl = computed(() => {
   if (avatarLoadFailed.value) return null
   const avatar = postAuthorMeta.value.author_avatar_url
   return avatar ? assetUrl(avatar) : null
 })
-
 const authorIsOnline = computed(() => postAuthorMeta.value.author_is_online ?? false)
 const authorLastHeartbeat = computed(() => postAuthorMeta.value.author_last_heartbeat ?? null)
-
 const authorOnlineTitle = computed(() => {
   if (!authorIsOnline.value) return ''
   if (!authorLastHeartbeat.value) return t('user.online')
   return t('user.offlineAndTime', { time: formatTimeAgo(authorLastHeartbeat.value) })
 })
-
 const authorTag = computed(() => renderTag(postAuthorMeta.value.author_tag))
-
 const authorDeleted = computed(() =>
   Boolean(postAuthorMeta.value.author_is_deleted ?? postAuthorMeta.value.author_deleted)
 )
+const handleAuthorAvatarError = () => { avatarLoadFailed.value = true }
 
-const handleAuthorAvatarError = () => {
-  avatarLoadFailed.value = true
-}
-
-// Computed
-const canManage = computed(() => {
-  return auth.isAuthenticated && (
-    auth.isSuperadmin ||
-    auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])
-  )
-})
-
-const canManagePost = computed(() => {
-  return auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])
-})
-
+const canManage = computed(() =>
+  auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS']))
+)
+const canManagePost = computed(() =>
+  auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_FEATURED', 'MANAGE_POSTS'])
+)
 const isModerator = computed(() => auth.isSuperadmin || auth.hasPerm('MANAGE_POSTS'))
 
-// 分享数据
 const shareData = computed(() => {
   const origin = import.meta.client ? window.location.origin : 'https://your-domain.com'
   const isConfession = props.post.card_type !== 'communication' && props.post.card_type !== 'social'
@@ -616,38 +435,22 @@ const shareData = computed(() => {
     : t('posts.socialFrom', { author: props.post.author_name })
   return {
     title,
-    text: props.post.content.length > 100 ?
-      `${props.post.content.substring(0, 100)}...` :
-      props.post.content,
+    text: props.post.content.length > 100 ? `${props.post.content.substring(0, 100)}...` : props.post.content,
     url: `${origin}/posts/${props.post.id}`
   }
 })
 
-const goDetail = async () => {
-  await navigateTo(localePath(`/posts/${props.post.id}`))
-}
-
+const goDetail = async () => { await navigateTo(localePath(`/posts/${props.post.id}`)) }
 const handleEdit = async () => {
   showDropdown.value = false
   await navigateTo(localePath(`/posts/${props.post.id}?edit=1`))
 }
-
-// Navigate to author profile
 const navigateToAuthor = () => {
-  if (authorDeleted.value) {
-    toast.info(t('error.messages.404'))
-    return
-  }
-  // 如果有author_id，使用ID路由，否则使用用户名（临时方案）
-  if (props.post.author_id) {
-    navigateTo(localePath(`/users/id/${props.post.author_id}`))
-  } else {
-    // 备用方案：通过作者名称导航（不推荐，因为名称可能重复）
-    navigateTo(localePath(`/users/${encodeURIComponent(props.post.author_name)}`))
-  }
+  if (authorDeleted.value) { toast.info(t('error.messages.404')); return }
+  if (props.post.author_id) navigateTo(localePath(`/users/id/${props.post.author_id}`))
+  else navigateTo(localePath(`/users/${encodeURIComponent(props.post.author_name)}`))
 }
 
-// Actions
 const handlePin = async (pin: boolean) => {
   try {
     const reason = await promptModerationReason(pin ? t('common.pin') : t('common.unpin'))
@@ -655,12 +458,9 @@ const handlePin = async (pin: boolean) => {
     await api.pinPost(props.post.id, pin, reason || undefined)
     toast.success(t('common.success'))
     emit('refresh')
-  } catch (error) {
-    console.error('Pin post failed:', error)
-  }
+  } catch (error) { console.error('Pin post failed:', error) }
   showDropdown.value = false
 }
-
 const handleFeature = async (feature: boolean) => {
   try {
     const reason = await promptModerationReason(feature ? t('common.feature') : t('common.unfeature'))
@@ -668,21 +468,13 @@ const handleFeature = async (feature: boolean) => {
     await api.featurePost(props.post.id, feature, reason || undefined)
     toast.success(t('common.success'))
     emit('refresh')
-  } catch (error) {
-    console.error('Feature post failed:', error)
-  }
+  } catch (error) { console.error('Feature post failed:', error) }
   showDropdown.value = false
 }
-
 const handleHide = async () => {
   const hide = props.post.status === 0
   if (hide) {
-    const confirmed = await confirmDialog({
-      title: '确认隐藏',
-      message: '确定要隐藏这个帖子吗？',
-      confirmText: '确认隐藏',
-      cancelText: '取消'
-    })
+    const confirmed = await confirmDialog({ title: '确认隐藏', message: '确定要隐藏这个帖子吗？', confirmText: '确认隐藏', cancelText: '取消' })
     if (!confirmed) return
   }
   try {
@@ -691,45 +483,24 @@ const handleHide = async () => {
     await api.hidePost(props.post.id, hide, reason || undefined)
     toast.success(hide ? '已隐藏帖子' : '已恢复帖子')
     emit('refresh')
-  } catch (error) {
-    console.error('Hide/unhide post failed:', error)
-  }
+  } catch (error) { console.error('Hide/unhide post failed:', error) }
   showDropdown.value = false
 }
-
 const handleDelete = async () => {
-  const confirmed = await confirmDialog({
-    title: '删除帖子',
-    message: '确定要删除这个帖子吗？此操作不可恢复！',
-    confirmText: '删除',
-    cancelText: '取消'
-  })
+  const confirmed = await confirmDialog({ title: '删除帖子', message: '确定要删除这个帖子吗？此操作不可恢复！', confirmText: '删除', cancelText: '取消' })
   if (!confirmed) return
-  
   try {
     const reason = await promptModerationReason('删除')
     if (reason === null) return
     await api.deletePost(props.post.id, reason || undefined)
     toast.success('已删除帖子')
     emit('refresh')
-  } catch (error) {
-    console.error('Delete post failed:', error)
-  }
+  } catch (error) { console.error('Delete post failed:', error) }
   showDropdown.value = false
 }
-
-
 const promptModerationReason = async (action: string): Promise<string | null> => {
   if (!import.meta.client) return ''
-
-  const input = await promptDialog({
-    title: `${action}处理`,
-    inputLabel: '处理原因(可选)',
-    placeholder: '请输入处理原因(可选)',
-    confirmText: '确定',
-    cancelText: '取消'
-  })
-
+  const input = await promptDialog({ title: `${action}处理`, inputLabel: '处理原因(可选)', placeholder: '请输入处理原因(可选)', confirmText: '确定', cancelText: '取消' })
   if (input === null) return null
   return input.trim()
 }
@@ -738,73 +509,21 @@ const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-  
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
   if (minutes < 1) return t('time.just')
-  if (minutes < 60) return t('time.beforeMinutes', { minutes: minutes })
-  if (hours < 24) return t('time.beforeHours', { hours: hours })
-  if (days < 7) return t('time.beforeDays', { days: days })
-  
+  if (minutes < 60) return t('time.beforeMinutes', { minutes })
+  if (hours < 24) return t('time.beforeHours', { hours })
+  if (days < 7) return t('time.beforeDays', { days })
   return date.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
 }
 
-// Added: absolute date formatter used in header
 const formatDate = (dateString: string) => {
   try {
     const d = new Date(dateString)
     if (isNaN(d.getTime())) return String(dateString)
-    return d.toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    })
-  } catch {
-    return String(dateString)
-  }
+    return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })
+  } catch { return String(dateString) }
 }
 </script>
-
-<style scoped>
-.author-avatar {
-  @apply relative z-10 w-full h-full rounded-full object-cover;
-}
-
-.avatar-placeholder {
-  @apply relative z-10 w-full h-full rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-semibold uppercase;
-}
-
-.avatar-wrapper {
-  @apply relative;
-}
-
-.online-indicator {
-  @apply absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20;
-}
-
-.tag-badge {
-  @apply inline-block text-xs px-2 py-1 rounded font-medium leading-none;
-}
-
-.admin-badge {
-  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded-full bg-sky-100 text-sky-700 font-medium;
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-

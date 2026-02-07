@@ -24,7 +24,7 @@
 
           <select
             v-model="filters.status"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部状态</option>
@@ -54,10 +54,10 @@
           v-if="deleteUserModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeDeleteUser"/>
+          <div class="absolute inset-0 bg-black/40" @click="closeDeleteUser"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -115,7 +115,7 @@
       <!-- Empty State -->
       <div v-else-if="!users.length" class="text-center py-12">
         <div
-          class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <UsersIcon class="w-8 h-8 text-white"/>
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">未找到用户</h3>
@@ -125,7 +125,7 @@
       <!-- Users Table -->
       <div v-else class="overflow-x-auto">
         <table class="w-full">
-          <thead class="bg-white/10 border-b border-white/20">
+          <thead class="bg-gray-50 border-b border-gray-200">
           <tr>
             <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">用户信息</th>
             <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">状态</th>
@@ -136,11 +136,11 @@
             <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">操作</th>
           </tr>
           </thead>
-          <tbody class="divide-y divide-white/10">
+          <tbody class="divide-y divide-gray-200">
           <tr
             v-for="user in users"
             :key="user.id"
-            class="hover:bg-white/5"
+            class="hover:bg-gray-50"
           >
             <!-- User Info -->
             <td class="px-6 py-4">
@@ -164,12 +164,12 @@
                     :src="assetUrl(user.avatar_url)"
                     :alt="user.username"
                     class="relative z-10 w-full h-full rounded-full object-cover"
-                    :class="user.is_admin ? 'border-0' : 'border border-white/20'"
+                    :class="user.is_admin ? 'border-0' : 'border border-gray-200'"
                   />
                   <div
                     v-else
-                    class="relative z-10 w-full h-full rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium"
-                    :class="user.is_admin ? 'border-0' : 'border border-white/20'"
+                    class="relative z-10 w-full h-full rounded-full bg-brand-600 flex items-center justify-center text-white font-medium"
+                    :class="user.is_admin ? 'border-0' : 'border border-gray-200'"
                   >
                     {{ user.username.slice(0, 2).toUpperCase() }}
                   </div>
@@ -379,7 +379,7 @@
       <!-- Pagination -->
       <div
         v-if="usersData && usersData.total > 0"
-        class="px-6 py-4 border-t border-white/20"
+        class="px-6 py-4 border-t border-gray-200"
       >
         <!-- Pagination Info and Page Size Selector -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
@@ -394,7 +394,7 @@
             <span class="text-sm text-gray-600">每页显示:</span>
             <select
               v-model="pageSize"
-              class="glass-input px-2 py-1 text-sm"
+              class="input px-2 py-1 text-sm"
               @change="changePageSize"
             >
               <option value="10">10</option>
@@ -502,10 +502,10 @@
           v-if="permissionsModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closePermissionsModal"/>
+          <div class="absolute inset-0 bg-black/40" @click="closePermissionsModal"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -522,7 +522,7 @@
             <div v-if="permissionsModal.user" class="px-6 pb-6 space-y-6 overflow-y-auto">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
+                  class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-white font-medium">
                   <NuxtImg
                     v-if="permissionsModal.user.avatar_url"
                     :src="assetUrl(permissionsModal.user.avatar_url)"
@@ -592,10 +592,10 @@
           v-if="passwordModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closePasswordModal"/>
+          <div class="absolute inset-0 bg-black/40" @click="closePasswordModal"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -612,7 +612,7 @@
             <div v-if="passwordModal.user" class="px-6 pb-6 space-y-6 overflow-y-auto">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
+                  class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-white font-medium">
                   <NuxtImg
                     v-if="passwordModal.user.avatar_url"
                     :src="assetUrl(passwordModal.user.avatar_url)"
@@ -693,10 +693,10 @@
           v-if="editModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeEditModal"/>
+          <div class="absolute inset-0 bg-black/40" @click="closeEditModal"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -714,7 +714,7 @@
               <div class="space-y-6">
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
+                    class="w-12 h-12 rounded-full bg-brand-600 flex items-center justify-center text-white font-medium">
                     <NuxtImg
                       v-if="editModal.user.avatar_url"
                       :src="assetUrl(editModal.user.avatar_url)"
@@ -792,7 +792,7 @@
                       v-model="editForm.bio"
                       placeholder="请输入个人简介（可选）"
                       rows="3"
-                      class="w-full glass-input resize-none"
+                      class="w-full input resize-none"
                     />
                   </div>
 
@@ -809,7 +809,7 @@
                         @change="handleAvatarChange"
                       >
                       <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                        class="w-16 h-16 rounded-full bg-brand-600 flex items-center justify-center text-white font-medium overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                         title="点击更换头像"
                         @click="avatarInput?.click()"
                       >
@@ -875,10 +875,10 @@
           v-if="userTagsModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeUserTagsModal"/>
+          <div class="absolute inset-0 bg-black/40" @click="closeUserTagsModal"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -895,7 +895,7 @@
             <div v-if="userTagsModal.user" class="px-6 pb-6 space-y-6 overflow-y-auto">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-medium">
+                  class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-white font-medium">
                   <NuxtImg
                     v-if="userTagsModal.user.avatar_url"
                     :src="assetUrl(userTagsModal.user.avatar_url)"
@@ -1021,10 +1021,10 @@
           v-if="createPersonalTagModal.show"
           class="fixed inset-0 z-[10000] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeCreatePersonalTagModal"/>
+          <div class="absolute inset-0 bg-black/40" @click="closeCreatePersonalTagModal"/>
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12 border-b border-gray-100">

@@ -23,7 +23,7 @@
                 'flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all',
                 form.card_type === 'confession'
                   ? 'border-brand-500 bg-brand-50/30'
-                  : 'border-white/20 hover:border-brand-300'
+                  : 'border-gray-200 hover:border-brand-300'
               ]"
             >
               <input
@@ -43,7 +43,7 @@
                 'flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all',
                 form.card_type === 'communication'
                   ? 'border-brand-500 bg-brand-50/30'
-                  : 'border-white/20 hover:border-brand-300'
+                  : 'border-gray-200 hover:border-brand-300'
               ]"
             >
               <input
@@ -71,7 +71,7 @@
                 'flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all',
                 form.confessor_mode === 'self' 
                   ? 'border-brand-500 bg-brand-50/30' 
-                  : 'border-white/20 hover:border-brand-300'
+                  : 'border-gray-200 hover:border-brand-300'
               ]"
             >
               <input
@@ -93,7 +93,7 @@
                 'flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all',
                 form.confessor_mode === 'custom' 
                   ? 'border-brand-500 bg-brand-50/30' 
-                  : 'border-white/20 hover:border-brand-300'
+                  : 'border-gray-200 hover:border-brand-300'
               ]"
             >
               <input
@@ -166,8 +166,8 @@
           <!-- Upload Area -->
           <div
             :class="[
-              'relative border-2 border-dashed rounded-xl p-6 transition-all',
-              dragover ? 'border-brand-500 bg-brand-50/50' : 'border-white/30 hover:border-brand-300'
+              'relative border-2 border-dashed rounded-lg p-6 transition-all',
+              dragover ? 'border-brand-500 bg-brand-50' : 'border-gray-300 hover:border-brand-300'
             ]"
             @drop.prevent="handleDrop"
             @dragover.prevent="dragover = true"
@@ -184,7 +184,7 @@
                   <NuxtImg
                     :src="preview"
                     :alt="t('common.preview')"
-                    class="w-full h-40 object-cover rounded-lg border border-white/20"
+                    class="w-full h-40 object-cover rounded-lg border border-gray-200"
                   />
                   <button
                     type="button"
@@ -248,7 +248,7 @@
           <GlassButton
             type="button"
             variant="secondary"
-            class="flex-1 h-11 text-base rounded-full inline-flex items-center justify-center gap-2 glass-button-secondary"
+            class="flex-1 h-11 text-base rounded-md inline-flex items-center justify-center gap-2"
             @click="$router.back()"
           >
             {{ t('common.cancel') }}
@@ -257,7 +257,7 @@
           <GlassButton
             type="submit"
             variant="secondary"
-            class="flex-1 h-11 text-base font-semibold rounded-full inline-flex items-center justify-center gap-2 glass-button-secondary"
+            class="flex-1 h-11 text-base font-semibold rounded-md inline-flex items-center justify-center gap-2"
             :disabled="!isFormValid || loading"
             @click="handleSubmit"
           >

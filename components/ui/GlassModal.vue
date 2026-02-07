@@ -2,21 +2,21 @@
   <teleport to="body">
     <div
       v-if="isOpen"
-      class="fixed inset-0 z-[9000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-[9000] flex items-center justify-center p-4 bg-black/50"
       @click.self="handleClose"
     >
       <div
         :class="[
-          'bg-white rounded-2xl shadow-2xl max-h-[95vh] overflow-y-auto w-full',
+          'bg-white rounded-lg shadow-xl max-h-[95vh] overflow-y-auto w-full',
           maxWidth
         ]"
       >
         <!-- Header -->
-        <div v-if="showHeader" class="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 class="text-xl font-bold text-gray-900">{{ title }}</h2>
+        <div v-if="showHeader" class="flex items-center justify-between p-5 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-900">{{ title }}</h2>
           <button
             type="button"
-            class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
+            class="p-1.5 text-gray-400 hover:text-gray-600 transition-colors rounded-md hover:bg-gray-100"
             @click="handleClose"
           >
             <XIcon class="w-5 h-5" />
@@ -24,12 +24,12 @@
         </div>
 
         <!-- Content -->
-        <div class="p-6">
+        <div class="p-5">
           <slot />
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="p-6 pt-0">
+        <div v-if="$slots.footer" class="p-5 pt-0">
           <slot name="footer" />
         </div>
       </div>
@@ -65,18 +65,12 @@ const handleClose = () => {
   }
 }
 
-// 阻止背景滚动
 watch(() => props.isOpen, (isOpen) => {
   if (typeof window !== 'undefined') {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : ''
   }
 })
 
-// 清理
 onUnmounted(() => {
   if (typeof window !== 'undefined') {
     document.body.style.overflow = ''

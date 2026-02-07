@@ -7,11 +7,11 @@
         class="fixed inset-0 z-[10000] flex items-center justify-center p-4"
       >
         <!-- 背景遮罩 -->
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="handleCancel" />
+        <div class="absolute inset-0 bg-black/40" @click="handleCancel" />
 
         <!-- 对话框内容 -->
         <div
-          class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-dialog-in"
+          class="relative bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden animate-dialog-in"
           @click.stop
         >
           <!-- 头部 -->

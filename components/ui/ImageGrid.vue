@@ -133,7 +133,7 @@ const gridWrapperClass = computed(() => {
 })
 
 const imageClass = computed(() => {
-  const base = 'w-full border border-white/20 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl'
+  const base = 'w-full border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity rounded-lg md:rounded-xl'
   // 所有图片统一使用正方形宽高比 (aspect-square)
   return `${base} aspect-square object-cover`
 })

@@ -11,7 +11,7 @@
           <!-- Avatar -->
           <div class="flex flex-col items-center space-y-4">
             <div class="relative">
-              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+              <div class="w-24 h-24 rounded-full bg-brand-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
                 <NuxtImg
                   v-if="avatarPreview || user?.avatar_url"
                   :src="avatarPreview || (user?.avatar_url ? assetUrl(user.avatar_url) : undefined)"
@@ -106,14 +106,14 @@
       <div class="flex justify-end gap-3">
         <button
           type="button"
-          class="glass-button-secondary"
+          class="btn-secondary"
           @click="closeModal"
         >
           {{ t('common.cancel') }}
         </button>
         <button
           type="submit"
-          class="glass-button"
+          class="btn-primary"
           :disabled="loading"
           @click="handleSubmit"
         >

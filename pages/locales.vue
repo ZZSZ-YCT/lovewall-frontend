@@ -68,7 +68,7 @@ const selectRegion = async (region: Region) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-transparent text-white">
+  <div class="min-h-screen bg-gray-50 text-gray-900">
     <div class="mx-auto max-w-4xl px-4 py-8">
       <header class="mb-8 flex items-center justify-between">
         <div>
@@ -78,7 +78,7 @@ const selectRegion = async (region: Region) => {
         </div>
         <button
           type="button"
-          class="text-xs text-gray-400 hover:text-white"
+          class="text-xs text-gray-500 hover:text-gray-700"
           @click="navigateTo(-1)"
         >
           {{ t('home.backHome', 'Back') }}
@@ -89,9 +89,9 @@ const selectRegion = async (region: Region) => {
         <template v-for="groupKey in REGION_GROUP_KEYS" :key="groupKey">
           <section
             v-if="groupedRegions[groupKey]?.length"
-            class="rounded-lg border border-white/5 bg-white/5 p-4"
+            class="rounded-lg border border-gray-200 bg-white p-4"
           >
-            <h2 class="mb-3 text-sm font-semibold text-gray-200">
+            <h2 class="mb-3 text-sm font-semibold text-gray-700">
               {{ t(`regions.group.${groupKey}`) }}
             </h2>
 
@@ -101,7 +101,7 @@ const selectRegion = async (region: Region) => {
                 :key="region.id"
                 type="button"
                 :disabled="!hasLocaleForRegion(region)"
-                class="rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed"
+                class="rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
                 @click="selectRegion(region)"
               >
                 {{ region.name }}

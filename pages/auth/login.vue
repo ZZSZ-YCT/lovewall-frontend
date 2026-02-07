@@ -1,11 +1,11 @@
 <template>
-  <div class="content-container py-8 flex items-start justify-center overflow-auto relative z-30">
+  <div class="py-8 flex items-start justify-center">
     <div class="w-full max-w-md">
-      <div class="glass-card p-8">
+      <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
         <!-- Header -->
         <div class="text-center mb-8">
           <div class="flex justify-center mb-4">
-            <div class="p-3 rounded-full bg-gradient-to-r from-brand-500 to-brand-600">
+            <div class="p-3 rounded-full bg-brand-600">
               <HeartIcon class="w-8 h-8 text-white" />
             </div>
           </div>
@@ -72,7 +72,7 @@
 
           <NuxtLink
             :to="localePath('/')"
-            class="glass-button-secondary text-sm px-3 py-1 inline-flex items-center gap-1"
+            class="btn-secondary text-sm px-3 py-1 inline-flex items-center gap-1 rounded-md"
           >
             <ArrowLeftIcon class="w-4 h-4" />
             {{ t('home.backHome') }}

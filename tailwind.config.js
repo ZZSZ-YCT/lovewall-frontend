@@ -38,14 +38,6 @@ export default {
         glass: {
           50: 'rgba(255, 255, 255, 0.95)',
           100: 'rgba(255, 255, 255, 0.85)',
-          200: 'rgba(255, 255, 255, 0.75)',
-          300: 'rgba(255, 255, 255, 0.65)',
-          400: 'rgba(255, 255, 255, 0.55)',
-          500: 'rgba(255, 255, 255, 0.45)',
-          600: 'rgba(255, 255, 255, 0.35)',
-          700: 'rgba(255, 255, 255, 0.25)',
-          800: 'rgba(255, 255, 255, 0.15)',
-          900: 'rgba(255, 255, 255, 0.05)',
         }
       },
       fontFamily: {
@@ -72,17 +64,8 @@ export default {
         '9xl': '96rem',
       },
       boxShadow: {
-        'glow': '0 10px 30px -10px rgba(255,92,163,0.45)',
-        'glow-lg': '0 20px 60px -15px rgba(255,92,163,0.35)',
-        'glow-xl': '0 30px 80px -20px rgba(255,92,163,0.25)',
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        'glass-lg': '0 16px 48px 0 rgba(31, 38, 135, 0.25)',
-        'glass-xl': '0 24px 64px 0 rgba(31, 38, 135, 0.15)',
-        'inner-glow': 'inset 0 0 20px rgba(255, 255, 255, 0.1)',
-      },
-      backdropBlur: {
-        '3xl': '64px',
-        '4xl': '80px',
+        'glow': '0 4px 14px -3px rgba(0,0,0,0.1)',
+        'glow-lg': '0 10px 25px -5px rgba(0,0,0,0.1)',
       },
       borderRadius: {
         '2xl': '1.25rem',
@@ -90,14 +73,11 @@ export default {
         '4xl': '2rem',
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'fade-in-up': 'fadeInUp 0.6s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-down': 'slideDown 0.3s ease-out',
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'fade-in-up': 'fadeInUp 0.4s ease-out',
+        'slide-up': 'slideUp 0.2s ease-out',
+        'slide-down': 'slideDown 0.2s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -119,14 +99,6 @@ export default {
         scaleIn: {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        glow: {
-          '0%': { boxShadow: '0 0 20px rgba(255,92,163,0.3)' },
-          '100%': { boxShadow: '0 0 30px rgba(255,92,163,0.6)' },
         },
       },
       gridTemplateColumns: {

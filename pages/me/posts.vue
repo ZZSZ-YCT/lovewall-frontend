@@ -28,7 +28,7 @@
     <GlassCard class="p-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="flex gap-3">
-          <NuxtLink :to="localePath('/posts/new')" class="glass-button">
+          <NuxtLink :to="localePath('/posts/new')" class="btn-primary">
             <PlusIcon class="w-4 h-4 mr-2" />
             {{ t('posts.publish.index') }}
           </NuxtLink>
@@ -38,7 +38,7 @@
         <div class="flex gap-2">
           <select
             v-model="filters.status"
-            class="glass-input px-3 py-2 text-sm"
+            class="input px-3 py-2 text-sm"
             @change="applyFilters"
           >
             <option value="">{{ t('user.posts.allState') }}</option>
@@ -48,7 +48,7 @@
           
           <select
             v-model="filters.featured"
-            class="glass-input px-3 py-2 text-sm"
+            class="input px-3 py-2 text-sm"
             @change="applyFilters"
           >
             <option value="">{{ t('user.posts.allState') }}</option>
@@ -67,7 +67,7 @@
     <!-- Empty State -->
     <div v-else-if="!posts.length" class="text-center py-12">
       <GlassCard class="p-12">
-        <div class="w-16 h-16 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <HeartIcon class="w-8 h-8 text-white" />
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.posts.noPosts') }}</h3>
@@ -82,7 +82,7 @@
         :key="post.id"
         class="group relative"
       >
-        <GlassCard class="p-6 hover:shadow-glow-lg transition-all cursor-pointer" @click="handleCardClick(post)">
+        <GlassCard class="p-6 hover:shadow-md transition-all cursor-pointer" @click="handleCardClick(post)">
           <div class="flex gap-4">
             <!-- Image -->
             <div class="w-24 flex-shrink-0">
@@ -189,7 +189,7 @@
     <!-- Delete Confirmation Modal -->
     <div
       v-if="deleteModal.show"
-      class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 "
     >
       <GlassCard class="p-6 max-w-md mx-4">
         <h3 class="text-lg font-semibold mb-4">{{ t('user.posts.confirmDeletion') }}</h3>

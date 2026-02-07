@@ -17,14 +17,14 @@
     <ClientOnly>
       <div
         v-if="showOptions && isOptionsOpen"
-        class="absolute top-full left-0 mt-2 w-48 bg-white/20 backdrop-blur-lg rounded-xl border border-white/20 shadow-glass p-2 z-50"
+        class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg p-2 z-50"
         @click.stop
       >
         <div class="space-y-1">
           <!-- 原生分享 -->
           <button
             v-if="canShare"
-            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
             @click="shareNative"
           >
             <ShareIcon class="w-4 h-4" />
@@ -33,20 +33,20 @@
 
           <!-- 复制链接 -->
           <button
-            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
             @click="copyLink"
           >
             <CopyIcon class="w-4 h-4" />
             <span>复制链接</span>
           </button>
 
-          <div class="border-t border-white/20 my-2" />
+          <div class="border-t border-gray-200 my-2" />
 
           <!-- 平台分享 -->
           <button
             v-for="platform in availablePlatforms"
             :key="platform.key"
-            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-white/20 transition-colors"
+            class="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-gray-100 transition-colors"
             @click="shareToPlatform(platform.key)"
           >
             <component :is="getPlatformIcon(platform.key)" class="w-4 h-4" />

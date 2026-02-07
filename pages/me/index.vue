@@ -23,12 +23,12 @@
           />
 
           <!-- 头像容器 -->
-          <div class="relative w-24 h-24 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-2xl font-bold">
+          <div class="relative w-24 h-24 rounded-full bg-brand-600 flex items-center justify-center text-white text-2xl font-bold">
             <NuxtImg
               v-if="auth.currentUser?.avatar_url"
               :src="assetUrl(auth.currentUser.avatar_url)"
               :alt="auth.userDisplayName"
-              class="w-24 h-24 rounded-full object-cover border-2 border-white/20"
+              class="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
             />
             <span v-else>
               {{ auth.userDisplayName.slice(0, 2) }}
@@ -79,14 +79,14 @@
           <GlassButton
             variant="secondary"
             type="button"
-            class="glass-button"
+            class="btn-secondary"
             @click="showEditModal = true"
           >
             {{ t('user.centers.editProfile') }}
           </GlassButton>
           <GlassButton
             v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
-            class="glass-button"
+            class="btn-primary"
             @click="navigateTo(localePath('/admin'))"
           >
             进入后台
@@ -121,8 +121,8 @@
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <NuxtLink :to="localePath('/posts/new')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
-          <div class="w-12 h-12 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
+          <div class="w-12 h-12 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <PlusIcon class="w-6 h-6 text-white" />
           </div>
           <h3 class="font-semibold text-gray-800 mb-2">{{ t('posts.publish.index') }}</h3>
@@ -131,8 +131,8 @@
       </NuxtLink>
 
       <NuxtLink :to="localePath('/me/posts')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
-          <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
+          <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <FileTextIcon class="w-6 h-6 text-white" />
           </div>
           <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myPosts') }}</h3>
@@ -141,8 +141,8 @@
       </NuxtLink>
 
       <NuxtLink :to="localePath('/me/comments')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
-          <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
+          <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <MessageSquareIcon class="w-6 h-6 text-white" />
           </div>
           <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myComments') }}</h3>
@@ -151,8 +151,8 @@
       </NuxtLink>
 
       <NuxtLink :to="localePath('/me/tags')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
-          <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
+          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <TagIcon class="w-6 h-6 text-white" />
           </div>
           <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myTags') }}</h3>
@@ -161,8 +161,8 @@
       </NuxtLink>
       
       <NuxtLink :to="localePath('/me/change-password')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-glow-lg transition-all">
-          <div class="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
+          <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <ShieldIcon class="w-6 h-6 text-white" />
           </div>
           <h3 class="font-semibold text-gray-800 mb-2">{{ t('auth.changePassword.index') }}</h3>
@@ -193,7 +193,7 @@
           <div
             v-for="post in recentPosts"
             :key="post.id"
-            class="p-4 bg-white/10 rounded-xl border border-white/10"
+            class="p-4 bg-gray-50 rounded-xl border border-gray-200"
           >
             <div class="flex items-center justify-between mb-2">
               <h5 class="font-medium text-gray-800">
@@ -205,7 +205,7 @@
             <div class="mt-2">
               <NuxtLink
                 :to="localePath(`/posts/${post.id}`)"
-                class="glass-button-secondary text-xs px-2 py-1 inline-block"
+                class="btn-secondary text-xs px-2 py-1 inline-block"
               >
                 {{ t('common.detail') }} →
               </NuxtLink>
@@ -219,7 +219,7 @@
           <div
             v-for="comment in recentComments"
             :key="comment.id"
-            class="p-4 bg-white/10 rounded-xl border border-white/10"
+            class="p-4 bg-gray-50 rounded-xl border border-gray-200"
           >
             <div class="flex items-center justify-between mb-2">
               <h5 class="font-medium text-gray-800">{{ t('user.commentedOn') }}</h5>
@@ -229,7 +229,7 @@
             <div class="mt-2">
               <NuxtLink
                 :to="localePath(`/posts/${comment.post_id}`)"
-                class="glass-button-secondary text-xs px-2 py-1 inline-block"
+                class="btn-secondary text-xs px-2 py-1 inline-block"
               >
                 {{ t('common.detail') }} →
               </NuxtLink>

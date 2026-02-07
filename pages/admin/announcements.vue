@@ -13,7 +13,7 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.is_active"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部状态</option>
@@ -71,7 +71,7 @@
       <!-- Empty State -->
       <div v-else-if="!displayedAnnouncements.length" class="text-center py-12">
         <GlassCard class="p-12">
-          <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <MegaphoneIcon class="w-8 h-8 text-white" />
           </div>
           <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无公告</h3>
@@ -86,7 +86,7 @@
           :key="announcement.id"
           class="group"
         >
-          <GlassCard class="p-6 hover:shadow-glow-lg transition-all">
+          <GlassCard class="p-6 hover:shadow-md transition-all">
             <div class="flex justify-between items-start">
               <div class="flex-1 pr-4">
                 <div class="flex items-center gap-3 mb-3">
@@ -167,9 +167,9 @@
           v-if="editModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeEditModal" />
+          <div class="absolute inset-0 bg-black/40" @click="closeEditModal" />
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">

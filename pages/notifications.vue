@@ -28,7 +28,7 @@
         v-for="n in items"
         :key="n.id"
         class="p-4 border transition-colors"
-        :class="n.is_read ? 'border-white/10' : 'border-brand-300/50'"
+        :class="n.is_read ? 'border-gray-200' : 'border-brand-300/50'"
       >
         <div
           :ref="el => registerNotificationCard(n, el as Element | null)"

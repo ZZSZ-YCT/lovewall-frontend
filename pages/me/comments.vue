@@ -31,7 +31,7 @@
         <div class="flex gap-2">
           <select
             v-model="filters.status"
-            class="glass-input px-3 py-2 text-sm"
+            class="input px-3 py-2 text-sm"
             @change="applyFilters"
           >
             <option value="">{{ t('user.posts.allState') }}</option>
@@ -50,7 +50,7 @@
     <!-- Empty State -->
     <div v-else-if="!comments.length" class="text-center py-12">
       <GlassCard class="p-12">
-        <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <MessageSquareIcon class="w-8 h-8 text-white" />
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.comments.empty') }}</h3>
@@ -69,7 +69,7 @@
         :key="comment.id"
         class="group"
       >
-        <GlassCard class="p-6 hover:shadow-glow-lg transition-all">
+        <GlassCard class="p-6 hover:shadow-md transition-all">
           <div class="space-y-4">
             <!-- Comment Header -->
             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -89,7 +89,7 @@
               <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <NuxtLink
                   :to="localePath(`/posts/${comment.post_id}`)"
-                  class="glass-button-secondary !p-2"
+                  class="btn-secondary !p-2"
                   :title="t('common.detail')"
                 >
                   <ExternalLinkIcon class="w-4 h-4" />
@@ -148,7 +148,7 @@
             </div>
 
             <!-- Referenced Post Info -->
-            <div class="bg-white/10 rounded-lg p-3 border border-white/10">
+            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
               <div class="text-sm text-gray-600 mb-1">{{ t('user.comments.source') }}</div>
               <NuxtLink
                 :to="localePath(`/posts/${comment.post_id}`)"
@@ -179,7 +179,7 @@
     <!-- Delete Confirmation Modal -->
     <div
       v-if="deleteModal.show"
-      class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 "
     >
       <GlassCard class="p-6 max-w-md mx-4">
         <h3 class="text-lg font-semibold mb-4">{{ t('user.posts.confirmDeletion') }}</h3>

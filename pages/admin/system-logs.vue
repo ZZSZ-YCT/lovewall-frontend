@@ -11,7 +11,7 @@
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
           <h2 class="text-lg font-semibold text-gray-800">日志记录</h2>
-          <span v-if="logsData" class="px-2 py-0.5 text-xs rounded-full bg-white/50 text-gray-700 border border-white/40">
+          <span v-if="logsData" class="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-700 border border-gray-200">
             共 {{ logsData.total }} 条
           </span>
         </div>

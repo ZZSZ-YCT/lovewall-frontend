@@ -13,7 +13,7 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.status"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部状态</option>
@@ -23,7 +23,7 @@
           
           <select
             v-model="filters.featured"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部类型</option>
@@ -33,7 +33,7 @@
           
           <select
             v-model="filters.pinned"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部</option>
@@ -89,7 +89,7 @@
       <!-- Empty State -->
       <div v-else-if="!posts.length" class="text-center py-12">
         <GlassCard class="p-12">
-          <div class="w-16 h-16 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div class="w-16 h-16 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <FileTextIcon class="w-8 h-8 text-white" />
           </div>
           <h3 class="text-lg font-semibold text-gray-800 mb-2">未找到表白</h3>
@@ -104,7 +104,7 @@
           :key="post.id"
           class="group"
         >
-          <GlassCard class="p-6 hover:shadow-glow-lg transition-all cursor-pointer" @click="goDetail(post)">
+          <GlassCard class="p-6 hover:shadow-md transition-all cursor-pointer" @click="goDetail(post)">
             <div class="flex gap-6">
               <!-- Image -->
               <div class="w-32 flex-shrink-0">
@@ -210,7 +210,7 @@
                 <p class="text-gray-700 leading-relaxed line-clamp-3 mb-4">{{ post.content }}</p>
                 
                 <!-- Admin Actions -->
-                <div class="flex flex-wrap gap-2 pt-3 border-t border-white/10">
+                <div class="flex flex-wrap gap-2 pt-3 border-t border-gray-200">
                   <!-- Moderation: approve/reject -->
                   <GlassButton
                     v-if="permissions.canManagePosts && post.is_pending_review"
@@ -333,10 +333,10 @@
           v-if="actionReasonModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeActionReasonModal" />
+          <div class="absolute inset-0 bg-black/40" @click="closeActionReasonModal" />
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">
@@ -393,10 +393,10 @@
           v-if="rejectModal.show"
           class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
         >
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="rejectModal.show = false" />
+          <div class="absolute inset-0 bg-black/40" @click="rejectModal.show = false" />
 
           <div
-            class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
+            class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in"
             @click.stop
           >
             <div class="relative p-6 pb-4 pr-12">

@@ -13,7 +13,7 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.status"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部状态</option>
@@ -77,7 +77,7 @@
 
       <!-- Empty State -->
       <div v-else-if="!comments.length" class="text-center py-12">
-        <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <MessageSquareIcon class="w-8 h-8 text-white" />
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">未找到评论</h3>
@@ -87,7 +87,7 @@
       <!-- Comments Table -->
       <div v-else class="overflow-x-auto">
         <table class="w-full">
-          <thead class="bg-white/10 border-b border-white/20">
+          <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
               <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">评论内容</th>
               <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">用户</th>
@@ -97,11 +97,11 @@
               <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">操作</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/10">
+          <tbody class="divide-y divide-gray-200">
             <tr
               v-for="comment in comments"
               :key="comment.id"
-              class="hover:bg-white/5"
+              class="hover:bg-gray-50"
             >
               <!-- Content -->
               <td class="px-6 py-4 max-w-xs">
@@ -183,7 +183,7 @@
       <!-- Pagination -->
       <div
         v-if="commentsData && commentsData.total > commentsData.page_size"
-        class="px-6 py-4 border-t border-white/20 flex justify-between items-center"
+        class="px-6 py-4 border-t border-gray-200 flex justify-between items-center"
       >
         <div class="text-sm text-gray-600">
           显示 {{ (commentsData.page - 1) * commentsData.page_size + 1 }} - 

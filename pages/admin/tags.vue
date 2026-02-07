@@ -13,7 +13,7 @@
         <div class="flex flex-col sm:flex-row gap-3 flex-1">
           <select
             v-model="filters.active"
-            class="glass-input px-3 py-2"
+            class="input px-3 py-2"
             @change="applyFilters"
           >
             <option value="">全部状态</option>
@@ -87,7 +87,7 @@
       <!-- Empty State -->
       <div v-else-if="!tags.length" class="text-center py-12">
         <GlassCard class="p-12">
-          <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <TagIcon class="w-8 h-8 text-white" />
           </div>
           <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无标签</h3>
@@ -102,7 +102,7 @@
           :key="tag.id"
           class="group"
         >
-          <GlassCard class="p-6 hover:shadow-glow-lg transition-all">
+          <GlassCard class="p-6 hover:shadow-md transition-all">
             <div class="flex justify-between items-start">
               <div class="flex-1 pr-4">
                 <div class="flex items-center gap-3 mb-3">
@@ -223,8 +223,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="tagModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeTagModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeTagModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">{{ tagModal.tag ? '编辑标签' : '新建标签' }}</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeTagModal">
@@ -374,8 +374,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="codesModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeCodesModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeCodesModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">生成兑换码</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeCodesModal">
@@ -442,8 +442,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="generatedModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeGeneratedModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeGeneratedModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">兑换码生成成功</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeGeneratedModal">
@@ -489,8 +489,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="deleteModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeDeleteModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeDeleteModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">确认删除</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeDeleteModal">
@@ -518,8 +518,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="codesListModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeCodesListModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeCodesListModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">兑换码列表</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeCodesListModal">
@@ -537,7 +537,7 @@
 
                 <select
                   v-model="codesFilter.tag_id"
-                  class="glass-input px-3 py-2 min-w-32"
+                  class="input px-3 py-2 min-w-32"
                 >
                   <option value="">全部标签</option>
                   <option v-for="tag in tags" :key="tag.id" :value="tag.id">
@@ -547,7 +547,7 @@
 
                 <select
                   v-model="codesFilter.used"
-                  class="glass-input px-3 py-2 min-w-24"
+                  class="input px-3 py-2 min-w-24"
                 >
                   <option value="">全部状态</option>
                   <option value="false">未使用</option>
@@ -577,7 +577,7 @@
                   <span>每页显示:</span>
                   <select
                     v-model.number="codesPageSize"
-                    class="glass-input px-2 py-1 text-sm"
+                    class="input px-2 py-1 text-sm"
                     @change="changeCodesPageSize"
                   >
                     <option :value="20">20</option>
@@ -594,7 +594,7 @@
               </div>
 
               <div v-else-if="!codes.length" class="text-center py-12">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <TicketIcon class="w-8 h-8 text-white" />
                 </div>
                 <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无兑换码</h3>
@@ -729,8 +729,8 @@
     <Teleport to="body">
       <Transition name="dialog-fade">
         <div v-if="codeDetailsModal.show" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" @click="closeCodeDetailsModal" />
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
+          <div class="absolute inset-0 bg-black/40" @click="closeCodeDetailsModal" />
+          <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col animate-dialog-in" @click.stop>
             <div class="relative p-6 pb-4 pr-12">
               <h3 class="text-xl font-semibold text-gray-900">兑换码详情</h3>
               <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors" @click="closeCodeDetailsModal">

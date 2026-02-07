@@ -1,30 +1,13 @@
 <template>
   <div
     :class="[
-      'glass-card relative overflow-hidden',
-      variant,
+      'card',
       {
-        'hover:shadow-glow-lg hover:scale-[1.01] transition-all duration-300': interactive,
-        'border-glass': !noBorder,
-        'backdrop-blur-xl': blur === 'xl',
-        'backdrop-blur-2xl': blur === '2xl',
-        'backdrop-blur-3xl': blur === '3xl',
+        'card-hover cursor-pointer': interactive,
       }
     ]"
     v-bind="$attrs"
   >
-    <!-- 内发光效果 -->
-    <div
-      v-if="innerGlow"
-      class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none"
-    />
-
-    <!-- 边框高光 -->
-    <div
-      v-if="borderGlow"
-      class="absolute inset-0 rounded-[inherit] border border-white/30 pointer-events-none"
-    />
-
     <slot />
   </div>
 </template>
@@ -50,21 +33,3 @@ withDefaults(defineProps<Props>(), {
 
 defineOptions({ inheritAttrs: false })
 </script>
-
-<style scoped>
-.glass-card {
-  @apply bg-white/25 backdrop-blur-lg border border-white/20 shadow-glass rounded-2xl;
-}
-
-.border-glass {
-  @apply border-white/20;
-}
-
-/* 深色模式优化 */
-@media (prefers-color-scheme: dark) {
-  .glass-card {
-    @apply bg-white/15 border-white/10;
-  }
-
-}
-</style>

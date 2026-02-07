@@ -29,7 +29,7 @@
 
               <div
                 class="relative z-10 w-full h-full rounded-full overflow-hidden shadow-lg"
-                :class="user.is_admin ? 'border-0' : 'border-2 border-white/20'"
+                :class="user.is_admin ? 'border-0' : 'border-2 border-gray-200'"
               >
                 <NuxtImg
                   v-if="user.avatar_url"
@@ -39,7 +39,7 @@
                 />
                 <div
                   v-else
-                  class="w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-4xl font-bold"
+                  class="w-full h-full bg-brand-600 flex items-center justify-center text-white text-4xl font-bold"
                 >
                   {{ userInitials }}
                 </div>
@@ -86,7 +86,7 @@
 
       <!-- 用户表白列表 -->
       <GlassCard class="p-6">
-        <div class="border-b border-white/20 pb-4 mb-6">
+        <div class="border-b border-gray-200 pb-4 mb-6">
           <h2 class="text-xl font-semibold text-gray-800">{{ t('user.postsFrom', { nickname: userDisplayName }) }}</h2>
         </div>
 
@@ -106,7 +106,7 @@
           <div
             v-for="post in userPosts"
             :key="post.id"
-            class="p-4 bg-white/10 rounded-xl border border-white/10 hover:bg-white/20 transition-all cursor-pointer"
+            class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer"
             @click="navigateTo(localePath(`/posts/${post.id}`))"
           >
             <div class="flex gap-4">

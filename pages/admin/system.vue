@@ -11,7 +11,7 @@
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
           <h2 class="text-lg font-semibold text-gray-800">系统日志</h2>
-          <span v-if="logsData" class="px-2 py-0.5 text-xs rounded-full bg-white/50 text-gray-700 border border-white/40">
+          <span v-if="logsData" class="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-700 border border-gray-200">
             共 {{ logsData.total }} 条
           </span>
         </div>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Log Filters -->
-      <div class="glass-bar p-4 mb-6">
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 mb-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
           <GlassInput v-model="logFilters.q" placeholder="关键字（操作/对象/ID/元数据）" class="text-sm lg:col-span-4" />
           <GlassInput v-model="logFilters.action" placeholder="操作类型" class="text-sm lg:col-span-2" />
@@ -35,13 +35,13 @@
           <GlassInput v-if="activeLogType === 'submissions'" v-model="logFilters.user_id" placeholder="用户ID" class="text-sm lg:col-span-2" />
           <GlassInput v-if="activeLogType === 'operations'" v-model="logFilters.admin_id" placeholder="管理员ID" class="text-sm lg:col-span-2" />
           <div class="grid grid-cols-2 gap-3 lg:col-span-4">
-            <input v-model="logFilters.from" type="datetime-local" class="glass-input w-full text-sm" >
-            <input v-model="logFilters.to" type="datetime-local" class="glass-input w-full text-sm" >
+            <input v-model="logFilters.from" type="datetime-local" class="input w-full text-sm" >
+            <input v-model="logFilters.to" type="datetime-local" class="input w-full text-sm" >
           </div>
           <div class="flex flex-wrap gap-2 justify-end lg:col-span-4">
             <div class="flex items-center gap-2 text-sm text-gray-700 mr-auto lg:mr-0">
               <span>每页</span>
-              <select v-model.number="logsPageSize" class="glass-input px-2 py-1 text-sm" @change="changeLogsPageSize">
+              <select v-model.number="logsPageSize" class="input px-2 py-1 text-sm" @change="changeLogsPageSize">
                 <option :value="20">20</option>
                 <option :value="50">50</option>
                 <option :value="100">100</option>
@@ -61,7 +61,7 @@
 
       <!-- Empty State -->
       <div v-else-if="!logs.length && !loadingLogs" class="text-center py-12">
-        <div class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <ScrollTextIcon class="w-8 h-8 text-white" />
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">暂无日志记录</h3>
@@ -71,8 +71,8 @@
       <!-- Logs Timeline List -->
       <div v-else class="space-y-3">
         <div v-for="log in logs" :key="log.id" class="relative pl-6 cursor-pointer" @click="openLogDetails(log)">
-          <div class="absolute left-0 top-5 w-3 h-3 rounded-full bg-brand-500 ring-4 ring-white/60" />
-          <div class="p-4 bg-white/60 rounded-xl border border-white/40 hover:shadow-glow-sm transition-all">
+          <div class="absolute left-0 top-5 w-3 h-3 rounded-full bg-brand-500 ring-4 ring-white" />
+          <div class="p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
             <div class="flex items-start justify-between gap-3">
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-2 mb-1 text-sm">
@@ -215,11 +215,11 @@
             </div>
             <div>
               <h4 class="text-sm font-medium text-gray-700 mb-2">元数据</h4>
-              <pre class="text-xs bg-white/70 rounded-lg p-3 border overflow-auto max-h-64">{{ (logDetails.log.metadata || '{}') }}</pre>
+              <pre class="text-xs bg-gray-50 rounded-lg p-3 border overflow-auto max-h-64">{{ (logDetails.log.metadata || '{}') }}</pre>
             </div>
             <div v-if="logDetails.log.user_agent" class="md:col-span-2">
               <h4 class="text-sm font-medium text-gray-700 mb-2">User-Agent</h4>
-              <div class="bg-white/70 p-3 rounded text-xs break-all border">{{ logDetails.log.user_agent }}</div>
+              <div class="bg-gray-50 p-3 rounded text-xs break-all border">{{ logDetails.log.user_agent }}</div>
             </div>
           </div>
         </div>

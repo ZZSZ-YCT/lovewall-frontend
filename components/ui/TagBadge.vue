@@ -3,7 +3,7 @@
       class="inline-block align-middle whitespace-nowrap
            px-2 py-0.5 rounded-md
            text-base font-medium leading-tight
-           border border-white/30"
+           border border-black/10"
       :style="{
       backgroundColor: background,
       color: text,

@@ -43,7 +43,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
         
         <div class="flex items-center gap-3">
           <button
-              class="glass-button-secondary px-6 py-3 inline-flex items-center gap-2"
+              class="btn-secondary px-6 py-3 inline-flex items-center gap-2"
               @click="openRedeemModal"
           >
             <TagIcon class="w-5 h-5" />
@@ -52,13 +52,13 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
         </div>
       </div>
       <!-- Redeem History (if any) -->
-      <div v-if="recentlyRedeemed.length" class="mt-6 pt-4 border-t border-white/20">
+      <div v-if="recentlyRedeemed.length" class="mt-6 pt-4 border-t border-gray-200">
         <h3 class="text-sm font-medium text-gray-700 mb-3">{{t('user.tags.redeem.recently')}}</h3>
         <div class="flex flex-wrap gap-2">
           <div
             v-for="tag in recentlyRedeemed"
             :key="tag.user_tag_id"
-            class="flex items-center gap-2 px-3 py-2 bg-white/10 rounded-lg border border-white/10"
+            class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200"
           >
             <TagBadge
               :title="tag.tag?.title || ''"
@@ -81,7 +81,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
     <!-- Empty State -->
     <div v-else-if="!userTags.length" class="text-center py-12">
       <GlassCard class="p-12">
-        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <TagIcon class="w-8 h-8 text-white" />
         </div>
         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ t('user.tags.empty') }}</h3>
@@ -91,7 +91,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
 
     <!-- Tags List -->
     <div v-else class="space-y-4">
-      <div class="border-b border-white/20 pb-2 mb-4">
+      <div class="border-b border-gray-200 pb-2 mb-4">
         <h2 class="text-lg font-semibold text-gray-800">{{ t('user.myTags') }}</h2>
       </div>
 
@@ -101,7 +101,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
           :key="userTag.user_tag_id"
           class="group"
         >
-          <GlassCard class="p-6 hover:shadow-glow-lg transition-all">
+          <GlassCard class="p-6 hover:shadow-md transition-all">
             <div class="flex items-center justify-between">
               <!-- Tag details first, preview on the right; avoid wrapping buttons -->
               <div class="flex items-center gap-4 flex-1 min-w-0">
@@ -137,7 +137,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
                   v-if="!userTag.is_active"
                   :disabled="activating === userTag.user_tag_id || !userTag.tag?.is_active"
                   :title="userTag.tag?.is_active ? t('user.tags.useThis') : t('common.disabled')"
-                  class="glass-button-secondary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="btn-secondary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   @click="activateTag(userTag)"
                 >
                   <span>{{ t('user.tags.useThis') }}</span>
@@ -151,7 +151,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
                   <!-- <GlassButton
                     @click="deactivateTag(userTag)"
                     :loading="deactivating === userTag.user_tag_id"
-                    class="text-sm px-3 py-2 glass-button-secondary"
+                    class="text-sm px-3 py-2 btn-secondary"
                     title="取消激活，回到无标签状态"
                   >
                     取消
@@ -161,7 +161,7 @@ v-if="activeStatus && activeStatus.has_active" class="ml-2 px-2 py-0.5 text-xs r
             </div>
 
             <!-- Tag Description (if available) -->
-            <div v-if="getTagDescription(userTag)" class="mt-4 pt-4 border-t border-white/10">
+            <div v-if="getTagDescription(userTag)" class="mt-4 pt-4 border-t border-gray-200">
               <p class="text-sm text-gray-600">{{ getTagDescription(userTag) }}</p>
             </div>
           </GlassCard>

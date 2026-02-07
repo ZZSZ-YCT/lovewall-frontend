@@ -20,13 +20,13 @@
         :quality="avatarQuality"
         fit="cover"
         class="relative z-10 w-full h-full rounded-full object-cover"
-        :class="comment.is_user_admin ? 'border-0' : 'border-2 border-white/20'"
+        :class="comment.is_user_admin ? 'border-0' : 'border-2 border-gray-200'"
         loading="lazy"
         @error="onAvatarError"
       />
       <div
         v-else
-        class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-semibold"
+        class="relative z-10 w-full h-full bg-brand-600 rounded-full flex items-center justify-center text-white font-semibold"
         :class="placeholderTextClass"
       >
         {{ userInitials }}

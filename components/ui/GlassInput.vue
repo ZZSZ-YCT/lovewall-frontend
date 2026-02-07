@@ -2,10 +2,10 @@
   <div v-bind="$attrs">
     <div class="relative">
       <!-- Prefix slot -->
-      <div v-if="$slots.prefix" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+      <div v-if="$slots.prefix" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
         <slot name="prefix" />
       </div>
-      
+
       <input
         :id="id"
         :type="actualType"
@@ -15,39 +15,39 @@
         :value="modelValue"
         :autocomplete="autoComplete"
         :class="[
-          'glass-input w-full py-3 text-sm',
+          'input w-full py-2 text-sm',
           {
-            'border-red-400 focus:ring-red-300/60': hasError,
+            'border-red-400 focus:ring-red-200 focus:border-red-400': hasError,
             'pl-10': $slots.prefix,
-            'pl-4': !$slots.prefix,
+            'pl-3': !$slots.prefix,
             'pr-10': (type === 'password' && showPasswordToggle) || $slots.suffix,
-            'pr-4': !(type === 'password' && showPasswordToggle) && !$slots.suffix
-          }
-          , inputClass
+            'pr-3': !(type === 'password' && showPasswordToggle) && !$slots.suffix
+          },
+          inputClass
         ]"
         @input="handleInput"
         @blur="$emit('blur', $event)"
         @focus="$emit('focus', $event)"
         @keyup.enter="$emit('keyup', $event)"
       >
-      
+
       <!-- Suffix slot -->
-      <div v-if="$slots.suffix" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+      <div v-if="$slots.suffix" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
         <slot name="suffix" />
       </div>
-      
+
       <!-- Password toggle button -->
       <button
         v-if="type === 'password' && showPasswordToggle"
         type="button"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
         @click="togglePasswordVisibility"
       >
         <EyeIcon v-if="showPassword" class="w-4 h-4" />
         <EyeOffIcon v-else class="w-4 h-4" />
       </button>
     </div>
-    
+
     <!-- Error message -->
     <p v-if="error" class="mt-1 text-sm text-red-500">
       {{ error }}

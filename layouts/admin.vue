@@ -1,71 +1,51 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-    <!-- Background Image with Blur Overlay -->
-    <div class="fixed inset-0 z-0">
-      <img
-        v-if="backgroundSrc" 
-        :src="backgroundSrc" 
-        alt="Background"
-        class="w-full h-full object-cover"
-        :class="{ 'opacity-0': backgroundLoading, 'opacity-100': !backgroundLoading }"
-      >
-      <div class="absolute inset-0 bg-white/20 backdrop-blur-sm"/>
-    </div>
-
+  <div class="min-h-screen bg-gray-100 flex">
     <!-- Sidebar -->
-    <AdminSidebar 
-      :is-open="sidebarOpen" 
+    <AdminSidebar
+      :is-open="sidebarOpen"
       @close="sidebarOpen = false"
     />
 
     <!-- Main Content -->
-    <div class="relative z-10" :class="{ 'lg:ml-64': true }">
+    <div class="flex-1 lg:ml-56">
       <!-- Top Bar -->
-      <header class="h-16 glass-card flex items-center justify-between px-6 shadow-glow-sm">
-        <div class="flex items-center gap-4">
-          <!-- Mobile Sidebar Toggle -->
-          <button 
-            class="lg:hidden p-2 text-gray-600 hover:text-brand-600 hover:bg-white/20 rounded-lg transition-colors"
+      <header class="h-12 bg-white border-b border-gray-200 flex items-center justify-between px-4 sticky top-0 z-30">
+        <div class="flex items-center gap-3">
+          <button
+            class="lg:hidden p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md"
             @click="sidebarOpen = true"
           >
             <MenuIcon class="w-5 h-5" />
           </button>
-          
-          <!-- Breadcrumb -->
-          <nav class="hidden sm:flex items-center gap-2 text-sm">
-            <NuxtLink to="/admin" class="text-brand-600 hover:text-brand-700">管理后台</NuxtLink>
-            <ChevronRightIcon v-if="currentPageName" class="w-4 h-4 text-gray-400" />
-            <span v-if="currentPageName" class="text-gray-600 font-medium">{{ currentPageName }}</span>
+          <nav class="hidden sm:flex items-center gap-1.5 text-sm">
+            <NuxtLink to="/admin" class="text-brand-600 hover:text-brand-700 font-medium">管理后台</NuxtLink>
+            <ChevronRightIcon v-if="currentPageName" class="w-3.5 h-3.5 text-gray-400" />
+            <span v-if="currentPageName" class="text-gray-600">{{ currentPageName }}</span>
           </nav>
         </div>
-
-        <!-- User Info -->
-        <div class="flex items-center gap-4">
-          <NuxtLink 
-            to="/" 
-            class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-brand-600 transition-colors"
+        <div class="flex items-center gap-3">
+          <NuxtLink
+            to="/"
+            class="hidden sm:flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700"
           >
             <HomeIcon class="w-4 h-4" />
             <span>返回首页</span>
           </NuxtLink>
-
           <div class="flex items-center gap-2 text-sm text-gray-600">
             <UserIcon class="w-4 h-4" />
             <span class="font-medium">{{ auth.userDisplayName }}</span>
-            <span v-if="auth.isSuperadmin" class="px-2 py-0.5 text-xs bg-red-100 text-red-600 rounded-full">
-              超管
-            </span>
+            <span v-if="auth.isSuperadmin" class="px-1.5 py-0.5 text-[10px] bg-red-100 text-red-600 rounded font-medium">超管</span>
           </div>
         </div>
       </header>
 
       <!-- Page Content -->
-      <main class="p-6">
+      <main class="p-4 sm:p-6">
         <slot />
       </main>
     </div>
 
-    <!-- 公告弹窗（按页面路径） -->
+    <!-- Announcement -->
     <ClientOnly>
       <AnnouncementModal
         v-if="pageAnnouncement.announcement.value"
@@ -85,42 +65,30 @@ import AnnouncementModal from '~/components/AnnouncementModal.vue'
 const auth = useAuthStore()
 const route = useRoute()
 const sidebarOpen = ref(false)
-
-// 页面公告系统
 const pageAnnouncement = useAnnouncement()
 
-// 桌面端默认打开侧边栏
 onMounted(() => {
   if (import.meta.client && window.innerWidth >= 1024) {
     sidebarOpen.value = true
   }
-  // Admin页面已经过鉴权，可以直接检查公告
   pageAnnouncement.checkAndShow()
 })
 
-// 背景图片
-const { src: backgroundSrc, loading: backgroundLoading } = useRandomBg()
-
-// 当前页面名称
 const currentPageName = computed(() => {
   const pathMap: Record<string, string> = {
     '/admin': '',
     '/admin/posts': '表白管理',
-    '/admin/users': '用户管理', 
+    '/admin/users': '用户管理',
     '/admin/comments': '评论管理',
     '/admin/announcements': '公告管理',
     '/admin/tags': '标签管理',
     '/admin/system': '系统日志',
+    '/admin/system-logs': '系统日志',
   }
   return pathMap[route.path] || ''
 })
 
-// 关闭移动端侧边栏当路由变化时
 watch(() => route.path, () => {
   sidebarOpen.value = false
-})
-
-definePageMeta({
-  title: `${currentPageName.value ? `${currentPageName.value} - ` : ''}管理后台 - 郑州四中表白墙`
 })
 </script>

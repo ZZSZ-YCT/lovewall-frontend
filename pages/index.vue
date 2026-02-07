@@ -1,148 +1,138 @@
 <template>
-  <div class="space-y-8">
+  <div class="space-y-6">
     <!-- Header -->
     <section>
-      <div class="page-header">
-        <h1 class="page-title">{{ t('home.title') }}</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          {{ t('home.description') }}
-        </p>
-      </div>
-
-      <ClientOnly>
-        <!-- 发帖入口 -->
-        <div v-if="auth.isAuthenticated" class="flex justify-center">
-          <NuxtLink
-            :to="localePath('/posts/new')"
-            class="glass-button-secondary inline-flex items-center gap-2 rounded-full"
-          >
-            <PlusIcon class="w-5 h-5" />
-            {{ t('posts.post') }}
-          </NuxtLink>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">{{ t('home.title') }}</h1>
+          <p class="text-gray-500 text-sm mt-1">{{ t('home.description') }}</p>
         </div>
-      </ClientOnly>
+        <div class="flex items-center gap-2">
+          <ClientOnly>
+            <NuxtLink
+              v-if="auth.isAuthenticated"
+              :to="localePath('/posts/new')"
+              class="btn-primary inline-flex items-center gap-2 text-sm"
+            >
+              <PlusIcon class="w-4 h-4" />
+              {{ t('posts.post') }}
+            </NuxtLink>
+          </ClientOnly>
+        </div>
+      </div>
     </section>
 
-    <!-- 最新表白 -->
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <ClockIcon class="w-5 h-5 text-gray-600" />
-          <h2 class="text-xl font-semibold text-gray-800">{{ t('posts.recently') }}</h2>
-        </div>
-        <div class="flex items-center gap-2">
-          <!-- 布局切换 -->
-          <div
-            v-if="!isMobile"
-            class="flex items-center gap-1 p-1 bg-white/20 border border-white/20 backdrop-blur-sm rounded-lg shadow-sm"
+    <!-- Controls -->
+    <section class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <ClockIcon class="w-4 h-4 text-gray-400" />
+        <h2 class="text-base font-semibold text-gray-800">{{ t('posts.recently') }}</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Layout toggle (desktop only) -->
+        <div
+          v-if="!isMobile"
+          class="flex items-center gap-0.5 p-0.5 bg-gray-100 rounded-md"
+        >
+          <button
+            :class="[
+              'p-1.5 rounded text-xs transition-colors',
+              effectiveLayout === 'grid'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            ]"
+            :title="t('common.layouts.grid')"
+            @click="switchLayout('grid')"
           >
-            <button
-              :class="[
-                'p-1.5 rounded text-xs transition-all',
-                effectiveLayout === 'grid'
-                  ? 'bg-white text-brand-600 shadow-sm'
-                  : 'text-gray-600 hover:text-brand-600'
-              ]"
-              :title="t('common.layouts.grid')"
-              @click="switchLayout('grid')"
-            >
-              <GridIcon class="w-4 h-4" />
-            </button>
-            <button
-              :class="[
-                'p-1.5 rounded text-xs transition-all',
-                effectiveLayout === 'list'
-                  ? 'bg-white text-brand-600 shadow-sm'
-                  : 'text-gray-600 hover:text-brand-600'
-              ]"
-              :title="t('common.layouts.list')"
-              @click="switchLayout('list')"
-            >
-              <ListIcon class="w-4 h-4" />
-            </button>
-          </div>
+            <GridIcon class="w-4 h-4" />
+          </button>
+          <button
+            :class="[
+              'p-1.5 rounded text-xs transition-colors',
+              effectiveLayout === 'list'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            ]"
+            :title="t('common.layouts.list')"
+            @click="switchLayout('list')"
+          >
+            <ListIcon class="w-4 h-4" />
+          </button>
+        </div>
 
-          <GlassButton
-            :disabled="loading"
-            variant="secondary"
-            class="!px-3 !py-1.5 text-sm"
-            @click="handleRefresh"
-          >
-            <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
-            {{ t('common.refresh') }}
-          </GlassButton>
-        </div>
+        <GlassButton
+          :disabled="loading"
+          variant="secondary"
+          class="!px-3 !py-1.5 text-sm"
+          @click="handleRefresh"
+        >
+          <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
+          {{ t('common.refresh') }}
+        </GlassButton>
+      </div>
+    </section>
+
+    <!-- Posts -->
+    <section>
+      <!-- Loading -->
+      <div v-if="loading && posts.length === 0" class="text-center py-16">
+        <LoadingSpinner size="lg" />
+        <p class="mt-4 text-gray-500 text-sm">{{ t('common.loading') }}</p>
       </div>
 
-      <!-- 数据区域 -->
-      <div class="space-y-4">
-        <!-- 加载中（首屏或刷新中） -->
-        <div
-          v-if="loading && posts.length === 0"
-          class="text-center py-12"
+      <!-- Empty -->
+      <div v-else-if="!loading && posts.length === 0" class="text-center py-16">
+        <HeartIcon class="w-12 h-12 text-gray-300 mx-auto mb-4" />
+        <p class="text-gray-500 mb-4">{{ t('posts.empty') }}</p>
+        <NuxtLink
+          v-if="auth.isAuthenticated"
+          :to="localePath('/posts/new')"
+          class="btn-primary inline-flex items-center gap-2 text-sm"
         >
-          <LoadingSpinner size="lg" />
-          <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
-        </div>
-
-        <!-- 空状态 -->
-        <div
-          v-else-if="!loading && posts.length === 0"
-          class="text-center py-12"
-        >
-          <HeartIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p class="text-gray-600 mb-4">{{ t('posts.empty') }}</p>
-          <NuxtLink
-            v-if="auth.isAuthenticated"
-            :to="localePath('/posts/new')"
-            class="glass-button-secondary inline-flex items-center gap-2"
-          >
-            <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
-          </NuxtLink>
-        </div>
-
-        <!-- 宫格布局 -->
-        <div
-          v-else-if="effectiveLayout === 'grid'"
-          :class="['posts', gridClasses]"
-        >
-          <PostCard
-            v-for="(post, index) in posts"
-            :key="post.id"
-            :post="post"
-            :show-actions="auth.isAuthenticated"
-            :eager="index < 3"
-            variant="grid"
-            class="animate-fade-in-up"
-            @refresh="handleRefresh"
-          />
-        </div>
-
-        <!-- 列表布局 -->
-        <div
-          v-else
-          :class="['posts', 'space-y-4', isMobile ? 'px-2' : 'max-w-3xl mx-auto']"
-        >
-          <PostCard
-            v-for="(post, index) in posts"
-            :key="post.id"
-            :post="post"
-            :show-actions="auth.isAuthenticated"
-            :eager="index < 3"
-            variant="list"
-            class="w-full animate-fade-in-up"
-            @refresh="handleRefresh"
-          />
-        </div>
+          <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
+        </NuxtLink>
       </div>
 
-      <!-- 触底加载更多 -->
+      <!-- Grid layout -->
+      <div
+        v-else-if="effectiveLayout === 'grid'"
+        :class="['posts', gridClasses]"
+      >
+        <PostCard
+          v-for="(post, index) in posts"
+          :key="post.id"
+          :post="post"
+          :show-actions="auth.isAuthenticated"
+          :eager="index < 3"
+          variant="grid"
+          @refresh="handleRefresh"
+        />
+      </div>
+
+      <!-- List layout -->
+      <div
+        v-else
+        :class="['posts space-y-3', isMobile ? 'px-0' : 'max-w-3xl mx-auto']"
+      >
+        <PostCard
+          v-for="(post, index) in posts"
+          :key="post.id"
+          :post="post"
+          :show-actions="auth.isAuthenticated"
+          :eager="index < 3"
+          variant="list"
+          class="w-full"
+          @refresh="handleRefresh"
+        />
+      </div>
+
+      <!-- Load more trigger -->
       <div
         v-if="home.loaded && hasMore && !loading"
         ref="loadMoreTrigger"
         class="text-center py-8"
       >
-        <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-600">
+        <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-500">
           <LoadingSpinner size="sm" />
           <span>{{ t('common.loading') }}</span>
         </div>
@@ -167,165 +157,99 @@ const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
 
 const auth = useAuthStore()
 const home = useHomeStore()
-
 const { isMobile, isTablet } = useDeviceSafe()
 
-// fuck u shit changes
 const layoutMode = ref<'grid' | 'list'>('grid')
-const effectiveLayout = computed(() => {
-  if (isMobile.value) return 'list'
-  return layoutMode.value
-})
+const effectiveLayout = computed(() => isMobile.value ? 'list' : layoutMode.value)
 const gridClasses = computed(() => {
-  const base = 'grid gap-4 md:gap-6'
+  const base = 'grid gap-4'
   if (isMobile.value) return `${base} grid-cols-1`
   if (isTablet.value) return `${base} grid-cols-1 sm:grid-cols-2`
-  return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`
+  return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`
 })
 
-// 切换布局模式
 const switchLayout = async (mode: 'grid' | 'list') => {
   if (mode === layoutMode.value) return
-
   layoutMode.value = mode
-  if (!isMobile.value) {
-    localStorage.setItem('love-wall-layout', mode)
-  }
+  if (!isMobile.value) localStorage.setItem('love-wall-layout', mode)
 }
 
-// --- 数据加载（仅在客户端首屏加载，避免阻塞 SSR） ---
 const posts = computed<PostDto[]>(() => home.posts)
 const hasMore = computed(() => home.hasMore)
 const loadingMore = computed(() => home.loadingMore)
 const loading = computed(() => home.loading)
 
-// 首次进入首页时，在客户端触发初始加载
 onMounted(() => {
   if (!home.loaded && !home.loading) {
-    home.initialLoad().catch((error) => {
-      console.error('Index: initial home load failed', error)
-    })
+    home.initialLoad().catch((error) => console.error('Index: initial home load failed', error))
   }
 })
 
-// 刷新按钮
 const handleRefresh = async () => {
-  try {
-    await home.forceRefresh()
-  } catch (error) {
-    console.error('Index: manual refresh failed', error)
-  }
+  try { await home.forceRefresh() }
+  catch (error) { console.error('Index: manual refresh failed', error) }
 }
 
-// 加载更多
 const loadMore = async () => {
-  try {
-    await home.loadMore()
-  } catch (error) {
-    console.error('Index: load more failed', error)
-  }
+  try { await home.loadMore() }
+  catch (error) { console.error('Index: load more failed', error) }
 }
 
-// 触底监听
 const loadMoreTrigger = ref<HTMLElement>()
-
 onMounted(() => {
   if (!loadMoreTrigger.value) return
-
   const observer = new IntersectionObserver(
     (entries) => {
       const target = entries[0]
-      if (target && target.isIntersecting && hasMore.value && !loadingMore.value) {
-        loadMore()
-      }
+      if (target && target.isIntersecting && hasMore.value && !loadingMore.value) loadMore()
     },
-    {
-      root: null,
-      rootMargin: '200px',
-      threshold: 0.1,
-    }
+    { root: null, rootMargin: '200px', threshold: 0.1 }
   )
-
   observer.observe(loadMoreTrigger.value)
-
-  onBeforeUnmount(() => {
-    observer.disconnect()
-  })
+  onBeforeUnmount(() => observer.disconnect())
 })
 
-// 返回本页时尝试做一次轻量刷新（不依赖 TTL）
 onBeforeRouteUpdate((to, from) => {
-  if (to.fullPath === from.fullPath) {
-    return
-  }
-
-  home.refreshIfStale().catch((error) => {
-    console.error('Index: onBeforeRouteUpdate refresh failed', error)
-  })
+  if (to.fullPath === from.fullPath) return
+  home.refreshIfStale().catch((error) => console.error('Index: onBeforeRouteUpdate refresh failed', error))
 })
 
 onActivated(async () => {
-  try {
-    await home.refreshIfStale()
-  } catch (e) {
-    console.error('Index: onActivated refresh failed', e)
-  }
+  try { await home.refreshIfStale() }
+  catch (e) { console.error('Index: onActivated refresh failed', e) }
 })
 
-// --- SEO 与结构化数据 ---
+// SEO
 const homepageTitle = t('seo.title')
 const homepageDescription = t('seo.description')
 const homepageKeywords = t('seo.keywords')
 const siteName = t('seo.title')
-
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 
 const normalizedSiteOrigin = computed(() => {
   const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
-  if (configured) {
-    return configured.replace(/\/+$/, '')
-  }
-  if (import.meta.client && typeof window !== 'undefined') {
-    return window.location.origin.replace(/\/+$/, '')
-  }
+  if (configured) return configured.replace(/\/+$/, '')
+  if (import.meta.client && typeof window !== 'undefined') return window.location.origin.replace(/\/+$/, '')
   return ''
 })
-
 const canonicalUrl = computed(() => {
   const base = normalizedSiteOrigin.value
   const path = route.fullPath || '/'
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  if (!base) {
-    return normalizedPath
-  }
-  return `${base}${normalizedPath}`
+  return base ? `${base}${normalizedPath}` : normalizedPath
 })
-
 const homepageOgImage = computed(() => {
   const base = normalizedSiteOrigin.value
-  if (!base) {
-    return '/badge.png'
-  }
-  return `${base}/badge.png`
+  return base ? `${base}/badge.png` : '/badge.png'
 })
-
 const homepageStructuredData = computed(() => {
   const base = normalizedSiteOrigin.value
-  if (!base) {
-    return null
-  }
+  if (!base) return null
   return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: siteName,
-    url: base,
+    '@context': 'https://schema.org', '@type': 'WebSite', name: siteName, url: base,
     description: homepageDescription,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${base}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string'
-    }
+    potentialAction: { '@type': 'SearchAction', target: `${base}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' }
   }
 })
 
@@ -335,60 +259,25 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: homepageTitle,
-  description: homepageDescription,
-  keywords: homepageKeywords,
-
-  // Open Graph
-  ogTitle: homepageTitle,
-  ogDescription: homepageDescription,
-  ogType: 'website',
-  ogUrl: computed(() => canonicalUrl.value),
-  ogImage: computed(() => homepageOgImage.value),
-  ogSiteName: siteName,
-
-  // Twitter
-  twitterCard: 'summary_large_image',
-  twitterTitle: homepageTitle,
-  twitterDescription: homepageDescription,
+  title: homepageTitle, description: homepageDescription, keywords: homepageKeywords,
+  ogTitle: homepageTitle, ogDescription: homepageDescription, ogType: 'website',
+  ogUrl: computed(() => canonicalUrl.value), ogImage: computed(() => homepageOgImage.value), ogSiteName: siteName,
+  twitterCard: 'summary_large_image', twitterTitle: homepageTitle, twitterDescription: homepageDescription,
   twitterImage: computed(() => homepageOgImage.value),
 })
 
 useHead({
-  link: [
-    {
-      rel: 'canonical',
-      href: computed(() => canonicalUrl.value)
-    }
-  ],
+  link: [{ rel: 'canonical', href: computed(() => canonicalUrl.value) }],
   script: computed(() => {
     if (!homepageStructuredData.value) return []
-    return [
-      {
-        type: 'application/ld+json',
-        key: 'ld-homepage',
-        children: JSON.stringify(homepageStructuredData.value),
-      },
-    ]
+    return [{ type: 'application/ld+json', key: 'ld-homepage', children: JSON.stringify(homepageStructuredData.value) }]
   }),
 })
 </script>
 
 <style scoped>
-.page-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-.page-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
 :deep(.posts > .card) {
   content-visibility: auto;
-  contain-intrinsic-size: 1px 360px;
+  contain-intrinsic-size: 1px 300px;
 }
 </style>
-

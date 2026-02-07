@@ -8,7 +8,7 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
-      <div class="glass-card p-8">
+      <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
         <h2 class="text-2xl font-bold text-red-600 mb-4">{{ t('error.titles.unknown') }}</h2>
         <p class="text-gray-600 mb-4">{{ error }}</p>
         <GlassButton variant="secondary" @click="() => refresh()">
@@ -50,7 +50,7 @@
                 :src="authorAvatar"
                 :alt="post.author_name"
                 class="relative z-10 w-full h-full rounded-full object-cover"
-                :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+                :class="post.is_author_admin ? 'border-0' : 'border-2 border-gray-200'"
                 width="96"
                 height="96"
                 loading="eager"
@@ -59,8 +59,8 @@
               />
               <div
                 v-else
-                class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-lg font-medium"
-                :class="post.is_author_admin ? 'border-0' : 'border-2 border-white/20'"
+                class="relative z-10 w-full h-full bg-brand-600 rounded-full flex items-center justify-center text-white text-lg font-medium"
+                :class="post.is_author_admin ? 'border-0' : 'border-2 border-gray-200'"
               >
                 {{ post.author_name.slice(0, 2) }}
               </div>
@@ -101,7 +101,7 @@
                       :src="authorAvatar"
                       :alt="post.author_name"
                       class="relative z-10 w-full h-full rounded-full object-cover"
-                      :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
+                      :class="post.is_author_admin ? 'border-0' : 'border border-gray-200'"
                       width="32"
                       height="32"
                       loading="lazy"
@@ -110,8 +110,8 @@
                     />
                     <div
                       v-else
-                      class="relative z-10 w-full h-full bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white text-xs font-medium"
-                      :class="post.is_author_admin ? 'border-0' : 'border border-white/20'"
+                      class="relative z-10 w-full h-full bg-brand-600 rounded-full flex items-center justify-center text-white text-xs font-medium"
+                      :class="post.is_author_admin ? 'border-0' : 'border border-gray-200'"
                     >
                       {{ post.author_name.slice(0, 2) }}
                     </div>
@@ -219,7 +219,7 @@
 
             <ClientOnly>
               <!-- Admin actions -->
-              <div v-if="showAdminActions" class="mt-6 pt-4 border-t border-white/20">
+              <div v-if="showAdminActions" class="mt-6 pt-4 border-t border-gray-200">
                 <div class="flex flex-wrap gap-2">
                   <template v-if="post.status === 0">
                     <button
@@ -291,7 +291,7 @@
 
       <!-- Comments Section -->
       <GlassCard class="p-6">
-        <div class="border-b border-white/20 pb-4 mb-6">
+        <div class="border-b border-gray-200 pb-4 mb-6">
           <h2 class="text-xl font-semibold text-gray-800">
             {{ t('common.comment') }} ({{ commentsData?.total || 0 }})
           </h2>
@@ -340,7 +340,7 @@
 
               <div v-else class="mb-6 text-center py-8">
                 <p class="text-gray-600 mb-4">{{ t('comment.loginRequired') }}</p>
-                <NuxtLink :to="localePath('/auth/login')" class="glass-button">
+                <NuxtLink :to="localePath('/auth/login')" class="btn-primary">
                   {{ t('home.login') }}
                 </NuxtLink>
               </div>
@@ -375,12 +375,12 @@
                 >
                   <hr
                     v-if="index > 0 && !comment.is_pinned && comments[index - 1] && comments[index - 1]!.is_pinned"
-                    class="my-6 border-white/20"
+                    class="my-6 border-gray-200"
                   />
                   <div
                     :class="[
-                    'rounded-xl border border-white/10',
-                    comment.is_pinned ? 'pinned-comment backdrop-blur-xl' : 'p-4 bg-white/10'
+                    'rounded-xl border border-gray-200',
+                    comment.is_pinned ? 'pinned-comment ' : 'p-4 bg-gray-50'
                   ]"
                   >
                     <div
@@ -1230,12 +1230,12 @@ useHead({
 
 <style scoped>
 .pinned-comment {
-  background: linear-gradient(135deg, rgba(255, 92, 163, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  background: #fdf2f8;
+  border: 1px solid #fbcfe8;
   border-left: 3px solid #e04a91;
   padding: 1rem;
   border-radius: 0.75rem;
   margin-bottom: 1rem;
-  backdrop-filter: blur(18px);
 }
 
 .pinned-comment:last-child {
