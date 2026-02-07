@@ -117,7 +117,7 @@
               </div>
 
               <!-- Actions -->
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                 <GlassButton
                   variant="secondary"
                   class="!p-2"

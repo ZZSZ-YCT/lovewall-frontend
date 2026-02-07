@@ -159,7 +159,9 @@ const auth = useAuthStore()
 const home = useHomeStore()
 const { isMobile, isTablet } = useDeviceSafe()
 
-const layoutMode = ref<'grid' | 'list'>('grid')
+const layoutMode = ref<'grid' | 'list'>(
+  (import.meta.client && (localStorage.getItem('love-wall-layout') as 'grid' | 'list')) || 'grid'
+)
 const effectiveLayout = computed(() => isMobile.value ? 'list' : layoutMode.value)
 const gridClasses = computed(() => {
   const base = 'grid gap-4'
@@ -195,19 +197,23 @@ const loadMore = async () => {
   catch (error) { console.error('Index: load more failed', error) }
 }
 
-const loadMoreTrigger = ref<HTMLElement>()
-onMounted(() => {
-  if (!loadMoreTrigger.value) return
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const target = entries[0]
-      if (target && target.isIntersecting && hasMore.value && !loadingMore.value) loadMore()
-    },
-    { root: null, rootMargin: '200px', threshold: 0.1 }
-  )
-  observer.observe(loadMoreTrigger.value)
-  onBeforeUnmount(() => observer.disconnect())
-})
+const loadMoreTrigger = ref<HTMLElement | null>(null)
+watch(
+  () => loadMoreTrigger.value,
+  (el, _, onCleanup) => {
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0]
+        if (target && target.isIntersecting && hasMore.value && !loadingMore.value) loadMore()
+      },
+      { root: null, rootMargin: '200px', threshold: 0.1 }
+    )
+    observer.observe(el)
+    onCleanup(() => observer.disconnect())
+  },
+  { flush: 'post' }
+)
 
 onBeforeRouteUpdate((to, from) => {
   if (to.fullPath === from.fullPath) return
@@ -255,7 +261,8 @@ const homepageStructuredData = computed(() => {
 
 definePageMeta({
   title: { k: 'seo.title' },
-  key: (route: any) => `index-${(route as any).fullPath || '/'}`
+  key: (route: any) => `index-${(route as any).fullPath || '/'}`,
+  keepalive: true
 })
 
 useSeoMeta({

@@ -31,9 +31,13 @@ interface Props {
 
 const props = defineProps<Props>()
 const route = useRoute()
+const localePath = useLocalePath()
 
+// props.to is already locale-resolved from AdminSidebar.vue
+// Use the raw admin path for exact-match check on the dashboard
 const isActive = computed(() => {
-  if (props.to === '/admin') return route.path === '/admin'
+  const adminRoot = localePath('/admin')
+  if (props.to === adminRoot) return route.path === adminRoot
   return route.path.startsWith(props.to)
 })
 

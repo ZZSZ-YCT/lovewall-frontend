@@ -195,9 +195,9 @@
                   </div>
 
                   <!-- Quick Actions -->
-                  <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <NuxtLink
-                      :to="`/posts/${post.id}`"
+                      :to="localePath(`/posts/${post.id}`)"
                       class="p-2 text-gray-600 hover:text-brand-600 transition-colors"
                       title="查看详情"
                       @click.stop
@@ -474,6 +474,7 @@ const permissions = usePermissions()
 const toast = useToast()
 const { assetUrl } = useAssetUrl()
 const router = useRouter()
+const localePath = useLocalePath()
 
 // State
 const posts = ref<PostDto[]>([])
@@ -594,7 +595,7 @@ const getStatusText = (status: number) => {
 }
 
 const goDetail = (post: PostDto) => {
-  router.push(`/posts/${post.id}`)
+  router.push(localePath(`/posts/${post.id}`))
 }
 
 const openActionReason = (post: PostDto, action: 'pin' | 'feature' | 'hide', enable: boolean) => {

@@ -104,7 +104,7 @@
               class="hover:bg-gray-50"
             >
               <!-- Content -->
-              <td class="px-6 py-4 max-w-xs">
+              <td class="px-6 py-4 max-w-md">
                 <p class="text-sm text-gray-700 line-clamp-3">{{ comment.content }}</p>
               </td>
 
@@ -119,9 +119,12 @@
 
               <!-- Post -->
               <td class="px-6 py-4">
-                <div class="text-sm text-gray-600">
-                  <code class="text-xs bg-gray-100 px-1 rounded">{{ comment.post_id }}</code>
-                </div>
+                <NuxtLink
+                  :to="localePath(`/posts/${comment.post_id}`)"
+                  class="text-xs font-mono bg-gray-100 px-1 rounded text-brand-600 hover:text-brand-700 hover:underline"
+                >
+                  {{ comment.post_id }}
+                </NuxtLink>
               </td>
 
               <!-- Status -->
@@ -145,6 +148,14 @@
               <!-- Actions -->
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
+                  <NuxtLink
+                    :to="localePath(`/posts/${comment.post_id}`)"
+                    class="inline-flex items-center justify-center p-2 text-gray-600 hover:text-brand-600 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="查看上下文"
+                  >
+                    <ExternalLinkIcon class="w-4 h-4" />
+                  </NuxtLink>
+
                   <GlassButton
                     v-if="comment.status === 0"
                     variant="secondary"
@@ -216,7 +227,7 @@
 </template>
 
 <script setup lang="ts">
-import {EyeIcon, EyeOffIcon, MessageSquareIcon, RefreshCwIcon, TrashIcon} from 'lucide-vue-next'
+import {EyeIcon, EyeOffIcon, ExternalLinkIcon, MessageSquareIcon, RefreshCwIcon, TrashIcon} from 'lucide-vue-next'
 import type {CommentDto, Pagination} from '~/types'
 import GlassButton from "~/components/ui/GlassButton.vue";
 import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
@@ -233,6 +244,7 @@ definePageMeta({
 // Stores
 const auth = useAuthStore()
 const toast = useToast()
+const localePath = useLocalePath()
 
 // State
 const comments = ref<CommentDto[]>([])

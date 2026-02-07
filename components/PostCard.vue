@@ -362,13 +362,19 @@ const updateDropdownPosition = () => {
   if (!dropdownButtonRef.value) return
   const rect = dropdownButtonRef.value.getBoundingClientRect()
   const menuWidth = 192
+  const menuHeight = dropdownMenuRef.value?.offsetHeight ?? 0
   const spaceOnRight = window.innerWidth - rect.right
+  const spaceBelow = window.innerHeight - rect.bottom
+  const shouldFlip = menuHeight > 0 && spaceBelow < menuHeight + 8 && rect.top >= menuHeight + 8
+  const top = shouldFlip
+    ? Math.max(8, rect.top - menuHeight - 4)
+    : rect.bottom + 4
   if (spaceOnRight >= menuWidth) {
-    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: `${rect.right - menuWidth}px`, right: undefined }
+    dropdownStyle.value = { top: `${top}px`, left: `${rect.right - menuWidth}px`, right: undefined }
   } else if (rect.left >= menuWidth) {
-    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: `${rect.left}px`, right: undefined }
+    dropdownStyle.value = { top: `${top}px`, left: `${rect.left}px`, right: undefined }
   } else {
-    dropdownStyle.value = { top: `${rect.bottom + 4}px`, left: undefined, right: '8px' }
+    dropdownStyle.value = { top: `${top}px`, left: undefined, right: '8px' }
   }
 }
 const toggleDropdown = () => {
@@ -452,26 +458,29 @@ const navigateToAuthor = () => {
 }
 
 const handlePin = async (pin: boolean) => {
+  showDropdown.value = false
   try {
     const reason = await promptModerationReason(pin ? t('common.pin') : t('common.unpin'))
     if (reason === null) return
-    await api.pinPost(props.post.id, pin, reason || undefined)
+    const result = await api.pinPost(props.post.id, pin, reason || undefined)
+    props.post.is_pinned = result.is_pinned
     toast.success(t('common.success'))
     emit('refresh')
   } catch (error) { console.error('Pin post failed:', error) }
-  showDropdown.value = false
 }
 const handleFeature = async (feature: boolean) => {
+  showDropdown.value = false
   try {
     const reason = await promptModerationReason(feature ? t('common.feature') : t('common.unfeature'))
     if (reason === null) return
-    await api.featurePost(props.post.id, feature, reason || undefined)
+    const result = await api.featurePost(props.post.id, feature, reason || undefined)
+    props.post.is_featured = result.is_featured
     toast.success(t('common.success'))
     emit('refresh')
   } catch (error) { console.error('Feature post failed:', error) }
-  showDropdown.value = false
 }
 const handleHide = async () => {
+  showDropdown.value = false
   const hide = props.post.status === 0
   if (hide) {
     const confirmed = await confirmDialog({ title: '确认隐藏', message: '确定要隐藏这个帖子吗？', confirmText: '确认隐藏', cancelText: '取消' })
@@ -480,13 +489,14 @@ const handleHide = async () => {
   try {
     const reason = await promptModerationReason(hide ? '隐藏' : '恢复')
     if (reason === null) return
-    await api.hidePost(props.post.id, hide, reason || undefined)
+    const result = await api.hidePost(props.post.id, hide, reason || undefined)
+    props.post.status = result.status as 0 | 1
     toast.success(hide ? '已隐藏帖子' : '已恢复帖子')
     emit('refresh')
   } catch (error) { console.error('Hide/unhide post failed:', error) }
-  showDropdown.value = false
 }
 const handleDelete = async () => {
+  showDropdown.value = false
   const confirmed = await confirmDialog({ title: '删除帖子', message: '确定要删除这个帖子吗？此操作不可恢复！', confirmText: '删除', cancelText: '取消' })
   if (!confirmed) return
   try {
@@ -496,7 +506,6 @@ const handleDelete = async () => {
     toast.success('已删除帖子')
     emit('refresh')
   } catch (error) { console.error('Delete post failed:', error) }
-  showDropdown.value = false
 }
 const promptModerationReason = async (action: string): Promise<string | null> => {
   if (!import.meta.client) return ''

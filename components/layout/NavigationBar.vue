@@ -8,7 +8,7 @@
       ]">
         <!-- Logo -->
         <NuxtLink
-          to="/"
+          :to="localePath('/')"
           :class="[
             'flex items-center gap-2 font-bold text-brand-600 hover:text-brand-700 transition-all',
             isMobile ? 'text-lg' : 'text-xl'
@@ -21,23 +21,23 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-6">
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             class="btn-secondary text-sm font-medium px-4 py-2"
           >
             首页
           </NuxtLink>
-          
+
           <NuxtLink
             v-if="auth.isAuthenticated"
-            to="/posts/new"
+            :to="localePath('/posts/new')"
             class="btn-secondary text-sm font-medium px-4 py-2"
           >
             发布表白
           </NuxtLink>
 
           <NuxtLink
-            v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
-            to="/admin"
+            v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS', 'MANAGE_FEATURED', 'MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
+            :to="localePath('/admin')"
             class="btn-secondary text-sm font-medium px-4 py-2"
           >
             管理后台
@@ -54,13 +54,13 @@
           <template v-if="!auth.isAuthenticated">
             <div v-if="!isMobile" class="flex items-center gap-2">
               <NuxtLink
-                to="/auth/login"
+                :to="localePath('/auth/login')"
                 class="btn-secondary px-4 py-2 text-sm font-medium"
               >
                 登录
               </NuxtLink>
               <NuxtLink
-                to="/auth/register"
+                :to="localePath('/auth/register')"
                 class="btn-primary px-4 py-2 text-sm font-medium"
               >
                 注册
@@ -72,7 +72,7 @@
           <template v-if="auth.isAuthenticated">
             <!-- 通知按钮 -->
             <NuxtLink
-              to="/notifications"
+              :to="localePath('/notifications')"
               :class="[
                 'relative inline-flex items-center justify-center rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60',
                 isMobile ? 'h-9 w-9' : 'h-10 w-10',
@@ -127,21 +127,21 @@
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md border border-gray-200 py-2 shadow-lg"
               >
                 <NuxtLink
-                  to="/me"
+                  :to="localePath('/me')"
                   class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
                   个人中心
                 </NuxtLink>
                 <NuxtLink
-                  to="/me/posts"
+                  :to="localePath('/me/posts')"
                   class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
                   我的帖子
                 </NuxtLink>
                 <NuxtLink
-                  to="/me/tags"
+                  :to="localePath('/me/tags')"
                   class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                   @click="showUserMenu = false"
                 >
@@ -176,16 +176,16 @@
       >
         <div class="space-y-2">
           <NuxtLink
-            to="/"
+            :to="localePath('/')"
             class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
             首页
           </NuxtLink>
-          
+
           <NuxtLink
             v-if="auth.isAuthenticated"
-            to="/posts/new"
+            :to="localePath('/posts/new')"
             class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
@@ -193,8 +193,8 @@
           </NuxtLink>
 
           <NuxtLink
-            v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
-            to="/admin"
+            v-if="auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS', 'MANAGE_FEATURED', 'MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_TAGS']))"
+            :to="localePath('/admin')"
             class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
             @click="showMobileMenu = false"
           >
@@ -205,14 +205,14 @@
           <template v-if="!auth.isAuthenticated">
             <div class="pt-2 border-t border-gray-200 mt-2">
               <NuxtLink
-                to="/auth/login"
+                :to="localePath('/auth/login')"
                 class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
                 登录
               </NuxtLink>
               <NuxtLink
-                to="/auth/register"
+                :to="localePath('/auth/register')"
                 class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
@@ -225,7 +225,7 @@
           <template v-if="auth.isAuthenticated">
             <div class="pt-2 border-t border-gray-200 mt-2">
               <NuxtLink
-                to="/me"
+                :to="localePath('/me')"
                 class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg"
                 @click="showMobileMenu = false"
               >
@@ -246,8 +246,8 @@
 </template>
 
 <script setup lang="ts">
-//const { t } = useI18n();
-//suddenly I find this is deprecated
+const { t } = useI18n()
+const localePath = useLocalePath()
 
 import {
   HeartIcon,

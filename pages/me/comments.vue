@@ -63,61 +63,31 @@
     </div>
 
     <!-- Comments List -->
-    <div v-else class="space-y-4">
+    <div v-else class="bg-white rounded-lg border border-gray-200 shadow-sm divide-y divide-gray-100">
       <div
         v-for="comment in comments"
         :key="comment.id"
-        class="group"
+        class="group px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors"
       >
-        <GlassCard class="p-6 hover:shadow-md transition-all">
-          <div class="space-y-4">
-            <!-- Comment Header -->
-            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-              <div class="flex-1 min-w-0 space-y-1">
-                <CommentUserInfo
-                  :comment="comment"
-                  :show-status-badge="true"
-                />
-                <div class="text-sm text-gray-500">
-                  {{ formatDate(comment.created_at) }}
-                  <span v-if="comment.updated_at && comment.updated_at !== comment.created_at">
-                    · {{ t('common.edited') }}
-                  </span>
-                </div>
-              </div>
-              <!-- Actions -->
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <NuxtLink
-                  :to="localePath(`/posts/${comment.post_id}`)"
-                  class="btn-secondary !p-2"
-                  :title="t('common.detail')"
-                >
-                  <ExternalLinkIcon class="w-4 h-4" />
-                </NuxtLink>
-                
-                <GlassButton
-                  v-if="canEdit(comment)"
-                  variant="secondary"
-                  class="!p-2"
-                  :title="t('user.comments.edit')"
-                  @click="startEdit(comment)"
-                >
-                  <EditIcon class="w-4 h-4" />
-                </GlassButton>
-                
-                <GlassButton
-                  variant="secondary"
-                  class="!p-2 !text-red-600 hover:!bg-red-50"
-                  :title="t('common.delete')"
-                  @click="confirmDelete(comment)"
-                >
-                  <Trash2Icon class="w-4 h-4" />
-                </GlassButton>
-              </div>
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <!-- User info + time -->
+            <div class="flex items-center gap-2 mb-1">
+              <CommentUserInfo
+                :comment="comment"
+                :show-status-badge="true"
+              />
+              <span class="text-xs text-gray-400">·</span>
+              <span class="text-xs text-gray-500 whitespace-nowrap">
+                {{ formatDate(comment.created_at) }}
+              </span>
+              <span v-if="comment.updated_at && comment.updated_at !== comment.created_at" class="text-xs text-gray-400">
+                · {{ t('common.edited') }}
+              </span>
             </div>
 
-            <!-- Comment Content -->
-            <div v-if="editingComment?.id === comment.id" class="space-y-3">
+            <!-- Edit form -->
+            <div v-if="editingComment?.id === comment.id" class="mt-2 space-y-3">
               <GlassTextarea
                 v-model="editForm.content"
                 :error="editErrors.content"
@@ -142,67 +112,59 @@
                 </GlassButton>
               </div>
             </div>
-            
-            <div v-else class="prose max-w-none">
-              <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ comment.content }}</p>
-            </div>
 
-            <!-- Referenced Post Info -->
-            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-              <div class="text-sm text-gray-600 mb-1">{{ t('user.comments.source') }}</div>
-              <NuxtLink
-                :to="localePath(`/posts/${comment.post_id}`)"
-                class="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-700 hover:underline font-medium transition-colors mt-2"
-              >
-                {{ t('common.detail') }} →
-              </NuxtLink>
-            </div>
+            <!-- Comment content -->
+            <p v-else class="text-gray-700 text-sm leading-relaxed line-clamp-3 mt-1">{{ comment.content }}</p>
+
+            <!-- Source post link (inline) -->
+            <NuxtLink
+              :to="localePath(`/posts/${comment.post_id}`)"
+              class="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-brand-600 mt-2 transition-colors"
+            >
+              <ExternalLinkIcon class="w-3 h-3" />
+              {{ t('user.comments.source') }}
+            </NuxtLink>
           </div>
-        </GlassCard>
-      </div>
 
-      <!-- Load More -->
-      <div
-        v-if="commentsData && commentsData.page * commentsData.page_size < commentsData.total"
-        class="text-center pt-6"
-      >
-        <GlassButton
-          :loading="loadingMore"
-          variant="secondary"
-          @click="loadMore"
-        >
-          {{ t('common.loadMore') }}
-        </GlassButton>
-      </div>
-    </div>
+          <!-- Actions (always visible on mobile) -->
+          <div class="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0">
+            <GlassButton
+              v-if="canEdit(comment)"
+              variant="secondary"
+              class="!p-1.5"
+              :title="t('user.comments.edit')"
+              @click="startEdit(comment)"
+            >
+              <EditIcon class="w-3.5 h-3.5" />
+            </GlassButton>
 
-    <!-- Delete Confirmation Modal -->
-    <div
-      v-if="deleteModal.show"
-      class="fixed inset-0 z-[9000] flex items-center justify-center bg-black/50 "
-    >
-      <GlassCard class="p-6 max-w-md mx-4">
-        <h3 class="text-lg font-semibold mb-4">{{ t('user.posts.confirmDeletion') }}</h3>
-        <p class="text-gray-600 mb-6">
-          {{ t('user.comments.delete_description') }}
-        </p>
-        <div class="flex gap-3 justify-end">
-          <GlassButton
-            variant="secondary"
-            @click="deleteModal.show = false"
-          >
-            {{ t('common.cancel') }}
-          </GlassButton>
-          <GlassButton
-            :loading="deleting"
-            class="!bg-red-600 hover:!bg-red-700"
-            @click="deleteComment"
-          >
-            {{ t('user.posts.confirmDeletion') }}
-          </GlassButton>
+            <GlassButton
+              variant="secondary"
+              class="!p-1.5 !text-red-600 hover:!bg-red-50"
+              :title="t('common.delete')"
+              @click="confirmDelete(comment)"
+            >
+              <Trash2Icon class="w-3.5 h-3.5" />
+            </GlassButton>
+          </div>
         </div>
-      </GlassCard>
+      </div>
     </div>
+
+    <!-- Load More -->
+    <div
+      v-if="commentsData && commentsData.page * commentsData.page_size < commentsData.total"
+      class="text-center pt-6"
+    >
+      <GlassButton
+        :loading="loadingMore"
+        variant="secondary"
+        @click="loadMore"
+      >
+        {{ t('common.loadMore') }}
+      </GlassButton>
+    </div>
+
   </div>
 </template>
 
@@ -249,11 +211,6 @@ const editForm = reactive<CommentForm>({
   content: ''
 })
 const editErrors = ref<Partial<CommentForm>>({})
-
-const deleteModal = reactive({
-  show: false,
-  comment: null as CommentDto | null
-})
 
 // Computed
 const visibleCount = computed(() => {
@@ -370,34 +327,32 @@ const saveEdit = async () => {
   }
 }
 
-const confirmDelete = (comment: CommentDto) => {
-  deleteModal.comment = comment
-  deleteModal.show = true
-}
+const confirmDelete = async (comment: CommentDto) => {
+  const { confirm } = useAdminDialog()
+  const confirmed = await confirm({
+    title: t('user.posts.confirmDeletion'),
+    message: t('user.comments.delete_description'),
+    confirmText: t('user.posts.confirmDeletion'),
+    cancelText: t('common.cancel')
+  })
 
-const deleteComment = async () => {
-  if (!deleteModal.comment) return
-  
+  if (!confirmed) return
+
   deleting.value = true
   try {
     const api = useNuxtApp().$api
-    await api.deleteComment(deleteModal.comment.id)
-    
-    // Remove from local list or mark as hidden
-    const index = comments.value.findIndex(c => c.id === deleteModal.comment!.id)
+    await api.deleteComment(comment.id)
+
+    const index = comments.value.findIndex(c => c.id === comment.id)
     if (index >= 0) {
-      if(comments.value && comments.value[index]) {
-        comments.value[index].status = 1 // Mark as hidden
-      }
+      comments.value[index].status = 1
     }
-    
+
     if (commentsData.value) {
       commentsData.value.total -= 1
     }
-    
+
     toast.success(t('common.success'))
-    deleteModal.show = false
-    deleteModal.comment = null
   } catch (error) {
     toast.error(t('error.messages.unknown'))
   } finally {

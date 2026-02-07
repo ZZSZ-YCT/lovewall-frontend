@@ -85,7 +85,6 @@
             variant="secondary"
             class="w-full"
             :disabled="!isFormValid || loading"
-            @click="handleSubmit"
           >
             {{ t('home.register') }}
           </GlassButton>
@@ -155,7 +154,6 @@ const error = ref('')
 // Stores
 const auth = useAuthStore()
 const route = useRoute()
-const router = useRouter()
 const captchaDialog = useCaptchaDialog()
 
 // Computed
@@ -231,7 +229,8 @@ const handleSubmit = async () => {
 
     // Redirect to intended destination or home
     const redirect = route.query.redirect as string
-    await router.push(redirect || '/')
+    const safeRedirect = (typeof redirect === 'string' && redirect.startsWith('/')) ? redirect : ''
+    await navigateTo(safeRedirect || localePath('/'), { replace: true })
   } catch (err: any) {
     console.error('[Register] error', err)
     error.value = err.message || t('error.messages.unknown')
@@ -250,18 +249,6 @@ watch([() => form.username, () => form.password, confirmPassword], () => {
     validateForm()
   }
 })
-
-// Redirect if already logged in
-watch(
-  () => auth.isAuthenticated,
-  (isAuthenticated) => {
-    if (isAuthenticated) {
-      const redirect = route.query.redirect as string
-      router.push(redirect || '/')
-    }
-  },
-  { immediate: true }
-)
 
 // Page meta
 definePageMeta({

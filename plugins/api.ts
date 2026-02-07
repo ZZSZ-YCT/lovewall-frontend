@@ -168,8 +168,7 @@ export default defineNuxtPlugin(() => {
       const isActiveTagNotFound = status === 404 &&
         (error.config?.url?.includes('active-tag') || message === 'active tag not found')
 
-      const isAnnouncementNotFound = status === 404 &&
-        error.config?.url?.includes('announcements/by-path')
+      const isAnnouncementRequest = error.config?.url?.includes('announcements/by-path')
 
       const resolveFlag = (source: Record<string, unknown> | undefined, ...keys: string[]): boolean => {
         if (!source) return false
@@ -204,7 +203,7 @@ export default defineNuxtPlugin(() => {
         }
       }
 
-      if (!isActiveTagNotFound && !isAnnouncementNotFound) {
+      if (!isActiveTagNotFound && !isAnnouncementRequest) {
         toast.error(`${message}${trace ? ` · ${trace}` : ''}`)
       }
 

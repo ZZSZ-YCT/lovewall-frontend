@@ -15,11 +15,13 @@
 
     <!-- 分享选项下拉菜单（仅客户端渲染） -->
     <ClientOnly>
-      <div
-        v-if="showOptions && isOptionsOpen"
-        class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg p-2 z-50"
-        @click.stop
-      >
+      <Teleport to="body">
+        <div
+          v-if="showOptions && isOptionsOpen"
+          :style="dropdownStyle"
+          class="fixed w-48 bg-white rounded-lg border border-gray-200 shadow-lg p-2 z-50"
+          @click.stop
+        >
         <div class="space-y-1">
           <!-- 原生分享 -->
           <button
@@ -53,14 +55,17 @@
             <span>{{ platform.name }}</span>
           </button>
         </div>
-      </div>
+        </div>
+      </Teleport>
 
       <!-- 点击外部关闭菜单 -->
-      <div
-        v-if="isOptionsOpen"
-        class="fixed inset-0 z-40"
-        @click="isOptionsOpen = false"
-      />
+      <Teleport to="body">
+        <div
+          v-if="isOptionsOpen"
+          class="fixed inset-0 z-40"
+          @click="isOptionsOpen = false"
+        />
+      </Teleport>
     </ClientOnly>
   </div>
 </template>
@@ -99,25 +104,35 @@ const hydrated = useHydrated()
 
 const loading = ref(false)
 const isOptionsOpen = ref(false)
-const canShare = ref(false)
 const shareButtonRef = ref<HTMLElement>()
 
-// 延迟加载 useShare，只在客户端执行
-let share: any
-let smartShare: any
-let copyToClipboard: any
-let getPlatformShareUrl: any
+const { canShare, share, smartShare, copyToClipboard, getPlatformShareUrl } = useShare()
 
-onMounted(async () => {
-  const { useShare } = await import('~/composables/useShare')
-  const shareComposable = useShare()
+const dropdownStyle = ref<{ top: string; left: string }>({ top: '0px', left: '0px' })
+const updateDropdownPosition = () => {
+  if (!import.meta.client || !shareButtonRef.value) return
+  const rect = shareButtonRef.value.getBoundingClientRect()
+  const menuWidth = 192
+  const left = Math.min(Math.max(rect.left, 8), window.innerWidth - menuWidth - 8)
+  dropdownStyle.value = { top: `${rect.bottom + 8}px`, left: `${left}px` }
+}
 
-  // 将返回的响应式值同步到本地 ref
-  canShare.value = shareComposable.canShare.value
-  share = shareComposable.share
-  smartShare = shareComposable.smartShare
-  copyToClipboard = shareComposable.copyToClipboard
-  getPlatformShareUrl = shareComposable.getPlatformShareUrl
+watch(isOptionsOpen, (open) => {
+  if (!import.meta.client) return
+  if (open) {
+    nextTick(() => updateDropdownPosition())
+    window.addEventListener('resize', updateDropdownPosition)
+    window.addEventListener('scroll', updateDropdownPosition, true)
+  } else {
+    window.removeEventListener('resize', updateDropdownPosition)
+    window.removeEventListener('scroll', updateDropdownPosition, true)
+  }
+})
+
+onUnmounted(() => {
+  if (!import.meta.client) return
+  window.removeEventListener('resize', updateDropdownPosition)
+  window.removeEventListener('scroll', updateDropdownPosition, true)
 })
 
 const shareText = computed(() => t('common.share'))
@@ -142,11 +157,6 @@ const availablePlatforms = computed(() => [
 
 // 主分享逻辑
 const handleMainShare = async () => {
-  if (!share) {
-    useToast().info('正在加载分享功能，请稍候...')
-    return
-  }
-
   if (props.showOptions) {
     isOptionsOpen.value = !isOptionsOpen.value
     return
@@ -172,7 +182,6 @@ const handleMainShare = async () => {
 }
 
 const shareNative = async () => {
-  if (!share) return
   loading.value = true
   try {
     await share(props.data, { preferredMethod: 'native' })
@@ -183,14 +192,12 @@ const shareNative = async () => {
 }
 
 const copyLink = async () => {
-  if (!copyToClipboard) return
   const ok = await copyToClipboard(props.data.url)
   useToast()[ok ? 'success' : 'error'](ok ? '链接已复制' : '复制失败')
   isOptionsOpen.value = false
 }
 
 const shareToPlatform = (key: string) => {
-  if (!getPlatformShareUrl) return
   const url = getPlatformShareUrl(props.data, key)
   if (url) window.open(url, '_blank', 'width=600,height=400')
   isOptionsOpen.value = false

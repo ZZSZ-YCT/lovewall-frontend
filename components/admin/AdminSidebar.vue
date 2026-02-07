@@ -23,13 +23,13 @@
 
       <!-- Menu -->
       <div class="flex-1 py-2">
-        <AdminSidebarItem to="/admin" icon="LayoutDashboard" title="概览" />
-        <AdminSidebarItem v-if="canManagePosts" to="/admin/posts" icon="FileText" title="表白管理" />
-        <AdminSidebarItem v-if="canManageUsers" to="/admin/users" icon="Users" title="用户管理" />
-        <AdminSidebarItem v-if="canManageComments" to="/admin/comments" icon="MessageSquare" title="评论管理" />
-        <AdminSidebarItem v-if="canManageAnnouncements" to="/admin/announcements" icon="Megaphone" title="公告管理" />
-        <AdminSidebarItem v-if="canManageTags" to="/admin/tags" icon="Tag" title="标签管理" />
-        <AdminSidebarItem v-if="auth.isSuperadmin" to="/admin/system" icon="Settings" title="系统日志" />
+        <AdminSidebarItem :to="localePath('/admin')" icon="LayoutDashboard" title="概览" />
+        <AdminSidebarItem v-if="canManagePosts" :to="localePath('/admin/posts')" icon="FileText" title="表白管理" />
+        <AdminSidebarItem v-if="canManageUsers" :to="localePath('/admin/users')" icon="Users" title="用户管理" />
+        <AdminSidebarItem v-if="canManageComments" :to="localePath('/admin/comments')" icon="MessageSquare" title="评论管理" />
+        <AdminSidebarItem v-if="canManageAnnouncements" :to="localePath('/admin/announcements')" icon="Megaphone" title="公告管理" />
+        <AdminSidebarItem v-if="canManageTags" :to="localePath('/admin/tags')" icon="Tag" title="标签管理" />
+        <AdminSidebarItem v-if="auth.isSuperadmin" :to="localePath('/admin/system')" icon="Settings" title="系统日志" />
       </div>
 
       <!-- Permissions info -->
@@ -58,6 +58,7 @@ interface Props {
 defineProps<Props>()
 defineEmits<{ close: [] }>()
 
+const localePath = useLocalePath()
 const auth = useAuthStore()
 
 const canManagePosts = computed(() => auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_POSTS', 'MANAGE_FEATURED']))

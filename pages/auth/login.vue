@@ -115,7 +115,6 @@ const error = ref('')
 // Stores
 const auth = useAuthStore()
 const route = useRoute()
-const router = useRouter()
 const captchaDialog = useCaptchaDialog()
 
 // Computed
@@ -177,8 +176,9 @@ const handleSubmit = async () => {
 
     // Redirect to intended destination or home
     const redirect = route.query.redirect as string
-    console.log('Redirecting to:', redirect || '/')
-    await router.push(redirect || '/')
+    const safeRedirect = (typeof redirect === 'string' && redirect.startsWith('/')) ? redirect : ''
+    console.log('Redirecting to:', safeRedirect || localePath('/'))
+    await navigateTo(safeRedirect || localePath('/'), { replace: true })
   } catch (err: any) {
     console.error('Login error:', err)
     error.value = err.message || t('auth.login.invalidCredentials')
@@ -197,18 +197,6 @@ watch(form, () => {
     validateForm()
   }
 })
-
-// Redirect if already logged in
-watch(
-  () => auth.isAuthenticated,
-  (isAuthenticated) => {
-    if (isAuthenticated) {
-      const redirect = route.query.redirect as string
-      router.push(redirect || '/')
-    }
-  },
-  { immediate: true }
-)
 
 // Page meta
 definePageMeta({

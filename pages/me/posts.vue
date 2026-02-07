@@ -128,7 +128,7 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div class="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                   <GlassButton
                     variant="secondary"
                     class="!p-2 !text-red-600 hover:!bg-red-50"
@@ -331,7 +331,7 @@ const refresh = () => {
 // Counts are returned inline per item; no extra stats fetch
 
 const goDetail = (post: PostDto) => {
-  router.push(`/posts/${post.id}`)
+  router.push(localePath(`/posts/${post.id}`))
 }
 
 const handleCardClick = (post: PostDto) => {

@@ -11,7 +11,7 @@
           target="_blank"
           rel="noreferrer"
           @click.prevent.stop="openGallery(index)"
-          class="relative"
+          class="relative overflow-hidden rounded-lg md:rounded-xl"
         >
           <NuxtPicture
             :src="resolveThumbnail(image)"
@@ -30,7 +30,7 @@
           <!-- Last visible tile: overlay +N if there are more images -->
           <div
             v-if="hiddenCount > 0 && index === maxThumbs - 1"
-            class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold"
+            class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-lg font-semibold rounded-lg md:rounded-xl"
           >
             +{{ hiddenCount }}
           </div>
