@@ -1,473 +1,292 @@
 <template>
-  <div class="max-w-4xl mx-auto space-y-8">
-    <!-- 加载中 -->
-    <div v-if="loading" class="flex items-center justify-center py-12">
+  <div class="page-shell overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-[0_18px_50px_-30px_rgba(15,23,42,0.25)]">
+    <div v-if="loading" class="px-4 py-16 text-center sm:px-5">
       <LoadingSpinner size="lg" />
     </div>
 
-    <!-- 错误状态 -->
-    <div v-else-if="error" class="text-center py-12">
-      <GlassCard class="p-8">
-        <h2 class="text-2xl font-bold text-red-600 mb-4">{{ t('error.messages.404') }}</h2>
-        <p class="text-gray-600 mb-4">{{ error }}</p>
-        <GlassButton variant="secondary" @click="$router.back()">{{ t('common.previous') }}</GlassButton>
-      </GlassCard>
+    <div v-else-if="errorMessage" class="px-4 py-16 text-center sm:px-5">
+      <p class="text-sm text-zinc-500">{{ errorMessage }}</p>
     </div>
 
-    <!-- 用户资料 -->
-    <div v-else-if="user" class="space-y-6">
-      <!-- 用户信息卡片 -->
-      <GlassCard class="p-8">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-          <!-- 头像 -->
-          <div class="flex-shrink-0">
-            <div class="relative w-32 h-32">
-              <template v-if="user.is_admin">
-                <div class="absolute -inset-[5px] rounded-full border-[4px] border-sky-400/95 pointer-events-none" />
-                <div class="absolute -inset-[10px] rounded-full bg-sky-300/40 blur-3xl pointer-events-none" />
-              </template>
-
+    <template v-else-if="user">
+      <section class="relative">
+        <div
+          class="h-40 bg-[linear-gradient(135deg,_#0f172a_0%,_#0ea5e9_100%)]"
+          :style="bannerStyle"
+        />
+        <div class="px-4 pb-4 sm:px-5">
+          <div class="-mt-16 flex items-end justify-between gap-4">
+            <div class="h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-zinc-100 shadow-lg">
+              <NuxtImg
+                v-if="user.avatar_url"
+                :src="assetUrl(user.avatar_url)"
+                :alt="displayName"
+                class="h-full w-full object-cover"
+                width="112"
+                height="112"
+              />
               <div
-                class="relative z-10 w-full h-full rounded-full overflow-hidden shadow-lg"
-                :class="user.is_admin ? 'border-0' : 'border-2 border-gray-200'"
+                v-else
+                class="flex h-full w-full items-center justify-center text-3xl font-semibold text-zinc-700"
               >
-                <NuxtImg
-                  v-if="user.avatar_url"
-                  :src="assetUrl(user.avatar_url)"
-                  :alt="userDisplayName"
-                  class="w-full h-full object-cover"
-                />
-                <div
-                  v-else
-                  class="w-full h-full bg-brand-600 flex items-center justify-center text-white text-4xl font-bold"
-                >
-                  {{ userInitials }}
-                </div>
+                {{ displayName.slice(0, 2).toUpperCase() }}
               </div>
+            </div>
 
-              <!-- 在线状态指示器：总是显示，在线绿色/离线灰色，部分盖住头像右下角 -->
-              <div
-                class="absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white shadow-[0_0_0_2px_rgba(0,0,0,0.1)] z-20"
-                :class="userIsOnline ? 'bg-emerald-400' : 'bg-gray-400'"
-                :title="userIsOnline ? (formatOnlineStatus(onlineStatusData?.last_heartbeat)) : t('user.offline')"
+            <div class="pb-3">
+              <button
+                v-if="showFollowButton"
+                type="button"
+                class="inline-flex h-10 items-center justify-center rounded-full px-5 text-sm font-medium transition"
+                :class="isFollowing ? 'border border-zinc-200 bg-white text-zinc-900 hover:border-rose-300 hover:text-rose-600' : 'bg-zinc-950 text-white hover:bg-zinc-800'"
+                :disabled="followLoading"
+                @click="toggleFollow"
+              >
+                {{ followLoading ? '处理中…' : isFollowing ? '取消关注' : '关注' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="text-2xl font-semibold text-zinc-950">{{ displayName }}</h1>
+              <TagBadge
+                v-if="activeTag"
+                :title="activeTag.title"
+                :background="activeTag.background_color"
+                :text="activeTag.text_color"
               />
             </div>
-          </div>
-
-          <!-- 用户详情 -->
-          <div class="flex-1 text-center md:text-left">
-            <div class="mb-4">
-              <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
-                <h1 class="text-3xl font-bold text-gray-800">{{ userDisplayName }}</h1>
-                <span v-if="isDeleted" class="px-2 py-0.5 text-xs bg-gray-200 text-gray-700 rounded-full">{{ t('error.messages.404') }}</span>
-                <TagBadge
-                  v-if="activeTag"
-                  :title="activeTag.title"
-                  :background="activeTag.background_color"
-                  :text="activeTag.text_color"
-                />
-                <span v-if="activeTag?.user_deleted" class="px-2 py-0.5 text-xs bg-red-100 text-red-600 rounded-full">
-                  {{ t('error.messages.404') }}
-                </span>
-              </div>
-              <p class="text-gray-600">@{{ user.username }}</p>
-            </div>
-
-            <div v-if="user.bio" class="mb-4">
-              <p class="text-gray-700 leading-relaxed">{{ user.bio }}</p>
-            </div>
-
-            <div class="flex justify-center md:justify-start gap-6 text-sm text-gray-600">
-              <span>{{ t('common.joinTime', { time: formatDate(user.created_at) }) }}</span>
+            <p class="mt-1 text-sm text-zinc-500">@{{ user.username }}</p>
+            <p v-if="user.bio" class="mt-4 whitespace-pre-wrap break-words text-[15px] leading-6 text-zinc-900">
+              {{ user.bio }}
+            </p>
+            <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-zinc-500">
+              <span>加入于 {{ formatDate(user.created_at) }}</span>
+              <span>{{ user.follower_count || 0 }} 关注者</span>
+              <span>{{ user.following_count || 0 }} 正在关注</span>
             </div>
           </div>
         </div>
-      </GlassCard>
+      </section>
 
-      <!-- 用户表白列表 -->
-      <GlassCard class="p-6">
-        <div class="border-b border-gray-200 pb-4 mb-6">
-          <h2 class="text-xl font-semibold text-gray-800">{{ t('user.postsFrom', { nickname: userDisplayName }) }}</h2>
-        </div>
-
-        <!-- 帖子加载中 -->
-        <div v-if="postsLoading" class="flex justify-center py-8">
-          <LoadingSpinner />
-        </div>
-
-        <!-- 无帖子 -->
-        <div v-else-if="!userPosts.length" class="text-center py-12 text-gray-500">
-          <HeartIcon class="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <p>{{ t('user.noPosts', { nickname: userDisplayName }) }}</p>
-        </div>
-
-        <!-- 帖子列表 -->
-        <div v-else class="space-y-4">
-          <div
-            v-for="post in userPosts"
-            :key="post.id"
-            class="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer"
-            @click="navigateTo(localePath(`/posts/${post.id}`))"
+      <section class="border-y border-zinc-200">
+        <div class="grid grid-cols-3">
+          <button
+            v-for="tab in tabs"
+            :key="tab.key"
+            type="button"
+            class="border-b-2 px-4 py-3 text-sm font-medium transition"
+            :class="currentTab === tab.key ? 'border-zinc-950 text-zinc-950' : 'border-transparent text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800'"
+            @click="selectTab(tab.key)"
           >
-            <div class="flex gap-4">
-              <div v-if="post.images?.length" class="flex-shrink-0">
-                <NuxtPicture
-                  :src="assetUrl(post.images[0])"
-                  :alt="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name ? t('posts.confessionTo', { author: post.author_name, target: post.target_name }) : t('posts.socialFrom', { author: post.author_name })"
-                  class="w-20 h-20 object-cover rounded-lg"
-                  :modifiers="{ fit: 'cover', quality: 60 }"
-                  sizes="(max-width: 768px) 33vw, (max-width: 1024px) 20vw, 32px"
-                />
-              </div>
-
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-2">
-                  <h3 class="font-semibold text-gray-800">
-                    <template v-if="post.card_type !== 'communication' && post.card_type !== 'social' && post.target_name">
-                      {{ post.author_name }} → {{ post.target_name }}
-                    </template>
-                    <template v-else>{{ t('posts.socialFrom', { author: post.author_name }) }}</template>
-                  </h3>
-                  <TagBadge
-                    v-if="post.author_tag"
-                    :title="post.author_tag.title"
-                    :background="post.author_tag.background_color"
-                    :text="post.author_tag.text_color"
-                  />
-                  <div class="flex gap-1 ml-auto">
-                    <span v-if="post.is_featured" class="px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded-full">{{ t('common.feature') }}</span>
-                    <span v-if="post.is_pinned" class="px-2 py-1 text-xs bg-sky-100 text-sky-800 rounded-full">{{ t('common.pin') }}</span>
-                  </div>
-                </div>
-
-                <p class="text-gray-600 text-sm line-clamp-2 mb-2">{{ post.content }}</p>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>{{ formatDate(post.created_at) }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div v-if="postsData && postsData.page * postsData.page_size < postsData.total" class="text-center pt-4">
-            <GlassButton :loading="postsLoading" variant="secondary" @click="loadMorePosts">
-              {{ t('common.loadMore') }}
-            </GlassButton>
-          </div>
+            {{ tab.label }}
+          </button>
         </div>
-      </GlassCard>
-    </div>
+      </section>
+
+      <section v-if="postsPending && posts.length === 0" class="px-4 py-16 text-center sm:px-5">
+        <LoadingSpinner />
+      </section>
+
+      <section v-else-if="posts.length === 0" class="px-4 py-16 text-center text-sm text-zinc-500 sm:px-5">
+        当前标签页还没有内容。
+      </section>
+
+      <section v-else>
+        <TimelinePost
+          v-for="item in posts"
+          :key="item.id"
+          :post="item"
+        />
+
+        <div
+          v-if="postsData && postsData.page * postsData.page_size < postsData.total"
+          class="border-t border-zinc-200 px-4 py-6 text-center sm:px-5"
+        >
+          <button
+            type="button"
+            class="btn-secondary"
+            :disabled="postsPending"
+            @click="loadMore"
+          >
+            {{ postsPending ? '加载中…' : '加载更多' }}
+          </button>
+        </div>
+      </section>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
-const localePath = useLocalePath()
-
-import GlassCard from '~/components/ui/GlassCard.vue'
-import GlassButton from '~/components/ui/GlassButton.vue'
 import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
 import TagBadge from '~/components/ui/TagBadge.vue'
-import { HeartIcon } from 'lucide-vue-next'
+import TimelinePost from '~/components/timeline/TimelinePost.vue'
+import type { Pagination, PostDto, User } from '~/types'
+import type { ActiveTagDto } from '~/types/extra'
 
-// 路由参数
+type ProfileTab = 'posts' | 'replies' | 'likes'
+
+const localePath = useLocalePath()
 const route = useRoute()
-const username = computed(() => route.params.username as string)
+const router = useRouter()
+const auth = useAuthStore()
 const api = useNuxtApp().$api
+const toast = useToast()
 const { assetUrl } = useAssetUrl()
 
-// 用户基本信息 + 状态
-const { data: userData, pending, error: userError } = await useAsyncData(
+const username = computed(() => String(route.params.username || ''))
+const currentTab = ref<ProfileTab>((route.query.tab as ProfileTab) || 'posts')
+
+const {
+  data: profileData,
+  pending,
+  error,
+} = await useAsyncData(
   () => `user-${username.value}`,
   async () => {
     const status = await api.getUserStatusByUsername(username.value)
-    if (!status.exists) throw new Error(t('error.messages.404'))
-    const user = await api.getUserByUsername(username.value)
-    const activeTag = await api.getUserActiveTagByUsername(username.value)
-    return { user, activeTag, status }
+    if (!status.exists) {
+      throw new Error('用户不存在')
+    }
+    const [user, activeTag] = await Promise.all([
+      api.getUserByUsername(username.value),
+      api.getUserActiveTagByUsername(username.value),
+    ])
+    return { user, activeTag }
   },
-  { watch: [username] }
+  { watch: [username] },
 )
 
-const user = computed(() => userData.value?.user ?? null)
-const userDisplayName = computed(() => user.value?.display_name || user.value?.username || '')
-const activeTag = computed(() => userData.value?.activeTag ?? null)
-const userStatus = computed(() => userData.value?.status ?? null)
+const user = computed<User | null>(() => profileData.value?.user ?? null)
+const activeTag = computed<ActiveTagDto | null>(() => profileData.value?.activeTag ?? null)
+const displayName = computed(() => user.value?.display_name || user.value?.username || '')
 const loading = computed(() => pending.value)
-const error = computed(() => userError.value ? userError.value.message || t('error.messages.404') : null)
-const isDeleted = computed(() => !!userStatus.value?.is_deleted)
-const userInitials = computed(() => (userDisplayName.value || '').slice(0, 2))
+const errorMessage = computed(() => error.value?.message || '')
 
-// 获取用户在线状态
-const { data: onlineStatusData } = await useAsyncData(
-  () => `user-online-${user.value?.id}`,
-  async () => {
-    if (!user.value?.id) return null
-    return await api.getUserOnlineStatus(user.value.id)
-  },
-  { watch: [user] }
-)
+const posts = ref<PostDto[]>([])
+const postsData = ref<Pagination<PostDto> | null>(null)
+const postsPending = ref(false)
 
-const userIsOnline = computed(() => onlineStatusData.value?.online ?? false)
+const isFollowing = ref(false)
+const followLoading = ref(false)
 
-// 帖子
-const { data: postsData, pending: postsPending, refresh: refreshPosts } = await useAsyncData(
-  () => `user-posts-${username.value}`,
-  async () => {
-    if (!user.value) return { items: [], page: 1, total: 0, page_size: 10 }
-    return await api.getUserPosts(user.value.id, { page: 1, page_size: 10 })
-  },
-  { watch: [user] }
-)
+const tabs = [
+  { key: 'posts' as const, label: '帖子' },
+  { key: 'replies' as const, label: '回复' },
+  { key: 'likes' as const, label: '点赞' },
+]
 
-const userPosts = computed(() => postsData.value?.items ?? [])
-const postsLoading = computed(() => postsPending.value)
+const bannerStyle = computed(() => {
+  if (!user.value?.banner_url) return undefined
+  return { backgroundImage: `url(${assetUrl(user.value.banner_url)})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+})
 
-// 分页加载
-const loadMorePosts = async () => {
-  if (postsData.value && user.value) {
-    const nextPage = postsData.value.page + 1
-    const data = await api.getUserPosts(user.value.id, { page: nextPage, page_size: 10 })
-    postsData.value.items.push(...data.items)
-    postsData.value.page = nextPage
+const showFollowButton = computed(() => auth.isAuthenticated && !!user.value && user.value.id !== auth.currentUser?.id)
+
+const fetchPosts = async (page = 1, append = false) => {
+  if (!user.value) return
+  postsPending.value = true
+  try {
+    const data = await api.getUserPosts(user.value.id, {
+      page,
+      page_size: 20,
+      type: currentTab.value,
+    })
+    postsData.value = data
+    posts.value = append ? [...posts.value, ...data.items] : [...data.items]
+  } finally {
+    postsPending.value = false
   }
 }
 
-// 工具
+const loadMore = async () => {
+  if (!postsData.value) return
+  await fetchPosts(postsData.value.page + 1, true)
+}
+
+const selectTab = async (tab: ProfileTab) => {
+  currentTab.value = tab
+  await router.replace({ query: { ...route.query, tab } })
+  await fetchPosts(1, false)
+}
+
+const fetchFollowStatus = async () => {
+  if (!showFollowButton.value || !user.value) return
+  try {
+    const status = await api.getFollowStatus(user.value.id)
+    isFollowing.value = !!status.following
+  } catch (error) {
+    console.warn('Fetch follow status failed:', error)
+  }
+}
+
+const toggleFollow = async () => {
+  if (!user.value) return
+  followLoading.value = true
+  try {
+    if (isFollowing.value) {
+      await api.unfollowUser(user.value.id)
+      isFollowing.value = false
+      user.value.follower_count = Math.max(0, (user.value.follower_count || 0) - 1)
+    } else {
+      await api.followUser(user.value.id)
+      isFollowing.value = true
+      user.value.follower_count = (user.value.follower_count || 0) + 1
+    }
+  } catch (error: any) {
+    toast.error(error?.message || '关注操作失败')
+  } finally {
+    followLoading.value = false
+  }
+}
+
+watch([user, currentTab], async ([currentUser]) => {
+  if (!currentUser) return
+  await fetchPosts(1, false)
+  await fetchFollowStatus()
+}, { immediate: true })
+
+watch(() => route.query.tab, (value) => {
+  const tab = value as ProfileTab | undefined
+  if (tab && ['posts', 'replies', 'likes'].includes(tab)) {
+    currentTab.value = tab
+  }
+})
+
 const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('zh-CN')
 
-// 格式化在线状态：在线显示"在线"，离线显示最后心跳时间（GMT+8）
-const formatOnlineStatus = (lastHeartbeat?: string | null) => {
-  if (!lastHeartbeat) return t('user.online')
-
-  try {
-    const date = new Date(lastHeartbeat)
-    // 格式化为 GMT+8 可读时间：2025-01-12 14:30:25
-    return t('user.offlineAndTime', { time: date.toLocaleString('zh-CN', {
-        timeZone: 'Asia/Shanghai',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      })})
-  } catch {
-    return t('user.online')
-  }
-}
-
-// 滚动行为
-watch(username, () => {
-  try { window.scrollTo({ top: 0, behavior: 'smooth' }) } catch {}
+definePageMeta({
+  key: (route: any) => `user-${route.params?.username ?? ''}`,
 })
 
-// SEO
-const siteName = t('seo.title')
-const defaultProfileDescription = t('seo.description')
 const runtimeConfig = useRuntimeConfig()
-
 const normalizedSiteOrigin = computed(() => {
   const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
-  if (configured) {
-    return configured.replace(/\/+$/, '')
-  }
-  if (import.meta.client && typeof window !== 'undefined') {
-    return window.location.origin.replace(/\/+$/, '')
-  }
+  if (configured) return configured.replace(/\/+$/, '')
+  if (import.meta.client && typeof window !== 'undefined') return window.location.origin.replace(/\/+$/, '')
   return ''
-})
-
-const defaultOgImage = computed(() => {
-  const base = normalizedSiteOrigin.value
-  if (!base) {
-    return '/badge.png'
-  }
-  return `${base}/badge.png`
 })
 
 const canonicalUrl = computed(() => {
   const base = normalizedSiteOrigin.value
   const pathValue = route.fullPath || `/users/${username.value}`
-  const normalizedPath = pathValue.startsWith('/') ? pathValue : `/${pathValue}`
-  if (!base) {
-    return normalizedPath
-  }
-  return `${base}${normalizedPath}`
+  return base ? `${base}${pathValue.startsWith('/') ? pathValue : `/${pathValue}`}` : pathValue
 })
 
-const sanitizeContent = (value?: string | null) => {
-  if (!value) {
-    return defaultProfileDescription
-  }
-  const text = value.replace(/\s+/g, ' ').trim()
-  if (!text) {
-    return defaultProfileDescription
-  }
-  return text.length > 160 ? `${text.slice(0, 157)}...` : text
-}
-
-const profileDescription = computed(() => {
-  if (!user.value) {
-    return defaultProfileDescription
-  }
-  if (user.value.bio) {
-    return sanitizeContent(user.value.bio)
-  }
-  return t('user.description', { nickname: userDisplayName.value, siteName: siteName })
-})
-
-const profileOgImage = computed(() => {
-  if (!user.value?.avatar_url) {
-    return defaultOgImage.value
-  }
-  const resolved = assetUrl(user.value.avatar_url)
-  if (resolved) {
-    if (/^(https?:)?\/\//i.test(resolved)) {
-      return resolved.startsWith('//') ? `https:${resolved}` : resolved
-    }
-    if (normalizedSiteOrigin.value) {
-      const normalizedPath = resolved.startsWith('/') ? resolved : `/${resolved}`
-      return `${normalizedSiteOrigin.value}${normalizedPath}`
-    }
-    return resolved
-  }
-  return defaultOgImage.value
-})
-
-const toIsoString = (value?: string | null) => {
-  if (!value) {
-    return undefined
-  }
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) {
-    return undefined
-  }
-  return date.toISOString()
-}
-
-const profileTitle = computed(() => {
-  if (!user.value) {
-    return `${t('user.center')} - ${siteName}`
-  }
-  const uname = user.value.username ? `(@${user.value.username})` : ''
-  return `${userDisplayName.value} ${uname} - ${siteName}`.trim()
-})
-
-const profileStructuredData = computed(() => {
-  if (!user.value) {
-    return null
-  }
-  const canonical = canonicalUrl.value
-  const image = profileOgImage.value
-  const mainEntity: Record<string, any> = {
-    '@type': 'Person',
-    name: userDisplayName.value,
-    alternateName: user.value.username || undefined,
-    identifier: user.value.id,
-    description: user.value.bio ? sanitizeContent(user.value.bio) : undefined,
-  }
-  if (image) {
-    mainEntity.image = image
-  }
-  const data: Record<string, any> = {
-    '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
-    url: canonical,
-    name: profileTitle.value,
-    description: profileDescription.value,
-    dateCreated: toIsoString(user.value.created_at),
-    inLanguage: 'zh-CN',
-    mainEntity,
-    publisher: {
-      '@type': 'Organization',
-      name: siteName,
-      url: normalizedSiteOrigin.value || undefined,
-    },
-  }
-  if (!mainEntity.description) {
-    delete mainEntity.description
-  }
-  if (!mainEntity.alternateName) {
-    delete mainEntity.alternateName
-  }
-  if (!image) {
-    delete mainEntity.image
-  }
-  if (!data.publisher.url) {
-    delete data.publisher.url
-  }
-  return data
-})
+const seoTitle = computed(() => user.value ? `${displayName.value} (@${user.value.username})` : '用户主页')
+const seoDescription = computed(() => user.value?.bio || '查看用户主页、帖子、回复与点赞。')
 
 useSeoMeta({
-  title: computed(() =>
-    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
-  ),
-  description: computed(() =>
-    user.value ? profileDescription.value : defaultProfileDescription
-  ),
-
-  // --- Open Graph ---
-  ogTitle: computed(() =>
-    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
-  ),
-  ogDescription: computed(() =>
-    user.value ? profileDescription.value : defaultProfileDescription
-  ),
-  ogType: 'profile',
-  ogUrl: computed(() => canonicalUrl.value),
-  ogImage: computed(() =>
-    user.value ? profileOgImage.value : defaultOgImage.value
-  ),
-  ogSiteName: siteName,
-
-  // --- Twitter ---
-  twitterCard: computed(() =>
-    user.value?.avatar_url ? 'summary_large_image' : 'summary'
-  ),
-  twitterTitle: computed(() =>
-    user.value ? profileTitle.value : `${t('user.center')} - ${siteName}`
-  ),
-  twitterDescription: computed(() =>
-    user.value ? profileDescription.value : defaultProfileDescription
-  ),
-  twitterImage: computed(() =>
-    user.value ? profileOgImage.value : defaultOgImage.value
-  ),
-
-  // --- Profile-specific OG fields ---
-  profileUsername: computed(() => user.value?.username || ''),
-  profileFirstName: computed(() => userDisplayName.value),
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
+  ogUrl: canonicalUrl,
+  twitterCard: 'summary_large_image',
 })
 
-// --- JSON-LD 结构化数据 ---
 useHead({
-  link: [
-    {
-      rel: 'canonical',
-      href: computed(() => canonicalUrl.value)
-    }
-  ],
-  script: computed(() => {
-    if (!profileStructuredData.value) return []
-    return [
-      {
-        type: 'application/ld+json',
-        key: 'ld-profile-page',
-        children: JSON.stringify(profileStructuredData.value),
-      },
-    ]
-  }),
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
-
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>
-

@@ -27,6 +27,7 @@ const imageDomains = [
 ].filter(Boolean) as string[]
 
 const uniqueImageDomains = Array.from(new Set(imageDomains))
+const BRAND_ICON = '/badge.png?v=20260320'
 
 const apiOrigin = resolveOrigin(API_BASE)
 const randomImageOrigin = resolveOrigin(RANDOM_IMAGE_API_URL)
@@ -177,7 +178,7 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      title: '郑州四中表白墙',
+      title: '郑州四中校园墙',
       htmlAttrs: {
         lang: 'zh-CN'
       },
@@ -196,7 +197,9 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'canonical', href: SITE_URL },
-        { rel: 'icon', type: 'image/png', href: '/badge.png' },
+        { rel: 'icon', type: 'image/png', href: BRAND_ICON },
+        { rel: 'shortcut icon', type: 'image/png', href: BRAND_ICON },
+        { rel: 'apple-touch-icon', href: BRAND_ICON },
         // Preconnect to API and image origins for faster resource loading
         ...(apiOrigin ? [
           { rel: 'dns-prefetch', href: apiOrigin },

@@ -2509,7 +2509,7 @@ const confirmUnbanUser = async (user: User) => {
 
 // SEO
 useHead({
-  title: '用户管理 - 郑州四中表白墙',
+  title: '用户管理 - 郑州四中校园墙',
   meta: [
     {name: 'description', content: '管理用户账户和权限设置'}
   ]

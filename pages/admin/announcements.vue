@@ -531,7 +531,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: '公告管理 - 郑州四中表白墙',
+  title: '公告管理 - 郑州四中校园墙',
   meta: [
     { name: 'description', content: '创建、编辑和管理按页面路径显示的公告' }
   ]

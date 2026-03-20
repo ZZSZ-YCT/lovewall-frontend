@@ -29,7 +29,7 @@
         "3": "妥善保管密码，不要告诉他人",
         "index": "密码安全建议"
       },
-      "title": "修改密码 - 郑州四中表白墙"
+      "title": "修改密码 - 郑州四中校园墙"
     },
     "login": {
       "description": "登入您的账户",
@@ -38,18 +38,18 @@
       "passwordTooShort": "至少 6 个字符",
       "registerNow": "立即注册",
       "registerSuggestion": "还没有账户？",
-      "title": "登录 - 郑州四中表白墙",
+      "title": "登录 - 郑州四中校园墙",
       "usernamePlaceholder": "请输入用户名",
       "welcome": "欢迎回来"
     },
     "register": {
       "agreeWithTerms": "我已阅读并同意条款：",
       "description": "创建您的账户，开始记录美好的表白时刻。",
-      "index": "加入郑州四中表白墙",
+      "index": "加入郑州四中校园墙",
       "loginSuggestion": "已有账户？",
       "notAgreeWithTerms": "请先同意服务条款和隐私政策",
       "passwordTooLong": "密码不能超过128个字符",
-      "title": "注册 - 郑州四中表白墙",
+      "title": "注册 - 郑州四中校园墙",
       "usernameCharset": "用户名只能包含字母、数字和下划线",
       "usernameLimit": "3-20个字符，只能包含字母、数字与下划线",
       "usernameTooLong": "用户名不能超过20个字符",
@@ -130,7 +130,7 @@
       "500": "服务器出现了一些问题，请稍后重试。",
       "unknown": "出现了意外的错误，请稍后重试。"
     },
-    "title": "{code} - {message} - 郑州市第四高级中学表白墙",
+    "title": "{code} - {message} - 郑州四中校园墙",
     "titles": {
       "401": "需要登录",
       "403": "访问被拒绝",
@@ -147,7 +147,7 @@
     "logout": "退出登录",
     "privacy": "隐私条款",
     "register": "注册",
-    "title": "郑州市第四高级中学表白墙",
+    "title": "郑州四中校园墙",
     "tos": "服务条款"
   },
   "notifications": {
@@ -158,7 +158,7 @@
     "failed": "通知加载失败。",
     "failedMark": "标记已读失败。",
     "index": "通知",
-    "title": "通知 - 郑州四中表白墙",
+    "title": "通知 - 郑州四中校园墙",
     "unread": "未讀"
   },
   "permission": {
@@ -220,7 +220,7 @@
         "1": "可以上传一张特别的照片来增加表白的意义",
         "index": "发布小贴士"
       },
-      "title": "发布帖子 - 郑州市第四高级中学表白墙",
+      "title": "发布帖子 - 郑州四中校园墙",
       "toasts": {
         "sent": "帖子已发布，等待审核"
       },
@@ -234,9 +234,9 @@
     "socialFrom": "{author} 的投稿"
   },
   "seo": {
-    "description": "郑州市第四高级中学校园信息交流平台，分享校园生活、表达心声的正规社区",
-    "keywords": "郑州四中,郑州市第四高级中学,表白墙,校园社区,学生交流",
-    "title": "郑州市第四高级中学表白墙"
+    "description": "郑州四中校园信息交流平台，分享校园生活、表达心声的正规社区",
+    "keywords": "郑州四中,郑州市第四高级中学,校园墙,校园社区,学生交流",
+    "title": "郑州四中校园墙"
   },
   "share": {
     "copied": "链接已复制到剪贴板",
@@ -254,7 +254,7 @@
   },
   "user": {
     "center": "个人中心",
-    "centerTitle": "个人中心 - 郑州四中表白墙",
+    "centerTitle": "个人中心 - 郑州四中校园墙",
     "centers": {
       "description": "管理你的个人信息和内容",
       "editProfile": "编辑资料",
@@ -276,11 +276,11 @@
     "editAvatar": "点击头像更换",
     "hasPerm": "拥有权限：",
     "myComments": "我的评论",
-    "myCommentsTitle": "我的评论 - 郑州四中表白墙",
+    "myCommentsTitle": "我的评论 - 郑州四中校园墙",
     "myPosts": "我的帖子",
-    "myPostsTitle": "我的帖子 - 郑州四中表白墙",
+    "myPostsTitle": "我的帖子 - 郑州四中校园墙",
     "myTags": "我的标签",
-    "myTagsTitle": "我的标签 - 郑州四中表白墙",
+    "myTagsTitle": "我的标签 - 郑州四中校园墙",
     "noActivity": "还没有任何活动。",
     "noPerm": "当前账户无特殊权限",
     "noPosts": "{nickname} 还未发表过帖子",

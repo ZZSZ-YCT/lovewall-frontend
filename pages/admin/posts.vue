@@ -822,7 +822,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: '表白管理 - 郑州四中表白墙',
+  title: '帖子管理 - 郑州四中校园墙',
   meta: [
     { name: 'description', content: '审核、管理和操作表白内容' }
   ]

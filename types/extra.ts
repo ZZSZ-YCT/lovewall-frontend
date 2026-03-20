@@ -28,3 +28,17 @@ export interface UserStatusDto {
   id?: string
   ban_reason?: string | null
 }
+
+export interface FollowListItemDto {
+  user_id: string
+  username?: string
+  display_name?: string | null
+  avatar_url?: string | null
+  followed_at?: string
+  blocked_at?: string
+}
+
+export interface FollowStatusDto {
+  following?: boolean
+  blocked?: boolean
+}

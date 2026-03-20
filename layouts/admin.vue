@@ -79,7 +79,7 @@ const currentPageName = computed(() => {
     '/admin': '',
     '/admin/posts': '表白管理',
     '/admin/users': '用户管理',
-    '/admin/comments': '评论管理',
+    '/admin/comments': '回复管理',
     '/admin/announcements': '公告管理',
     '/admin/tags': '标签管理',
     '/admin/system': '系统日志',

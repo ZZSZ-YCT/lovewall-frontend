@@ -1,5 +1,5 @@
 // API Response Types
-export type ApiResp<T> = 
+export type ApiResp<T> =
   | { success: true; data: T; trace_id: string }
   | { success: false; error: ApiError; trace_id: string }
 
@@ -7,6 +7,7 @@ export interface ApiError {
   code: string
   message: string
   extras?: Record<string, any>
+  trace?: string
 }
 
 // User Types
@@ -17,9 +18,10 @@ export interface User {
   email?: string | null
   phone?: string | null
   avatar_url?: string | null
+  banner_url?: string | null
   bio?: string | null
   is_superadmin: boolean
-  is_admin: boolean // 拥有任何管理员权限
+  is_admin: boolean
   status: number
   is_banned: boolean
   ban_reason?: string | null
@@ -27,7 +29,9 @@ export interface User {
   last_login_at?: string | null
   last_ip?: string | null
   metadata?: string | Record<string, unknown> | null
-  permissions?: string[] // 仅在用户列表接口返回
+  permissions?: string[]
+  follower_count?: number
+  following_count?: number
   active_tag?: Pick<TagDto, 'id' | 'name' | 'title' | 'background_color' | 'text_color' | 'description' | 'css_styles' | 'tag_type'> | null
   created_at: string
   updated_at: string
@@ -55,68 +59,93 @@ export interface TagDto {
 }
 
 export interface UserTagDto {
-  user_tag_id: string // 新字段名
+  user_tag_id: string
   is_active: boolean
   obtained_at: string
-  status: string // 新字段
+  status: string
   tag?: Pick<TagDto, 'id' | 'name' | 'title' | 'background_color' | 'text_color' | 'description' | 'is_active' | 'created_at' | 'updated_at' | 'css_styles' | 'tag_type'>
 }
 
 // Post Types
+export interface PostSummary {
+  id: string
+  author_id?: string
+  author_name: string
+  author_display_name?: string | null
+  author_avatar_url?: string | null
+  target_name?: string | null
+  content: string
+  card_type?: 'confession' | 'social'
+  created_at: string
+}
+
 export interface PostDto {
   id: string
   author_id: string
   author_name: string
   target_name: string
   content: string
-  card_type?: 'confession' | 'communication' | 'social' // 卡片类型
+  card_type?: 'confession' | 'social'
   images: string[]
-  status: 0 | 1 // 0=显示, 1=隐藏 (拒绝后直接删除,不可查询)
+  status: 0 | 1
   is_pinned: boolean
   is_featured: boolean
-  is_locked: boolean // 帖子是否被锁定 (默认 false)
+  is_locked: boolean
   created_at: string
   updated_at: string
   author_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color' | 'css_styles'>
-  is_author_admin?: boolean // 帖子作者是否是管理员
+  is_author_admin?: boolean
   moderation_reason?: string | null
-  // Optional stats fields when available from certain endpoints
   view_count?: number
   comment_count?: number
-  // 审核相关字段（仅管理员接口返回）
-  audit_status?: 0 | 1 // 0=普通帖子, 1=待审核
-  is_pending_review?: boolean // 快速判断是否待审核
-  audit_msg?: string | null // 审核相关消息
-  manual_review_requested?: boolean // 是否已申请人工复核
-  // 作者扩展信息（API v3.3新增）
+  like_count?: number
+  repost_count?: number
+  quote_count?: number
+  reply_count?: number
+  liked_by_me?: boolean
+  reply_to_id?: string | null
+  repost_of_id?: string | null
+  quote_of_id?: string | null
+  reply_to?: PostSummary | null
+  repost_of?: PostSummary | null
+  quote_of?: PostSummary | null
+  mentions?: Array<{ user_id: string; username: string }>
+  audit_status?: 0 | 1
+  is_pending_review?: boolean
+  audit_msg?: string | null
+  manual_review_requested?: boolean
   author_avatar_url?: string | null
   author_display_name?: string | null
   author_is_online?: boolean
   author_last_heartbeat?: string | null
+  author_is_deleted?: boolean
+  author_deleted?: boolean
 }
 
-// Post stats (public)
 export interface PostStats {
   id: string
   view_count: number
   comment_count: number
+  like_count: number
+  repost_count: number
+  quote_count: number
+  reply_count: number
 }
 
-// Comment Types
+// Legacy comment types kept for backward compatibility in non-migrated screens
 export interface CommentDto {
   id: string
   post_id: string
   user_id: string
-  // 新增的用户信息字段
   user_username: string
   user_display_name?: string | null
   user_avatar_url?: string | null
-  is_user_admin?: boolean // 评论作者是否是管理员
+  is_user_admin?: boolean
   user_is_online?: boolean
   user_last_heartbeat?: string | null
   content: string
-  status: 0 | 1 // 0=normal, 1=hidden
-  is_pinned: boolean // 评论是否被置顶 (默认 false)
+  status: 0 | 1
+  is_pinned: boolean
   created_at: string
   updated_at?: string
   user_tag?: Pick<TagDto, 'name' | 'title' | 'background_color' | 'text_color' | 'css_styles'>
@@ -159,7 +188,6 @@ export interface Pagination<T> {
 export interface LoginForm {
   username: string
   password: string
-  // 新验证码字段(可选,服务器配置验证码时必填)
   captcha_id?: string
   captcha_data?: {
     dots?: Array<{ x: number; y: number }>
@@ -171,7 +199,6 @@ export interface LoginForm {
 export interface RegisterForm {
   username: string
   password: string
-  // 新验证码字段(可选,服务器配置验证码时必填)
   captcha_id?: string
   captcha_data?: {
     dots?: Array<{ x: number; y: number }>
@@ -184,7 +211,7 @@ export interface PostForm {
   author_name: string
   target_name: string
   content: string
-  card_type?: 'confession' | 'communication' | 'social' // 卡片类型
+  card_type?: 'confession' | 'communication' | 'social'
   images: File[]
 }
 
@@ -232,14 +259,12 @@ export interface UpdateProfileForm {
   avatar?: File | null
 }
 
-// Password Change Forms
 export interface ChangePasswordForm {
   old_password: string
   new_password: string
   confirm_password: string
 }
 
-// Admin Update User Form
 export interface AdminUpdateUserForm {
   username?: string
   display_name?: string | null
@@ -252,13 +277,11 @@ export interface AdminUpdateUserForm {
   old_password?: string
 }
 
-// Admin Change Password Form
 export interface AdminChangePasswordForm {
   new_password: string
   confirm_password: string
 }
 
-// Admin Ban User Form
 export interface AdminBanUserForm {
   reason: string
 }
@@ -283,7 +306,6 @@ export interface TagSimple {
   is_active: boolean
 }
 
-// My tag status APIs
 export interface MyActiveTagStatusResponse {
   has_active: boolean
   current_tag_enabled: boolean
@@ -297,7 +319,6 @@ export interface MyTagStatusResponse {
   tag: TagSimple
 }
 
-// Admin: delete redemption codes
 export interface DeleteRedemptionCodesRequest {
   ids?: string[]
   codes?: string[]
@@ -317,13 +338,6 @@ export const PERMISSIONS = {
 } as const
 
 export type PermissionType = typeof PERMISSIONS[keyof typeof PERMISSIONS]
-
-// Error Types
-export interface ApiError {
-  code: string
-  message: string
-  trace?: string
-}
 
 // UI State Types
 export interface LoadingState {
@@ -351,7 +365,6 @@ export interface LogEntry {
   created_at: string
   ip?: string | null
   user_agent?: string | null
-  // 可选的解析后的元数据，前端使用
   parsedMetadata?: Record<string, unknown>
 }
 
@@ -362,14 +375,13 @@ export interface LogFilters {
   object_type?: string
   object_id?: string
   q?: string
-  from?: string // RFC3339 格式
-  to?: string   // RFC3339 格式
+  from?: string
+  to?: string
   page?: number
   page_size?: number
 }
 
-
-// Heartbeat Types (在线状态相关)
+// Heartbeat Types
 export interface HeartbeatResponse {
   online: boolean
   timestamp: string
@@ -385,7 +397,6 @@ export interface UserOnlineStatus {
 export interface MyOnlineStatus {
   online: boolean
   last_heartbeat: string
-  expires_at?: string        // 兼容旧字段
-  token_expires_at?: string  // 新字段
+  expires_at?: string
+  token_expires_at?: string
 }
-

@@ -565,7 +565,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: '系统日志 - 郑州四中表白墙',
+  title: '系统日志 - 郑州四中校园墙',
   meta: [
     { name: 'description', content: '查看系统提交和操作日志' }
   ]

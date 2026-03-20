@@ -5,6 +5,7 @@ import type {
   UserProfile, 
   AuthResponse, 
   PostDto, 
+  PostStats,
   CommentDto, 
   AnnouncementDto, 
   TagDto, 
@@ -32,7 +33,7 @@ import type {
   UserOnlineStatus,
   MyOnlineStatus
 } from '~/types'
-import type { ActiveTagDto, NotificationDto, UserStatusDto } from '~/types/extra'
+import type { ActiveTagDto, FollowListItemDto, FollowStatusDto, NotificationDto, UserStatusDto } from '~/types/extra'
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
@@ -244,6 +245,52 @@ export default defineNuxtPlugin(() => {
     }
   }
 
+  const buildPostFormData = (data: {
+    content?: string
+    author_name?: string
+    target_name?: string
+    confessor_mode?: 'self' | 'custom'
+    card_type?: 'confession' | 'social'
+    reply_to_id?: string
+    repost_of_id?: string
+    quote_of_id?: string
+    images?: File[]
+  }) => {
+    const formData = new FormData()
+
+    if (data.content !== undefined) formData.append('content', data.content)
+    if (data.author_name) formData.append('author_name', data.author_name)
+    if (data.target_name) formData.append('target_name', data.target_name)
+    if (data.confessor_mode) formData.append('confessor_mode', data.confessor_mode)
+    if (data.card_type) formData.append('card_type', data.card_type)
+    if (data.reply_to_id) formData.append('reply_to_id', data.reply_to_id)
+    if (data.repost_of_id) formData.append('repost_of_id', data.repost_of_id)
+    if (data.quote_of_id) formData.append('quote_of_id', data.quote_of_id)
+    for (const image of data.images || []) {
+      formData.append('images', image)
+    }
+
+    return formData
+  }
+
+  const mapReplyPostToComment = (post: any): CommentDto => ({
+    id: String(post.id),
+    post_id: String(post.reply_to_id ?? post.post_id ?? ''),
+    user_id: String(post.author_id ?? post.user_id ?? ''),
+    user_username: String(post.author_name ?? post.user_username ?? ''),
+    user_display_name: post.author_display_name ?? post.user_display_name ?? post.author_name ?? null,
+    user_avatar_url: post.author_avatar_url ?? post.user_avatar_url ?? null,
+    is_user_admin: !!(post.is_author_admin ?? post.is_user_admin),
+    user_is_online: !!(post.author_is_online ?? post.user_is_online),
+    user_last_heartbeat: post.author_last_heartbeat ?? post.user_last_heartbeat ?? null,
+    content: String(post.content ?? ''),
+    status: typeof post.status === 'number' ? post.status : 0,
+    is_pinned: !!post.is_pinned,
+    created_at: String(post.created_at ?? new Date().toISOString()),
+    updated_at: post.updated_at ?? post.created_at ?? new Date().toISOString(),
+    user_tag: post.author_tag ?? post.user_tag ?? undefined,
+  })
+
   // API methods
   const api = {
     // Authentication
@@ -347,10 +394,22 @@ export default defineNuxtPlugin(() => {
       return unwrap(response)
     },
 
-    async getUserPosts(userId: string, params: { page?: number; page_size?: number } = {}): Promise<Pagination<PostDto>> {
-  const response = await instance.get<ApiResp<Pagination<PostDto>>>(`/users/${userId}/posts`, { params })
-  return unwrap(response)
-},
+    async getUserPosts(userId: string, params: {
+      page?: number
+      page_size?: number
+      type?: 'posts' | 'replies' | 'reposts' | 'likes'
+    } = {}): Promise<Pagination<PostDto>> {
+      const response = await instance.get<ApiResp<Pagination<PostDto>>>(`/users/${userId}/posts`, { params })
+      return unwrap(response)
+    },
+
+    async getUserReplies(userId: string, params: {
+      page?: number
+      page_size?: number
+    } = {}): Promise<Pagination<PostDto>> {
+      const response = await instance.get<ApiResp<Pagination<PostDto>>>(`/users/${userId}/replies`, { params })
+      return unwrap(response)
+    },
 
     // Posts
     async listPosts(params: {
@@ -358,6 +417,7 @@ export default defineNuxtPlugin(() => {
       page_size?: number
       featured?: boolean
       pinned?: boolean
+      feed?: 'recommended' | 'following'
     } = {}): Promise<Pagination<PostDto>> {
       const response = await instance.get<ApiResp<Pagination<PostDto>>>('/posts', { params })
       return unwrap(response)
@@ -375,13 +435,44 @@ export default defineNuxtPlugin(() => {
       })
       return unwrap(response)
     },
-    async getPostStats(id: string): Promise<{ id: string; view_count: number; comment_count: number }> {
-      const response = await instance.get<ApiResp<{ id: string; view_count: number; comment_count: number }>>(`/posts/${id}/stats`)
+    async getPostStats(id: string): Promise<PostStats> {
+      const response = await instance.get<ApiResp<PostStats>>(`/posts/${id}/stats`)
       return unwrap(response)
     },
 
     async createPost(formData: FormData): Promise<PostDto> {
       const response = await instance.post<ApiResp<PostDto>>('/posts', formData)
+      return unwrap(response)
+    },
+
+    async createReply(postId: string, data: {
+      content: string
+      images?: File[]
+      confessor_mode?: 'self' | 'custom'
+      author_name?: string
+    }): Promise<PostDto> {
+      const formData = buildPostFormData({
+        content: data.content,
+        images: data.images,
+        confessor_mode: data.confessor_mode || 'self',
+        author_name: data.author_name,
+        card_type: 'social',
+        reply_to_id: postId,
+      })
+      const response = await instance.post<ApiResp<PostDto>>('/posts', formData)
+      return unwrap(response)
+    },
+
+    async listReplies(postId: string, params: {
+      page?: number
+      page_size?: number
+    } = {}): Promise<Pagination<PostDto>> {
+      const response = await instance.get<ApiResp<Pagination<PostDto>>>(`/posts/${postId}/replies`, { params })
+      return unwrap(response)
+    },
+
+    async getThread(postId: string): Promise<{ thread: PostDto[]; count: number }> {
+      const response = await instance.get<ApiResp<{ thread: PostDto[]; count: number }>>(`/posts/${postId}/thread`)
       return unwrap(response)
     },
     
@@ -390,7 +481,7 @@ export default defineNuxtPlugin(() => {
     },
 
     async requestCommentReview(commentId: string): Promise<void> {
-      await instance.post(`/comments/${commentId}/request-review`)
+      await this.requestPostReview(commentId)
     },
 
     async updatePost(postId: string, data: { author_name?: string; target_name?: string; content?: string }): Promise<PostDto> {
@@ -411,6 +502,7 @@ export default defineNuxtPlugin(() => {
       author_id?: string
       featured?: boolean
       pinned?: boolean
+      type?: 'posts' | 'replies' | 'reposts' | 'quotes'
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<PostDto>> {
@@ -457,6 +549,26 @@ export default defineNuxtPlugin(() => {
       return unwrap(response)
     },
 
+    async likePost(postId: string): Promise<{ liked: boolean; message?: string }> {
+      const response = await instance.post<ApiResp<{ liked: boolean; message?: string }>>(`/posts/${postId}/like`)
+      return unwrap(response)
+    },
+
+    async unlikePost(postId: string): Promise<{ liked: boolean }> {
+      const response = await instance.delete<ApiResp<{ liked: boolean }>>(`/posts/${postId}/like`)
+      return unwrap(response)
+    },
+
+    async getLikeStatus(postId: string): Promise<{ liked: boolean }> {
+      const response = await instance.get<ApiResp<{ liked: boolean }>>(`/posts/${postId}/like-status`)
+      return unwrap(response)
+    },
+
+    async listPostLikes(postId: string, params: { page?: number; page_size?: number } = {}): Promise<Pagination<FollowListItemDto>> {
+      const response = await instance.get<ApiResp<Pagination<FollowListItemDto>>>(`/posts/${postId}/likes`, { params })
+      return unwrap(response)
+    },
+
     /*
     * About the changes:
     * Use an API proxy to enable swr in order to optimize the data loading speed
@@ -467,50 +579,55 @@ export default defineNuxtPlugin(() => {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      const response = await instance.get<ApiResp<Pagination<CommentDto>>>(`/posts/${postId}/comments`, { params })
-      const data = unwrap(response)
-      data.items = data.items.map(normalizeComment)
-      return data
+      const data = await this.listReplies(postId, params)
+      return {
+        ...data,
+        items: data.items.map(mapReplyPostToComment),
+      }
     },
 
     async createComment(postId: string, data: CommentForm): Promise<CommentDto> {
-      const response = await instance.post<ApiResp<CommentDto>>(`/posts/${postId}/comments`, data)
-      const comment = unwrap(response)
-      return normalizeComment(comment)
+      const reply = await this.createReply(postId, { content: data.content, confessor_mode: 'self' })
+      return mapReplyPostToComment(reply)
     },
 
     async updateComment(id: string, data: CommentForm): Promise<CommentDto> {
-      const response = await instance.put<ApiResp<CommentDto>>(`/comments/${id}`, data)
-      return unwrap(response)
+      const updated = await this.updatePost(id, { content: data.content })
+      return mapReplyPostToComment(updated)
     },
 
     async deleteComment(id: string): Promise<void> {
-      await instance.delete(`/comments/${id}`)
+      await this.deletePost(id)
     },
 
     async hideComment(id: string, hide: boolean): Promise<{ id: string; status: number }> {
-      const response = await instance.post<ApiResp<{ id: string; status: number }>>(`/comments/${id}/hide`, { hide })
-      return unwrap(response)
+      return await this.hidePost(id, hide)
     },
 
     async pinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
-      const response = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/pin`)
-      return unwrap(response)
+      return await this.pinPost(commentId, true)
     },
 
     async unpinComment(commentId: string): Promise<{ id: string; is_pinned: boolean }> {
-      const response = await instance.post<ApiResp<{ id: string; is_pinned: boolean }>>(`/admin/comments/${commentId}/unpin`)
-      return unwrap(response)
+      return await this.pinPost(commentId, false)
     },
 
     async getMyComments(params: {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/my/comments', { params })
-      const data = unwrap(response)
-      data.items = data.items.map(normalizeComment)
-      return data
+      const auth = useAuthStore()
+      if (!auth.currentUser?.id) {
+        return { total: 0, items: [], page: params.page || 1, page_size: params.page_size || 20 }
+      }
+      const data = await this.getUserPosts(auth.currentUser.id, {
+        ...params,
+        type: 'replies',
+      })
+      return {
+        ...data,
+        items: data.items.map(mapReplyPostToComment),
+      }
     },
 
     // Admin: list comments (alias used by pages)
@@ -521,10 +638,21 @@ export default defineNuxtPlugin(() => {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/comments', { params })
-      const data = unwrap(response)
-      data.items = data.items.map(normalizeComment)
-      return data
+      const data = await this.moderationPosts({
+        status: params.status,
+        author_id: params.user_id,
+        page: params.page,
+        page_size: params.page_size,
+        type: 'replies',
+      })
+      const items = data.items
+        .filter((item) => !params.post_id || item.reply_to_id === params.post_id)
+        .map(mapReplyPostToComment)
+      return {
+        ...data,
+        total: params.post_id ? items.length : data.total,
+        items,
+      }
     },
 
     async adminComments(params: {
@@ -534,10 +662,7 @@ export default defineNuxtPlugin(() => {
       page?: number
       page_size?: number
     } = {}): Promise<Pagination<CommentDto>> {
-      const response = await instance.get<ApiResp<Pagination<CommentDto>>>('/comments', { params })
-      const data = unwrap(response)
-      data.items = data.items.map(normalizeComment)
-      return data
+      return await this.getAdminComments(params)
     },
 
     // Announcements
@@ -707,7 +832,7 @@ export default defineNuxtPlugin(() => {
     },
 
     async deactivateTag(tagId: string): Promise<void> {
-      await instance.post(`/my/tags/${tagId}/deactivate`)
+      await instance.delete(`/my/tags/${tagId}/activate`)
     },
 
     // Get active tag by user ID or username
@@ -785,6 +910,31 @@ export default defineNuxtPlugin(() => {
     },
     async markNotificationRead(id: string): Promise<void> {
       await instance.post(`/notifications/${id}/read`)
+    },
+
+    async followUser(userId: string): Promise<{ following: boolean; message?: string }> {
+      const response = await instance.post<ApiResp<{ following: boolean; message?: string }>>(`/users/${userId}/follow`)
+      return unwrap(response)
+    },
+
+    async unfollowUser(userId: string): Promise<{ following: boolean }> {
+      const response = await instance.delete<ApiResp<{ following: boolean }>>(`/users/${userId}/follow`)
+      return unwrap(response)
+    },
+
+    async getFollowStatus(userId: string): Promise<FollowStatusDto> {
+      const response = await instance.get<ApiResp<FollowStatusDto>>(`/users/${userId}/follow-status`)
+      return unwrap(response)
+    },
+
+    async listFollowers(userId: string, params: { page?: number; page_size?: number } = {}): Promise<Pagination<FollowListItemDto>> {
+      const response = await instance.get<ApiResp<Pagination<FollowListItemDto>>>(`/users/${userId}/followers`, { params })
+      return unwrap(response)
+    },
+
+    async listFollowing(userId: string, params: { page?: number; page_size?: number } = {}): Promise<Pagination<FollowListItemDto>> {
+      const response = await instance.get<ApiResp<Pagination<FollowListItemDto>>>(`/users/${userId}/following`, { params })
+      return unwrap(response)
     },
 
     // Admin moderation for posts

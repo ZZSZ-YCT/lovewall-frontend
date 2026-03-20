@@ -1,409 +1,189 @@
 <template>
-  <div class="w-full space-y-6">
-    <!-- Page Header -->
-    <div class="page-header">
-      <h1 class="page-title">评论管理</h1>
-      <p class="text-gray-600 mt-2">审核和管理用户评论</p>
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-xl font-bold text-zinc-950">回复管理</h1>
+      <p class="mt-1 text-sm text-zinc-500">这里管理所有以回复形式发布的帖子。</p>
     </div>
 
-    <!-- Controls -->
-    <GlassCard class="p-4">
-      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-        <!-- Filters -->
-        <div class="flex flex-col sm:flex-row gap-3 flex-1">
-          <select
-            v-model="filters.status"
-            class="input px-3 py-2"
-            @change="applyFilters"
-          >
+    <div class="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-1 flex-col gap-3 sm:flex-row">
+          <select v-model="filters.status" class="input" @change="loadReplies()">
             <option value="">全部状态</option>
             <option value="0">正常</option>
             <option value="1">已隐藏</option>
           </select>
-          
-          <GlassInput
-            v-model="filters.post_id"
-            placeholder="帖子ID..."
-            class="flex-1 min-w-0"
-            @keyup="applyFilters"
-          />
-          
-          <GlassInput
-            v-model="filters.user_id"
-            placeholder="用户ID..."
-            class="flex-1 min-w-0"
-            @keyup="applyFilters"
+          <input
+            v-model="filters.author_id"
+            class="input"
+            placeholder="作者 ID"
+            @keyup.enter="loadReplies()"
           />
         </div>
-
-        <!-- Actions -->
-        <div class="flex gap-3">
-          <GlassButton
-            :loading="loading"
-            variant="secondary"
-            @click="refresh"
-          >
-            <RefreshCwIcon class="w-4 h-4 mr-2" />
-            刷新
-          </GlassButton>
-        </div>
+        <button type="button" class="btn-secondary" @click="loadReplies()">刷新</button>
       </div>
-    </GlassCard>
-
-    <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <GlassCard class="p-4 text-center">
-        <div class="text-2xl font-bold text-green-600 mb-1">{{ commentsData?.total || 0 }}</div>
-        <div class="text-sm text-gray-600">总评论数</div>
-      </GlassCard>
-      
-      <GlassCard class="p-4 text-center">
-        <div class="text-2xl font-bold text-blue-600 mb-1">{{ normalCount }}</div>
-        <div class="text-sm text-gray-600">正常评论</div>
-      </GlassCard>
-      
-      <GlassCard class="p-4 text-center">
-        <div class="text-2xl font-bold text-yellow-600 mb-1">{{ hiddenCount }}</div>
-        <div class="text-sm text-gray-600">已隐藏</div>
-      </GlassCard>
     </div>
 
-    <!-- Comments List -->
-    <GlassCard class="overflow-hidden">
-      <!-- Loading State -->
-      <div v-if="loading" class="flex items-center justify-center py-12">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+        <div class="text-2xl font-semibold text-zinc-950">{{ replyStats.total }}</div>
+        <div class="mt-1 text-sm text-zinc-500">回复总数</div>
+      </div>
+      <div class="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+        <div class="text-2xl font-semibold text-zinc-950">{{ replyStats.visible }}</div>
+        <div class="mt-1 text-sm text-zinc-500">当前页正常</div>
+      </div>
+      <div class="rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
+        <div class="text-2xl font-semibold text-zinc-950">{{ replyStats.hidden }}</div>
+        <div class="mt-1 text-sm text-zinc-500">当前页隐藏</div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <div v-if="loading" class="px-4 py-16 text-center">
         <LoadingSpinner size="lg" />
       </div>
 
-      <!-- Empty State -->
-      <div v-else-if="!comments.length" class="text-center py-12">
-        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <MessageSquareIcon class="w-8 h-8 text-white" />
-        </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">未找到评论</h3>
-        <p class="text-gray-600">尝试调整筛选条件</p>
+      <div v-else-if="replies.length === 0" class="px-4 py-16 text-center text-sm text-zinc-500">
+        暂无符合条件的回复。
       </div>
 
-      <!-- Comments Table -->
-      <div v-else class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">评论内容</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">用户</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">帖子</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">状态</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">时间</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-800">操作</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr
-              v-for="comment in comments"
-              :key="comment.id"
-              class="hover:bg-gray-50"
-            >
-              <!-- Content -->
-              <td class="px-6 py-4 max-w-md">
-                <p class="text-sm text-gray-700 line-clamp-3">{{ comment.content }}</p>
-              </td>
-
-              <!-- User -->
-              <td class="px-6 py-4">
-                <CommentUserInfo
-                  class="items-center"
-                  :comment="comment"
-                  :size="36"
-                />
-              </td>
-
-              <!-- Post -->
-              <td class="px-6 py-4">
-                <NuxtLink
-                  :to="localePath(`/posts/${comment.post_id}`)"
-                  class="text-xs font-mono bg-gray-100 px-1 rounded text-brand-600 hover:text-brand-700 hover:underline"
-                >
-                  {{ comment.post_id }}
-                </NuxtLink>
-              </td>
-
-              <!-- Status -->
-              <td class="px-6 py-4">
-                <span
-                  :class="{
-                    'bg-green-100 text-green-800': comment.status === 0,
-                    'bg-yellow-100 text-yellow-800': comment.status === 1
-                  }"
-                  class="px-2 py-1 text-xs rounded-full"
-                >
-                  {{ comment.status === 0 ? '正常' : '已隐藏' }}
-                </span>
-              </td>
-
-              <!-- Time -->
-              <td class="px-6 py-4 text-sm text-gray-600">
-                {{ formatDate(comment.created_at) }}
-              </td>
-
-              <!-- Actions -->
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <NuxtLink
-                    :to="localePath(`/posts/${comment.post_id}`)"
-                    class="inline-flex items-center justify-center p-2 text-gray-600 hover:text-brand-600 hover:bg-gray-100 rounded-lg transition-colors"
-                    title="查看上下文"
-                  >
-                    <ExternalLinkIcon class="w-4 h-4" />
-                  </NuxtLink>
-
-                  <GlassButton
-                    v-if="comment.status === 0"
-                    variant="secondary"
-                    class="!p-2 !text-yellow-600 hover:!bg-yellow-50"
-                    title="隐藏评论"
-                    @click="hideComment(comment)"
-                  >
-                    <EyeOffIcon class="w-4 h-4" />
-                  </GlassButton>
-                  
-                  <GlassButton
-                    v-else
-                    variant="secondary"
-                    class="!p-2 !text-green-600 hover:!bg-green-50"
-                    title="恢复评论"
-                    @click="showComment(comment)"
-                  >
-                    <EyeIcon class="w-4 h-4" />
-                  </GlassButton>
-                  
-                  <GlassButton
-                    variant="secondary"
-                    class="!p-2 !text-red-600 hover:!bg-red-50"
-                    title="删除评论"
-                    @click="confirmDelete(comment)"
-                  >
-                    <TrashIcon class="w-4 h-4" />
-                  </GlassButton>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination -->
-      <div
-        v-if="commentsData && commentsData.total > commentsData.page_size"
-        class="px-6 py-4 border-t border-gray-200 flex justify-between items-center"
-      >
-        <div class="text-sm text-gray-600">
-          显示 {{ (commentsData.page - 1) * commentsData.page_size + 1 }} - 
-          {{ Math.min(commentsData.page * commentsData.page_size, commentsData.total) }} 
-          共 {{ commentsData.total }} 条
+      <template v-else>
+        <div
+          v-for="reply in replies"
+          :key="reply.id"
+          class="border-b border-zinc-200 last:border-b-0"
+        >
+          <TimelinePost
+            :post="reply"
+            @updated="handleReplyUpdated"
+          />
+          <div class="flex flex-wrap gap-2 bg-zinc-50 px-4 py-3 sm:px-5">
+            <button type="button" class="btn-secondary" @click="openReply(reply)">查看原帖</button>
+            <button type="button" class="btn-secondary" @click="toggleHide(reply)">
+              {{ reply.status === 1 ? '恢复显示' : '隐藏' }}
+            </button>
+            <button type="button" class="btn-danger" @click="deleteReply(reply)">删除</button>
+          </div>
         </div>
-        
-        <div class="flex gap-2">
-          <GlassButton
-            :disabled="commentsData.page <= 1"
-            variant="secondary"
-            class="px-3 py-1 text-sm"
-            @click="prevPage"
-          >
-            上一页
-          </GlassButton>
-          <GlassButton
-            :disabled="commentsData.page * commentsData.page_size >= commentsData.total"
-            variant="secondary"
-            class="px-3 py-1 text-sm"
-            @click="nextPage"
-          >
-            下一页
-          </GlassButton>
-        </div>
-      </div>
-    </GlassCard>
+      </template>
+    </div>
 
+    <div
+      v-if="pagination && pagination.page * pagination.page_size < pagination.total"
+      class="text-center"
+    >
+      <button type="button" class="btn-secondary" :disabled="loadingMore" @click="loadMore">
+        {{ loadingMore ? '加载中…' : '加载更多' }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {EyeIcon, EyeOffIcon, ExternalLinkIcon, MessageSquareIcon, RefreshCwIcon, TrashIcon} from 'lucide-vue-next'
-import type {CommentDto, Pagination} from '~/types'
-import GlassButton from "~/components/ui/GlassButton.vue";
-import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
-import GlassCard from "~/components/ui/GlassCard.vue";
-import GlassInput from "~/components/ui/GlassInput.vue";
+import TimelinePost from '~/components/timeline/TimelinePost.vue'
+import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
+import type { Pagination, PostDto } from '~/types'
 
 definePageMeta({
-  middleware: ['admin', 'require-perms'],
-  // 后端已废弃 MANAGE_COMMENTS，统一由 MANAGE_POSTS 管理评论
-  requiredPerms: ['MANAGE_POSTS'],
-  ssr: false
+  middleware: 'admin',
+  ssr: false,
+  title: '回复管理',
 })
 
-// Stores
-const auth = useAuthStore()
-const toast = useToast()
 const localePath = useLocalePath()
+const router = useRouter()
+const api = useNuxtApp().$api
+const toast = useToast()
+const { confirm, prompt } = useAdminDialog()
 
-// State
-const comments = ref<CommentDto[]>([])
-const commentsData = ref<Pagination<CommentDto> | null>(null)
+const replies = ref<PostDto[]>([])
+const pagination = ref<Pagination<PostDto> | null>(null)
 const loading = ref(true)
-const actionLoading = ref<string | null>(null)
-
+const loadingMore = ref(false)
 const filters = reactive({
   status: '',
-  post_id: '',
-  user_id: ''
+  author_id: '',
 })
 
-// Computed
-const normalCount = computed(() => {
-  return comments.value.filter(comment => comment.status === 0).length
-})
+const replyStats = computed(() => ({
+  total: pagination.value?.total || 0,
+  visible: replies.value.filter((item) => item.status === 0).length,
+  hidden: replies.value.filter((item) => item.status === 1).length,
+}))
 
-const hiddenCount = computed(() => {
-  return comments.value.filter(comment => comment.status === 1).length
-})
+const loadReplies = async (page = 1, append = false) => {
+  if (page === 1) loading.value = true
+  else loadingMore.value = true
 
-// Methods
-const loadComments = async (page = 1) => {
-  loading.value = true
   try {
-    const api = useNuxtApp().$api
-    const params: any = {
+    const data = await api.moderationPosts({
       page,
-      page_size: 20
-    }
-
-    if (filters.status) params.status = parseInt(filters.status)
-    if (filters.post_id) params.post_id = filters.post_id
-    if (filters.user_id) params.user_id = filters.user_id
-
-    const data = await api.getAdminComments(params)
-
-    comments.value = data.items as CommentDto[]
-    commentsData.value = data
+      page_size: 20,
+      type: 'replies',
+      status: filters.status === '' ? undefined : Number(filters.status) as 0 | 1,
+      author_id: filters.author_id || undefined,
+    })
+    pagination.value = data
+    replies.value = append ? [...replies.value, ...data.items] : [...data.items]
   } catch (error: any) {
-    toast.error('加载评论列表失败')
+    toast.error(error?.message || '加载回复失败')
   } finally {
     loading.value = false
+    loadingMore.value = false
   }
 }
 
-const refresh = () => {
-  loadComments(1)
+const loadMore = async () => {
+  if (!pagination.value) return
+  await loadReplies(pagination.value.page + 1, true)
 }
 
-const applyFilters = () => {
-  loadComments(1)
-}
-
-const prevPage = () => {
-  if (commentsData.value && commentsData.value.page > 1) {
-    loadComments(commentsData.value.page - 1)
-  }
-}
-
-const nextPage = () => {
-  if (commentsData.value && commentsData.value.page * commentsData.value.page_size < commentsData.value.total) {
-    loadComments(commentsData.value.page + 1)
-  }
-}
-
-const hideComment = async (comment: CommentDto) => {
-  const { confirm } = useAdminDialog()
-  const confirmed = await confirm({
-    title: '确认隐藏',
-    message: '确定要隐藏这条评论吗？',
-    confirmText: '确认隐藏',
-    cancelText: '取消'
+const promptReason = async (title: string) => {
+  const result = await prompt({
+    title,
+    inputLabel: '原因（可选）',
+    placeholder: '填写处理原因',
+    confirmText: '确认',
+    cancelText: '取消',
   })
-
-  if (!confirmed) return
-
-  actionLoading.value = comment.id
-  try {
-    const api = useNuxtApp().$api
-    await api.hideComment(comment.id, true)
-    comment.status = 1
-    toast.success('评论已隐藏')
-  } catch (error) {
-    toast.error('操作失败')
-  } finally {
-    actionLoading.value = null
-  }
+  if (result === null) return null
+  return result.trim()
 }
 
-const showComment = async (comment: CommentDto) => {
-  const { confirm } = useAdminDialog()
-  const confirmed = await confirm({
-    title: '确认恢复',
-    message: '确定要恢复这条评论吗？',
-    confirmText: '确认恢复',
-    cancelText: '取消'
+const toggleHide = async (reply: PostDto) => {
+  const reason = await promptReason(reply.status === 1 ? '恢复回复' : '隐藏回复')
+  if (reason === null) return
+  const result = await api.hidePost(reply.id, reply.status === 0, reason || undefined)
+  reply.status = result.status as 0 | 1
+}
+
+const deleteReply = async (reply: PostDto) => {
+  const ok = await confirm({
+    title: '删除回复',
+    message: '删除后无法恢复，确认继续吗？',
+    confirmText: '删除',
+    cancelText: '取消',
   })
-
-  if (!confirmed) return
-
-  actionLoading.value = comment.id
-  try {
-    const api = useNuxtApp().$api
-    await api.hideComment(comment.id, false)
-    comment.status = 0
-    toast.success('评论已恢复')
-  } catch (error) {
-    toast.error('操作失败')
-  } finally {
-    actionLoading.value = null
-  }
+  if (!ok) return
+  const reason = await promptReason('删除回复')
+  if (reason === null) return
+  await api.deletePost(reply.id, reason || undefined)
+  replies.value = replies.value.filter((item) => item.id !== reply.id)
+  if (pagination.value) pagination.value.total -= 1
 }
 
-const confirmDelete = async (comment: CommentDto) => {
-  const { confirm } = useAdminDialog()
-  const confirmed = await confirm({
-    title: '确认删除',
-    message: '确定要删除这条评论吗？删除后无法恢复。',
-    confirmText: '确认删除',
-    cancelText: '取消'
-  })
-
-  if (!confirmed) return
-
-  actionLoading.value = comment.id
-  try {
-    const api = useNuxtApp().$api
-    await api.deleteComment(comment.id)
-
-    // Remove from local list
-    comments.value = comments.value.filter(c => c.id !== comment.id)
-    if (commentsData.value) {
-      commentsData.value.total -= 1
-    }
-
-    toast.success('评论已删除')
-  } catch (error) {
-    toast.error('删除失败')
-  } finally {
-    actionLoading.value = null
-  }
+const openReply = async (reply: PostDto) => {
+  await router.push(localePath(`/posts/${reply.id}`))
 }
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString('zh-CN')
+const handleReplyUpdated = (updated: PostDto) => {
+  const index = replies.value.findIndex((item) => item.id === updated.id)
+  if (index === -1) return
+  replies.value[index] = { ...replies.value[index], ...updated }
 }
 
-// Initialize
 onMounted(() => {
-  loadComments()
-})
-
-// SEO
-useHead({
-  title: '评论管理 - 郑州四中表白墙',
-  meta: [
-    { name: 'description', content: '审核和管理用户评论' }
-  ]
+  loadReplies()
 })
 </script>

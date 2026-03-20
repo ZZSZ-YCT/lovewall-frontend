@@ -50,7 +50,7 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-gray-900">{{ stats.comments }}</div>
-                <div class="text-xs text-gray-500">总评论数</div>
+                <div class="text-xs text-gray-500">总回复数</div>
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@
           </div>
           <div>
             <div class="text-xl font-bold text-green-600">{{ todayStats.comments }}</div>
-            <div class="text-xs text-gray-500 mt-1">新评论</div>
+            <div class="text-xs text-gray-500 mt-1">新增互动</div>
           </div>
           <div>
             <div class="text-xl font-bold text-blue-600">{{ todayStats.users }}</div>
@@ -111,8 +111,8 @@
         <PermissionGuard :any-perms="['MANAGE_POSTS']">
           <NuxtLink to="/admin/comments" class="block bg-white rounded-lg border border-gray-200 p-4 hover:border-gray-300 hover:shadow-sm transition-all">
             <MessageSquareIcon class="w-5 h-5 text-green-600 mb-2" />
-            <h3 class="font-medium text-gray-900 text-sm">评论管理</h3>
-            <p class="text-xs text-gray-500 mt-1">审核和管理用户评论</p>
+            <h3 class="font-medium text-gray-900 text-sm">回复管理</h3>
+            <p class="text-xs text-gray-500 mt-1">审核和管理回复型帖子</p>
           </NuxtLink>
         </PermissionGuard>
       </div>
@@ -129,7 +129,7 @@ import LoadingSpinner from "~/components/ui/LoadingSpinner.vue"
 definePageMeta({
   middleware: 'admin',
   ssr: false,
-  title: '管理后台 - 郑州四中表白墙'
+  title: '管理后台 - 郑州四中校园墙'
 })
 
 const auth = useAuthStore()
@@ -166,9 +166,9 @@ const loadDashboardData = async () => {
     } catch (error) { console.warn('Failed to load posts:', error) }
     if (auth.hasPerm('MANAGE_POSTS')) {
       try {
-        const commentsData = await api.getAdminComments({ page: 1, page_size: 5 })
-        if (!auth.hasPerm('MANAGE_USERS') && !auth.isSuperadmin) stats.comments = commentsData.total
-      } catch (error) { console.warn('Failed to load comments:', error) }
+        const repliesData = await api.moderationPosts({ page: 1, page_size: 1, type: 'replies' })
+        if (!auth.hasPerm('MANAGE_USERS') && !auth.isSuperadmin) stats.comments = repliesData.total
+      } catch (error) { console.warn('Failed to load replies:', error) }
     }
     if ((auth.hasPerm('MANAGE_USERS') || auth.isSuperadmin) && !gotMetrics) {
       try {

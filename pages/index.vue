@@ -1,201 +1,175 @@
 <template>
-  <div class="space-y-6">
-    <!-- Header -->
-    <section>
+  <div class="page-shell overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-[0_18px_50px_-30px_rgba(15,23,42,0.25)]">
+    <section class="border-b border-zinc-200 px-4 py-4 sm:px-5">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">{{ t('home.title') }}</h1>
-          <p class="text-gray-500 text-sm mt-1">{{ t('home.description') }}</p>
+          <h1 class="text-xl font-semibold text-zinc-950">{{ t('home.title') }}</h1>
+          <p class="mt-1 text-sm text-zinc-500">表白、动态、回复，统一在一条时间线里浏览。</p>
         </div>
-        <div class="flex items-center gap-2">
-          <ClientOnly>
-            <NuxtLink
-              v-if="auth.isAuthenticated"
-              :to="localePath('/posts/new')"
-              class="btn-primary inline-flex items-center gap-2 text-sm"
-            >
-              <PlusIcon class="w-4 h-4" />
-              {{ t('posts.post') }}
-            </NuxtLink>
-          </ClientOnly>
-        </div>
-      </div>
-    </section>
-
-    <!-- Controls -->
-    <section class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <ClockIcon class="w-4 h-4 text-gray-400" />
-        <h2 class="text-base font-semibold text-gray-800">{{ t('posts.recently') }}</h2>
-      </div>
-      <div class="flex items-center gap-2">
-        <!-- Layout toggle (desktop only) -->
-        <div
-          v-if="!isMobile"
-          class="flex items-center gap-0.5 p-0.5 bg-gray-100 rounded-md"
-        >
-          <button
-            :class="[
-              'p-1.5 rounded text-xs transition-colors',
-              effectiveLayout === 'grid'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
-            ]"
-            :title="t('common.layouts.grid')"
-            @click="switchLayout('grid')"
-          >
-            <GridIcon class="w-4 h-4" />
-          </button>
-          <button
-            :class="[
-              'p-1.5 rounded text-xs transition-colors',
-              effectiveLayout === 'list'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
-            ]"
-            :title="t('common.layouts.list')"
-            @click="switchLayout('list')"
-          >
-            <ListIcon class="w-4 h-4" />
-          </button>
-        </div>
-
-        <GlassButton
-          :disabled="loading"
-          variant="secondary"
-          class="!px-3 !py-1.5 text-sm"
-          @click="handleRefresh"
-        >
-          <RefreshCwIcon :class="['w-4 h-4', { 'animate-spin': loading }]" />
-          {{ t('common.refresh') }}
-        </GlassButton>
-      </div>
-    </section>
-
-    <!-- Posts -->
-    <section>
-      <!-- Loading -->
-      <div v-if="loading && posts.length === 0" class="text-center py-16">
-        <LoadingSpinner size="lg" />
-        <p class="mt-4 text-gray-500 text-sm">{{ t('common.loading') }}</p>
-      </div>
-
-      <!-- Empty -->
-      <div v-else-if="!loading && posts.length === 0" class="text-center py-16">
-        <HeartIcon class="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <p class="text-gray-500 mb-4">{{ t('posts.empty') }}</p>
         <NuxtLink
-          v-if="auth.isAuthenticated"
           :to="localePath('/posts/new')"
-          class="btn-primary inline-flex items-center gap-2 text-sm"
+          class="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-4 text-sm font-medium text-white transition hover:bg-zinc-800"
         >
-          <PlusIcon class="w-4 h-4" /> {{ t('posts.beFirst') }}
+          发布
         </NuxtLink>
       </div>
 
-      <!-- Grid layout -->
-      <div
-        v-else-if="effectiveLayout === 'grid'"
-        :class="['posts', gridClasses]"
-      >
-        <PostCard
-          v-for="(post, index) in posts"
-          :key="post.id"
-          :post="post"
-          :show-actions="auth.isAuthenticated"
-          :eager="index < 3"
-          variant="grid"
-          @refresh="handleRefresh"
-        />
+      <div class="mt-4 flex rounded-full bg-zinc-100 p-1">
+        <button
+          type="button"
+          class="flex-1 rounded-full px-4 py-2 text-sm font-medium transition"
+          :class="home.feed === 'recommended' ? 'bg-white text-zinc-950 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'"
+          @click="switchFeed('recommended')"
+        >
+          推荐
+        </button>
+        <button
+          type="button"
+          class="flex-1 rounded-full px-4 py-2 text-sm font-medium transition"
+          :class="home.feed === 'following' ? 'bg-white text-zinc-950 shadow-sm' : 'text-zinc-500 hover:text-zinc-700'"
+          @click="switchFeed('following')"
+        >
+          正在关注
+        </button>
       </div>
+    </section>
 
-      <!-- List layout -->
-      <div
-        v-else
-        :class="['posts space-y-3', isMobile ? 'px-0' : 'max-w-3xl mx-auto']"
-      >
-        <PostCard
-          v-for="(post, index) in posts"
-          :key="post.id"
-          :post="post"
-          :show-actions="auth.isAuthenticated"
-          :eager="index < 3"
-          variant="list"
-          class="w-full"
-          @refresh="handleRefresh"
-        />
+    <section
+      v-if="auth.isAuthenticated"
+      class="border-b border-zinc-200 px-4 py-4 sm:px-5"
+    >
+      <div class="flex items-start gap-3">
+        <div class="h-11 w-11 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100">
+          <NuxtImg
+            v-if="auth.currentUser?.avatar_url"
+            :src="assetUrl(auth.currentUser.avatar_url)"
+            :alt="auth.userDisplayName"
+            class="h-full w-full object-cover"
+            width="44"
+            height="44"
+          />
+          <div
+            v-else
+            class="flex h-full w-full items-center justify-center text-sm font-semibold text-zinc-700"
+          >
+            {{ auth.userDisplayName.slice(0, 2).toUpperCase() }}
+          </div>
+        </div>
+        <NuxtLink
+          :to="localePath('/posts/new')"
+          class="flex-1 rounded-3xl border border-zinc-200 px-4 py-3 text-sm text-zinc-500 transition hover:border-sky-400 hover:text-zinc-700"
+        >
+          有什么想说的？
+        </NuxtLink>
       </div>
+    </section>
 
-      <!-- Load more trigger -->
+    <section v-if="loading && posts.length === 0" class="px-4 py-16 text-center sm:px-5">
+      <LoadingSpinner size="lg" />
+      <p class="mt-4 text-sm text-zinc-500">{{ t('common.loading') }}</p>
+    </section>
+
+    <section
+      v-else-if="home.feed === 'following' && !auth.isAuthenticated"
+      class="px-4 py-16 text-center sm:px-5"
+    >
+      <p class="text-sm text-zinc-500">登录后即可查看你关注用户的时间线。</p>
+      <NuxtLink
+        :to="localePath('/auth/login')"
+        class="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-5 text-sm font-medium text-white"
+      >
+        立即登录
+      </NuxtLink>
+    </section>
+
+    <section
+      v-else-if="!loading && posts.length === 0"
+      class="px-4 py-16 text-center sm:px-5"
+    >
+      <p class="text-sm text-zinc-500">
+        {{ home.feed === 'following' ? '你还没有关注任何人，时间线暂时是空的。' : t('posts.empty') }}
+      </p>
+    </section>
+
+    <section v-else>
+      <TimelinePost
+        v-for="(post, index) in posts"
+        :key="post.id"
+        :post="post"
+        :eager="index < 2"
+      />
+
       <div
-        v-if="home.loaded && hasMore && !loading"
+        v-if="home.loaded && hasMore"
         ref="loadMoreTrigger"
-        class="text-center py-8"
+        class="border-t border-zinc-200 px-4 py-8 text-center text-sm text-zinc-500 sm:px-5"
       >
-        <div v-if="loadingMore" class="flex items-center justify-center gap-2 text-gray-500">
+        <div v-if="loadingMore" class="inline-flex items-center gap-2">
           <LoadingSpinner size="sm" />
           <span>{{ t('common.loading') }}</span>
         </div>
-        <div v-else class="text-gray-400 text-sm">
-          {{ t('common.pullDownLoading') }}
-        </div>
+        <div v-else>继续滚动以加载更多</div>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
+import TimelinePost from '~/components/timeline/TimelinePost.vue'
+import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
+import type { HomeFeedType } from '~/stores/home'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
-
-import { PlusIcon, HeartIcon, ClockIcon, RefreshCwIcon, GridIcon, ListIcon } from 'lucide-vue-next'
-import GlassButton from '~/components/ui/GlassButton.vue'
-import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import type { PostDto } from '~/types'
-
-const PostCard = defineAsyncComponent(() => import('~/components/PostCard.vue'))
-
 const auth = useAuthStore()
 const home = useHomeStore()
-const { isMobile, isTablet } = useDeviceSafe()
+const { assetUrl } = useAssetUrl()
 
-const layoutMode = ref<'grid' | 'list'>(
-  (import.meta.client && (localStorage.getItem('love-wall-layout') as 'grid' | 'list')) || 'grid'
-)
-const effectiveLayout = computed(() => isMobile.value ? 'list' : layoutMode.value)
-const gridClasses = computed(() => {
-  const base = 'grid gap-4'
-  if (isMobile.value) return `${base} grid-cols-1`
-  if (isTablet.value) return `${base} grid-cols-1 sm:grid-cols-2`
-  return `${base} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`
-})
-
-const switchLayout = async (mode: 'grid' | 'list') => {
-  if (mode === layoutMode.value) return
-  layoutMode.value = mode
-  if (!isMobile.value) localStorage.setItem('love-wall-layout', mode)
-}
-
-const posts = computed<PostDto[]>(() => home.posts)
+const posts = computed(() => home.posts)
 const hasMore = computed(() => home.hasMore)
-const loadingMore = computed(() => home.loadingMore)
 const loading = computed(() => home.loading)
+const loadingMore = computed(() => home.loadingMore)
 
-onMounted(() => {
-  if (!home.loaded && !home.loading) {
-    home.initialLoad().catch((error) => console.error('Index: initial home load failed', error))
+const switchFeed = async (feed: HomeFeedType) => {
+  try {
+    await home.setFeed(feed)
+  } catch (error) {
+    console.error('Index: switch feed failed', error)
   }
-})
-
-const handleRefresh = async () => {
-  try { await home.forceRefresh() }
-  catch (error) { console.error('Index: manual refresh failed', error) }
 }
 
 const loadMore = async () => {
-  try { await home.loadMore() }
-  catch (error) { console.error('Index: load more failed', error) }
+  try {
+    await home.loadMore()
+  } catch (error) {
+    console.error('Index: load more failed', error)
+  }
 }
+
+const ensureHomeReady = async () => {
+  if (home.loading) return
+  if (!home.loaded || home.posts.length === 0) {
+    await home.forceRefresh()
+  }
+}
+
+onMounted(() => {
+  ensureHomeReady().catch((error) => console.error('Index: ensure home ready failed', error))
+})
+
+watch(() => auth.isAuthenticated, async (isAuthenticated) => {
+  if (!isAuthenticated && home.feed === 'following') {
+    await home.setFeed('recommended')
+    return
+  }
+  if (isAuthenticated && !home.loaded) {
+    await home.initialLoad()
+  }
+})
+
+onActivated(() => {
+  ensureHomeReady().catch((error) => console.error('Index: activated refresh failed', error))
+})
 
 const loadMoreTrigger = ref<HTMLElement | null>(null)
 watch(
@@ -205,33 +179,27 @@ watch(
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0]
-        if (target && target.isIntersecting && hasMore.value && !loadingMore.value) loadMore()
+        if (target?.isIntersecting && hasMore.value && !loadingMore.value) {
+          loadMore()
+        }
       },
-      { root: null, rootMargin: '200px', threshold: 0.1 }
+      { root: null, rootMargin: '240px', threshold: 0.1 },
     )
     observer.observe(el)
     onCleanup(() => observer.disconnect())
   },
-  { flush: 'post' }
+  { flush: 'post' },
 )
 
-onBeforeRouteUpdate((to, from) => {
-  if (to.fullPath === from.fullPath) return
-  home.refreshIfStale().catch((error) => console.error('Index: onBeforeRouteUpdate refresh failed', error))
+definePageMeta({
+  title: { k: 'seo.title' },
+  keepalive: false,
 })
 
-onActivated(async () => {
-  try { await home.refreshIfStale() }
-  catch (e) { console.error('Index: onActivated refresh failed', e) }
-})
-
-// SEO
-const homepageTitle = t('seo.title')
-const homepageDescription = t('seo.description')
-const homepageKeywords = t('seo.keywords')
-const siteName = t('seo.title')
 const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
+const siteName = t('seo.title')
+const homepageDescription = t('seo.description')
 
 const normalizedSiteOrigin = computed(() => {
   const configured = (runtimeConfig.public?.siteUrl as string | undefined)?.trim()
@@ -239,52 +207,30 @@ const normalizedSiteOrigin = computed(() => {
   if (import.meta.client && typeof window !== 'undefined') return window.location.origin.replace(/\/+$/, '')
   return ''
 })
+
 const canonicalUrl = computed(() => {
   const base = normalizedSiteOrigin.value
   const path = route.fullPath || '/'
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  return base ? `${base}${normalizedPath}` : normalizedPath
-})
-const homepageOgImage = computed(() => {
-  const base = normalizedSiteOrigin.value
-  return base ? `${base}/badge.png` : '/badge.png'
-})
-const homepageStructuredData = computed(() => {
-  const base = normalizedSiteOrigin.value
-  if (!base) return null
-  return {
-    '@context': 'https://schema.org', '@type': 'WebSite', name: siteName, url: base,
-    description: homepageDescription,
-    potentialAction: { '@type': 'SearchAction', target: `${base}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' }
-  }
+  return base ? `${base}${path.startsWith('/') ? path : `/${path}`}` : path
 })
 
-definePageMeta({
-  title: { k: 'seo.title' },
-  key: (route: any) => `index-${(route as any).fullPath || '/'}`,
-  keepalive: true
-})
+const ogImage = computed(() => normalizedSiteOrigin.value ? `${normalizedSiteOrigin.value}/badge.png` : '/badge.png')
 
 useSeoMeta({
-  title: homepageTitle, description: homepageDescription, keywords: homepageKeywords,
-  ogTitle: homepageTitle, ogDescription: homepageDescription, ogType: 'website',
-  ogUrl: computed(() => canonicalUrl.value), ogImage: computed(() => homepageOgImage.value), ogSiteName: siteName,
-  twitterCard: 'summary_large_image', twitterTitle: homepageTitle, twitterDescription: homepageDescription,
-  twitterImage: computed(() => homepageOgImage.value),
+  title: siteName,
+  description: homepageDescription,
+  ogTitle: siteName,
+  ogDescription: homepageDescription,
+  ogType: 'website',
+  ogUrl: canonicalUrl,
+  ogImage,
+  twitterCard: 'summary_large_image',
+  twitterTitle: siteName,
+  twitterDescription: homepageDescription,
+  twitterImage: ogImage,
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: computed(() => canonicalUrl.value) }],
-  script: computed(() => {
-    if (!homepageStructuredData.value) return []
-    return [{ type: 'application/ld+json', key: 'ld-homepage', children: JSON.stringify(homepageStructuredData.value) }]
-  }),
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
-
-<style scoped>
-:deep(.posts > .card) {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 300px;
-}
-</style>

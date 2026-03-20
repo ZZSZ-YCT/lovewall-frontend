@@ -1743,7 +1743,7 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: '标签管理 - 郑州四中表白墙',
+  title: '标签管理 - 郑州四中校园墙',
   meta: [
     { name: 'description', content: '创建标签和生成兑换码' }
   ]

@@ -1,359 +1,143 @@
 <template>
-  <div class="max-w-6xl mx-auto space-y-8">
-    <!-- Page Header -->
-    <div class="page-header">
-      <h1 class="page-title">{{ t('user.center') }}</h1>
-      <p class="text-gray-600 mt-2">{{ t('user.centers.description') }}</p>
-    </div>
-
-    <!-- Loading State -->
-    <div v-if="loading" class="flex items-center justify-center py-12">
-      <LoadingSpinner size="lg" />
-    </div>
-
-    <!-- User Profile Card -->
-    <GlassCard v-else class="p-6">
-      <div class="flex flex-col md:flex-row items-start gap-6">
-        <!-- Avatar -->
-        <div class="flex-shrink-0 relative">
-          <!-- 管理员光圈效果 -->
-          <div
-            v-if="auth.currentUser?.is_admin"
-            class="absolute -inset-1 rounded-full bg-blue-500/30 blur-[8px]"
+  <div class="page-shell space-y-5">
+    <section class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-[0_18px_50px_-30px_rgba(15,23,42,0.25)]">
+      <div class="flex items-start gap-4">
+        <div class="h-16 w-16 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100">
+          <NuxtImg
+            v-if="auth.currentUser?.avatar_url"
+            :src="assetUrl(auth.currentUser.avatar_url)"
+            :alt="auth.userDisplayName"
+            class="h-full w-full object-cover"
+            width="64"
+            height="64"
           />
-
-          <!-- 头像容器 -->
-          <div class="relative w-24 h-24 rounded-full bg-brand-600 flex items-center justify-center text-white text-2xl font-bold">
-            <NuxtImg
-              v-if="auth.currentUser?.avatar_url"
-              :src="assetUrl(auth.currentUser.avatar_url)"
-              :alt="auth.userDisplayName"
-              class="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
-            />
-            <span v-else>
-              {{ auth.userDisplayName.slice(0, 2) }}
-            </span>
-          </div>
-        </div>
-
-        <!-- User Info -->
-        <div class="flex-1">
-          <div class="flex items-center gap-3 mb-2">
-            <h2 class="text-2xl font-bold text-gray-800">{{ auth.userDisplayName }}</h2>
-            <TagBadge
-              v-if="activeTag"
-              :title="activeTag.tag?.title || ''"
-              :background="activeTag.tag?.background_color || '#6b7280'"
-              :text="activeTag.tag?.text_color || '#ffffff'"
-            />
-            <span
-              v-if="auth.isSuperadmin"
-              class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full"
-            >
-              {{ t('common.superAdmin') }}
-            </span>
-          </div>
-          
-          <!-- 权限显示 -->
-          <UserPermissionDisplay />
-          
-          <div class="space-y-1 text-sm text-gray-600 mt-4">
-            <p><span class="font-medium">{{ t('common.username') }}:</span> {{ auth.currentUser?.username }}</p>
-            <p v-if="auth.currentUser?.email">
-              <span class="font-medium">{{ t('common.email') }}:</span> {{ auth.currentUser.email }}
-            </p>
-            <p><span class="font-medium">{{ t('user.centers.registerTime') }}:</span> {{ formatDate(auth.currentUser?.created_at) }}</p>
-            <p v-if="auth.currentUser?.last_login_at">
-              <span class="font-medium">{{ t('user.centers.lastLogin') }}:</span> {{ formatDate(auth.currentUser.last_login_at) }}
-            </p>
-          </div>
-
-          <!-- Bio -->
-          <div v-if="auth.currentUser?.bio" class="mt-4">
-            <p class="text-gray-700">{{ auth.currentUser.bio }}</p>
-          </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="flex-shrink-0 flex gap-2">
-          <GlassButton
-            variant="secondary"
-            type="button"
-            class="btn-secondary"
-            @click="showEditModal = true"
-          >
-            {{ t('user.centers.editProfile') }}
-          </GlassButton>
-          <GlassButton
-            v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
-            class="btn-primary"
-            @click="navigateTo(localePath('/admin'))"
-          >
-            进入后台
-          </GlassButton>
-        </div>
-      </div>
-    </GlassCard>
-
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <GlassCard class="p-6 text-center">
-        <div class="text-3xl font-bold text-brand-600 mb-2">{{ stats.posts }}</div>
-        <div class="text-sm text-gray-600">{{ t('user.myPosts') }}</div>
-      </GlassCard>
-      
-      <GlassCard class="p-6 text-center">
-        <div class="text-3xl font-bold text-green-600 mb-2">{{ stats.comments }}</div>
-        <div class="text-sm text-gray-600">{{ t('user.myComments') }}</div>
-      </GlassCard>
-      
-      <GlassCard class="p-6 text-center">
-        <div class="text-3xl font-bold text-purple-600 mb-2">{{ stats.tags }}</div>
-        <div class="text-sm text-gray-600">{{ t('user.myTags') }}</div>
-      </GlassCard>
-      
-      <GlassCard class="p-6 text-center">
-        <div class="text-3xl font-bold text-blue-600 mb-2">{{ daysSinceJoined }}</div>
-        <div class="text-sm text-gray-600">{{ t('user.centers.joinedDays') }}</div>
-      </GlassCard>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <NuxtLink :to="localePath('/posts/new')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
-          <div class="w-12 h-12 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <PlusIcon class="w-6 h-6 text-white" />
-          </div>
-          <h3 class="font-semibold text-gray-800 mb-2">{{ t('posts.publish.index') }}</h3>
-          <p class="text-sm text-gray-600">{{ t('user.publish.description') }}</p>
-        </GlassCard>
-      </NuxtLink>
-
-      <NuxtLink :to="localePath('/me/posts')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
-          <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FileTextIcon class="w-6 h-6 text-white" />
-          </div>
-          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myPosts') }}</h3>
-          <p class="text-sm text-gray-600">{{ t('user.posts.description') }}</p>
-        </GlassCard>
-      </NuxtLink>
-
-      <NuxtLink :to="localePath('/me/comments')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
-          <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <MessageSquareIcon class="w-6 h-6 text-white" />
-          </div>
-          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myComments') }}</h3>
-          <p class="text-sm text-gray-600">{{ t('user.comments.description') }}</p>
-        </GlassCard>
-      </NuxtLink>
-
-      <NuxtLink :to="localePath('/me/tags')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
-          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <TagIcon class="w-6 h-6 text-white" />
-          </div>
-          <h3 class="font-semibold text-gray-800 mb-2">{{ t('user.myTags') }}</h3>
-          <p class="text-sm text-gray-600">{{ t('user.tags.description') }}</p>
-        </GlassCard>
-      </NuxtLink>
-      
-      <NuxtLink :to="localePath('/me/change-password')" class="block">
-        <GlassCard class="p-6 text-center hover:shadow-md transition-all">
-          <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <ShieldIcon class="w-6 h-6 text-white" />
-          </div>
-          <h3 class="font-semibold text-gray-800 mb-2">{{ t('auth.changePassword.index') }}</h3>
-          <p class="text-sm text-gray-600">{{ t('auth.changePassword.description') }}</p>
-        </GlassCard>
-      </NuxtLink>
-    </div>
-
-    <!-- Recent Activity -->
-    <GlassCard class="p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ t('user.recently') }}</h3>
-      
-      <!-- Loading recent activity -->
-      <div v-if="activityLoading" class="flex justify-center py-8">
-        <LoadingSpinner />
-      </div>
-      
-      <!-- No activity -->
-      <div v-else-if="!recentPosts.length && !recentComments.length" class="text-center py-8 text-gray-500">
-        {{ t('user.noActivity') }}
-      </div>
-      
-      <!-- Activity list -->
-      <div v-else class="space-y-4">
-        <!-- Recent posts -->
-        <div v-if="recentPosts.length" class="space-y-3">
-          <h4 class="font-medium text-gray-700">{{ t('posts.recently') }}</h4>
           <div
-            v-for="post in recentPosts"
-            :key="post.id"
-            class="p-4 bg-gray-50 rounded-xl border border-gray-200"
+            v-else
+            class="flex h-full w-full items-center justify-center text-lg font-semibold text-zinc-700"
           >
-            <div class="flex items-center justify-between mb-2">
-              <h5 class="font-medium text-gray-800">
-                {{ post.author_name }} → {{ post.target_name }}
-              </h5>
-              <span class="text-xs text-gray-500">{{ formatDate(post.created_at) }}</span>
-            </div>
-            <p class="text-sm text-gray-600 line-clamp-2">{{ post.content }}</p>
-            <div class="mt-2">
-              <NuxtLink
-                :to="localePath(`/posts/${post.id}`)"
-                class="btn-secondary text-xs px-2 py-1 inline-block"
-              >
-                {{ t('common.detail') }} →
-              </NuxtLink>
-            </div>
+            {{ auth.userDisplayName.slice(0, 2).toUpperCase() }}
           </div>
         </div>
 
-        <!-- Recent comments -->
-        <div v-if="recentComments.length" class="space-y-3">
-          <h4 class="font-medium text-gray-700">{{ t('comments.recently') }}</h4>
-          <div
-            v-for="comment in recentComments"
-            :key="comment.id"
-            class="p-4 bg-gray-50 rounded-xl border border-gray-200"
-          >
-            <div class="flex items-center justify-between mb-2">
-              <h5 class="font-medium text-gray-800">{{ t('user.commentedOn') }}</h5>
-              <span class="text-xs text-gray-500">{{ formatDate(comment.created_at) }}</span>
-            </div>
-            <p class="text-sm text-gray-600 line-clamp-2">{{ comment.content }}</p>
-            <div class="mt-2">
-              <NuxtLink
-                :to="localePath(`/posts/${comment.post_id}`)"
-                class="btn-secondary text-xs px-2 py-1 inline-block"
-              >
-                {{ t('common.detail') }} →
-              </NuxtLink>
-            </div>
-          </div>
+        <div class="min-w-0 flex-1">
+          <h1 class="text-2xl font-semibold text-zinc-950">{{ auth.userDisplayName }}</h1>
+          <p class="mt-1 text-sm text-zinc-500">@{{ auth.currentUser?.username }}</p>
+          <p v-if="auth.currentUser?.bio" class="mt-3 whitespace-pre-wrap break-words text-sm leading-6 text-zinc-800">
+            {{ auth.currentUser.bio }}
+          </p>
         </div>
       </div>
-    </GlassCard>
 
-    <!-- Edit Profile Modal -->
-    <EditProfileModal
-      :is-open="showEditModal"
-      :user="auth.currentUser"
-      @close="showEditModal = false"
-      @updated="handleProfileUpdated"
-    />
+      <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="rounded-2xl bg-zinc-50 px-4 py-3">
+          <div class="text-xl font-semibold text-zinc-950">{{ stats.posts }}</div>
+          <div class="mt-1 text-xs text-zinc-500">帖子</div>
+        </div>
+        <div class="rounded-2xl bg-zinc-50 px-4 py-3">
+          <div class="text-xl font-semibold text-zinc-950">{{ stats.replies }}</div>
+          <div class="mt-1 text-xs text-zinc-500">回复</div>
+        </div>
+        <div class="rounded-2xl bg-zinc-50 px-4 py-3">
+          <div class="text-xl font-semibold text-zinc-950">{{ stats.likes }}</div>
+          <div class="mt-1 text-xs text-zinc-500">点赞</div>
+        </div>
+        <div class="rounded-2xl bg-zinc-50 px-4 py-3">
+          <div class="text-xl font-semibold text-zinc-950">{{ stats.tags }}</div>
+          <div class="mt-1 text-xs text-zinc-500">标签</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-2 gap-3">
+      <NuxtLink
+        v-for="item in quickLinks"
+        :key="item.to"
+        :to="item.to"
+        class="rounded-3xl border border-zinc-200 bg-white px-4 py-4 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300"
+      >
+        <div class="text-sm font-semibold text-zinc-950">{{ item.title }}</div>
+        <div class="mt-1 text-xs leading-5 text-zinc-500">{{ item.description }}</div>
+      </NuxtLink>
+    </section>
+
+    <section class="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <div class="border-b border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-950">
+        最近帖子
+      </div>
+      <div v-if="recentPosts.length === 0" class="px-4 py-8 text-center text-sm text-zinc-500">
+        暂无内容
+      </div>
+      <TimelinePost
+        v-for="post in recentPosts"
+        :key="post.id"
+        :post="post"
+      />
+    </section>
+
+    <section class="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
+      <div class="border-b border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-950">
+        最近回复
+      </div>
+      <div v-if="recentReplies.length === 0" class="px-4 py-8 text-center text-sm text-zinc-500">
+        暂无内容
+      </div>
+      <TimelinePost
+        v-for="reply in recentReplies"
+        :key="reply.id"
+        :post="reply"
+      />
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
-const localePath = useLocalePath()
-
-import {FileTextIcon, MessageSquareIcon, PlusIcon, ShieldIcon, TagIcon} from 'lucide-vue-next'
-import type {CommentDto, PostDto, User, UserTagDto} from '~/types'
-import LoadingSpinner from "~/components/ui/LoadingSpinner.vue";
-import GlassCard from "~/components/ui/GlassCard.vue";
-import GlassButton from "~/components/ui/GlassButton.vue";
-import UserPermissionDisplay from "~/components/ui/UserPermissionDisplay.vue";
-import TagBadge from "~/components/ui/TagBadge.vue";
+import TimelinePost from '~/components/timeline/TimelinePost.vue'
 
 definePageMeta({
   middleware: 'auth',
   ssr: false,
-  title: { k: 'user.centerTitle' }
+  title: '我的',
 })
 
-// Stores
+const localePath = useLocalePath()
 const auth = useAuthStore()
+const api = useNuxtApp().$api
 const { assetUrl } = useAssetUrl()
 
-// State
-const loading = ref(true)
-const activityLoading = ref(false)
-const showEditModal = ref(false)
-const activeTag = ref<UserTagDto | null>(null)
-const recentPosts = ref<PostDto[]>([])
-const recentComments = ref<CommentDto[]>([])
+const recentPosts = ref([])
+const recentReplies = ref([])
 const stats = reactive({
   posts: 0,
-  comments: 0,
-  tags: 0
+  replies: 0,
+  likes: 0,
+  tags: 0,
 })
 
-// Computed
-const daysSinceJoined = computed(() => {
-  if (!auth.currentUser?.created_at) return 0
-  const joinDate = new Date(auth.currentUser.created_at)
-  const now = new Date()
-  const diffTime = Math.abs(now.getTime() - joinDate.getTime())
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-})
+const quickLinks = computed(() => [
+  { to: localePath('/posts/new'), title: '发布新帖', description: '发表表白或动态内容' },
+  { to: localePath('/me/comments'), title: '我的回复', description: '查看你发布过的所有回复' },
+  { to: localePath('/me/tags'), title: '我的标签', description: '管理已拥有和启用的标签' },
+  { to: localePath(`/users/${auth.currentUser?.username || ''}`), title: '公开主页', description: '查看你的外部展示页' },
+])
 
-// Methods
-const formatDate = (dateString?: string | null) => {
-  if (!dateString) return t('common.unknown')
-  return new Date(dateString).toLocaleString('zh-CN')
+const loadDashboard = async () => {
+  if (!auth.currentUser?.id) return
+  const [postsData, repliesData, likesData, tagsData] = await Promise.all([
+    api.getUserPosts(auth.currentUser.id, { page: 1, page_size: 3, type: 'posts' }),
+    api.getUserPosts(auth.currentUser.id, { page: 1, page_size: 3, type: 'replies' }),
+    api.getUserPosts(auth.currentUser.id, { page: 1, page_size: 1, type: 'likes' }),
+    api.getMyTags(),
+  ])
+
+  recentPosts.value = postsData.items
+  recentReplies.value = repliesData.items
+  stats.posts = postsData.total
+  stats.replies = repliesData.total
+  stats.likes = likesData.total
+  stats.tags = tagsData.total
 }
 
-const loadUserData = async () => {
-  loading.value = true
-  activityLoading.value = true
-  
-  try {
-    const api = useNuxtApp().$api
-    
-    // Load user tags and find active one
-    const userTagsResp = await api.getMyTags()
-    const items = userTagsResp.items
-    activeTag.value = items.find((tag: UserTagDto) => tag.is_active) || null
-    stats.tags = items.length
-    
-    // Load recent posts (first few)
-    try {
-      // Note: We'll need to implement a "my posts" API endpoint
-      // For now, we'll skip this and handle it when the endpoint is available
-      recentPosts.value = []
-      stats.posts = 0
-    } catch (error) {
-      console.warn('Failed to load posts:', error)
-    }
-    
-    // Load recent comments
-    try {
-      const commentsData = await api.getMyComments({ page: 1, page_size: 5 })
-      recentComments.value = commentsData.items
-      stats.comments = commentsData.total
-    } catch (error) {
-      console.warn('Failed to load comments:', error)
-    }
-    
-  } catch (error: any) {
-    // 降级为控制台提示，避免在部分子请求失败但页面仍可正常显示时打扰用户
-    console.warn('Occurred error while loading data:', error)
-  } finally {
-    loading.value = false
-    activityLoading.value = false
-  }
-}
-
-const handleProfileUpdated = async (updatedUser: User) => {
-  // Refresh user tags in case they changed
-  try {
-    const api = useNuxtApp().$api
-    const userTagsResp = await api.getMyTags()
-    const items = userTagsResp.items
-    activeTag.value = items.find((tag: UserTagDto) => tag.is_active) || null
-  } catch (error) {
-    console.warn('Failed to refresh user tags:', error)
-  }
-}
-
-// Initialize
 onMounted(() => {
-  loadUserData()
+  loadDashboard().catch((error) => console.error('Load dashboard failed:', error))
 })
 </script>

@@ -1,184 +1,226 @@
 <template>
   <Html :lang="head.htmlAttrs.lang" :dir="head.htmlAttrs.dir">
-  <Head>
-    <Title>{{ title }}</Title>
-    <template v-for="link in head.link" :key="link.key">
-      <Link :id="link.key" :rel="link.rel" :href="link.href" :hreflang="link.hreflang"/>
-    </template>
-    <template v-for="meta in head.meta" :key="meta.key">
-      <Meta :id="meta.key" :property="meta.property" :content="meta.content"/>
-    </template>
-  </Head>
-  <Body>
-  <div class="min-h-screen flex flex-col bg-gray-50">
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-      <div class="max-w-7xl mx-auto h-14 px-4 sm:px-6 flex items-center justify-between">
-        <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center gap-2 text-gray-900 hover:text-brand-600">
-          <NuxtImg
-            src="/badge.png"
-            :alt="t('home.title')"
-            class="w-8 h-8 rounded-lg"
-            :modifiers="{ fit: 'cover', quality: 50 }"
-            sizes="32px"
-            format="webp"
-            densities="x1 x2"
-            width="32"
-            height="32"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <span class="font-bold text-lg hidden sm:block">{{ t('home.title') }}</span>
-        </NuxtLink>
-
-        <!-- Auth Area -->
-        <ClientOnly>
-          <div ref="userMenuRef" class="relative flex items-center gap-2">
-            <!-- Not logged in -->
-            <template v-if="!auth.isAuthenticated">
-              <NuxtLink :to="localePath('/auth/login')" class="btn-ghost px-3 py-1.5 text-sm font-medium">
-                {{ t('home.login') }}
-              </NuxtLink>
-              <NuxtLink :to="localePath('/auth/register')" class="btn-primary px-3 py-1.5 text-sm font-medium rounded-md">
-                {{ t('home.register') }}
-              </NuxtLink>
-            </template>
-
-            <!-- Logged in -->
-            <template v-else>
-              <!-- Notifications -->
+    <Head>
+      <Title>{{ title }}</Title>
+      <template v-for="link in head.link" :key="link.key">
+        <Link :id="link.key" :rel="link.rel" :href="link.href" :hreflang="link.hreflang" />
+      </template>
+      <template v-for="meta in head.meta" :key="meta.key">
+        <Meta :id="meta.key" :property="meta.property" :content="meta.content" />
+      </template>
+    </Head>
+    <Body class="bg-zinc-100 text-zinc-950">
+      <div class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.08),_transparent_32%),linear-gradient(180deg,_#f8fafc_0%,_#f4f4f5_100%)]">
+        <div class="app-shell">
+          <aside class="app-sidebar">
+            <div class="sticky top-0 flex min-h-screen flex-col px-2 py-6">
               <NuxtLink
-                :to="localePath('/notifications')"
-                class="relative inline-flex items-center justify-center rounded-md h-9 w-9 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-                :title="t('notifications.index')"
+                :to="localePath('/')"
+                class="mb-5 inline-flex items-center gap-3 rounded-2xl px-2 py-2 text-zinc-950 transition hover:bg-white/70"
               >
-                <BellIcon class="w-5 h-5"/>
-                <span v-if="unreadCount > 0"
-                      class="absolute top-1 right-1 inline-block w-2 h-2 bg-red-500 rounded-full"/>
+                <img
+                  src="/badge.png?v=20260320"
+                  alt="郑州四中校园墙"
+                  class="h-11 w-11 rounded-2xl border border-zinc-200 bg-white object-cover shadow-sm"
+                >
+                <span class="text-base font-semibold tracking-tight">{{ t('home.title') }}</span>
               </NuxtLink>
 
-              <!-- User menu -->
-              <button
-                class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-                @click="showUserMenu = !showUserMenu"
+              <nav class="space-y-0.5">
+                <NuxtLink
+                  v-for="item in desktopNavItems"
+                  :key="item.to"
+                  :to="item.to"
+                class="flex items-center gap-4 rounded-full px-4 py-3 text-[15px] font-medium transition"
+                :class="isActive(item.match) ? 'bg-zinc-950 text-white' : 'text-zinc-700 hover:bg-white hover:text-zinc-950'"
               >
-                <NuxtImg
-                  v-if="auth.currentUser?.avatar_url"
-                  :src="assetUrl(auth.currentUser.avatar_url)"
-                  :alt="auth.userDisplayName"
-                  class="w-7 h-7 rounded-full"
-                />
-                <UserIcon v-else class="w-6 h-6"/>
-                <span class="hidden sm:block">{{ auth.userDisplayName }}</span>
-                <ChevronDownIcon class="w-4 h-4"/>
-              </button>
+                  <component :is="item.icon" class="h-5 w-5" />
+                  <span>{{ item.label }}</span>
+                  <span
+                    v-if="item.badge && item.badge > 0"
+                    class="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-rose-500 px-1.5 text-[11px] text-white"
+                  >
+                    {{ item.badge > 99 ? '99+' : item.badge }}
+                  </span>
+                </NuxtLink>
+              </nav>
 
-              <!-- Dropdown -->
-              <div v-if="showUserMenu"
-                   class="absolute right-0 top-full mt-1 w-52 bg-white rounded-md border border-gray-200 shadow-lg py-1 z-50">
-                <NuxtLink :to="localePath('/me')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          @click="showUserMenu = false">{{ t('user.center') }}
-                </NuxtLink>
-                <NuxtLink :to="localePath('/me/comments')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          @click="showUserMenu = false">{{ t('user.myComments') }}
-                </NuxtLink>
-                <NuxtLink :to="localePath('/me/tags')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          @click="showUserMenu = false">{{ t('user.myTags') }}
-                </NuxtLink>
-                <button
-                  v-if="auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS','MANAGE_ANNOUNCEMENTS','MANAGE_POSTS','MANAGE_TAGS'])"
-                  class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  @click="goAdmin"
-                >{{ t('admin.index') }}
-                </button>
-                <hr class="my-1 border-gray-100">
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                        @click="handleLogout">{{ t('home.logout') }}
-                </button>
+              <NuxtLink
+                :to="localePath('/posts/new')"
+                class="mt-5 inline-flex h-12 items-center justify-center rounded-full bg-sky-500 px-5 text-sm font-semibold text-white shadow-[0_16px_30px_-18px_rgba(14,165,233,0.95)] transition hover:bg-sky-600"
+              >
+                发布新帖
+              </NuxtLink>
+
+              <div class="mt-auto rounded-[28px] border border-zinc-200 bg-white/90 p-3.5 shadow-sm">
+                <div class="flex items-center gap-3">
+                  <div class="h-12 w-12 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100">
+                    <NuxtImg
+                      v-if="auth.currentUser?.avatar_url"
+                      :src="assetUrl(auth.currentUser.avatar_url)"
+                      :alt="auth.userDisplayName"
+                      class="h-full w-full object-cover"
+                      width="48"
+                      height="48"
+                    />
+                    <div
+                      v-else
+                      class="flex h-full w-full items-center justify-center text-sm font-semibold text-zinc-700"
+                    >
+                      {{ (auth.userDisplayName || 'LW').slice(0, 2).toUpperCase() }}
+                    </div>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="truncate text-sm font-semibold text-zinc-950">
+                      {{ auth.isAuthenticated ? auth.userDisplayName : '未登录' }}
+                    </div>
+                    <div class="truncate text-xs text-zinc-500">
+                      {{ auth.isAuthenticated ? `@${auth.currentUser?.username || ''}` : '登录后可以发帖、点赞、关注' }}
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between gap-2">
+                  <NuxtLink
+                    v-if="!auth.isAuthenticated"
+                    :to="localePath('/auth/login')"
+                    class="inline-flex h-10 flex-1 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-medium text-zinc-900 transition hover:bg-zinc-50"
+                  >
+                    登录
+                  </NuxtLink>
+                  <NuxtLink
+                    v-else
+                    :to="localePath('/me')"
+                    class="inline-flex h-10 flex-1 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-medium text-zinc-900 transition hover:bg-zinc-50"
+                  >
+                    个人中心
+                  </NuxtLink>
+                  <button
+                    v-if="auth.isAuthenticated"
+                    type="button"
+                    class="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 px-4 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                    @click="handleLogout"
+                  >
+                    退出
+                  </button>
+                </div>
               </div>
-            </template>
+            </div>
+          </aside>
+
+          <main class="min-h-screen min-w-0 flex-1 px-3 py-3 sm:px-4 lg:px-0 lg:py-5">
+            <div class="sticky top-0 z-30 border-b border-zinc-200 bg-white/85 px-4 py-3 backdrop-blur lg:hidden">
+              <div class="flex items-center justify-between">
+                <NuxtLink :to="localePath('/')" class="inline-flex items-center gap-2 text-base font-semibold text-zinc-950">
+                  <img
+                    src="/badge.png?v=20260320"
+                    alt="郑州四中校园墙"
+                    class="h-8 w-8 rounded-xl border border-zinc-200 bg-white object-cover shadow-sm"
+                  >
+                  <span class="line-clamp-1">{{ t('home.title') }}</span>
+                </NuxtLink>
+                <div class="flex items-center gap-2">
+                  <NuxtLink
+                    v-if="auth.isAuthenticated"
+                    :to="localePath('/notifications')"
+                    class="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-700 transition hover:bg-zinc-100"
+                  >
+                    <BellIcon class="h-5 w-5" />
+                    <span
+                      v-if="unreadCount > 0"
+                      class="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500"
+                    />
+                  </NuxtLink>
+                  <NuxtLink
+                    :to="auth.isAuthenticated ? localePath('/me') : localePath('/auth/login')"
+                    class="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-4 text-sm font-medium text-white"
+                  >
+                    {{ auth.isAuthenticated ? '我的' : '登录' }}
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+
+            <div class="pb-24 lg:pb-6">
+              <slot />
+            </div>
+          </main>
+
+        </div>
+
+        <nav
+          class="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur lg:hidden"
+        >
+          <div class="grid grid-cols-4">
+            <NuxtLink
+              v-for="item in mobileNavItems"
+              :key="item.to"
+              :to="item.to"
+              class="relative flex flex-col items-center gap-1 py-3 text-xs font-medium transition"
+              :class="isActive(item.match) ? 'text-zinc-950' : 'text-zinc-500'"
+            >
+              <component :is="item.icon" class="h-5 w-5" />
+              <span>{{ item.label }}</span>
+              <span
+                v-if="item.badge && item.badge > 0"
+                class="absolute right-[28%] top-2 h-2 w-2 rounded-full bg-rose-500"
+              />
+            </NuxtLink>
           </div>
+        </nav>
+
+        <ClientOnly>
+          <ToastContainer />
+        </ClientOnly>
+
+        <Transition name="fade">
+          <div
+            v-if="initializing"
+            class="fixed right-4 top-4 z-50 flex items-center gap-3 rounded-2xl bg-zinc-950 px-4 py-3 text-white shadow-xl"
+            aria-live="polite"
+          >
+            <LoadingSpinner size="md" variant="white" />
+            <div class="text-sm">正在初始化会话…</div>
+          </div>
+        </Transition>
+
+        <NuxtRouteAnnouncer />
+        <AdminDialog />
+
+        <ClientOnly>
+          <AnnouncementModal
+            v-if="pageAnnouncement.announcement.value"
+            :is-open="pageAnnouncement.isOpen.value"
+            :content="pageAnnouncement.announcement.value.content"
+            @close="pageAnnouncement.close()"
+            @dismiss="pageAnnouncement.dismiss()"
+          />
         </ClientOnly>
       </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <slot/>
-      </div>
-      <!-- Toast Notifications -->
-      <ClientOnly>
-        <ToastContainer/>
-      </ClientOnly>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-200 bg-white py-6 text-sm text-gray-500">
-      <div class="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6">
-        <LocaleSwitcher/>
-        <div class="flex-1 text-center space-y-1">
-          <p>&copy; 2025 {{ t('home.title') }}</p>
-          <div class="flex justify-center gap-4">
-            <a href="/privacy" class="hover:text-gray-700 transition-colors">{{ t('home.privacy') }}</a>
-            <a href="/tos" class="hover:text-gray-700 transition-colors">{{ t('home.tos') }}</a>
-            <a href="#" class="hover:text-gray-700 transition-colors">{{ t('home.contact') }}</a>
-          </div>
-        </div>
-        <div class="w-[120px] md:w-[140px]"></div>
-      </div>
-    </footer>
-
-    <!-- Loading indicator -->
-    <Transition name="fade">
-      <div
-        v-if="initializing"
-        class="fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg bg-brand-600 text-white shadow-lg pointer-events-none"
-        aria-live="polite"
-      >
-        <LoadingSpinner size="md" variant="white"/>
-        <div class="flex flex-col">
-          <span class="text-xs uppercase tracking-wider text-white/70">Loading</span>
-          <span class="text-sm font-semibold">{{ t('common.loading') }}</span>
-        </div>
-      </div>
-    </Transition>
-
-    <NuxtRouteAnnouncer/>
-    <AdminDialog/>
-
-    <ClientOnly>
-      <AnnouncementModal
-        v-if="pageAnnouncement.announcement.value"
-        :is-open="pageAnnouncement.isOpen.value"
-        :content="pageAnnouncement.announcement.value.content"
-        @close="pageAnnouncement.close()"
-        @dismiss="pageAnnouncement.dismiss()"
-      />
-    </ClientOnly>
-  </div>
-  </Body>
+    </Body>
   </Html>
 </template>
 
 <script setup lang="ts">
-const {t, locale, locales} = useI18n()
-const localePath = useLocalePath()
-
-import {UserIcon, ChevronDownIcon, BellIcon} from 'lucide-vue-next'
-import {onClickOutside} from '@vueuse/core'
-import ToastContainer from '~/components/ui/ToastContainer.vue'
-import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
-import AdminDialog from '~/components/ui/AdminDialog.vue'
-import AnnouncementModal from '~/components/AnnouncementModal.vue'
+import {
+  BellIcon,
+  HomeIcon,
+  PenSquareIcon,
+  UserIcon,
+  SparklesIcon,
+} from 'lucide-vue-next'
 import '~/assets/css/default.css'
-import LocaleSwitcher from "~/components/ui/LocaleSwitcher.vue";
-import {computed} from "vue";
+import AnnouncementModal from '~/components/AnnouncementModal.vue'
+import LoadingSpinner from '~/components/ui/LoadingSpinner.vue'
+import ToastContainer from '~/components/ui/ToastContainer.vue'
+import AdminDialog from '~/components/ui/AdminDialog.vue'
 
+const { t, locale, locales } = useI18n()
+const localePath = useLocalePath()
 const head = useLocaleHead()
 const route = useRoute()
+const auth = useAuthStore()
+const pageAnnouncement = useAnnouncement()
+const { assetUrl } = useAssetUrl()
 
 const currentLocale = computed(() =>
   locales.value.find((l: any) => l.code === locale.value) || null,
@@ -189,44 +231,25 @@ const title = computed(() => {
   if (!meta.title) return t('home.title')
   if (typeof meta.title === 'string') return meta.title
   if ('raw' in meta.title) return meta.title.raw
-  const {k, p} = meta.title
+  const { k, p } = meta.title
   return t(k, p as any)
-});
+})
 
 useHead(() => ({
-  title: title,
+  title,
   meta: [
     { name: 'description', content: t('seo.description') },
     { name: 'keywords', content: t('seo.keywords') },
     { name: 'og:title', content: t('seo.title') },
-    { name: 'og:locale', content: (currentLocale.value?.language ?? "zh-CN").replaceAll('-', '_') },
+    { name: 'og:locale', content: (currentLocale.value?.language ?? 'zh-CN').replaceAll('-', '_') },
     { name: 'og:description', content: t('seo.description') },
     { name: 'og:site_name', content: t('seo.title') },
     { name: 'twitter:title', content: t('seo.title') },
-    { name: 'twitter:description', content: t('seo.description') }
-  ]
+    { name: 'twitter:description', content: t('seo.description') },
+  ],
 }))
 
-const auth = useAuthStore()
-const pageAnnouncement = useAnnouncement()
-const {assetUrl} = useAssetUrl()
-
 const initializing = ref(true)
-const showUserMenu = ref(false)
-const userMenuRef = ref<HTMLElement>()
-onClickOutside(userMenuRef, () => {
-  showUserMenu.value = false
-})
-
-const handleLogout = async () => {
-  showUserMenu.value = false
-  await auth.logout()
-}
-
-const goAdmin = async () => {
-  showUserMenu.value = false
-  await navigateTo(localePath('/admin'))
-}
 
 const initializeApp = async () => {
   try {
@@ -243,7 +266,7 @@ onMounted(() => {
   initializeApp()
 })
 
-const {unreadNotifications, startHeartbeat, stopHeartbeat} = useHeartbeat()
+const { unreadNotifications, startHeartbeat, stopHeartbeat } = useHeartbeat()
 const unreadCount = unreadNotifications
 
 onMounted(() => {
@@ -256,12 +279,36 @@ onUnmounted(() => {
   stopHeartbeat()
 })
 
-watch(() => auth.isAuthenticated, (v) => {
-  if (v) startHeartbeat()
+watch(() => auth.isAuthenticated, (value) => {
+  if (value) startHeartbeat()
   else stopHeartbeat()
 })
 
-watch(() => route.path, () => {
-  showUserMenu.value = false
+const handleLogout = async () => {
+  await auth.logout()
+}
+
+const desktopNavItems = computed(() => {
+  const items = [
+    { to: localePath('/'), label: '首页', icon: HomeIcon, match: ['/'] },
+    { to: localePath('/notifications'), label: '通知', icon: BellIcon, match: ['/notifications'], badge: auth.isAuthenticated ? unreadCount.value : 0 },
+    { to: localePath('/posts/new'), label: '发帖', icon: PenSquareIcon, match: ['/posts/new'] },
+    { to: localePath('/me'), label: '我的', icon: UserIcon, match: ['/me', '/users'] },
+  ]
+
+  if (auth.isAuthenticated && (auth.isSuperadmin || auth.hasAnyPerm(['MANAGE_USERS', 'MANAGE_ANNOUNCEMENTS', 'MANAGE_POSTS', 'MANAGE_TAGS']))) {
+    items.push({ to: localePath('/admin'), label: '后台', icon: SparklesIcon, match: ['/admin'] })
+  }
+
+  return items
 })
+
+const mobileNavItems = computed(() => [
+  { to: localePath('/'), label: '首页', icon: HomeIcon, match: ['/'] },
+  { to: localePath('/notifications'), label: '通知', icon: BellIcon, match: ['/notifications'], badge: auth.isAuthenticated ? unreadCount.value : 0 },
+  { to: localePath('/posts/new'), label: '发帖', icon: PenSquareIcon, match: ['/posts/new'] },
+  { to: auth.isAuthenticated ? localePath('/me') : localePath('/auth/login'), label: '我的', icon: UserIcon, match: ['/me', '/users', '/auth'] },
+])
+
+const isActive = (matches: string[]) => matches.some((item) => route.path === item || route.path.startsWith(`${item}/`))
 </script>
